@@ -1,0 +1,42 @@
+# .gitignore for syspilot
+
+# ======================================
+# Dogfooding: syspilot uses itself
+# These are created by our own init.ps1
+# ======================================
+.syspilot/
+.github/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Sphinx build output
+docs/_build/
+
+# Local config that shouldn't be shared
+.env
+*.local
