@@ -5,7 +5,6 @@
 # These are created by our own init.ps1
 # ======================================
 .syspilot/
-.github/
 .vscode/
 
 # Python

@@ -22,10 +22,10 @@ import sys
 from pathlib import Path
 
 # Find docs directory relative to script location
-# Script is at: .syspilot/scripts/python/get_need_links.py
-# Project root is 3 levels up
+# Script is at: scripts/python/get_need_links.py
+# Project root is 2 levels up
 SCRIPT_DIR = Path(__file__).parent
-PROJECT_ROOT = SCRIPT_DIR.parent.parent.parent
+PROJECT_ROOT = SCRIPT_DIR.parent.parent
 DOCS_DIR = PROJECT_ROOT / "docs"
 NEEDS_ID_DIR = DOCS_DIR / "_build" / "html" / "needs_id"
 

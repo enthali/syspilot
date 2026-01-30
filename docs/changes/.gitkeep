@@ -1,0 +1,10 @@
+# Change Documents Directory
+
+This folder contains active Change Documents (CHG-NNN.md).
+
+After a change is merged to main, the Change Document should be deleted.
+The Git history preserves the full document.
+
+To find old change documents:
+  git log --all --full-history -- "docs/changes/CHG-*.md"
+  git show <commit>:docs/changes/CHG-001.md
