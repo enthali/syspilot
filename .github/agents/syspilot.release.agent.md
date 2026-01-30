@@ -193,156 +193,139 @@ Preview of release notes entry:
 [... generated content ...]
 
 Actions:
-1. Approve and commit to docs/releasenotes.md
+1. Approve and proceed with release
 2. Edit manually (I'll wait while you edit)
 3. Cancel release process
 
 Your choice?
 ```
 
-### 4. Commit Release Notes
+If approved, proceed automatically with remaining steps (no manual intervention needed).
 
-If approved, prepend the entry to `docs/releasenotes.md` and commit:
+### 4. Update Files (Automatic)
 
-```bash
-git add docs/releasenotes.md
-git commit -m "chore: add release notes for v0.2.0"
+Once approved, update all files without committing yet:
+
+**Update release notes:**
+- Prepend entry to docs/releasenotes.md
+
+**Update version:**
+```powershell
+$version = Get-Content version.json | ConvertFrom-Json
+$version.version = "{NEW_VERSION}"
+$version.installedAt = (Get-Date -Format "yyyy-MM-dd")
+$version | ConvertTo-Json | Set-Content version.json
 ```
 
-### 5. Version Update Guidance
-
-Guide the maintainer to update `version.json` **in the feature branch**:
-
-```
-Next step: Update version.json
-
-Current version: {read from version.json}
-New version: {calculated based on release type}
-
-Update version.json in this feature branch (so everything is atomic):
-
-  # Using PowerShell
-  $version = Get-Content version.json | ConvertFrom-Json
-  $version.version = "{NEW_VERSION}"
-  $version.installedAt = (Get-Date -Format "yyyy-MM-dd")
-  $version | ConvertTo-Json | Set-Content version.json
-
-Then commit:
-
-  git add version.json
-  git commit -m "chore: bump version to {NEW_VERSION}"
-
-✅ This makes the feature branch self-contained. If main moves ahead,
-   you'll resolve version conflicts during merge (would happen anyway).
-
-Type 'done' when committed.
+**Delete Change Documents:**
+```powershell
+# Remove processed Change Documents (prevents Sphinx warnings during validation)
+git rm docs/changes/*.md
 ```
 
-### 6. Validation Checklist
+**Why delete Change Documents now:**
+- Sphinx validation must have 0 errors/warnings for release
+- Change Documents in docs/changes/ cause "not in toctree" warnings
+- Git history preserves them at the release tag forever
+- Clean separation: released changes vs pending changes
 
-Display the validation checklist from SPEC_RELEASE_004:
+### 5. Run Validation (Automatic)
 
-```
-Pre-release validation checklist:
-
-Documentation:
- [ ] version.json updated to {NEW_VERSION}
- [ ] docs/releasenotes.md includes v{NEW_VERSION} entry
- [ ] sphinx-build succeeds (no errors)
- [ ] No orphaned requirements or specs
- [ ] copilot-instructions.md is current
-
-Agents:
- [ ] All agent files parse correctly
- [ ] Setup agent tested in clean environment
- [ ] Change agent tested with sample
-
-Scripts:
- [ ] init.ps1 / init.sh work on target platforms
- [ ] get_need_links.py executes correctly
-
-Git:
- [ ] All changes committed
- [ ] Working directory clean
- [ ] Up to date with main branch
-
-Type each item number to mark complete, or 'validate' to run automated checks.
-```
-
-**Automated Validation** (when user types 'validate'):
-
-Run these commands and report results:
+Run validation automatically - no waiting for user input:
 
 ```powershell
-# Check documentation builds
+# Build documentation
 cd docs
 uv run sphinx-build -b html . _build/html
 
-# Check version.json
+# Verify version
 $version = Get-Content ../version.json | ConvertFrom-Json
 Write-Host "Version: $($version.version)"
 
 # Check git status
+cd ..
 git status --porcelain
 
-# Check for broken links
-python ../scripts/python/get_need_links.py US_SYSPILOT_001 --depth 1
+# Test link discovery
+python scripts/python/get_need_links.py US_SYSPILOT_001 --depth 1 --simple
 ```
 
-### 7. Tag Creation
+**If validation PASSES:**
+- Report results
+- Proceed to Step 6 (commit and tag)
 
-After validation passes, provide the Git commands:
+**If validation FAILS:**
+- Display detailed error information
+- Ask user:
+  ```
+  ❌ Validation failed:
+  
+  [List specific failures]
+  
+  Options:
+  1. Fix the issues (I'll wait, then re-run validation)
+  2. Proceed anyway (not recommended - may break release)
+  3. Cancel release
+  
+  Your choice?
+  ```
+
+### 6. Commit and Tag (Automatic after validation)
+
+After validation passes, create one atomic commit with all changes:
+
+```powershell
+# Commit all changes atomically
+git add docs/releasenotes.md version.json
+git commit -m "chore: release v{NEW_VERSION}
+
+- Add release notes for v{NEW_VERSION}
+- Update version.json to {NEW_VERSION}
+- Remove processed Change Documents"
+
+# CRITICAL: Push to origin/main FIRST (so workflow exists on GitHub)
+git push origin main
+
+# Verify push succeeded and check for unpushed commits
+$ahead = git rev-list origin/main..HEAD --count
+if ($ahead -gt 0) {
+  Write-Host "❌ ERROR: Still have $ahead unpushed commits!"
+  Write-Host "Push failed or new commits added. Cannot proceed with tagging."
+  exit 1
+}
+
+# Verify workflow file exists on remote
+$workflowExists = git ls-tree origin/main .github/workflows/release.yml
+if (-not $workflowExists) {
+  Write-Host "❌ ERROR: release.yml not found on origin/main!"
+  Write-Host "The workflow won't run when you push the tag."
+  exit 1
+}
+
+# Now create and push tag (GitHub Actions will trigger)
+git tag -a v{NEW_VERSION} -m "Release v{NEW_VERSION}: {brief summary}"
+git push origin v{NEW_VERSION}
+```
+
+### 7. Monitor GitHub Actions (Automatic)
+
+After pushing the tag, display workflow monitoring info:
 
 ```
-✅ All validation checks passed!
+✅ Release v{NEW_VERSION} created!
 
-Create the release tag with:
+GitHub Actions workflow triggered:
+- Job 1: Validate version.json matches tag
+- Job 2: Build Sphinx documentation
+- Job 3: Publish to GitHub Pages
+- Job 4: Create GitHub Release with notes
 
-  git tag -a v{NEW_VERSION} -m "Release v{NEW_VERSION}: {brief summary}"
-  git push origin v{NEW_VERSION}
+Monitor workflow at:
+https://github.com/<owner>/<repo>/actions/workflows/release.yml
 
-This will trigger the GitHub Actions workflow (.github/workflows/release.yml) which will:
-1. Validate the tag matches version.json
-2. Build documentation with Sphinx
-3. Publish documentation to GitHub Pages
-4. Create GitHub Release with release notes
-5. Attach version.json to release
-
-Monitor the workflow at:
-https://github.com/<owner>/<repo>/actions
-
-Type 'tagged' when you've pushed the tag.
+Workflow should complete in ~2-3 minutes.
+Type 'status' to check workflow status, or 'done' when complete.
 ```
-
-### 8. Post-Release Cleanup (REQUIRED)
-
-After the tag is pushed, **MUST delete processed Change Documents**:
-
-```
-Tag pushed! GitHub Actions should be running now.
-
-Now cleaning up processed Change Documents...
-
-This is REQUIRED so the next release only sees NEW changes.
-Deleting processed Change Documents from docs/changes/
-(They remain in Git history forever at the release tag)
-```
-
-**Why delete (not archive):**
-- Next release agent run only processes NEW Change Documents
-- Clean separation between released vs pending changes
-- Git history preserves them at the release tag forever
-- Archived files become stale and confusing over time
-
-**Deletion process:**
-
-```bash
-git rm docs/changes/*.md
-git commit -m "chore: remove change documents for v{NEW_VERSION}"
-git push
-```
-
-**To retrieve later:** Check out the release tag or commit where they were deleted.
 
 ---
 
@@ -412,37 +395,31 @@ User: yes
 
 Agent: [Generates release notes]
        [Shows preview]
-       Approve and commit?
-
-User: approve
-
-Agent: [Commits release notes]
-       ✅ Committed: chore: add release notes for v0.2.0
        
-       Next: Update version.json (0.1.0 → 0.2.0)
-       [Shows commands]
-
-User: done
-
-Agent: [Displays validation checklist]
-
-User: validate
-
-Agent: [Runs automated checks]
-       ✅ All checks passed!
-       [Shows tag commands]
-
-User: tagged
-
-Agent: ✅ Release v0.2.0 created!
-       Workflow running at: [link]
+       Actions:
+       1. Approve and proceed with release
+       2. Edit manually
+       3. Cancel
        
-       Archive Change Documents?
+       Your choice?
 
-User: archive
+User: 1
 
-Agent: [Archives docs]
-       ✅ Done! Release complete.
+Agent: ✅ Approved. Proceeding with release...
+       
+       [Updates release notes, version.json]
+       [Deletes Change Documents]
+       [Runs validation automatically]
+       
+       ✅ All validation checks passed!
+       
+       [Creates atomic commit]
+       [Creates and pushes tag]
+       
+       ✅ Release v0.2.0 created!
+       GitHub Actions running at: [link]
+       
+       Type 'status' to check progress.
 ```
 
 ---
