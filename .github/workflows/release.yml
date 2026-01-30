@@ -1,0 +1,190 @@
+# GitHub Actions Release Workflow
+# 
+# Implements: SPEC_RELEASE_005, REQ_RELEASE_007
+# 
+# Automates release validation, documentation build, and publication.
+# Triggered on Git tags matching v*.*.* pattern.
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:  # Allow manual trigger for testing
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  validate:
+    name: Validate Release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Extract version from tag
+        id: tag_version
+        run: |
+          TAG=${GITHUB_REF#refs/tags/v}
+          echo "version=$TAG" >> $GITHUB_OUTPUT
+          echo "Tag version: $TAG"
+      
+      - name: Validate version.json
+        run: |
+          if [ ! -f version.json ]; then
+            echo "ERROR: version.json not found"
+            exit 1
+          fi
+          
+          VERSION=$(jq -r .version version.json)
+          TAG="${{ steps.tag_version.outputs.version }}"
+          
+          echo "version.json: $VERSION"
+          echo "Git tag: $TAG"
+          
+          if [ "$VERSION" != "$TAG" ]; then
+            echo "ERROR: Version mismatch!"
+            echo "  version.json = $VERSION"
+            echo "  tag = $TAG"
+            exit 1
+          fi
+          
+          echo "✅ Version matches tag"
+      
+      - name: Validate release notes exist
+        run: |
+          if [ ! -f docs/releasenotes.md ]; then
+            echo "ERROR: docs/releasenotes.md not found"
+            exit 1
+          fi
+          
+          VERSION="${{ steps.tag_version.outputs.version }}"
+          if ! grep -q "## v$VERSION" docs/releasenotes.md; then
+            echo "ERROR: Release notes missing for v$VERSION"
+            exit 1
+          fi
+          
+          echo "✅ Release notes found for v$VERSION"
+  
+  build-docs:
+    name: Build Documentation
+    runs-on: ubuntu-latest
+    needs: validate
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install Graphviz
+        run: sudo apt-get update && sudo apt-get install -y graphviz
+      
+      - name: Install Python dependencies
+        run: |
+          pip install -r docs/requirements.txt
+      
+      - name: Build Sphinx documentation
+        run: |
+          cd docs
+          sphinx-build -b html . _build/html
+      
+      - name: Check for Sphinx errors
+        run: |
+          if [ -f docs/_build/html/sphinx-build.log ]; then
+            if grep -i "error" docs/_build/html/sphinx-build.log; then
+              echo "ERROR: Sphinx build errors found"
+              exit 1
+            fi
+          fi
+          echo "✅ Documentation built successfully"
+      
+      - name: Upload documentation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation
+          path: docs/_build/html
+          retention-days: 7
+  
+  publish-docs:
+    name: Publish to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: build-docs
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+      - name: Download documentation artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: documentation
+          path: docs-html
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs-html
+      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+  
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [validate, build-docs]
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Extract release notes
+        id: release_notes
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          
+          # Extract section for this version from releasenotes.md
+          awk "/## v$VERSION/,/^## v/" docs/releasenotes.md | \
+            head -n -1 > release-notes-current.md
+          
+          if [ ! -s release-notes-current.md ]; then
+            echo "ERROR: Could not extract release notes for v$VERSION"
+            exit 1
+          fi
+          
+          cat release-notes-current.md
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: release-notes-current.md
+          draft: false
+          prerelease: ${{ contains(github.ref, '-alpha') || contains(github.ref, '-beta') || contains(github.ref, '-rc') }}
+          files: |
+            version.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Release summary
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          echo "✅ Release v$VERSION published successfully"
+          echo "📚 Documentation: https://$(echo ${{ github.repository }} | tr '/' '.').io/$(basename ${{ github.repository }})"
+          echo "📦 Release: https://github.com/${{ github.repository }}/releases/tag/v$VERSION"

@@ -8,6 +8,7 @@ This section contains system requirements following Sphinx-Needs methodology.
    :caption: Requirements:
 
    req_syspilot
+   req_release
 
 
 Overview

@@ -12,7 +12,7 @@ Core Workflow Stories
 
 .. story:: Manage Specifications as Code
    :id: US_SYSPILOT_001
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: core, sphinx-needs
 
@@ -51,7 +51,7 @@ Core Workflow Stories
 
 .. story:: Analyze Changes Before Implementation
    :id: US_SYSPILOT_002
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: agent, change
    :links: US_SYSPILOT_001
@@ -69,7 +69,7 @@ Core Workflow Stories
 
 .. story:: Implement with Full Traceability
    :id: US_SYSPILOT_003
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: agent, implementation
    :links: US_SYSPILOT_002
@@ -87,7 +87,7 @@ Core Workflow Stories
 
 .. story:: Verify Implementation Completeness
    :id: US_SYSPILOT_004
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: agent, verification
    :links: US_SYSPILOT_002, US_SYSPILOT_003
@@ -105,7 +105,7 @@ Core Workflow Stories
 
 .. story:: Review Requirements for Consistency
    :id: US_SYSPILOT_005
-   :status: approved
+   :status: implemented
    :priority: high
    :tags: agent, mece, review
 
@@ -124,7 +124,7 @@ Core Workflow Stories
 
 .. story:: Trace User Story Through All Levels
    :id: US_SYSPILOT_009
-   :status: approved
+   :status: implemented
    :priority: high
    :tags: agent, trace, vertical
 
@@ -142,7 +142,7 @@ Core Workflow Stories
 
 .. story:: Maintain Project Memory
    :id: US_SYSPILOT_006
-   :status: approved
+   :status: implemented
    :priority: high
    :tags: agent, memory
 
@@ -162,7 +162,7 @@ Setup & Portability Stories
 
 .. story:: Automatic Environment Bootstrap
    :id: US_SYSPILOT_007
-   :status: approved
+   :status: implemented
    :priority: high
    :tags: init, automation
 
@@ -179,7 +179,7 @@ Setup & Portability Stories
 
 .. story:: Use syspilot Across Projects
    :id: US_SYSPILOT_008
-   :status: draft
+   :status: implemented
    :priority: medium
    :tags: portability, sync
 
@@ -196,7 +196,7 @@ Setup & Portability Stories
 
 .. story:: Recover from Agent Failures
    :id: US_SYSPILOT_010
-   :status: draft
+   :status: implemented
    :priority: medium
    :tags: agent, recovery, error-handling
 
@@ -213,7 +213,7 @@ Setup & Portability Stories
 
 .. story:: Iterative Level-Based Change Analysis
    :id: US_SYSPILOT_011
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: agent, change, iterative
    :links: US_SYSPILOT_002
@@ -238,7 +238,7 @@ Installation & Update Stories
 
 .. story:: Install syspilot in New Project
    :id: US_SYSPILOT_012
-   :status: draft
+   :status: implemented
    :priority: mandatory
    :tags: install, distribution
    :links: US_SYSPILOT_007
@@ -256,7 +256,7 @@ Installation & Update Stories
 
 .. story:: Adopt syspilot in Existing Project
    :id: US_SYSPILOT_013
-   :status: draft
+   :status: implemented
    :priority: mandatory
    :tags: install, adoption, distribution
    :links: US_SYSPILOT_007
@@ -274,7 +274,7 @@ Installation & Update Stories
 
 .. story:: Update syspilot to Latest Version
    :id: US_SYSPILOT_014
-   :status: draft
+   :status: implemented
    :priority: mandatory
    :tags: update, migration, distribution
    :links: US_SYSPILOT_012, US_SYSPILOT_013
@@ -289,6 +289,62 @@ Installation & Update Stories
    2. Given I update syspilot, When the update completes, Then my project-specific customizations are preserved
    3. Given a breaking change exists, When I update, Then I receive migration guidance
    4. Given I update, When I check, Then I can see which version I now have
+
+
+.. story:: Create syspilot Release
+   :id: US_SYSPILOT_015
+   :status: implemented
+   :priority: mandatory
+   :tags: release, distribution
+   :links: US_SYSPILOT_012, US_SYSPILOT_013, US_SYSPILOT_014
+
+   **As a** syspilot maintainer,
+   **I want to** create official releases with version numbers,
+   **so that** users can install stable, tested versions of syspilot.
+
+   **Acceptance Scenarios:**
+
+   1. Given I'm ready to release, When I follow the release process, Then a versioned release is created
+   2. Given release is created, When users check for updates, Then they can see the new version
+   3. Given version is released, When I check Git, Then I see a version tag
+   4. Given release artifacts exist, When users download, Then they get complete syspilot installation
+
+
+.. story:: Validate Release Quality
+   :id: US_SYSPILOT_016
+   :status: implemented
+   :priority: mandatory
+   :tags: release, quality, testing
+   :links: US_SYSPILOT_015
+
+   **As a** syspilot maintainer,
+   **I want to** validate release quality before distribution,
+   **so that** users receive stable, working releases.
+
+   **Acceptance Scenarios:**
+
+   1. Given I prepare a release, When I run validation, Then all agents are tested
+   2. Given validation passes, When I check docs, Then self-documentation builds successfully
+   3. Given validation fails, When I review, Then I see which tests failed
+   4. Given all checks pass, When I approve, Then release is ready for distribution
+
+
+.. story:: Release Agent Template
+   :id: US_SYSPILOT_017
+   :status: implemented
+   :priority: medium
+   :tags: release, agent, template
+   :links: US_SYSPILOT_015, US_SYSPILOT_016
+
+   **As a** syspilot user,
+   **I want to** see how a release agent could work,
+   **so that** I can create my own release automation for my projects.
+
+   **Acceptance Scenarios:**
+
+   1. Given I read release documentation, When I see the release agent concept, Then I understand how it could automate releases
+   2. Given I want my own release process, When I check syspilot, Then I can use it as a template
+   3. Given installation/update agent handles modified agents, When I create custom release agent, Then update process respects my changes
 
 
 Traceability

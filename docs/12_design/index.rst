@@ -8,6 +8,7 @@ This section contains design specifications following Sphinx-Needs methodology.
    :caption: Design:
 
    spec_syspilot
+   spec_release
 
 
 Overview

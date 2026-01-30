@@ -30,6 +30,8 @@ exclude_patterns = [
     '_build',
     'Thumbs.db',
     '.DS_Store',
+    '.venv',
+    'venv',
 ]
 
 # -- Options for HTML output -------------------------------------------------

@@ -12,7 +12,7 @@ Agent Architecture
 
 .. spec:: Four-Agent Workflow
    :id: SPEC_SYSPILOT_001
-   :status: approved
+   :status: implemented
    :links: REQ_SYSPILOT_003, REQ_SYSPILOT_004, REQ_SYSPILOT_005, REQ_SYSPILOT_006, REQ_SYSPILOT_012
    :tags: architecture, agents
 
@@ -121,7 +121,7 @@ Agent Architecture
 
 .. spec:: sphinx-needs Documentation Structure
    :id: SPEC_SYSPILOT_002
-   :status: approved
+   :status: implemented
    :links: REQ_SYSPILOT_001, REQ_SYSPILOT_002
    :tags: sphinx-needs, structure
 
@@ -153,7 +153,7 @@ Agent Architecture
 
 .. spec:: Implementation Quality Gates
    :id: SPEC_SYSPILOT_003
-   :status: approved
+   :status: implemented
    :links: REQ_SYSPILOT_004
    :tags: quality, validation
 
@@ -184,7 +184,7 @@ Agent Architecture
 
 .. spec:: Init Scripts for Environment Setup
    :id: SPEC_SYSPILOT_004
-   :status: approved
+   :status: implemented
    :links: REQ_SYSPILOT_009, REQ_SYSPILOT_008, REQ_SYSPILOT_019, REQ_SYSPILOT_020
    :tags: init, scripts, install
 
@@ -225,7 +225,7 @@ Agent Architecture
 
 .. spec:: Agent Pre-Implementation Check
    :id: SPEC_SYSPILOT_005
-   :status: approved
+   :status: implemented
    :links: REQ_SYSPILOT_009, REQ_SYSPILOT_004
    :tags: agent, init
 
@@ -245,7 +245,7 @@ Agent Architecture
 
 .. spec:: Prompt-Agent Separation
    :id: SPEC_SYSPILOT_006
-   :status: approved
+   :status: implemented
    :links: REQ_SYSPILOT_001
    :tags: architecture, prompts
 
@@ -286,49 +286,59 @@ Installation & Update Specifications
 
 .. spec:: Release Structure
    :id: SPEC_SYSPILOT_007
-   :status: draft
-   :links: REQ_SYSPILOT_018
+   :status: implemented
+   :links: REQ_SYSPILOT_018, REQ_RELEASE_002
    :tags: install, distribution, release
 
    **Design:**
-   syspilot releases are downloadable zips from GitHub Releases.
+   syspilot releases are distributed via GitHub Releases, which automatically
+   creates .zip and .tar.gz archives of the repository at tagged commits.
 
    **Release Contents:**
 
    * Complete syspilot repository structure
    * ``version.json`` with release version
    * README with installation instructions
+   * docs/releasenotes.md with release history
 
    **Version Identification:**
 
-   * ``version.json`` at ``.syspilot`` root contains release version
-   * After successful install: renamed to ``version_installed.json``
+   * ``version.json`` at repository root contains release version
+   * After successful install: copied to project's ``.syspilot/version.json``
 
-   **Directory Structure in Release:**
+   **Directory Structure in Release Archive:**
 
    ::
 
-      syspilot-vX.Y.Z/
+      syspilot-X.Y.Z/
       ├── .github/
       │   ├── agents/       # Agent definitions (*.agent.md)
       │   ├── prompts/      # Prompt files (*.prompt.md)
       │   └── copilot-instructions.md
       ├── scripts/          # Init and utility scripts
       ├── templates/        # Document templates
-      ├── docs/             # Self-documentation
+      ├── docs/             # Self-documentation (including releasenotes.md)
       ├── version.json      # Release version
       └── README.md         # Installation instructions
+
+   **GitHub Release Mechanism:**
+
+   * Maintainer pushes annotated Git tag (e.g., ``v0.2.0``)
+   * GitHub automatically creates source archives
+   * GitHub Actions publishes documentation to GitHub Pages
+   * Release notes from docs/releasenotes.md displayed on release page
 
    **Rationale:**
 
    * ``.github/agents/`` is the standard location for GitHub Copilot agents
    * Single source of truth - no duplication between ``agents/`` and ``.github/agents/``
-   * Works immediately after ``git clone`` without additional setup
+   * Works immediately after ``git clone`` or archive extraction without additional setup
+   * GitHub's automatic archiving ensures consistent distribution
 
 
 .. spec:: Setup Agent Design
    :id: SPEC_SYSPILOT_008
-   :status: draft
+   :status: implemented
    :links: REQ_SYSPILOT_019, REQ_SYSPILOT_020, REQ_SYSPILOT_023
    :tags: install, agent, setup
 
@@ -403,7 +413,7 @@ Installation & Update Specifications
 
 .. spec:: File Layout and Ownership
    :id: SPEC_SYSPILOT_009
-   :status: draft
+   :status: implemented
    :links: REQ_SYSPILOT_022
    :tags: install, update, ownership
 
@@ -446,7 +456,7 @@ Installation & Update Specifications
 
 .. spec:: Update Process
    :id: SPEC_SYSPILOT_010
-   :status: draft
+   :status: implemented
    :links: REQ_SYSPILOT_021
    :tags: update, migration
 

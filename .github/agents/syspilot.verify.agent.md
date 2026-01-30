@@ -7,6 +7,9 @@ handoffs:
   - label: New Change Request
     agent: syspilot.change
     prompt: Create Change Proposal to fix issues
+  - label: Create Release
+    agent: syspilot.release
+    prompt: Prepare release from verified changes
 ---
 
 # syspilot Verify Agent
@@ -158,6 +161,40 @@ $ pytest tests/ -v
 
 [Overall assessment and next steps]
 ```
+
+## Post-Verification: Update Specification Statuses
+
+**If verification passes (✅ PASSED)**, update all verified specifications:
+
+```rst
+# Change status in all affected requirement and design files
+:status: approved   →   :status: implemented
+```
+
+**Which specs to update:**
+- All REQ_* that were verified as correctly implemented
+- All SPEC_* that match the actual implementation
+- Use the Change Document to identify affected IDs
+
+**Example:**
+```bash
+# Edit docs/11_requirements/req_*.rst
+# Edit docs/12_design/spec_*.rst
+# Change :status: approved to :status: implemented for verified items
+
+git add docs/
+git commit -m "docs: mark verified specs as implemented"
+```
+
+**Why verification first:**
+- Status reflects actual verification, not just code existence
+- Prevents premature "implemented" marking
+- Ensures implementation matches specification
+
+**If verification fails (❌ FAILED or ⚠️ PARTIAL):**
+- Do NOT update statuses
+- Hand off to implement agent to fix issues
+- Re-verify after fixes
 
 ## Issue Severity Levels
 

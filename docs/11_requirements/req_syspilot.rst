@@ -12,7 +12,7 @@ Core Requirements
 
 .. req:: Requirements Management with sphinx-needs
    :id: REQ_SYSPILOT_001
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: core, sphinx-needs
    :links: US_SYSPILOT_001
@@ -34,7 +34,7 @@ Core Requirements
 
 .. req:: Design Specification with Traceability
    :id: REQ_SYSPILOT_002
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: core, traceability
    :links: US_SYSPILOT_001, REQ_SYSPILOT_001
@@ -56,7 +56,7 @@ Core Requirements
 
 .. req:: Change Analysis Agent
    :id: REQ_SYSPILOT_003
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: agent, change
    :links: US_SYSPILOT_002
@@ -87,7 +87,7 @@ Core Requirements
 
 .. req:: Implementation Agent with Full Traceability
    :id: REQ_SYSPILOT_004
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: agent, implementation
    :links: US_SYSPILOT_003, REQ_SYSPILOT_001, REQ_SYSPILOT_002
@@ -117,7 +117,7 @@ Core Requirements
 
 .. req:: Verification Agent
    :id: REQ_SYSPILOT_005
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: agent, verification
    :links: US_SYSPILOT_004, REQ_SYSPILOT_004
@@ -140,7 +140,7 @@ Core Requirements
 
 .. req:: Project Memory Agent
    :id: REQ_SYSPILOT_006
-   :status: approved
+   :status: implemented
    :priority: high
    :tags: agent, memory
    :links: US_SYSPILOT_006
@@ -165,7 +165,7 @@ Integration Requirements
 
 .. req:: A-SPICE Process Alignment
    :id: REQ_SYSPILOT_007
-   :status: draft
+   :status: implemented
    :priority: medium
    :tags: aspice, automotive
 
@@ -187,7 +187,7 @@ Integration Requirements
 
 .. req:: Portable Toolkit
    :id: REQ_SYSPILOT_008
-   :status: approved
+   :status: implemented
    :priority: high
    :tags: portability, sync
    :links: US_SYSPILOT_008
@@ -211,7 +211,7 @@ Integration Requirements
 
 .. req:: Automatic Environment Setup
    :id: REQ_SYSPILOT_009
-   :status: approved
+   :status: implemented
    :priority: high
    :tags: init, automation
    :links: US_SYSPILOT_007, REQ_SYSPILOT_001
@@ -234,7 +234,7 @@ Integration Requirements
 
 .. req:: MECE Requirements Review
    :id: REQ_SYSPILOT_010
-   :status: approved
+   :status: implemented
    :priority: high
    :tags: agent, review, mece
    :links: US_SYSPILOT_005
@@ -260,7 +260,7 @@ Integration Requirements
 
 .. req:: Vertical Traceability Verification
    :id: REQ_SYSPILOT_011
-   :status: approved
+   :status: implemented
    :priority: high
    :tags: agent, trace, vertical
    :links: US_SYSPILOT_009
@@ -285,7 +285,7 @@ Integration Requirements
 
 .. req:: Workflow Step Suggestions
    :id: REQ_SYSPILOT_012
-   :status: approved
+   :status: implemented
    :priority: high
    :tags: agent, handoffs, workflow
    :links: US_SYSPILOT_002, US_SYSPILOT_003, US_SYSPILOT_004, US_SYSPILOT_005, US_SYSPILOT_009
@@ -319,7 +319,7 @@ Iterative Change Processing Requirements
 
 .. req:: Sphinx-Needs Link Discovery
    :id: REQ_SYSPILOT_013
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: agent, change, links
    :links: US_SYSPILOT_011
@@ -342,7 +342,7 @@ Iterative Change Processing Requirements
 
 .. req:: Persistent Change Document
    :id: REQ_SYSPILOT_014
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: agent, change, document
    :links: US_SYSPILOT_011
@@ -366,7 +366,7 @@ Iterative Change Processing Requirements
 
 .. req:: Horizontal MECE Check per Level
    :id: REQ_SYSPILOT_015
-   :status: approved
+   :status: implemented
    :priority: high
    :tags: agent, change, mece
    :links: US_SYSPILOT_011, US_SYSPILOT_005
@@ -388,7 +388,7 @@ Iterative Change Processing Requirements
 
 .. req:: Bidirectional Level Navigation
    :id: REQ_SYSPILOT_016
-   :status: approved
+   :status: implemented
    :priority: high
    :tags: agent, change, navigation
    :links: US_SYSPILOT_011
@@ -411,7 +411,7 @@ Iterative Change Processing Requirements
 
 .. req:: Final Consistency Check
    :id: REQ_SYSPILOT_017
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: agent, change, verification
    :links: US_SYSPILOT_011
@@ -435,30 +435,31 @@ Iterative Change Processing Requirements
 Installation & Update Requirements
 ----------------------------------
 
-.. req:: syspilot Distribution via Releases
+.. req:: syspilot Distribution via GitHub Releases
    :id: REQ_SYSPILOT_018
-   :status: draft
+   :status: implemented
    :priority: mandatory
    :tags: install, distribution
-   :links: US_SYSPILOT_012, US_SYSPILOT_013
+   :links: US_SYSPILOT_012, US_SYSPILOT_013, US_SYSPILOT_015
 
    **Description:**
-   syspilot SHALL be distributed via versioned releases.
+   syspilot SHALL be distributed via GitHub Releases with semantic versioning.
 
    **Rationale:**
-   Versioned releases enable users to obtain specific versions and
-   track what they have installed.
+   GitHub Releases provides versioned distribution with automatic archive
+   creation, enabling users to obtain specific versions and track what they
+   have installed.
 
    **Acceptance Criteria:**
 
-   * AC-1: User can identify release versions
-   * AC-2: User can obtain a specific version
+   * AC-1: User can identify release versions via GitHub Releases page
+   * AC-2: User can download specific version archives (.zip, .tar.gz)
    * AC-3: Installation instructions are included with each release
 
 
 .. req:: New Project Installation
    :id: REQ_SYSPILOT_019
-   :status: draft
+   :status: implemented
    :priority: mandatory
    :tags: install, new-project
    :links: US_SYSPILOT_012
@@ -479,7 +480,7 @@ Installation & Update Requirements
 
 .. req:: Existing Project Adoption
    :id: REQ_SYSPILOT_020
-   :status: draft
+   :status: implemented
    :priority: mandatory
    :tags: install, adoption
    :links: US_SYSPILOT_013
@@ -501,7 +502,7 @@ Installation & Update Requirements
 
 .. req:: Version Update and Migration
    :id: REQ_SYSPILOT_021
-   :status: draft
+   :status: implemented
    :priority: mandatory
    :tags: update, migration
    :links: US_SYSPILOT_014
@@ -523,7 +524,7 @@ Installation & Update Requirements
 
 .. req:: Customization Preservation
    :id: REQ_SYSPILOT_022
-   :status: draft
+   :status: implemented
    :priority: high
    :tags: install, update, preservation
    :links: US_SYSPILOT_013, US_SYSPILOT_014
@@ -544,7 +545,7 @@ Installation & Update Requirements
 
 .. req:: Sphinx-Needs Mandatory Dependency
    :id: REQ_SYSPILOT_023
-   :status: draft
+   :status: implemented
    :priority: mandatory
    :tags: install, sphinx-needs, dependency
    :links: US_SYSPILOT_012, US_SYSPILOT_013

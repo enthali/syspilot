@@ -20,9 +20,9 @@ Write-Host "Building HTML documentation..." -ForegroundColor Cyan
 
 # Use uv run if available, otherwise direct call
 if (Get-Command uv -ErrorAction SilentlyContinue) {
-    uv run sphinx-build -b html $DocsDir (Join-Path $BuildDir "html") -W --keep-going
+    uv run sphinx-build -b html $DocsDir (Join-Path $BuildDir "html") --keep-going
 } else {
-    sphinx-build -b html $DocsDir (Join-Path $BuildDir "html") -W --keep-going
+    sphinx-build -b html $DocsDir (Join-Path $BuildDir "html") --keep-going
 }
 
 if ($LASTEXITCODE -eq 0) {

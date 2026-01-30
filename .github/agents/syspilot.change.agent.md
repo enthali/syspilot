@@ -51,7 +51,29 @@ Level 2: Design          (HOW - how the system should do it)
    - Propose new/modified SPEC
    - Discuss with user, update Change Document as agreements are reached
 10. Final Consistency Check across all levels
-11. Ready for Implementation
+11. Update all statuses to `approved`
+12. Ready for Implementation
+
+## Status Lifecycle
+
+**During Analysis (Levels 0-2):**
+- All new/modified User Stories, Requirements, and Design elements: `:status: draft`
+- Draft means: "Work in progress, may change as we analyze other levels"
+
+**After Final Consistency Check:**
+- User reviews and approves the complete analysis
+- Change Agent updates ALL touched elements: `:status: draft` → `:status: approved`
+- Approved means: "Final, reviewed, ready for implementation"
+
+**After Implementation:**
+- Implement Agent changes: `:status: approved` → `:status: implemented`
+- Implemented means: "Code exists"
+
+**Why this workflow?**
+- During analysis, we may go back and revise earlier levels
+- Draft status signals "not final yet"
+- Only after all levels complete and user approves do we set approved
+- This prevents implementing specs that might change during analysis
 
 ## Bidirectional Navigation
 
@@ -187,10 +209,60 @@ Once all items are agreed and documented:
 
 ### Updating the Change Document
 
-**Update immediately** when agreements are reached during discussion:
-1. Update the corresponding level section
-2. Mark status (⏳ → 🔄 → ✅)
-3. Record each decision as it's made
+**During Analysis - Be Verbose:**
+
+Include full RST content for each new/modified element in the Change Document:
+
+```markdown
+## Level 1: Requirements
+
+### New Requirements
+
+#### REQ_RELEASE_001: Semantic Versioning
+
+\`\`\`rst
+.. req:: Semantic Versioning
+   :id: REQ_RELEASE_001
+   :status: draft
+   :priority: mandatory
+   :links: US_SYSPILOT_015
+
+   **Description:**
+   syspilot SHALL use Semantic Versioning...
+   
+   **Acceptance Criteria:**
+   * AC-1: Version numbers follow MAJOR.MINOR.PATCH format
+   ...
+\`\`\`
+```
+
+**Why verbose?**
+- Enables conversation compression - all details are in Change Document
+- User can pause and resume without losing context
+- Serves as working draft before committing to RST files
+
+**Important**: Do NOT update RST files during analysis. Only the Change Document is modified. This prevents broken links between levels.
+
+**After Final Consistency Check - Clean Up:**
+
+Once user approves:
+1. **Atomically update all RST files** (US + REQ + SPEC together)
+2. **Set all to `:status: approved`**
+3. **Simplify Change Document** to just list affected IDs:
+
+```markdown
+## Level 1: Requirements
+
+### New Requirements
+- REQ_RELEASE_001: Semantic Versioning
+- REQ_RELEASE_002: GitHub Release Publication
+- REQ_RELEASE_003: Release Notes Generation
+
+### Modified Requirements
+- REQ_SYSPILOT_018: Updated to specify GitHub Releases
+```
+
+This keeps Change Document clean for Git history while preserving what changed.
 
 ### When Going Back to a Previous Level
 
@@ -220,11 +292,30 @@ After Level 2 (Design) is complete:
    - All conflicts resolved
    - All decisions documented
 
-## Output: Change Document
+5. **User Approval**
+   - Present complete analysis to user
+   - Wait for approval
+   - Once approved: 
+     - **Atomically update all RST files** (US + REQ + SPEC together)
+     - Set all touched elements to `:status: approved`
+     - **Clean up Change Document** to summary format (just IDs and titles)
 
-The final deliverable is a complete Change Document at `docs/changes/<name>.md`
+## Output: Specification Updates
 
-This document:
+After user approval of the Final Consistency Check, the Change Agent:
+
+1. **Updates all RST files atomically** with new/modified User Stories, Requirements, and Design Specs
+2. **Sets status to `approved`** on all new/modified elements (no draft elements remain)
+3. **Updates index files** to include any new requirement or design files
+4. **Simplifies Change Document** to just list affected elements (removes verbose RST content)
+5. **Commits changes** with appropriate commit messages
+
+**Why atomic updates?**
+- Prevents broken links between specification levels
+- Ensures Sphinx builds successfully at all times
+- All new elements and their links appear together
+
+The simplified Change Document at `docs/changes/<name>.md`:
 - Contains the full analysis history
 - Records all decisions made
 - Provides traceability for implementation
