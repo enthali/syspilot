@@ -133,12 +133,36 @@ python scripts/python/get_need_links.py REQ_CFG_001 --depth 2
 python scripts/python/get_need_links.py US_SYSPILOT_001 --flat --depth 3
 ```
 
-### Copy Agents to .github (development only)
+## Installation Workflow
+
+syspilot uses a two-step installation:
+
+### Step 1: Init Script (minimal)
 
 ```powershell
-Copy-Item -Path "agents\*.agent.md" -Destination ".github\agents\" -Force
-Copy-Item -Path "prompts\*.prompt.md" -Destination ".github\prompts\" -Force
+# From your project directory, run syspilot's init script
+C:\path\to\syspilot\scripts\powershell\init.ps1
 ```
+
+This only copies `syspilot.setup.agent.md` to `.github/agents/`.
+
+### Step 2: Setup Agent (interactive)
+
+Open VS Code, start GitHub Copilot Chat, select `@syspilot.setup`.
+
+The agent handles:
+- Dependency installation (sphinx, sphinx-needs, furo, myst-parser)
+- Copying remaining agents and prompts
+- VS Code configuration
+- Validation
+
+### Update Process
+
+Updates use backup/rollback:
+1. `.syspilot/` → `.syspilot_backup/`
+2. Download latest release
+3. Intelligent merge for modified agent files
+4. Success: delete backup / Failure: rollback
 
 ## Development Workflow (Dogfooding)
 
@@ -199,11 +223,14 @@ graphviz>=0.20.0
 ## Current State
 
 - ✅ Core agent system implemented (7 agents)
-- ✅ Self-documentation with sphinx-needs
-- ✅ Bootstrap scripts for Windows/Linux
+- ✅ Self-documentation with sphinx-needs (14 US, 23 REQ, 10 SPEC)
+- ✅ Bootstrap scripts for Windows/Linux (minimal)
 - ✅ Link discovery utility
+- ✅ Install/Update workflow with backup/rollback
+- ✅ Intelligent merge for user-modified agent files
+- ✅ `.github/` as single source for agents/prompts
 - ⏳ A-SPICE alignment documentation in progress
 
 ---
 
-*syspilot v0.1.0-beta - Last updated: 2026-01-29*
+*syspilot v0.1.0-beta - Last updated: 2026-01-30*
