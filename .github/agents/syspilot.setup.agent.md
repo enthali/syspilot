@@ -30,10 +30,19 @@ First, scan the project to understand what exists:
 Check for:
 - docs/ directory with conf.py → Sphinx
 - mkdocs.yml → MkDocs
-- .syspilot/ → Previous syspilot installation
+- .syspilot/version.json → Previous syspilot installation (UPDATE MODE)
 - .github/agents/ → Existing agents
 - .vscode/settings.json → VS Code config
 ```
+
+**If `.syspilot/version.json` exists:**
+- This is an **UPDATE**, not a fresh install
+- Skip to Section "7. Update Workflow"
+- Do NOT proceed with fresh install steps
+
+**If no `.syspilot/` found:**
+- This is a **FRESH INSTALL**
+- Continue with Section 2
 
 ### 2. Check Dependencies (Interactive)
 
@@ -110,7 +119,166 @@ sphinx-build --version
 
 If successful, proceed with syspilot installation.
 
-### 3. Determine Action
+### 3. Detect syspilot Location
+
+**Run Find-SyspilotInstallation function:**
+
+Use the PowerShell function from SPEC_SYSPILOT_014 (see function definition below).
+
+The function:
+1. Searches parent directories (up to 3 levels)
+2. Finds all `version.json` files (recursive, depth 3)
+3. Parses JSON and filters for `"name": "syspilot"`
+4. Compares semantic versions (including pre-releases like beta.2)
+5. Returns path to newest syspilot installation
+6. Logs all found versions for transparency
+
+**Success**: Proceed with `$syspilotRoot` from auto-detection
+**Failure**: Show helpful error and suggest manual download
+
+```powershell
+# Error message on failure:
+❌ Could not find syspilot installation.
+
+Please download syspilot:
+1. Visit https://github.com/OWNER/syspilot/releases/latest
+2. Download the ZIP file
+3. Extract to any location (e.g., C:\workspace\syspilot-X.Y.Z)
+4. Re-run this agent
+```
+
+**PowerShell Function (SPEC_SYSPILOT_014):**
+
+```powershell
+function Find-SyspilotInstallation {
+    <#
+    .SYNOPSIS
+        Auto-detect syspilot installation by searching for version.json
+    
+    .DESCRIPTION
+        Searches parent directories and their children for syspilot installations.
+        Returns path to the newest version found.
+        
+        Implements: REQ_SYSPILOT_024, SPEC_SYSPILOT_014
+    #>
+    
+    [CmdletBinding()]
+    param(
+        [int]$MaxParentLevels = 3,
+        [int]$MaxSearchDepth = 3
+    )
+    
+    Write-Host "Searching for syspilot installations..." -ForegroundColor Cyan
+    
+    # Get current directory and parent paths
+    $currentPath = Get-Location
+    $searchPaths = @($currentPath.Path)
+    
+    # Add parent directories (up to MaxParentLevels)
+    $tempPath = $currentPath
+    for ($i = 1; $i -le $MaxParentLevels; $i++) {
+        $tempPath = Split-Path -Parent $tempPath
+        if ($tempPath) {
+            $searchPaths += $tempPath
+        } else {
+            break
+        }
+    }
+    
+    # Find all version.json files
+    $foundInstallations = @()
+    
+    foreach ($path in $searchPaths) {
+        Write-Verbose "Searching in: $path"
+        
+        try {
+            $versionFiles = Get-ChildItem -Path $path -Filter "version.json" -Recurse -Depth $MaxSearchDepth -ErrorAction SilentlyContinue
+            
+            foreach ($file in $versionFiles) {
+                try {
+                    $content = Get-Content -Path $file.FullName -Raw | ConvertFrom-Json
+                    
+                    # Check if this is a syspilot version.json
+                    if ($content.name -eq "syspilot") {
+                        $installPath = Split-Path -Parent $file.FullName
+                        
+                        $foundInstallations += [PSCustomObject]@{
+                            Path = $installPath
+                            Version = $content.version
+                            VersionObject = $null  # Will parse later
+                        }
+                        
+                        Write-Host "  Found: $($content.version) at $installPath" -ForegroundColor Gray
+                    }
+                }
+                catch {
+                    Write-Verbose "Skipped invalid JSON: $($file.FullName)"
+                }
+            }
+        }
+        catch {
+            Write-Verbose "Could not search path: $path"
+        }
+    }
+    
+    if ($foundInstallations.Count -eq 0) {
+        Write-Host "❌ No syspilot installations found." -ForegroundColor Red
+        return $null
+    }
+    
+    # Parse versions and sort
+    foreach ($installation in $foundInstallations) {
+        # Parse semantic version: X.Y.Z-prerelease
+        if ($installation.Version -match '^(\d+)\.(\d+)\.(\d+)(?:-(.+))?$') {
+            $major = [int]$Matches[1]
+            $minor = [int]$Matches[2]
+            $patch = [int]$Matches[3]
+            $prerelease = $Matches[4]
+            
+            $installation.VersionObject = [PSCustomObject]@{
+                Major = $major
+                Minor = $minor
+                Patch = $patch
+                Prerelease = $prerelease
+                Original = $installation.Version
+            }
+        }
+    }
+    
+    # Sort by version (newest first)
+    # Semantic version comparison: Major > Minor > Patch > Prerelease
+    $sorted = $foundInstallations | Where-Object { $_.VersionObject } | Sort-Object -Descending {
+        $v = $_.VersionObject
+        # Release versions (no prerelease) come before prereleases
+        $releaseWeight = if ($v.Prerelease) { 0 } else { 1000000 }
+        # Sort by Major.Minor.Patch, then by release status
+        ($v.Major * 1000000000) + ($v.Minor * 1000000) + ($v.Patch * 1000) + $releaseWeight
+    }
+    
+    $newest = $sorted[0]
+    
+    Write-Host "✅ Using newest version: $($newest.Version)" -ForegroundColor Green
+    Write-Host "   Path: $($newest.Path)" -ForegroundColor Green
+    
+    return $newest.Path
+}
+```
+
+**Usage:**
+
+```powershell
+$syspilotRoot = Find-SyspilotInstallation
+if (-not $syspilotRoot) {
+    # Show error and exit
+    Write-Host "Please download syspilot and try again."
+    return
+}
+
+# Proceed with installation using $syspilotRoot
+Copy-Item "$syspilotRoot\.github\agents\*" ".github\agents\" -Force
+```
+
+### 4. Determine Action
 
 | Situation | Action |
 |-----------|--------|
@@ -119,16 +287,9 @@ If successful, proceed with syspilot installation.
 | syspilot exists | Check version, offer update |
 | MkDocs exists | Explain sphinx-needs requirement |
 
-### 4. Install Components
+### 5. Install Components
 
-**Ask user for syspilot location** (where they downloaded/cloned syspilot):
-
-```
-Where is your syspilot installation?
-Default: C:\workspace\syspilot or ~/syspilot
-```
-
-**Copy files with intelligent merge:**
+**Copy files with intelligent merge** (using `$syspilotRoot` from auto-detection):
 
 | Source | Destination | Merge Behavior |
 |--------|-------------|----------------|
@@ -320,10 +481,149 @@ syspilot has been installed in your project.
 1. **Start a change**: Type `@syspilot.change` followed by your request
 2. **Check MECE**: Type `@syspilot.mece level: REQ` to analyze requirements
 3. **Trace item**: Type `@syspilot.trace US_001` to trace traceability
+4. **Update later**: Run `@syspilot.setup` again, I'll detect the existing installation and update automatically
 
 Happy requirements engineering! 🚀
 ```
 
 ---
 
-*syspilot v0.1.0 - Setup and Configuration*
+## 7. Update Workflow
+
+**Triggered when `.syspilot/version.json` exists.**
+
+### Step 1: Check Current Version
+
+Read `.syspilot/version.json`:
+
+```powershell
+$currentVersion = (Get-Content .syspilot/version.json | ConvertFrom-Json).version
+Write-Host "Current version: $currentVersion"
+```
+
+### Step 2: Fetch Latest Release from GitHub
+
+Use `fetch_webpage` or `run_in_terminal` with curl:
+
+```powershell
+# Query GitHub API for latest release
+$repo = "OWNER/syspilot"  # TODO: Replace with actual repo when known
+$apiUrl = "https://api.github.com/repos/$repo/releases/latest"
+
+# Fetch release info
+$release = Invoke-RestMethod -Uri $apiUrl
+$latestVersion = $release.tag_name.TrimStart('v')
+$downloadUrl = $release.zipball_url
+
+Write-Host "Latest version: $latestVersion"
+```
+
+### Step 3: Compare Versions
+
+```powershell
+if ($latestVersion -eq $currentVersion) {
+    Write-Host "✅ Already up to date ($currentVersion)"
+    return
+}
+
+# Parse semantic versions and compare
+# Reuse semantic version comparison logic from Find-SyspilotInstallation
+
+if ($latestVersion -le $currentVersion) {
+    Write-Host "⚠️ Current version ($currentVersion) is newer than or equal to latest ($latestVersion)"
+    Write-Host "No update needed."
+    return
+}
+
+Write-Host "📦 Update available: $currentVersion → $latestVersion"
+Write-Host "Do you want to update? (y/n)"
+# Wait for user confirmation
+```
+
+### Step 4: Backup Current Installation
+
+```powershell
+# Delete old backup if exists
+if (Test-Path .syspilot_backup) {
+    Remove-Item -Recurse -Force .syspilot_backup
+}
+
+# Backup current installation
+Move-Item .syspilot .syspilot_backup
+Write-Host "✅ Backup created: .syspilot_backup/"
+```
+
+### Step 5: Download and Extract
+
+```powershell
+# Download ZIP
+$tempZip = "syspilot-latest.zip"
+Invoke-WebRequest -Uri $downloadUrl -OutFile $tempZip
+
+# Extract to temp location
+$tempExtract = "syspilot-temp"
+Expand-Archive -Path $tempZip -DestinationPath $tempExtract -Force
+
+# GitHub zipball structure: OWNER-REPO-COMMIT/
+# Find the extracted folder (first folder in temp)
+$extractedFolder = Get-ChildItem $tempExtract | Select-Object -First 1
+
+# Move to .syspilot/
+Move-Item $extractedFolder.FullName .syspilot
+
+# Cleanup
+Remove-Item $tempZip
+Remove-Item -Recurse $tempExtract
+```
+
+### Step 6: Copy Files with Intelligent Merge
+
+Use the same logic as fresh install (Section 5):
+
+```powershell
+$syspilotRoot = ".syspilot"
+
+# Copy agents/prompts (with intelligent merge check for modifications)
+Copy-Item "$syspilotRoot/.github/agents/syspilot.*.agent.md" ".github/agents/" -Force
+Copy-Item "$syspilotRoot/.github/prompts/syspilot.*.prompt.md" ".github/prompts/" -Force
+
+# Copy scripts/templates (syspilot-owned, always replace)
+Copy-Item "$syspilotRoot/scripts/python/*" ".syspilot/scripts/python/" -Recurse -Force
+Copy-Item "$syspilotRoot/templates/*" ".syspilot/templates/" -Recurse -Force
+```
+
+### Step 7: Validate Update
+
+```powershell
+# Run sphinx-build to verify
+cd docs
+uv run sphinx-build -b html . _build/html
+
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "✅ Update successful!"
+    
+    # Delete backup
+    Remove-Item -Recurse -Force ../.syspilot_backup
+    
+    Write-Host ""
+    Write-Host "📝 Updated from $currentVersion to $latestVersion"
+} else {
+    Write-Host "❌ Update validation failed!"
+    
+    # Rollback
+    Remove-Item -Recurse -Force ../.syspilot
+    Move-Item ../.syspilot_backup ../.syspilot
+    
+    Write-Host "🔄 Rolled back to $currentVersion"
+}
+```
+
+### Error Handling
+
+If ANY step fails after backup:
+
+1. Remove partial `.syspilot/`
+2. Restore `.syspilot_backup/` → `.syspilot/`
+3. Inform user: "Update failed, rolled back to previous version"
+
+**Implements: REQ_SYSPILOT_021, SPEC_SYSPILOT_010**

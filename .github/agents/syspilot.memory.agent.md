@@ -147,7 +147,3 @@ Maintain this structure:
 - ❌ Temporary workarounds (unless long-term)
 - ❌ Personal preferences (only team conventions)
 - ❌ Duplicate information (link to docs instead)
-
----
-
-*syspilot v0.1.0 - Project Memory Management*

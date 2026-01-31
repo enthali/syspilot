@@ -1,5 +1,54 @@
 # syspilot Release Notes
 
+## v0.1.0-beta.3 - 2026-01-31
+
+### Summary
+Bugfix release improving installation UX. Setup Agent now auto-detects syspilot location instead of requiring manual path input, fixing the primary installation scenario where users extract release ZIPs with nested directory structures.
+
+### 🐛 Bug Fixes
+
+- **Auto-Detection for Setup** (US_SYSPILOT_012-013)
+  - Setup Agent no longer asks for syspilot path (REQ_SYSPILOT_019, AC-4/AC-5)
+  - Find-SyspilotInstallation function searches parent directories (REQ_SYSPILOT_024, SPEC_SYSPILOT_014)
+  - Parses version.json to find syspilot installations (REQ_SYSPILOT_024, AC-1/AC-2)
+  - Semantic version comparison selects newest (REQ_SYSPILOT_024, AC-3)
+  - Supports pre-release versions (beta.2 vs beta.3) (REQ_SYSPILOT_024, AC-3)
+  - Logs all found versions for transparency (REQ_SYSPILOT_024, AC-6)
+  - Graceful error with helpful instructions on failure (REQ_SYSPILOT_024, AC-5)
+
+- **Update Workflow Implementation** (US_SYSPILOT_014)
+  - Setup Agent detects existing installation via .syspilot/version.json (SPEC_SYSPILOT_010)
+  - Automatic GitHub latest release fetch via API (REQ_SYSPILOT_021, SPEC_SYSPILOT_010)
+  - Semantic version comparison (current vs latest) (REQ_SYSPILOT_021, AC-5)
+  - Backup/rollback mechanism (.syspilot → .syspilot_backup) (SPEC_SYSPILOT_010)
+  - Download and extract release ZIP automatically (SPEC_SYSPILOT_010)
+  - Intelligent merge for user-modified agent files (SPEC_SYSPILOT_009)
+  - Validation via sphinx-build with automatic rollback on failure (SPEC_SYSPILOT_010)
+
+### 📚 Documentation
+
+- A-SPICE alignment extended with agent responsibilities
+- Coverage table showing which A-SPICE process areas are supported
+- Test pyramid documented (current: generic TEST_*, planned: UNIT/INTEG/ACCEPT types)
+- Clear separation of agent responsibilities (Change=specs, Implement=code, Verify=validation)
+
+### 🔧 Technical Details
+
+- New requirement: REQ_SYSPILOT_024 (Auto-Detection via version.json)
+- New design spec: SPEC_SYSPILOT_014 (PowerShell Find-SyspilotInstallation)
+- Updated: REQ_SYSPILOT_019, REQ_SYSPILOT_020, REQ_SYSPILOT_021 (use auto-detection)
+- Updated: SPEC_SYSPILOT_008 (Setup Agent), SPEC_SYSPILOT_010 (Update Process)
+- Algorithm: Search 3 parent levels, recursive file search depth 3, semantic version sort
+
+### 📝 Known Limitations
+
+- Auto-detection and update workflow tested on Windows PowerShell (Bash versions need testing)
+- GitHub repo URL hardcoded as TODO in Setup Agent (needs configuration mechanism)
+
+---
+
+*For detailed traceability, see the [documentation](https://enthali.github.io/syspilot/)*
+
 ## v0.1.0-beta.2 - 2026-01-30
 
 ### Summary

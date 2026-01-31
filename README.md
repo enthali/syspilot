@@ -29,48 +29,40 @@ Instead of scanning everything, syspilot follows the links. A project with 1000 
 
 ---
 
-## ⚠️ IMPORTANT: Installation
-
-> **The release MUST be extracted as `.syspilot/` directory in your project!**
->
-> ```
-> your-project/
-> └── .syspilot/    ← Extract HERE!
-> ```
->
-> **DO NOT** extract into project root - this would overwrite your `docs/`!
-
----
-
 ## Quick Start
 
 ### 1. Download Release
 
 Go to [Releases](https://github.com/enthali/syspilot/releases) and download the latest `Source code (zip)`.
 
-### 2. Extract to .syspilot
+### 2. Extract Anywhere
 
-```powershell
-# Windows
-Expand-Archive syspilot-v0.1.0.zip -DestinationPath .syspilot
+Extract the ZIP to any location on your system. The release contains a versioned folder structure:
 
-# Linux/Mac
-unzip syspilot-v0.1.0.zip -d .syspilot
-mv .syspilot/syspilot-*/* .syspilot/
-rmdir .syspilot/syspilot-*
 ```
+syspilot-0.1.0-beta.3/
+├── .github/agents/      # Agent definitions
+├── scripts/             # Installation scripts
+├── templates/           # Document templates
+├── docs/                # Documentation
+└── version.json         # Version info
+```
+
+**Note:** syspilot automatically detects its location via `version.json` - no manual configuration needed!
 
 ### 3. Run Init Script
 
-```powershell
-# Windows
-.\.syspilot\scripts\powershell\init.ps1
+Navigate to the init script inside the extracted folder and run it:
 
-# Linux/Mac
-./.syspilot/scripts/bash/init.sh
+```powershell
+# Windows (from your project directory)
+C:\path\to\syspilot-0.1.0-beta.3\scripts\powershell\init.ps1
+
+# Linux/Mac (from your project directory)
+/path/to/syspilot-0.1.0-beta.3/scripts/bash/init.sh
 ```
 
-This copies the **Setup Agent** to your project and configures VS Code.
+This copies the **Setup Agent** to `.github/agents/` in your project.
 
 ### 4. Start Setup Agent
 
@@ -81,10 +73,13 @@ Open VS Code Copilot Chat and type:
 ```
 
 The Setup Agent will:
-- Scan your project structure
-- Detect existing documentation (Sphinx, MkDocs, etc.)
-- Install/update syspilot components
-- Configure VS Code settings
+- **Auto-detect** syspilot location (via `version.json`)
+- Copy remaining agents and prompts to your project
+- Check and install dependencies (sphinx, sphinx-needs, etc.)
+- Validate installation with sphinx-build
+- Confirm success
+
+**No manual path configuration needed!** The agent finds syspilot automatically.
 
 ## How It Works
 
@@ -159,21 +154,25 @@ When installed in your project:
 
 ```
 your-project/
-├── .syspilot/                   # ← syspilot installation
-│   ├── agents/                  # Agent prompt files
+├── .github/
+│   ├── agents/                  # ← Agents deployed here
 │   │   ├── syspilot.change.agent.md
 │   │   ├── syspilot.implement.agent.md
 │   │   └── ...
-│   ├── scripts/
-│   │   ├── powershell/init.ps1  # Bootstrap (Windows)
-│   │   ├── bash/init.sh         # Bootstrap (Linux/Mac)
-│   │   └── python/
-│   │       └── get_need_links.py  # Link discovery
-│   └── templates/
-│       ├── change-document.md   # Change Document template
-│       └── sphinx/              # Sphinx build scripts
-├── .github/agents/              # ← Deployed by init script
-└── docs/                        # ← Your project's docs (untouched)
+│   └── copilot-instructions.md  # Project memory
+└── docs/                        # ← Your documentation
+    ├── 10_userstories/          # User Stories (WHY)
+    ├── 11_requirements/         # Requirements (WHAT)
+    ├── 12_design/               # Design Specs (HOW)
+    ├── conf.py                  # Sphinx configuration
+    └── requirements.txt         # Python dependencies
+
+# syspilot source (extracted anywhere)
+C:\Downloads\syspilot-0.1.0-beta.3\  # ← Or any other location
+    ├── .github/agents/          # Source agent files
+    ├── scripts/                 # Installation scripts
+    ├── templates/               # Templates
+    └── version.json             # Auto-detection marker
 ```
 
 ## Requirements

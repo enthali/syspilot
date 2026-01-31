@@ -217,7 +217,3 @@ US_002: "analyze my change request against existing specs"
 1. [Priority action 1]
 2. [Priority action 2]
 ```
-
----
-
-*syspilot v0.1.0 - Horizontal MECE Analysis*

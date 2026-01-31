@@ -25,7 +25,8 @@ You are the **Verify Agent** for the syspilot requirements engineering workflow.
 3. **Check Design Adherence** - Does implementation follow the design?
 4. **Validate Traceability** - Are all links in place?
 5. **Confirm Tests Exist** - Is every requirement testable?
-6. **Report Gaps** - Document any discrepancies
+6. **Confirm documentation is updated** - Are all docs current?
+7. **Report Gaps** - Document any discrepancies
 
 ## Workflow
 
@@ -230,7 +231,3 @@ git commit -m "docs: mark verified specs as implemented"
 - [ ] Broken links (REQ → SPEC → Code → Test)
 - [ ] Missing entries in matrix
 - [ ] Outdated references
-
----
-
-*syspilot v0.1.0 - Implementation Verification*

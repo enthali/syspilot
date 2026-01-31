@@ -183,7 +183,3 @@ US_CFG_001: "Edit user settings"
 1. [Action 1]
 2. [Action 2]
 ```
-
----
-
-*syspilot v0.1.0 - Vertical Traceability*

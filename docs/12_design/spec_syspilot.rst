@@ -353,15 +353,14 @@ Installation & Update Specifications
 
    **Step 2: Setup Agent (@syspilot.setup)**
 
-   * User invokes ``@syspilot.setup`` in Copilot Chat
-   * Agent copies remaining agents from syspilot's ``.github/agents/`` to target's ``.github/agents/``
-   * Agent copies prompts from syspilot's ``.github/prompts/`` to target's ``.github/prompts/``
-   * Agent checks and installs dependencies (see below)
-   * Agent validates successful ``sphinx-build``
-   * Agent renames ``version.json`` to ``version_installed.json``
-   * Agent confirms success
+   **Section 1: Auto-Detect syspilot Location**
 
-   **Dependency Installation (Interactive with User):**
+   1. Run Find-SyspilotInstallation (SPEC_SYSPILOT_014)
+   2. Log all found versions for transparency
+   3. Select newest version
+   4. If none found: Error with helpful instructions
+
+   **Section 2: Check Dependencies (Interactive)**
 
    The setup agent guides the user through installing required dependencies:
 
@@ -401,6 +400,20 @@ Installation & Update Specifications
       * Note: System package managers may require admin rights
 
    6. **Validate**: Run ``sphinx-build --version`` to confirm
+
+   **Section 3: Copy Files from syspilot**
+
+   Using ``$syspilotRoot`` from auto-detection:
+
+   * Copy agents: ``$syspilotRoot/.github/agents/*.agent.md`` → ``.github/agents/``
+   * Copy prompts: ``$syspilotRoot/.github/prompts/*.prompt.md`` → ``.github/prompts/``
+   * Apply intelligent merge (SPEC_SYSPILOT_009)
+
+   **Section 4: Validate and Confirm**
+
+   * Validate successful ``sphinx-build``
+   * Rename ``version.json`` to ``version_installed.json``
+   * Confirm success
 
    **Works for both new and existing projects.**
 
@@ -465,11 +478,29 @@ Installation & Update Specifications
 
    **Update Flow:**
 
+   **Step 0: Find Newest syspilot Version**
+
+   1. Run Find-SyspilotInstallation (SPEC_SYSPILOT_014)
+   2. Log all found versions for transparency
+   3. Select newest version as source for update
+   4. Compare with currently installed version (``.syspilot/version.json``)
+   5. If found version <= installed version:
+
+      * Warn user: "Found version X.Y.Z is not newer than installed X.Y.Z"
+      * Suggest checking for latest release on GitHub
+      * Abort update
+
+   6. If found version > installed version: Proceed to Step 1
+
+   **Step 1: Detect Update Mode**
+
    1. User invokes ``@syspilot.setup`` (same agent for install and update)
    2. Agent detects existing ``.syspilot/version.json`` → update mode
-   3. Agent queries GitHub API for latest release version
-   4. Compare versions: if current >= latest, inform user "already up to date"
-   5. If newer version available:
+   3. Inform user of current and target versions
+
+   **Step 2: Backup and Update**
+
+   If newer version available (from Step 0):
 
       a. **Backup**: Check for ``.syspilot_backup/`` → delete if exists
       b. **Backup**: Rename ``.syspilot/`` → ``.syspilot_backup/``
@@ -494,6 +525,126 @@ Installation & Update Specifications
    * Remove partial ``.syspilot/``
    * Rename ``.syspilot_backup/`` back to ``.syspilot/``
    * Inform user: "Update failed, rolled back to previous version"
+
+
+.. spec:: syspilot Auto-Detection Algorithm
+   :id: SPEC_SYSPILOT_014
+   :status: draft
+   :links: REQ_SYSPILOT_024
+   :tags: install, autodetect, powershell
+
+   **Design:**
+   PowerShell/Bash function that finds syspilot installation via version.json search.
+
+   **Algorithm (PowerShell):**
+
+   ::
+
+      function Find-SyspilotInstallation {
+          # Search up to 3 parent directory levels
+          $searchPaths = @(
+              Get-Location,
+              (Get-Location).Parent,
+              (Get-Location).Parent.Parent,
+              (Get-Location).Parent.Parent.Parent
+          ) | Where-Object { $_ -ne $null }
+          
+          $foundVersions = @()
+          
+          foreach ($path in $searchPaths) {
+              # Find all version.json files recursively (max depth 3)
+              $versionFiles = Get-ChildItem -Path $path -Filter "version.json" `
+                                           -Recurse -Depth 3 -ErrorAction SilentlyContinue
+              
+              foreach ($file in $versionFiles) {
+                  try {
+                      $content = Get-Content $file.FullName | ConvertFrom-Json
+                      $version = $content.version
+                      
+                      # Skip if not syspilot version format
+                      if ($version -notmatch '^(\d+)\.(\d+)\.(\d+)(-\w+(\.\d+)?)?$') {
+                          continue
+                      }
+                      
+                      $foundVersions += [PSCustomObject]@{
+                          Path = $file.Directory.FullName
+                          Version = $version
+                          File = $file.FullName
+                      }
+                  } catch {
+                      # Skip invalid JSON
+                      continue
+                  }
+              }
+          }
+          
+          if ($foundVersions.Count -eq 0) {
+              Write-Error "No syspilot installation found (no version.json)"
+              Write-Host "Searched in:"
+              $searchPaths | ForEach-Object { Write-Host "  $_" }
+              return $null
+          }
+          
+          # Sort by version (newest first)
+          $sorted = $foundVersions | Sort-Object {
+              # Parse version for semantic comparison
+              if ($_.Version -match '^(\d+)\.(\d+)\.(\d+)(-(\w+)\.?(\d+)?)?') {
+                  $major = [int]$matches[1]
+                  $minor = [int]$matches[2]
+                  $patch = [int]$matches[3]
+                  $prerelease = $matches[5]  # e.g., "beta"
+                  $prereleaseNum = if ($matches[6]) { [int]$matches[6] } else { 0 }
+                  
+                  # Return sortable tuple: major, minor, patch, pre-num
+                  # Pre-releases sort lower than releases
+                  return @($major, $minor, $patch, $(if ($prerelease) { 0 } else { 999 }), $prereleaseNum)
+              }
+          } -Descending
+          
+          # Log all found versions
+          Write-Host "Found syspilot installations:"
+          $sorted | ForEach-Object {
+              Write-Host "  v$($_.Version) at $($_.Path)"
+          }
+          
+          # Return newest
+          $newest = $sorted[0]
+          Write-Host "Selected newest: v$($newest.Version)" -ForegroundColor Green
+          
+          return $newest.Path
+      }
+
+   **Usage in Setup Agent:**
+
+   ::
+
+      $syspilotRoot = Find-SyspilotInstallation
+      if (-not $syspilotRoot) {
+          Write-Error "Cannot proceed without syspilot installation"
+          exit 1
+      }
+      
+      # Now copy files from $syspilotRoot
+      Copy-Item "$syspilotRoot/.github/agents/*.agent.md" -Destination ".github/agents/"
+
+   **Bash Version:**
+
+   Equivalent logic in bash using find, jq, and sort.
+
+   **Edge Cases:**
+
+   1. **No version.json found**: Error with helpful message
+   2. **Multiple identical versions**: Pick first found (arbitrary but consistent)
+   3. **Invalid JSON**: Skip file and continue search
+   4. **Non-syspilot version.json**: Skip (version format check)
+
+   **Rationale:**
+
+   * Works with release ZIP structure (syspilot-0.1.0-beta.3/)
+   * Works with git clone
+   * Works with multiple versions side-by-side
+   * Always selects newest (important for updates)
+   * Transparent debugging (logs all found versions)
 
 
 Traceability

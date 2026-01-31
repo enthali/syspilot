@@ -476,6 +476,8 @@ Installation & Update Requirements
    * AC-1: User can invoke syspilot agents after installation
    * AC-2: User can build sphinx-needs documentation after installation
    * AC-3: User receives clear confirmation of successful installation
+   * AC-4: Setup agent SHALL use REQ_SYSPILOT_024 auto-detection to locate syspilot files
+   * AC-5: Setup agent SHALL NOT require manual path input
 
 
 .. req:: Existing Project Adoption
@@ -498,6 +500,7 @@ Installation & Update Requirements
    * AC-2: User's existing code is preserved
    * AC-3: User is guided through any required decisions
    * AC-4: User can invoke syspilot agents after adoption
+   * AC-5: Setup agent SHALL use REQ_SYSPILOT_024 auto-detection to locate syspilot files
 
 
 .. req:: Version Update and Migration
@@ -516,10 +519,11 @@ Installation & Update Requirements
 
    **Acceptance Criteria:**
 
-   * AC-1: User can determine currently installed version
+   * AC-1: User can determine currently installed version AND newest available syspilot via REQ_SYSPILOT_024 auto-detection
    * AC-2: User can update to a newer version
    * AC-3: User's customizations are preserved after update
    * AC-4: User receives migration guidance for breaking changes
+   * AC-5: Update SHALL use newest version found (not oldest cached)
 
 
 .. req:: Customization Preservation
@@ -564,6 +568,31 @@ Installation & Update Requirements
    * AC-2: User is informed about optional dependencies (graphviz for diagrams)
    * AC-3: Setup agent guides user through installation of missing dependencies
    * AC-4: User can build documentation using sphinx-needs after setup
+
+
+.. req:: Auto-Detection of syspilot Installation
+   :id: REQ_SYSPILOT_024
+   :status: draft
+   :priority: mandatory
+   :tags: install, autodetect
+   :links: US_SYSPILOT_012, US_SYSPILOT_013, US_SYSPILOT_014
+
+   **Description:**
+   syspilot SHALL auto-detect its own location by searching for version.json files.
+
+   **Rationale:**
+   Release ZIP structure places syspilot in versioned folders (syspilot-X.Y.Z/).
+   Manual path input is error-prone and breaks user experience. Auto-detection
+   enables seamless installation from arbitrary extraction locations.
+
+   **Acceptance Criteria:**
+
+   * AC-1: Search parent directories (up to 3 levels) for version.json files
+   * AC-2: Parse each version.json to extract version number
+   * AC-3: When multiple found, select newest semantic version (including pre-release tags)
+   * AC-4: Return syspilot root directory (where version.json was found)
+   * AC-5: Fail gracefully with helpful message if no version.json found
+   * AC-6: Log all found versions for debugging
 
 
 Traceability

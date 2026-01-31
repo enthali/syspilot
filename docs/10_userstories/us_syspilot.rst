@@ -249,7 +249,7 @@ Installation & Update Stories
 
    **Acceptance Scenarios:**
 
-   1. Given I have an empty project, When I follow the installation process, Then syspilot structure is created
+   1. Given I download and extract syspilot release, When I follow the installation process, Then syspilot structure is created without requiring manual path configuration
    2. Given installation completes, When I check, Then I'm ready to run bootstrap
    3. Given I need a specific version, When I install, Then I can obtain that version
 

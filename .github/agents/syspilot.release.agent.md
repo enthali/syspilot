@@ -432,7 +432,3 @@ Agent: ✅ Approved. Proceeding with release...
 - Template/documentation only (manual process)
 
 **For syspilot users**: Use this as a template for your own release agents. Adapt the workflow to your project's needs (e.g., different versioning scheme, different Change Document structure).
-
----
-
-*syspilot v0.2.0 - Release Agent Reference*
