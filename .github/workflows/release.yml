@@ -161,8 +161,8 @@ jobs:
           VERSION="${GITHUB_REF#refs/tags/v}"
           
           # Extract section for this version from releasenotes.md
-          # Match version with or without date (## v0.1.0-beta.2 or ## v0.1.0-beta.2 - 2026-01-30)
-          awk "/## v$VERSION/,/^## v/" docs/releasenotes.md | \
+          # Match version with optional date suffix (## v0.1.0-beta.2 - 2026-01-30)
+          awk "/## v$VERSION( -|$)/,/^## v/" docs/releasenotes.md | \
             head -n -1 > release-notes-current.md
           
           if [ ! -s release-notes-current.md ]; then
