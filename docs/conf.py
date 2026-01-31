@@ -38,7 +38,7 @@ exclude_patterns = [
 
 html_theme = 'furo'
 html_static_path = ['_static']
-html_title = 'EventManager Documentation'
+html_title = 'syspilot Documentation'
 
 # -- Sphinx-Needs Configuration ----------------------------------------------
 # https://sphinx-needs.readthedocs.io/

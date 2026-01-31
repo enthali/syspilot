@@ -12,6 +12,7 @@ Welcome to the syspilot documentation.
    12_design/index
    31_traceability/index
    40_process/index
+   releasenotes
 
 
 Overview
