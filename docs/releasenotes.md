@@ -1,5 +1,30 @@
 # syspilot Release Notes
 
+## v0.1.0-rc.3 - 2026-02-06
+
+### Summary
+Workflow handoff corrections: The agent chain now correctly routes verify→memory→change/release instead of verify→release→memory. Both the change workflow and release workflow exit points are now fully specified at all three levels (US → REQ → SPEC).
+
+### 🐛 Bug Fixes
+
+- **Workflow Handoff Order** (memory-handoff)
+  - Agent chain corrected: verify→memory instead of verify→release (SPEC_AGENT_WORKFLOW)
+  - Memory agent now hands off to change or release (SPEC_MEM_UPDATE_PROCESS)
+  - New acceptance scenario: after memory, user chooses next change or release (US_WF_CHANGE, REQ_WF_CHANGE_SEQUENCE)
+
+- **Release Workflow Exit Point** (release-exit)
+  - Release workflow now defines what happens after publish: new change or end (US_WF_RELEASE, REQ_WF_RELEASE_SEQUENCE)
+  - Release workflow diagram updated with exit point (SPEC_REL_WORKFLOW)
+
+### 🔧 Internal Changes
+
+- Verify agent handoff changed from "Create Release" to "Update Memory"
+- Memory agent gained handoffs to change and release agents
+- Implement agent removed unused release handoff
+- copilot-instructions.md updated with agent handoff chain diagram
+
+---
+
 ## v0.1.0-rc.2 - 2026-02-06
 
 ### Summary
