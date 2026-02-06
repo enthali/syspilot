@@ -72,6 +72,63 @@ Requirements for the foundational methodology and framework.
    * AC-4: Documentation structure supports A-SPICE work products
 
 
+File Organization
+-----------------
+
+.. req:: File Organization by Domain Type
+   :id: REQ_CORE_DOMAIN_ORG
+   :status: implemented
+   :priority: mandatory
+   :tags: core, methodology, organization
+   :links: US_CORE_FILE_ORG
+
+   **Description:**
+   syspilot SHALL organize specification files by domain type:
+
+   * Level 0 (User Stories) and Level 1 (Requirements): by **problem domain**
+     — one file per stakeholder theme or value stream
+   * Level 2 (Design Specs): by **solution domain**
+     — one file per technical component or module
+
+   **Rationale:**
+   User Stories and Requirements answer "why" and "what" from the stakeholder
+   perspective, so they group naturally by user goals. Design Specs answer "how"
+   from the technical perspective, so they group by architectural component.
+   A single design component may address requirements from multiple themes.
+
+   **Acceptance Criteria:**
+
+   * AC-1: US files named ``us_<theme>.rst`` grouping by stakeholder theme
+   * AC-2: REQ files named ``req_<theme>.rst`` grouping by the same themes
+   * AC-3: SPEC files named ``spec_<component>.rst`` grouping by technical component
+   * AC-4: A SPEC file MAY link to REQs from multiple themes
+
+
+.. req:: Level 1 Mirrors Level 0 File Structure
+   :id: REQ_CORE_L1_MIRROR
+   :status: implemented
+   :priority: mandatory
+   :tags: core, methodology, organization
+   :links: US_CORE_FILE_ORG, REQ_CORE_DOMAIN_ORG
+
+   **Description:**
+   syspilot SHALL maintain a 1:1 correspondence between Level 0 (User Story)
+   and Level 1 (Requirement) files.
+
+   **Rationale:**
+   A User Story file defines a bounded context. Its requirements are cohesive
+   and belong together. The 1:1 mapping provides a simple mental model:
+   "Where are the REQs for this US file? In the matching ``req_`` file."
+
+   **Acceptance Criteria:**
+
+   * AC-1: For each ``us_<theme>.rst`` there SHALL be a ``req_<theme>.rst``
+   * AC-2: Requirements in ``req_<theme>.rst`` SHALL link to User Stories in
+     the corresponding ``us_<theme>.rst``
+   * AC-3: Merging related requirement files is acceptable when a US file
+     produces fewer than 3 requirements
+
+
 Traceability
 ------------
 

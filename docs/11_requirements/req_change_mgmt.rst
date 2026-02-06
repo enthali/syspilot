@@ -95,7 +95,7 @@ Requirements for the change analysis, implementation, and verification workflow.
    :status: implemented
    :priority: high
    :tags: agent, handoffs, workflow
-   :links: US_CHG_ANALYZE, US_CHG_IMPLEMENT, US_CHG_VERIFY, US_TRACE_MECE, US_TRACE_VERTICAL
+   :links: US_WF_CHANGE, US_CHG_ANALYZE, US_CHG_IMPLEMENT, US_CHG_VERIFY, US_TRACE_MECE, US_TRACE_VERTICAL
 
    **Description:**
    syspilot SHALL suggest appropriate next workflow steps after agent completion.

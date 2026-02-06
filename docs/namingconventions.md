@@ -34,6 +34,7 @@ self-documenting, grep-friendly, and eliminate the "insert pain" of numbered seq
 | Abbreviation | Full Name | Used at Levels |
 |-------------|-----------|----------------|
 | `CORE` | Core Methodology | US, REQ |
+| `WF` | Workflows | US, REQ |
 | `CHG` | Change Management | US, REQ |
 | `TRACE` | Traceability & Quality | US, REQ |
 | `INST` | Installation & Setup | US, REQ |

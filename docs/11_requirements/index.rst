@@ -8,6 +8,7 @@ This section contains system requirements following Sphinx-Needs methodology.
    :caption: Requirements:
 
    req_core
+   req_workflows
    req_change_mgmt
    req_traceability
    req_installation

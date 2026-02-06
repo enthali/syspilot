@@ -8,6 +8,7 @@ This section contains user stories that drive the requirements.
    :caption: User Stories:
 
    us_core
+   us_workflows
    us_change_mgmt
    us_traceability
    us_installation

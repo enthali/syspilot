@@ -1,197 +1,14 @@
-syspilot Design Specifications
-===============================
+Setup Agent Design
+===================
 
-This document contains design specifications for the syspilot toolkit.
+Design specifications for the Setup Agent — installation, update, and environment management.
 
-**Document Version**: 0.1  
-**Last Updated**: 2026-01-28
-
-
-Agent Architecture
-------------------
-
-.. spec:: Four-Agent Workflow
-   :id: SPEC_AGENT_WORKFLOW
-   :status: implemented
-   :links: REQ_CHG_ANALYSIS_AGENT, REQ_CHG_IMPL_AGENT, REQ_CHG_VERIFY_AGENT, REQ_DX_MEMORY_AGENT, REQ_CHG_WORKFLOW_STEPS
-   :tags: architecture, agents
-
-   **Design:**
-   syspilot implements a four-agent workflow for structured change management.
-
-   **Agent Responsibilities:**
-
-   1. **change agent**: Analyze request + current implementation → Change Document + US/REQ/SPEC updates
-   2. **implement agent**: Read Change Document → Code + Scripts + Tests (no spec changes)
-   3. **verify agent**: Implementation → Verification Report
-   4. **memory agent**: Project → Updated copilot-instructions.md
-
-   **Workflow:**
-
-   ::
-
-      User Request
-           │
-           ▼
-      ┌─────────────┐
-      │   change    │ ──→ Change Document + US/REQ/SPEC RST updates
-      └─────────────┘
-           │
-           ▼ (approved)
-      ┌─────────────┐
-      │  implement  │ ──→ Code + Scripts + Tests (reads SPECs from Change Doc)
-      └─────────────┘
-           │
-           ▼
-      ┌─────────────┐
-      │   verify    │ ──→ Verification Report
-      └─────────────┘
-           │
-           ▼ (passed)
-      ┌─────────────┐
-      │   memory    │ ──→ Updated copilot-instructions.md
-      └─────────────┘
-
-   **Files:**
-
-   * ``.github/agents/syspilot.change.agent.md``
-   * ``.github/agents/syspilot.implement.agent.md``
-   * ``.github/agents/syspilot.verify.agent.md``
-   * ``.github/agents/syspilot.memory.agent.md``
-
-   **VS Code Handoffs:**
-
-   Each agent file includes YAML frontmatter with ``handoffs:`` that enable
-   VS Code to suggest the next agent in the workflow.
-
-   **Main Chain:**
-
-   ::
-
-      change → implement → verify
-          ↑                   │
-          └───────────────────┘ (if issues found)
-
-   **Analysis Agents (bidirectional):**
-
-   ::
-
-      mece ↔ trace
-        │       │
-        └───────┴──→ change (to fix issues)
-
-   **Memory Agent:**
-
-   Standalone - invoked after verify or on-demand. Has description but no handoffs.
-
-   **Handoff Format:**
-
-   ::
-
-      ---
-      description: Short agent purpose for UI display
-      handoffs:
-        - label: Display name
-          agent: syspilot.targetagent
-          prompt: Default prompt text
-      ---
-
-   **Initial Prompt Recommendations:**
-
-   To show syspilot agents as suggestions when opening a new chat,
-   configure VS Code workspace settings:
-
-   **File:** ``.vscode/settings.json``
-
-   ::
-
-      {
-        "chat.promptFilesRecommendations": {
-          "syspilot.change": true,
-          "syspilot.implement": true,
-          "syspilot.verify": true,
-          "syspilot.mece": true,
-          "syspilot.trace": true,
-          "syspilot.memory": true
-        }
-      }
-
-   This ensures users see syspilot workflow options immediately.
+**Document Version**: 0.2
+**Last Updated**: 2026-02-06
 
 
-.. spec:: sphinx-needs Documentation Structure
-   :id: SPEC_DOC_STRUCTURE
-   :status: implemented
-   :links: REQ_CORE_SPHINX_NEEDS, REQ_CORE_TRACEABILITY
-   :tags: sphinx-needs, structure
-
-   **Design:**
-   Documentation organized in numbered folders following esp32-distance pattern.
-
-   **Directory Structure:**
-
-   ::
-
-      docs/
-      ├── conf.py                    # sphinx-needs configuration
-      ├── index.rst                  # Main index
-      ├── methodology.md             # File organization guide
-      ├── namingconventions.md       # ID naming conventions
-      ├── 10_userstories/
-      │   ├── index.rst              # User Stories overview
-      │   ├── us_core.rst            # Core stories
-      │   ├── us_change_mgmt.rst     # Change management stories
-      │   └── us_<theme>.rst         # Theme-based stories
-      ├── 11_requirements/
-      │   ├── index.rst              # Requirements overview
-      │   ├── req_core.rst           # Core requirements
-      │   ├── req_change_mgmt.rst    # Change management requirements
-      │   └── req_<theme>.rst        # Theme-based requirements (1:1 with US)
-      ├── 12_design/
-      │   ├── index.rst              # Design overview
-      │   └── spec_<component>.rst   # Component designs
-      └── 31_traceability/
-          └── index.rst              # Auto-generated traceability
-
-   **Naming Conventions:**
-
-   * User Stories: ``US_<THEME>_<SLUG>`` (e.g., ``US_CORE_SPEC_AS_CODE``)
-   * Requirements: ``REQ_<THEME>_<SLUG>`` (e.g., ``REQ_CHG_ANALYSIS_AGENT``)
-   * Designs: ``SPEC_<COMPONENT>_<SLUG>`` (e.g., ``SPEC_AGENT_WORKFLOW``)
-
-   See ``docs/namingconventions.md`` for full convention.
-
-
-.. spec:: Implementation Quality Gates
-   :id: SPEC_AGENT_QUALITY_GATES
-   :status: implemented
-   :links: REQ_CHG_IMPL_AGENT
-   :tags: quality, validation
-
-   **Design:**
-   implement agent runs sphinx-build as quality gate before coding.
-
-   **Quality Gate Workflow:**
-
-   1. Update requirement docs (``.rst``)
-   2. Update design docs (``.rst``)
-   3. **Run sphinx-build** → validates syntax + traceability
-   4. If FAIL → fix docs, do not proceed to code
-   5. If PASS → implement code with SPEC references
-   6. Write tests with REQ references
-   7. Run tests
-   8. **Run sphinx-build again** → final validation
-
-   **Commands:**
-
-   ::
-
-      # Build docs (validates all)
-      sphinx-build -b html docs docs/_build/html -W --keep-going
-
-      # Run tests
-      pytest tests/ -v
-
+Installation
+------------
 
 .. spec:: Init Scripts for Environment Setup
    :id: SPEC_INST_INIT_SCRIPTS
@@ -232,119 +49,6 @@ Agent Architecture
 
    **Note:** This is Step 1 of the installation process.
    Step 2 is invoking ``@syspilot.setup`` agent.
-
-
-.. spec:: Agent Pre-Implementation Check
-   :id: SPEC_AGENT_PRE_CHECK
-   :status: implemented
-   :links: REQ_INST_AUTO_SETUP, REQ_CHG_IMPL_AGENT
-   :tags: agent, init
-
-   **Design:**
-   The implement agent checks for sphinx-needs availability before starting work.
-
-   **Check Sequence:**
-
-   1. Run ``sphinx-build --version`` (or ``uv run sphinx-build --version``)
-   2. If NOT found → run init script
-   3. If found → proceed with implementation
-
-   **Integration:**
-   Documented in ``.github/agents/syspilot.implement.agent.md`` under
-   "Pre-Implementation Check" section.
-
-
-.. spec:: Prompt-Agent Separation
-   :id: SPEC_AGENT_PROMPT_SEPARATION
-   :status: implemented
-   :links: REQ_CORE_SPHINX_NEEDS
-   :tags: architecture, prompts
-
-   **Design:**
-   Strict separation between prompt files and agent files.
-
-   **Prompt Files** (``.github/prompts/*.prompt.md``):
-   
-   - Minimal frontmatter only
-   - Reference the agent, nothing else
-   - User-facing entry point
-
-   **Format:**
-
-   ::
-
-      ---
-      agent: syspilot.change
-      ---
-
-   **Agent Files** (``.github/agents/*.agent.md``):
-   
-   - Full instructions
-   - Workflow descriptions
-   - Examples
-   - All the logic
-
-   **Rationale:**
-
-   - Prompts are stable entry points
-   - Agents can be updated without changing invocation
-   - Separation of concerns: WHAT to invoke vs HOW to execute
-   - Consistent with speckit design pattern
-
-
-Installation & Update Specifications
-------------------------------------
-
-.. spec:: Release Structure
-   :id: SPEC_INST_RELEASE_STRUCTURE
-   :status: implemented
-   :links: REQ_INST_GITHUB_RELEASES, REQ_REL_GITHUB_PUBLISH
-   :tags: install, distribution, release
-
-   **Design:**
-   syspilot releases are distributed via GitHub Releases, which automatically
-   creates .zip and .tar.gz archives of the repository at tagged commits.
-
-   **Release Contents:**
-
-   * Complete syspilot repository structure
-   * ``version.json`` with release version
-   * README with installation instructions
-   * docs/releasenotes.md with release history
-
-   **Version Identification:**
-
-   * ``version.json`` at repository root contains release version
-   * After successful install: copied to project's ``.syspilot/version.json``
-
-   **Directory Structure in Release Archive:**
-
-   ::
-
-      syspilot-X.Y.Z/
-      ├── .github/
-      │   ├── agents/       # Agent definitions (*.agent.md)
-      │   ├── prompts/      # Prompt files (*.prompt.md)
-      │   └── copilot-instructions.md
-      ├── scripts/          # Init and utility scripts
-      ├── templates/        # Document templates
-      ├── docs/             # Self-documentation (including releasenotes.md)
-      ├── version.json      # Release version
-      └── README.md         # Installation instructions
-
-   **GitHub Release Mechanism:**
-
-   * Maintainer pushes annotated Git tag (e.g., ``v0.2.0``)
-   * GitHub automatically creates source archives
-   * GitHub Actions publishes documentation to GitHub Pages
-   * Release notes from docs/releasenotes.md displayed on release page
-
-   **Rationale:**
-
-   * ``.github/agents/`` is the standard location for GitHub Copilot agents
-   * Single source of truth - no duplication between ``agents/`` and ``.github/agents/``
-   * Works immediately after ``git clone`` or archive extraction without additional setup
-   * GitHub's automatic archiving ensures consistent distribution
 
 
 .. spec:: Setup Agent Design
@@ -435,6 +139,9 @@ Installation & Update Specifications
    * Prompts user for decisions on conflicts
 
 
+File Ownership & Updates
+------------------------
+
 .. spec:: File Layout and Ownership
    :id: SPEC_INST_FILE_OWNERSHIP
    :status: implemented
@@ -517,7 +224,7 @@ Installation & Update Specifications
       b. **Backup**: Rename ``.syspilot/`` → ``.syspilot_backup/``
       c. **Download**: Fetch latest release ZIP from GitHub
       d. **Extract**: Unpack to ``.syspilot/``
-      e. **Merge**: Copy agents/prompts with intelligent merge (see SPEC_INST_FILE_OWNERSHIPT_FILE_OWNERSHIP)
+      e. **Merge**: Copy agents/prompts with intelligent merge (see SPEC_INST_FILE_OWNERSHIP)
       f. **Validate**: Run ``sphinx-build`` to verify
       g. **Success**: Delete ``.syspilot_backup/``
       h. **Failure**: Restore ``.syspilot_backup/`` → ``.syspilot/``, inform user
@@ -537,6 +244,9 @@ Installation & Update Specifications
    * Rename ``.syspilot_backup/`` back to ``.syspilot/``
    * Inform user: "Update failed, rolled back to previous version"
 
+
+Auto-Detection
+--------------
 
 .. spec:: syspilot Auto-Detection Algorithm
    :id: SPEC_INST_AUTO_DETECT
@@ -598,16 +308,12 @@ Installation & Update Specifications
           
           # Sort by version (newest first)
           $sorted = $foundVersions | Sort-Object {
-              # Parse version for semantic comparison
               if ($_.Version -match '^(\d+)\.(\d+)\.(\d+)(-(\w+)\.?(\d+)?)?') {
                   $major = [int]$matches[1]
                   $minor = [int]$matches[2]
                   $patch = [int]$matches[3]
-                  $prerelease = $matches[5]  # e.g., "beta"
+                  $prerelease = $matches[5]
                   $prereleaseNum = if ($matches[6]) { [int]$matches[6] } else { 0 }
-                  
-                  # Return sortable tuple: major, minor, patch, pre-num
-                  # Pre-releases sort lower than releases
                   return @($major, $minor, $patch, $(if ($prerelease) { 0 } else { 999 }), $prereleaseNum)
               }
           } -Descending
@@ -624,19 +330,6 @@ Installation & Update Specifications
           
           return $newest.Path
       }
-
-   **Usage in Setup Agent:**
-
-   ::
-
-      $syspilotRoot = Find-SyspilotInstallation
-      if (-not $syspilotRoot) {
-          Write-Error "Cannot proceed without syspilot installation"
-          exit 1
-      }
-      
-      # Now copy files from $syspilotRoot
-      Copy-Item "$syspilotRoot/.github/agents/*.agent.md" -Destination ".github/agents/"
 
    **Bash Version:**
 
@@ -658,11 +351,64 @@ Installation & Update Specifications
    * Transparent debugging (logs all found versions)
 
 
+Distribution
+------------
+
+.. spec:: Release Structure
+   :id: SPEC_INST_RELEASE_STRUCTURE
+   :status: implemented
+   :links: REQ_INST_GITHUB_RELEASES, REQ_REL_GITHUB_PUBLISH
+   :tags: install, distribution, release
+
+   **Design:**
+   syspilot releases are distributed via GitHub Releases, which automatically
+   creates .zip and .tar.gz archives of the repository at tagged commits.
+
+   **Release Contents:**
+
+   * Complete syspilot repository structure
+   * ``version.json`` with release version
+   * README with installation instructions
+   * docs/releasenotes.md with release history
+
+   **Version Identification:**
+
+   * ``version.json`` at repository root contains release version
+   * After successful install: copied to project's ``.syspilot/version.json``
+
+   **Directory Structure in Release Archive:**
+
+   ::
+
+      syspilot-X.Y.Z/
+      ├── .github/
+      │   ├── agents/       # Agent definitions (*.agent.md)
+      │   ├── prompts/      # Prompt files (*.prompt.md)
+      │   └── copilot-instructions.md
+      ├── scripts/          # Init and utility scripts
+      ├── templates/        # Document templates
+      ├── docs/             # Self-documentation (including releasenotes.md)
+      ├── version.json      # Release version
+      └── README.md         # Installation instructions
+
+   **GitHub Release Mechanism:**
+
+   * Maintainer pushes annotated Git tag (e.g., ``v0.2.0``)
+   * GitHub automatically creates source archives
+   * GitHub Actions publishes documentation to GitHub Pages
+   * Release notes from docs/releasenotes.md displayed on release page
+
+   **Rationale:**
+
+   * ``.github/agents/`` is the standard location for GitHub Copilot agents
+   * Single source of truth - no duplication between ``agents/`` and ``.github/agents/``
+   * Works immediately after ``git clone`` or archive extraction without additional setup
+   * GitHub's automatic archiving ensures consistent distribution
+
+
 Traceability
 ------------
 
 .. needtable::
    :columns: id, title, status, links
-   :filter: id.startswith('SPEC_AGENT') or id.startswith('SPEC_DOC') or id.startswith('SPEC_INST')
-
-.. needflow:: SPEC_AGENT_WORKFLOW
+   :filter: id.startswith('SPEC_INST')

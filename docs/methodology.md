@@ -103,10 +103,15 @@ Design Specs shift from problem domain to **solution domain**. They group by
 
 | File | Technical Component |
 |------|---------------------|
-| `spec_agents.rst` | Agent framework, agent definitions |
-| `spec_bootstrap.rst` | Init scripts, setup workflow |
-| `spec_link_discovery.rst` | `get_need_links.py`, tracing engine |
-| `spec_release.rst` | Version management, update/rollback |
+| `spec_agent_framework.rst` | Shared workflow, prompt-agent separation |
+| `spec_change.rst` | Change Agent (level processing, change doc, navigation) |
+| `spec_implement.rst` | Implement Agent (quality gates, traceability) |
+| `spec_verify.rst` | Verify Agent (categories, report, status lifecycle) |
+| `spec_traceability.rst` | MECE Agent + Trace Agent (horizontal & vertical) |
+| `spec_memory.rst` | Memory Agent (update process, content categories) |
+| `spec_setup.rst` | Setup Agent (init, ownership, update, auto-detect) |
+| `spec_doc_structure.rst` | sphinx-needs documentation structure |
+| `spec_release.rst` | Release pipeline (versioning, CI/CD, GitHub Pages) |
 
 **Why the shift?** At this level we describe *how the system is built*. A single
 agent component might address requirements from installation, change management,
@@ -148,10 +153,15 @@ docs/
 │   └── req_process.rst         # REQs for us_process
 ├── 12_design/                  # Level 2: HOW (mirrors architecture)
 │   ├── index.rst
-│   ├── spec_agents.rst         # Component: agent framework
-│   ├── spec_bootstrap.rst      # Component: init & setup
-│   ├── spec_link_discovery.rst # Component: tracing engine
-│   └── spec_release.rst        # Component: version management
+│   ├── spec_agent_framework.rst # Shared agent workflow & prompts
+│   ├── spec_change.rst          # Change Agent
+│   ├── spec_implement.rst       # Implement Agent
+│   ├── spec_verify.rst          # Verify Agent
+│   ├── spec_traceability.rst    # MECE + Trace Agents
+│   ├── spec_memory.rst          # Memory Agent
+│   ├── spec_setup.rst           # Setup Agent (init, update)
+│   ├── spec_doc_structure.rst   # Documentation structure
+│   └── spec_release.rst         # Release pipeline
 ```
 
 ## Scaling Guidelines

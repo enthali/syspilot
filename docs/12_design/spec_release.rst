@@ -467,6 +467,48 @@ This document contains design specifications for the syspilot release process.
    * How to integrate with Git and GitHub Actions
 
 
+Release Workflow
+----------------
+
+.. spec:: Release Workflow Orchestration
+   :id: SPEC_REL_WORKFLOW
+   :status: implemented
+   :links: REQ_WF_RELEASE_SEQUENCE, REQ_REL_SEMVER, REQ_REL_VALIDATION, REQ_REL_GITHUB_PUBLISH
+   :tags: workflow, release, orchestration
+
+   **Design:**
+   The release workflow bundles multiple merged changes into a versioned release.
+
+   **Release Flow:**
+
+   ::
+
+      Merged Changes (on main)
+          │
+          ▼
+      ┌─────────────────┐
+      │  1. Version      │ ──→ Update version.json, determine SemVer bump
+      └─────────────────┘
+          │
+          ▼
+      ┌─────────────────┐
+      │  2. Validate     │ ──→ sphinx-build, agent tests, quality checks
+      └─────────────────┘
+          │
+          ▼ (all pass)
+      ┌─────────────────┐
+      │  3. Publish      │ ──→ Git tag, GitHub Release, GitHub Pages
+      └─────────────────┘
+
+   **Scope:**
+   Unlike the change workflow (operates on one change), the release
+   workflow operates across all changes since the last release.
+
+   **Automation:**
+   GitHub Actions automates steps 2 and 3 (see SPEC_REL_GITHUB_ACTIONS).
+   Step 1 (version determination) requires maintainer judgment.
+
+
 Traceability
 ------------
 

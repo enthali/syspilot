@@ -45,6 +45,31 @@ Foundation stories that define the syspilot methodology.
    4. Given I branch for a feature, When I merge, Then all spec levels merge together
 
 
+.. story:: Consistent File Organization Across Specification Levels
+   :id: US_CORE_FILE_ORG
+   :status: implemented
+   :priority: high
+   :tags: core, methodology, organization
+   :links: US_CORE_SPEC_AS_CODE
+
+   **As a** developer (or AI agent),
+   **I want to** have a well-defined methodology for organizing specification files
+   across levels (User Stories, Requirements, Design),
+   **so that** I can find, navigate, maintain, and scale specifications consistently
+   as the project grows.
+
+   **Acceptance Scenarios:**
+
+   1. Given I need to add a new user story, When I check the methodology, Then I know
+      which file to put it in (or when to create a new one)
+   2. Given I create a new requirement, When I follow the conventions, Then I know it
+      belongs in the file that mirrors the corresponding US file
+   3. Given I write a design spec, When I organize by component, Then it can link to
+      REQs from multiple US themes without artificial file splits
+   4. Given the project grows beyond 50 user stories, When I follow the scaling guidelines,
+      Then the file structure remains navigable and reviewable
+
+
 Traceability
 ------------
 
