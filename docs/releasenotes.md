@@ -1,5 +1,49 @@
 # syspilot Release Notes
 
+## v0.1.0-rc.2 - 2026-02-06
+
+### Summary
+Major specification architecture improvement: monolithic design spec file decomposed into 9 per-component files with 16 reverse-engineered specs from agent implementations. File organization methodology and core workflows formally integrated into the specification chain (US → REQ → SPEC). Total specification count: 4 new User Stories, 5 new Requirements, 18 new Design Specs.
+
+### ✨ New Features
+
+- **L2 Split by Component** (split-l2-specs)
+  - Monolithic `spec_syspilot.rst` decomposed into 9 per-component spec files
+  - 16 new Design Specs reverse-engineered from agent `.md` files covering Change, Implement, Verify, MECE, Trace, and Memory agents
+  - Each agent now has complete design documentation with traceability to requirements
+
+- **File Organization Methodology** (US_CORE_FILE_ORG, REQ_CORE_DOMAIN_ORG, REQ_CORE_L1_MIRROR)
+  - Formalized problem-domain vs solution-domain file organization into spec chain
+  - L0/L1 organized by stakeholder theme, L2 by technical component
+  - 1:1 mapping rule between `us_<theme>.rst` and `req_<theme>.rst` formally specified
+  - SPEC_DOC_STRUCTURE expanded with domain-type organization section
+
+- **Core Workflow Stories** (US_WF_CHANGE, US_WF_QUALITY, US_WF_RELEASE)
+  - End-to-end Change workflow: Change → Implement → Verify → Memory (SPEC_AGENT_WORKFLOW)
+  - Independent Quality checks: standalone @mece and @trace usage (SPEC_TRACE_QUALITY_WORKFLOW)
+  - Release workflow: Version → Validate → Publish (SPEC_REL_WORKFLOW)
+
+### 📚 Documentation
+
+- `methodology.md` updated with actual per-component spec file names
+- `namingconventions.md` extended with WF (Workflows) theme abbreviation
+
+### 🔧 Internal Changes
+
+- `spec_syspilot.rst` renamed to `spec_setup.rst` (retained Setup Agent specs only)
+- Quality Gates and Pre-Check specs moved from shared framework to `spec_implement.rst`
+- MECE + Trace agents consolidated in `spec_traceability.rst`
+
+### 📊 Specification Counts
+
+| Level | Before | After | Delta |
+|-------|--------|-------|-------|
+| User Stories | 14 | 18 | +4 |
+| Requirements | 23 | 28 | +5 |
+| Design Specs | 18 | 36 | +18 |
+
+---
+
 ## v0.1.0-rc.1 - 2026-02-06
 
 ### Summary
