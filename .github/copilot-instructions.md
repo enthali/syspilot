@@ -8,7 +8,7 @@ syspilot is a requirements engineering toolkit that uses **sphinx-needs traceabi
 
 **Key Insight**: AI agents need focused context, not the entire codebase. syspilot achieves O(affected) not O(total) complexity.
 
-**Version**: 0.1.0-beta
+**Version**: 0.1.0-rc.2
 
 ## Tech Stack
 
@@ -36,12 +36,31 @@ syspilot/
 │   └── sphinx/                 # Sphinx build script templates
 ├── docs/                        # Self-documentation (dogfooding)
 │   ├── methodology.md          # File organization & methodology guide
+│   ├── namingconventions.md    # ID naming conventions
+│   ├── releasenotes.md         # Release notes (newest first)
 │   ├── 10_userstories/         # Level 0: WHY (User Stories)
+│   │   ├── us_core.rst         # Core methodology stories
+│   │   ├── us_workflows.rst    # Workflow orchestration stories
+│   │   ├── us_change_mgmt.rst  # Change management stories
+│   │   ├── us_traceability.rst # Traceability & quality stories
+│   │   ├── us_installation.rst # Installation stories
+│   │   ├── us_release.rst      # Release stories
+│   │   └── us_developer_experience.rst
 │   ├── 11_requirements/        # Level 1: WHAT (Requirements)
+│   │   └── req_<theme>.rst     # 1:1 mapping with us_<theme>.rst
 │   ├── 12_design/              # Level 2: HOW (Design Specs)
+│   │   ├── spec_agent_framework.rst  # Shared agent workflow & prompts
+│   │   ├── spec_change.rst           # Change Agent design
+│   │   ├── spec_implement.rst        # Implement Agent design
+│   │   ├── spec_verify.rst           # Verify Agent design
+│   │   ├── spec_traceability.rst     # MECE + Trace Agents
+│   │   ├── spec_memory.rst           # Memory Agent design
+│   │   ├── spec_setup.rst            # Setup Agent design
+│   │   ├── spec_doc_structure.rst    # Documentation structure
+│   │   └── spec_release.rst          # Release pipeline
 │   ├── 31_traceability/        # Traceability matrices
 │   ├── 40_process/             # A-SPICE process alignment
-│   ├── changes/                # Change Documents
+│   ├── changes/                # Change Documents (deleted after release)
 │   ├── conf.py                 # Sphinx configuration
 │   └── requirements.txt        # Python dependencies for Sphinx
 └── version.json                # Release version info
@@ -80,6 +99,22 @@ Level 2: Design Specs (HOW)     docs/12_design/         SPEC_*
 | User Story | `US_` | `US_CORE_SPEC_AS_CODE` | 0 |
 | Requirement | `REQ_` | `REQ_CHG_ANALYSIS_AGENT` | 1 |
 | Design Spec | `SPEC_` | `SPEC_AGENT_WORKFLOW` | 2 |
+
+### Theme Abbreviations
+
+| Abbreviation | Full Name | Used at Levels |
+|-------------|-----------|----------------|
+| `CORE` | Core Methodology | US, REQ |
+| `WF` | Workflows | US, REQ |
+| `CHG` | Change Management | US, REQ |
+| `TRACE` | Traceability & Quality | US, REQ |
+| `INST` | Installation & Setup | US, REQ |
+| `DX` | Developer Experience | US, REQ |
+| `REL` | Release | US, REQ |
+
+Level 2 uses component-based themes: `AGENT`, `CHG`, `IMPL`, `VERIFY`, `MECE`, `TRACE`, `MEM`, `DOC`, `INST`, `REL`.
+
+See [docs/namingconventions.md](../docs/namingconventions.md) for full conventions.
 
 ### Directive Format
 
@@ -167,12 +202,29 @@ Updates use backup/rollback:
 
 ## Development Workflow (Dogfooding)
 
-syspilot uses itself for development:
+syspilot uses itself for development. Three core workflows:
 
-1. **Change Request** → `@syspilot.change` creates Change Document
-2. **Implementation** → `@syspilot.implement` executes changes
-3. **Verification** → `@syspilot.verify` confirms implementation
-4. **Memory Update** → `@syspilot.memory` updates this file
+### Change Workflow (per change)
+
+1. **@syspilot.change** → Analyze request, create Change Document (US → REQ → SPEC)
+2. **@syspilot.implement** → Execute approved changes from Change Document
+3. **@syspilot.verify** → Validate implementation against Change Document
+4. **@syspilot.memory** → Update copilot-instructions.md
+
+### Quality Workflow (independent, any time)
+
+- **@syspilot.mece** → Horizontal consistency check on one level
+- **@syspilot.trace** → Vertical traceability check for one element
+- Both are read-only; findings trigger a change workflow
+
+### Release Workflow (bundles changes)
+
+1. **Merge** feature branch to main (squash)
+2. **Version** → Determine version, update `version.json`
+3. **Validate** → `sphinx-build`, schema validation
+4. **Release Notes** → Prepend to `docs/releasenotes.md`
+5. **Clean up** → Delete processed Change Documents
+6. **Tag & Push** → Annotated tag triggers GitHub Actions
 
 ## Key Files
 
@@ -184,6 +236,8 @@ syspilot uses itself for development:
 | [templates/change-document.md](../templates/change-document.md) | Change Document template |
 | [scripts/powershell/init.ps1](../scripts/powershell/init.ps1) | Bootstrap script |
 | [docs/methodology.md](../docs/methodology.md) | File organization & methodology guide |
+| [docs/namingconventions.md](../docs/namingconventions.md) | ID naming conventions |
+| [docs/releasenotes.md](../docs/releasenotes.md) | Release notes (newest first) |
 
 ## Dependencies
 
@@ -233,7 +287,10 @@ Levels 0–1 organize by **problem domain** (stakeholder themes). Level 2 organi
 ## Current State
 
 - ✅ Core agent system implemented (7 agents)
-- ✅ Self-documentation with sphinx-needs (14 US, 23 REQ, 10 SPEC)
+- ✅ Self-documentation with sphinx-needs (18 US, 28 REQ, 36 SPEC)
+- ✅ L2 design specs split by component (9 spec files)
+- ✅ File organization methodology formalized in spec chain
+- ✅ Core workflows (change, quality, release) formalized in spec chain
 - ✅ Bootstrap scripts for Windows/Linux (minimal)
 - ✅ Link discovery utility
 - ✅ Install/Update workflow with backup/rollback
@@ -243,4 +300,4 @@ Levels 0–1 organize by **problem domain** (stakeholder themes). Level 2 organi
 
 ---
 
-*syspilot v0.1.0-beta - Last updated: 2026-02-06*
+*syspilot v0.1.0-rc.2 - Last updated: 2026-02-06*
