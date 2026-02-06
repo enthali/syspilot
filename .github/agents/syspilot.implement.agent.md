@@ -4,9 +4,6 @@ handoffs:
   - label: Verify Implementation
     agent: syspilot.verify
     prompt: Verify the implementation
-  - label: Update Memory
-    agent: syspilot.memory
-    prompt: Update project memory
 ---
 
 # syspilot Implement Agent

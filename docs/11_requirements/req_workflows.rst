@@ -21,10 +21,14 @@ Requirements for the end-to-end workflows that orchestrate syspilot agents.
    3. **@verify** — Validate implementation against Change Document
    4. **@memory** — Update project memory (copilot-instructions.md)
 
+   After @memory completes, the user SHALL be offered to either start a new
+   change workflow or proceed to a release.
+
    **Rationale:**
    A defined sequence ensures consistent change processing. Each step
    produces output that the next step consumes, creating a pipeline
-   with clear handoff points.
+   with clear handoff points. The exit point after @memory supports
+   iterative development (multiple changes) before bundling into a release.
 
    **Acceptance Criteria:**
 
@@ -33,6 +37,8 @@ Requirements for the end-to-end workflows that orchestrate syspilot agents.
    * AC-3: Change Document is the shared artifact between @change and @implement
    * AC-4: @verify references the Change Document for completeness checks
    * AC-5: @memory runs after successful verification
+   * AC-6: After @memory, the workflow offers two exit paths: start a new
+     change workflow (@change) or proceed to release (@release)
 
 
 .. req:: Independent Quality Check Workflow
@@ -87,6 +93,8 @@ Requirements for the end-to-end workflows that orchestrate syspilot agents.
    * AC-2: Version determination follows semantic versioning
    * AC-3: Validation gates block publication on failure
    * AC-4: Release workflow is documented as a reusable template
+   * AC-5: After release publication, the workflow offers to start a new
+     change workflow (@change) for continued development
 
 
 Traceability

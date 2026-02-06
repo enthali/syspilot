@@ -51,6 +51,11 @@ Agent Workflow
       ┌─────────────┐
       │   memory    │ ──→ Updated copilot-instructions.md
       └─────────────┘
+           │
+           ▼
+      ┌──────────┬──────────┐
+      │  change  │ release  │  (user decides)
+      └──────────┴──────────┘
 
    **Files:**
 
@@ -68,9 +73,11 @@ Agent Workflow
 
    ::
 
-      change → implement → verify
-          ↑                   │
-          └───────────────────┘ (if issues found)
+      change → implement → verify → memory
+          ↑                            │
+          ├────────────────────────────┘ (next change)
+          │
+          └── or ──→ release (bundle changes)
 
    **Analysis Agents (bidirectional):**
 
@@ -82,7 +89,8 @@ Agent Workflow
 
    **Memory Agent:**
 
-   Standalone - invoked after verify or on-demand. Has description but no handoffs.
+   Invoked after verify. Hands off to change (for next change) or
+   release (to bundle changes into a versioned release).
 
    **Handoff Format:**
 

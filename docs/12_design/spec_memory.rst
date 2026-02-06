@@ -49,8 +49,8 @@ Design specifications for the Memory Agent — project memory maintenance.
    Update ``.github/copilot-instructions.md`` with clear, concise descriptions,
    accurate file paths, current commands, and relevant examples.
 
-   **Invocation:** Standalone — invoked after verify or on-demand.
-   Has description in frontmatter but no handoffs to other agents.
+   **Invocation:** Invoked after verify in the change workflow.
+   Hands off to change (for another change) or release (to bundle into a release).
 
    **File:** ``.github/agents/syspilot.memory.agent.md``
 

@@ -1,9 +1,9 @@
 ---
 description: Guide maintainers through the release process with automated release note generation.
 handoffs:
-  - label: Update Memory
-    agent: syspilot.memory
-    prompt: Update project memory with release workflow
+  - label: New Change
+    agent: syspilot.change
+    prompt: Start a new change workflow
 ---
 
 # syspilot Release Agent

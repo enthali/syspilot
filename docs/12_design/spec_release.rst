@@ -499,6 +499,11 @@ Release Workflow
       ┌─────────────────┐
       │  3. Publish      │ ──→ Git tag, GitHub Release, GitHub Pages
       └─────────────────┘
+          │
+          ▼
+      ┌─────────────────┐
+      │  change / end   │  (user decides)
+      └─────────────────┘
 
    **Scope:**
    Unlike the change workflow (operates on one change), the release

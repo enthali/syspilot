@@ -1,5 +1,12 @@
 ---
 description: Keep copilot-instructions.md up-to-date as the codebase evolves.
+handoffs:
+  - label: New Change
+    agent: syspilot.change
+    prompt: Start a new change workflow
+  - label: Create Release
+    agent: syspilot.release
+    prompt: Prepare release from completed changes
 ---
 
 # syspilot Memory Agent

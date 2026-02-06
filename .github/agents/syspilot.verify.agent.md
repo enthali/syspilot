@@ -7,9 +7,9 @@ handoffs:
   - label: New Change Request
     agent: syspilot.change
     prompt: Create Change Proposal to fix issues
-  - label: Create Release
-    agent: syspilot.release
-    prompt: Prepare release from verified changes
+  - label: Update Memory
+    agent: syspilot.memory
+    prompt: Update project memory after verification
 ---
 
 # syspilot Verify Agent

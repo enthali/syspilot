@@ -210,6 +210,15 @@ syspilot uses itself for development. Three core workflows:
 2. **@syspilot.implement** → Execute approved changes from Change Document
 3. **@syspilot.verify** → Validate implementation against Change Document
 4. **@syspilot.memory** → Update copilot-instructions.md
+5. **Next** → Either start a new change (@change) or proceed to release (@release)
+
+**Agent Handoff Chain:**
+
+```
+change → implement → verify → memory → change / release
+    ↑                            │
+    └────────────────────────────┘ (next change)
+```
 
 ### Quality Workflow (independent, any time)
 
@@ -225,6 +234,7 @@ syspilot uses itself for development. Three core workflows:
 4. **Release Notes** → Prepend to `docs/releasenotes.md`
 5. **Clean up** → Delete processed Change Documents
 6. **Tag & Push** → Annotated tag triggers GitHub Actions
+7. **Next** → Start a new change workflow (@change) or end
 
 ## Key Files
 

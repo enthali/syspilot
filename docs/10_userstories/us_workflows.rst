@@ -31,6 +31,8 @@ Stories describing the end-to-end workflows that orchestrate syspilot agents.
       project context
    5. Given any step fails, When I check the workflow, Then I know which step
       to revisit
+   6. Given @memory completes, When I decide next steps, Then I can either
+      start a new change workflow (@change) or proceed to release (@release)
 
 
 .. story:: Independent Quality Checks
@@ -75,6 +77,8 @@ Stories describing the end-to-end workflows that orchestrate syspilot agents.
       is ready for distribution
    3. Given a release is published, When users update, Then they get all bundled
       changes together
+   4. Given a release is complete, When I want to continue development, Then I
+      can start a new change workflow (@change)
 
 
 Traceability
