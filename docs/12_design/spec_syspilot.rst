@@ -11,9 +11,9 @@ Agent Architecture
 ------------------
 
 .. spec:: Four-Agent Workflow
-   :id: SPEC_SYSPILOT_001
+   :id: SPEC_AGENT_WORKFLOW
    :status: implemented
-   :links: REQ_SYSPILOT_003, REQ_SYSPILOT_004, REQ_SYSPILOT_005, REQ_SYSPILOT_006, REQ_SYSPILOT_012
+   :links: REQ_CHG_ANALYSIS_AGENT, REQ_CHG_IMPL_AGENT, REQ_CHG_VERIFY_AGENT, REQ_DX_MEMORY_AGENT, REQ_CHG_WORKFLOW_STEPS
    :tags: architecture, agents
 
    **Design:**
@@ -120,9 +120,9 @@ Agent Architecture
 
 
 .. spec:: sphinx-needs Documentation Structure
-   :id: SPEC_SYSPILOT_002
+   :id: SPEC_DOC_STRUCTURE
    :status: implemented
-   :links: REQ_SYSPILOT_001, REQ_SYSPILOT_002
+   :links: REQ_CORE_SPHINX_NEEDS, REQ_CORE_TRACEABILITY
    :tags: sphinx-needs, structure
 
    **Design:**
@@ -135,10 +135,18 @@ Agent Architecture
       docs/
       ├── conf.py                    # sphinx-needs configuration
       ├── index.rst                  # Main index
+      ├── methodology.md             # File organization guide
+      ├── namingconventions.md       # ID naming conventions
+      ├── 10_userstories/
+      │   ├── index.rst              # User Stories overview
+      │   ├── us_core.rst            # Core stories
+      │   ├── us_change_mgmt.rst     # Change management stories
+      │   └── us_<theme>.rst         # Theme-based stories
       ├── 11_requirements/
       │   ├── index.rst              # Requirements overview
-      │   ├── req_syspilot.rst       # syspilot requirements
-      │   └── req_<component>.rst    # Component requirements
+      │   ├── req_core.rst           # Core requirements
+      │   ├── req_change_mgmt.rst    # Change management requirements
+      │   └── req_<theme>.rst        # Theme-based requirements (1:1 with US)
       ├── 12_design/
       │   ├── index.rst              # Design overview
       │   └── spec_<component>.rst   # Component designs
@@ -147,14 +155,17 @@ Agent Architecture
 
    **Naming Conventions:**
 
-   * Requirements: ``REQ_<COMPONENT>_<NUMBER>`` (e.g., ``REQ_SYSPILOT_001``)
-   * Designs: ``SPEC_<COMPONENT>_<NUMBER>`` (e.g., ``SPEC_SYSPILOT_001``)
+   * User Stories: ``US_<THEME>_<SLUG>`` (e.g., ``US_CORE_SPEC_AS_CODE``)
+   * Requirements: ``REQ_<THEME>_<SLUG>`` (e.g., ``REQ_CHG_ANALYSIS_AGENT``)
+   * Designs: ``SPEC_<COMPONENT>_<SLUG>`` (e.g., ``SPEC_AGENT_WORKFLOW``)
+
+   See ``docs/namingconventions.md`` for full convention.
 
 
 .. spec:: Implementation Quality Gates
-   :id: SPEC_SYSPILOT_003
+   :id: SPEC_AGENT_QUALITY_GATES
    :status: implemented
-   :links: REQ_SYSPILOT_004
+   :links: REQ_CHG_IMPL_AGENT
    :tags: quality, validation
 
    **Design:**
@@ -183,9 +194,9 @@ Agent Architecture
 
 
 .. spec:: Init Scripts for Environment Setup
-   :id: SPEC_SYSPILOT_004
+   :id: SPEC_INST_INIT_SCRIPTS
    :status: implemented
-   :links: REQ_SYSPILOT_009, REQ_SYSPILOT_008, REQ_SYSPILOT_019, REQ_SYSPILOT_020
+   :links: REQ_INST_AUTO_SETUP, REQ_INST_PORTABLE, REQ_INST_NEW_PROJECT, REQ_INST_ADOPT_EXISTING
    :tags: init, scripts, install
 
    **Design:**
@@ -224,9 +235,9 @@ Agent Architecture
 
 
 .. spec:: Agent Pre-Implementation Check
-   :id: SPEC_SYSPILOT_005
+   :id: SPEC_AGENT_PRE_CHECK
    :status: implemented
-   :links: REQ_SYSPILOT_009, REQ_SYSPILOT_004
+   :links: REQ_INST_AUTO_SETUP, REQ_CHG_IMPL_AGENT
    :tags: agent, init
 
    **Design:**
@@ -244,9 +255,9 @@ Agent Architecture
 
 
 .. spec:: Prompt-Agent Separation
-   :id: SPEC_SYSPILOT_006
+   :id: SPEC_AGENT_PROMPT_SEPARATION
    :status: implemented
-   :links: REQ_SYSPILOT_001
+   :links: REQ_CORE_SPHINX_NEEDS
    :tags: architecture, prompts
 
    **Design:**
@@ -285,9 +296,9 @@ Installation & Update Specifications
 ------------------------------------
 
 .. spec:: Release Structure
-   :id: SPEC_SYSPILOT_007
+   :id: SPEC_INST_RELEASE_STRUCTURE
    :status: implemented
-   :links: REQ_SYSPILOT_018, REQ_RELEASE_002
+   :links: REQ_INST_GITHUB_RELEASES, REQ_REL_GITHUB_PUBLISH
    :tags: install, distribution, release
 
    **Design:**
@@ -337,9 +348,9 @@ Installation & Update Specifications
 
 
 .. spec:: Setup Agent Design
-   :id: SPEC_SYSPILOT_008
+   :id: SPEC_INST_SETUP_AGENT
    :status: implemented
-   :links: REQ_SYSPILOT_019, REQ_SYSPILOT_020, REQ_SYSPILOT_023
+   :links: REQ_INST_NEW_PROJECT, REQ_INST_ADOPT_EXISTING, REQ_INST_SPHINX_NEEDS_DEP
    :tags: install, agent, setup
 
    **Design:**
@@ -349,13 +360,13 @@ Installation & Update Specifications
 
    * User runs ``scripts/powershell/init.ps1`` (or ``bash/init.sh``) from syspilot location
    * Script copies ``syspilot.setup.agent.md`` from ``.github/agents/`` to target project's ``.github/agents/``
-   * Covered by SPEC_SYSPILOT_004
+   * Covered by SPEC_INST_INIT_SCRIPTS
 
    **Step 2: Setup Agent (@syspilot.setup)**
 
    **Section 1: Auto-Detect syspilot Location**
 
-   1. Run Find-SyspilotInstallation (SPEC_SYSPILOT_014)
+   1. Run Find-SyspilotInstallation (SPEC_INST_AUTO_DETECT)
    2. Log all found versions for transparency
    3. Select newest version
    4. If none found: Error with helpful instructions
@@ -407,7 +418,7 @@ Installation & Update Specifications
 
    * Copy agents: ``$syspilotRoot/.github/agents/*.agent.md`` → ``.github/agents/``
    * Copy prompts: ``$syspilotRoot/.github/prompts/*.prompt.md`` → ``.github/prompts/``
-   * Apply intelligent merge (SPEC_SYSPILOT_009)
+   * Apply intelligent merge (SPEC_INST_FILE_OWNERSHIP)
 
    **Section 4: Validate and Confirm**
 
@@ -425,9 +436,9 @@ Installation & Update Specifications
 
 
 .. spec:: File Layout and Ownership
-   :id: SPEC_SYSPILOT_009
+   :id: SPEC_INST_FILE_OWNERSHIP
    :status: implemented
-   :links: REQ_SYSPILOT_022
+   :links: REQ_INST_CUSTOM_PRESERVE
    :tags: install, update, ownership
 
    **Design:**
@@ -468,9 +479,9 @@ Installation & Update Specifications
 
 
 .. spec:: Update Process
-   :id: SPEC_SYSPILOT_010
+   :id: SPEC_INST_UPDATE_PROCESS
    :status: implemented
-   :links: REQ_SYSPILOT_021
+   :links: REQ_INST_VERSION_UPDATE
    :tags: update, migration
 
    **Design:**
@@ -480,7 +491,7 @@ Installation & Update Specifications
 
    **Step 0: Find Newest syspilot Version**
 
-   1. Run Find-SyspilotInstallation (SPEC_SYSPILOT_014)
+   1. Run Find-SyspilotInstallation (SPEC_INST_AUTO_DETECT)
    2. Log all found versions for transparency
    3. Select newest version as source for update
    4. Compare with currently installed version (``.syspilot/version.json``)
@@ -506,7 +517,7 @@ Installation & Update Specifications
       b. **Backup**: Rename ``.syspilot/`` → ``.syspilot_backup/``
       c. **Download**: Fetch latest release ZIP from GitHub
       d. **Extract**: Unpack to ``.syspilot/``
-      e. **Merge**: Copy agents/prompts with intelligent merge (see SPEC_009)
+      e. **Merge**: Copy agents/prompts with intelligent merge (see SPEC_INST_FILE_OWNERSHIPT_FILE_OWNERSHIP)
       f. **Validate**: Run ``sphinx-build`` to verify
       g. **Success**: Delete ``.syspilot_backup/``
       h. **Failure**: Restore ``.syspilot_backup/`` → ``.syspilot/``, inform user
@@ -528,9 +539,9 @@ Installation & Update Specifications
 
 
 .. spec:: syspilot Auto-Detection Algorithm
-   :id: SPEC_SYSPILOT_014
+   :id: SPEC_INST_AUTO_DETECT
    :status: draft
-   :links: REQ_SYSPILOT_024
+   :links: REQ_INST_AUTO_DETECT
    :tags: install, autodetect, powershell
 
    **Design:**
@@ -652,6 +663,6 @@ Traceability
 
 .. needtable::
    :columns: id, title, status, links
-   :filter: id.startswith('SPEC_SYSPILOT')
+   :filter: id.startswith('SPEC_AGENT') or id.startswith('SPEC_DOC') or id.startswith('SPEC_INST')
 
-.. needflow:: SPEC_SYSPILOT_001
+.. needflow:: SPEC_AGENT_WORKFLOW

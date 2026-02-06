@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 64" width="200" height="64">
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .sys-text { fill: #e2e8f0; }
+    }
+  </style>
+  <!-- === Compass Icon (left side) === -->
+  <g transform="translate(0,0)">
+    <!-- Outer compass ring -->
+    <circle cx="32" cy="32" r="28" fill="none" stroke="#6366f1" stroke-width="2.5"/>
+    
+    <!-- Cardinal ticks -->
+    <line x1="32" y1="4" x2="32" y2="10" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="32" y1="54" x2="32" y2="60" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="4" y1="32" x2="10" y2="32" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="54" y1="32" x2="60" y2="32" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round"/>
+    
+    <!-- Three connected nodes: US → REQ → SPEC -->
+    <circle cx="22" cy="22" r="5" fill="#6366f1" opacity="0.3"/>
+    <circle cx="22" cy="22" r="3" fill="#6366f1"/>
+    <circle cx="32" cy="32" r="6" fill="#4f46e5" opacity="0.3"/>
+    <circle cx="32" cy="32" r="4" fill="#4f46e5"/>
+    <circle cx="42" cy="42" r="5" fill="#6366f1" opacity="0.3"/>
+    <circle cx="42" cy="42" r="3" fill="#6366f1"/>
+    
+    <!-- Traceability links -->
+    <line x1="25" y1="25" x2="28" y2="28" stroke="#4f46e5" stroke-width="2" stroke-linecap="round"/>
+    <line x1="36" y1="36" x2="39" y2="39" stroke="#4f46e5" stroke-width="2" stroke-linecap="round"/>
+    
+    <!-- Compass needle -->
+    <polygon points="32,14 34,30 32,28 30,30" fill="#e11d48" opacity="0.85"/>
+    <polygon points="32,50 34,34 32,36 30,34" fill="#94a3b8" opacity="0.5"/>
+    
+    <!-- Dimmed nodes -->
+    <circle cx="42" cy="22" r="2.5" fill="#cbd5e1" opacity="0.4"/>
+    <circle cx="22" cy="42" r="2.5" fill="#cbd5e1" opacity="0.4"/>
+    <circle cx="18" cy="34" r="2" fill="#cbd5e1" opacity="0.3"/>
+    <circle cx="46" cy="30" r="2" fill="#cbd5e1" opacity="0.3"/>
+  </g>
+  
+  <!-- === Text (right side) === -->
+  <text x="72" y="30" class="sys-text" font-family="'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#1e293b" letter-spacing="-0.5">sys</text>
+  <text x="72" y="54" font-family="'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#6366f1" letter-spacing="-0.5">pilot</text>
+</svg>

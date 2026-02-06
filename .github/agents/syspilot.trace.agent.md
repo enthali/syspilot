@@ -58,7 +58,7 @@ Use `.syspilot/scripts/python/get_need_links.py` to find linked elements:
 
 ```bash
 # Trace downward with depth
-python .syspilot/scripts/python/get_need_links.py US_SYSPILOT_001 --depth 3 --direction out
+python .syspilot/scripts/python/get_need_links.py US_CORE_SPEC_AS_CODE --depth 3 --direction out
 
 # Trace upward
 python .syspilot/scripts/python/get_need_links.py SPEC_EVT_001 --depth 2 --direction in

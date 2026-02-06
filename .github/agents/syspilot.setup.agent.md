@@ -123,7 +123,7 @@ If successful, proceed with syspilot installation.
 
 **Run Find-SyspilotInstallation function:**
 
-Use the PowerShell function from SPEC_SYSPILOT_014 (see function definition below).
+Use the PowerShell function from SPEC_INST_AUTO_DETECT (see function definition below).
 
 The function:
 1. Searches parent directories (up to 3 levels)
@@ -147,7 +147,7 @@ Please download syspilot:
 4. Re-run this agent
 ```
 
-**PowerShell Function (SPEC_SYSPILOT_014):**
+**PowerShell Function (SPEC_INST_AUTO_DETECT):**
 
 ```powershell
 function Find-SyspilotInstallation {
@@ -159,7 +159,7 @@ function Find-SyspilotInstallation {
         Searches parent directories and their children for syspilot installations.
         Returns path to the newest version found.
         
-        Implements: REQ_SYSPILOT_024, SPEC_SYSPILOT_014
+        Implements: REQ_INST_AUTO_DETECT, SPEC_INST_AUTO_DETECT
     #>
     
     [CmdletBinding()]
@@ -626,4 +626,4 @@ If ANY step fails after backup:
 2. Restore `.syspilot_backup/` → `.syspilot/`
 3. Inform user: "Update failed, rolled back to previous version"
 
-**Implements: REQ_SYSPILOT_021, SPEC_SYSPILOT_010**
+**Implements: REQ_INST_VERSION_UPDATE, SPEC_INST_UPDATE_PROCESS**

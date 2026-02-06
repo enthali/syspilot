@@ -9,10 +9,10 @@ For commercial/fast solution with live parsing, see ubiTrace from Useblocks.
 
 Usage:
     python .syspilot/scripts/python/get_need_links.py <NEED_ID> [--depth N] [--direction in|out|both]
-    python .syspilot/scripts/python/get_need_links.py US_SYSPILOT_001 --depth 2
-    python .syspilot/scripts/python/get_need_links.py REQ_EVT_002 --direction out
+    python .syspilot/scripts/python/get_need_links.py US_CORE_SPEC_AS_CODE --depth 2
+    python .syspilot/scripts/python/get_need_links.py REQ_CHG_ANALYSIS_AGENT --direction out
 
-Links: SPEC_SYSPILOT_009
+Links: SPEC_INST_FILE_OWNERSHIP
 """
 
 import argparse
@@ -196,7 +196,7 @@ def main():
     parser = argparse.ArgumentParser(
         description="Query Sphinx-Needs elements and their links"
     )
-    parser.add_argument("need_id", help="The Need ID to query (e.g., US_SYSPILOT_001)")
+    parser.add_argument("need_id", help="The Need ID to query (e.g., US_CORE_SPEC_AS_CODE)")
     parser.add_argument(
         "--depth", "-d", type=int, default=2,
         help="How many levels to traverse (default: 2)"

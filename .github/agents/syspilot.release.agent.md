@@ -10,7 +10,7 @@ handoffs:
 
 > **Purpose**: Guide maintainers through the syspilot release process with automated release note generation.
 
-**Implements**: SPEC_RELEASE_007, REQ_RELEASE_003, REQ_RELEASE_008
+**Implements**: SPEC_REL_AGENT, REQ_REL_NOTES, REQ_REL_PROCESS_DOC
 
 ---
 
@@ -120,17 +120,17 @@ Current version: 0.1.0 (from version.json)
 I found 3 merged Change Documents since last release:
 
 1. **install-update.md** (feature/install-update)
-   - US_SYSPILOT_012-014: Installation & Update System
+   - US_INST_NEW_PROJECT through US_INST_UPDATE: Installation & Update System
    - 6 Requirements, 5 Design Specs
    - Impact: New feature (MINOR)
 
 2. **release-process.md** (feature/release-process)
-   - US_SYSPILOT_015-017: Release Process
+   - US_REL_CREATE through US_REL_AGENT_TEMPLATE: Release Process
    - 8 Requirements, 7 Design Specs
    - Impact: New feature (MINOR)
 
 3. **agent-workflow-fix.md** (feature/agent-improvements)
-   - SPEC_SYSPILOT_003: Improved Change Agent workflow
+   - SPEC_AGENT_QUALITY_GATES: Improved Change Agent workflow
    - Impact: Internal improvement (PATCH)
 
 **Analysis:**
@@ -155,7 +155,7 @@ Read each Change Document and extract:
 - **Documentation**: Documentation updates
 - **Internal Changes**: Spec improvements, refactoring
 
-**Output Format** (per SPEC_RELEASE_003):
+**Output Format** (per SPEC_REL_NOTES_STRUCTURE):
 
 ```markdown
 ## v{NEW_VERSION} - {DATE}
@@ -180,7 +180,7 @@ Read each Change Document and extract:
 - A-SPICE alignment notes
 
 ### 🔧 Internal Changes
-- Improved Change Agent workflow (SPEC_SYSPILOT_003)
+- Improved Change Agent workflow (SPEC_AGENT_QUALITY_GATES)
 ```
 
 ### 3. Show Preview & Get Approval
@@ -247,7 +247,7 @@ cd ..
 git status --porcelain
 
 # Test link discovery
-python scripts/python/get_need_links.py US_SYSPILOT_001 --depth 1 --simple
+python scripts/python/get_need_links.py US_CORE_SPEC_AS_CODE --depth 1 --simple
 ```
 
 **If validation PASSES:**

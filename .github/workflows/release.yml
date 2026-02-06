@@ -1,6 +1,6 @@
 # GitHub Actions Release Workflow
 # 
-# Implements: SPEC_RELEASE_005, REQ_RELEASE_007
+# Implements: SPEC_REL_GITHUB_ACTIONS, REQ_REL_GITHUB_ACTIONS
 # 
 # Automates release validation, documentation build, and publication.
 # Triggered on Git tags matching v*.*.* pattern.

@@ -1,5 +1,46 @@
 # syspilot Release Notes
 
+## v0.1.0-rc.1 - 2026-02-06
+
+### Summary
+Major structural refactoring preparing syspilot for public review. All specification files reorganized from monolithic per-level files into themed domain files. All IDs renamed from sequential (`US_SYSPILOT_001`) to descriptive format (`US_CORE_SPEC_AS_CODE`). New methodology guide, naming conventions, project logo, and rewritten documentation landing page.
+
+### ⚠️ Breaking Changes
+
+- **All sphinx-needs IDs renamed** from sequential to descriptive format
+  - User Stories: `US_SYSPILOT_*` → `US_CORE_*`, `US_CHG_*`, `US_TRACE_*`, `US_INST_*`, `US_DX_*`, `US_REL_*`
+  - Requirements: `REQ_SYSPILOT_*` → `REQ_CORE_*`, `REQ_CHG_*`, `REQ_TRACE_*`, `REQ_INST_*`, `REQ_DX_*`, `REQ_REL_*`
+  - Design Specs: `SPEC_SYSPILOT_*` / `SPEC_RELEASE_*` → `SPEC_AGENT_*`, `SPEC_DOC_*`, `SPEC_INST_*`, `SPEC_REL_*`
+- **Monolithic spec files removed**: `us_syspilot.rst`, `req_syspilot.rst` replaced by themed files
+- Projects referencing old IDs must update their links
+
+### 🔧 Refactoring
+
+- **User Stories** split into 6 themed files by problem domain:
+  `us_core.rst`, `us_change_mgmt.rst`, `us_traceability.rst`, `us_installation.rst`, `us_developer_experience.rst`, `us_release.rst`
+- **Requirements** split into 6 matching files (1:1 mapping with US themes):
+  `req_core.rst`, `req_change_mgmt.rst`, `req_traceability.rst`, `req_installation.rst`, `req_developer_experience.rst`, `req_release.rst`
+- **Design Specs** kept as solution-domain files (intentional asymmetry), IDs renamed
+- All `:links:` directives updated across 35 files
+- Agent files, workflow, and traceability indices updated for new IDs
+
+### 📚 Documentation
+
+- **New**: methodology.md — File organization guide (problem vs solution domain, scaling rules)
+- **New**: namingconventions.md — Descriptive ID naming convention (`<TYPE>_<THEME>_<SLUG>`)
+- **New**: Project logo (light & dark mode SVG)
+- **Rewritten**: README.md — concise, centered logo, link to full docs
+- **Rewritten**: docs/index.rst — engaging landing page with Getting Started, FAQ
+- **Updated**: copilot-instructions.md — new ID examples, file organization section
+
+### 📝 Migration Notes
+
+Previous releases used sequential IDs (`US_SYSPILOT_001`, `REQ_SYSPILOT_007`). All historical release notes preserve the original IDs for accuracy. New development should use the descriptive ID format documented in namingconventions.md.
+
+---
+
+*For detailed traceability, see the [documentation](https://enthali.github.io/syspilot/)*
+
 ## v0.1.0-beta.3 - 2026-01-31
 
 ### Summary

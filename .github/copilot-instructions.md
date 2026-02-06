@@ -35,6 +35,7 @@ syspilot/
 │   ├── change-document.md      # Change Document template
 │   └── sphinx/                 # Sphinx build script templates
 ├── docs/                        # Self-documentation (dogfooding)
+│   ├── methodology.md          # File organization & methodology guide
 │   ├── 10_userstories/         # Level 0: WHY (User Stories)
 │   ├── 11_requirements/        # Level 1: WHAT (Requirements)
 │   ├── 12_design/              # Level 2: HOW (Design Specs)
@@ -76,9 +77,9 @@ Level 2: Design Specs (HOW)     docs/12_design/         SPEC_*
 
 | Type | Prefix | Example | Level |
 |------|--------|---------|-------|
-| User Story | `US_` | `US_SYSPILOT_001` | 0 |
-| Requirement | `REQ_` | `REQ_CFG_001` | 1 |
-| Design Spec | `SPEC_` | `SPEC_SYSPILOT_001` | 2 |
+| User Story | `US_` | `US_CORE_SPEC_AS_CODE` | 0 |
+| Requirement | `REQ_` | `REQ_CHG_ANALYSIS_AGENT` | 1 |
+| Design Spec | `SPEC_` | `SPEC_AGENT_WORKFLOW` | 2 |
 
 ### Directive Format
 
@@ -124,13 +125,13 @@ uv run sphinx-build -b html . _build/html
 
 ```powershell
 # Get links for a specific ID
-python scripts/python/get_need_links.py US_SYSPILOT_001 --simple
+python scripts/python/get_need_links.py US_CORE_SPEC_AS_CODE --simple
 
 # Trace with depth
-python scripts/python/get_need_links.py REQ_CFG_001 --depth 2
+python scripts/python/get_need_links.py REQ_CHG_ANALYSIS_AGENT --depth 2
 
 # Flat list of all impacted IDs
-python scripts/python/get_need_links.py US_SYSPILOT_001 --flat --depth 3
+python scripts/python/get_need_links.py US_CORE_SPEC_AS_CODE --flat --depth 3
 ```
 
 ## Installation Workflow
@@ -182,6 +183,7 @@ syspilot uses itself for development:
 | [scripts/python/get_need_links.py](../scripts/python/get_need_links.py) | Link discovery utility |
 | [templates/change-document.md](../templates/change-document.md) | Change Document template |
 | [scripts/powershell/init.ps1](../scripts/powershell/init.ps1) | Bootstrap script |
+| [docs/methodology.md](../docs/methodology.md) | File organization & methodology guide |
 
 ## Dependencies
 
@@ -199,13 +201,21 @@ graphviz>=0.20.0
 
 ## Patterns & Conventions
 
+### File Organization (see [docs/methodology.md](../docs/methodology.md))
+
+Levels 0–1 organize by **problem domain** (stakeholder themes). Level 2 organizes by **solution domain** (technical components). This asymmetry is intentional.
+
+- **Level 0 — User Stories**: one `us_<theme>.rst` per stakeholder theme/value stream
+- **Level 1 — Requirements**: one `req_<theme>.rst` per US file (1:1 mapping)
+- **Level 2 — Design Specs**: one `spec_<component>.rst` per technical component (independent of US structure)
+
 ### File Naming
 
 - Agents: `syspilot.<name>.agent.md`
 - Prompts: `syspilot.<name>.prompt.md`
-- User Stories: `us_<domain>.rst`
-- Requirements: `req_<domain>.rst`
-- Design Specs: `spec_<domain>.rst`
+- User Stories: `us_<theme>.rst` (one per stakeholder theme)
+- Requirements: `req_<theme>.rst` (mirrors matching `us_` file)
+- Design Specs: `spec_<component>.rst` (one per technical component)
 
 ### RST Formatting
 
@@ -233,4 +243,4 @@ graphviz>=0.20.0
 
 ---
 
-*syspilot v0.1.0-beta - Last updated: 2026-01-30*
+*syspilot v0.1.0-beta - Last updated: 2026-02-06*

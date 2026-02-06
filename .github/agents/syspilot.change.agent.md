@@ -119,9 +119,9 @@ python .syspilot/scripts/python/get_need_links.py <sphinx-need-id> --flat --dept
 ### Finding Next IDs
 
 Before proposing new IDs, check existing ones:
-1. Read the current file (e.g., `docs/11_requirements/req_syspilot.rst`)
-2. Find the highest existing ID number
-3. Use the next available number
+1. Read the current file (e.g., `docs/11_requirements/req_change_mgmt.rst`)
+2. Review existing ID slugs to avoid duplicates
+3. Pick a descriptive slug following the `<TYPE>_<THEME>_<SLUG>` pattern (see `docs/namingconventions.md`)
 
 ## Level Processing
 
@@ -229,14 +229,14 @@ Include full RST content for each new/modified element in the Change Document:
 
 ### New Requirements
 
-#### REQ_RELEASE_001: Semantic Versioning
+#### REQ_REL_SEMVER: Semantic Versioning
 
 \`\`\`rst
 .. req:: Semantic Versioning
-   :id: REQ_RELEASE_001
+   :id: REQ_REL_SEMVER
    :status: draft
    :priority: mandatory
-   :links: US_SYSPILOT_015
+   :links: US_REL_CREATE
 
    **Description:**
    syspilot SHALL use Semantic Versioning...
@@ -265,12 +265,12 @@ Once user approves:
 ## Level 1: Requirements
 
 ### New Requirements
-- REQ_RELEASE_001: Semantic Versioning
-- REQ_RELEASE_002: GitHub Release Publication
-- REQ_RELEASE_003: Release Notes Generation
+- REQ_REL_SEMVER: Semantic Versioning
+- REQ_REL_GITHUB_PUBLISH: GitHub Release Publication
+- REQ_REL_NOTES: Release Notes Generation
 
 ### Modified Requirements
-- REQ_SYSPILOT_018: Updated to specify GitHub Releases
+- REQ_INST_GITHUB_RELEASES: Updated to specify GitHub Releases
 ```
 
 This keeps Change Document clean for Git history while preserving what changed.

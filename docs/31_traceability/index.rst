@@ -23,7 +23,7 @@ Design to Requirements
 Full Traceability Flow
 ----------------------
 
-.. needflow:: REQ_SYSPILOT_001
+.. needflow:: REQ_CORE_SPHINX_NEEDS
 
 
 Coverage Matrix
@@ -33,4 +33,4 @@ The following shows which requirements have linked specifications:
 
 .. needtable::
    :columns: id, title, incoming
-   :filter: type == 'req' and id.startswith('REQ_SYSPILOT')
+   :filter: type == 'req'

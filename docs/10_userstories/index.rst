@@ -7,7 +7,12 @@ This section contains user stories that drive the requirements.
    :maxdepth: 2
    :caption: User Stories:
 
-   us_syspilot
+   us_core
+   us_change_mgmt
+   us_traceability
+   us_installation
+   us_release
+   us_developer_experience
 
 
 Overview

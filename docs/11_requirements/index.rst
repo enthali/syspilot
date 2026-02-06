@@ -7,8 +7,12 @@ This section contains system requirements following Sphinx-Needs methodology.
    :maxdepth: 2
    :caption: Requirements:
 
-   req_syspilot
+   req_core
+   req_change_mgmt
+   req_traceability
+   req_installation
    req_release
+   req_developer_experience
 
 
 Overview
