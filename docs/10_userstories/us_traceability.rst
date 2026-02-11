@@ -11,6 +11,7 @@ Stories covering cross-cutting quality validation: MECE review and vertical trac
    :status: implemented
    :priority: high
    :tags: agent, mece, review
+   :links: US_CORE_SPEC_AS_CODE
 
    **As a** developer,
    **I want to** review all items on ONE level (US, REQ, or SPEC) for MECE properties,
@@ -30,6 +31,7 @@ Stories covering cross-cutting quality validation: MECE review and vertical trac
    :status: implemented
    :priority: high
    :tags: agent, trace, vertical
+   :links: US_CORE_SPEC_AS_CODE
 
    **As a** developer,
    **I want to** trace ONE user story vertically through REQ → SPEC → Code → Test,

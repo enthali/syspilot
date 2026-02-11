@@ -65,6 +65,7 @@ Stories covering the full change lifecycle: analyze, implement, verify, recover.
    :status: implemented
    :priority: medium
    :tags: agent, recovery, error-handling
+   :links: US_CHG_ANALYZE, US_CHG_IMPLEMENT
 
    **As a** developer,
    **I want to** recover gracefully when an agent fails mid-operation,

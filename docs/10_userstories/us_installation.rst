@@ -28,6 +28,7 @@ Stories covering bootstrap, portability, installation, adoption, and updates.
    :status: implemented
    :priority: medium
    :tags: portability, sync
+   :links: US_INST_NEW_PROJECT, US_INST_ADOPT_EXISTING
 
    **As a** developer,
    **I want to** use syspilot in multiple projects,

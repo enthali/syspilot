@@ -11,7 +11,7 @@ Stories describing the end-to-end workflows that orchestrate syspilot agents.
    :status: implemented
    :priority: mandatory
    :tags: core, workflow, agents
-   :links: US_CORE_SPEC_AS_CODE, US_CHG_ANALYZE, US_CHG_IMPLEMENT, US_CHG_VERIFY, US_DX_PROJECT_MEMORY
+   :links: US_CORE_SPEC_AS_CODE, US_CHG_ANALYZE, US_CHG_IMPLEMENT, US_CHG_VERIFY, US_CHG_ITERATIVE, US_DX_PROJECT_MEMORY
 
    **As a** developer,
    **I want to** follow a defined workflow (Change → Implement → Verify → Memory)
