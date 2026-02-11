@@ -1,5 +1,46 @@
 # syspilot Release Notes
 
+## v0.1.0 - 2026-02-11
+
+### Summary
+First stable release of syspilot. Adds consistent agent interaction UX via VS Code selection menus, restricts auto-detection to the project directory for security, and completes a full MECE quality review across all three specification levels (US → REQ → SPEC).
+
+### ✨ New Features
+
+- **Agent Interaction via Selection Menus** (US_DX_AGENT_INTERACTION, REQ_DX_AGENT_SELECTION_MENUS, REQ_DX_AGENT_SKILL_FILES)
+  - All agents use VS Code's `ask_questions` tool for presenting choices (SPEC_AGENT_INTERACTION)
+  - New shared skill file mechanism: `.github/skills/syspilot.ask-questions.skill.md`
+  - Change Agent level transitions confirm save before navigation (SPEC_CHG_LEVEL_PROCESSING)
+
+- **Auto-Detect Restricted to Project Directory** (REQ_INST_AUTO_DETECT, SPEC_INST_AUTO_DETECT)
+  - `Find-SyspilotInstallation` no longer searches above the project root
+  - GitHub Release download offered as fallback when syspilot not found locally (SPEC_INST_GITHUB_FALLBACK)
+  - Updated acceptance criteria for US_INST_NEW_PROJECT, US_INST_ADOPT_EXISTING
+
+### 🔧 Internal Changes
+
+- **Memory Agent rewritten for compactness** (SPEC_MEM_UPDATE_PROCESS, SPEC_MEM_CONTENT_CATEGORIES, SPEC_MEM_INSTRUCTIONS_STRUCTURE)
+  - Core principle: "If agents can discover it, don't put it in copilot-instructions.md"
+  - copilot-instructions.md trimmed from ~325 to ~177 lines
+  - Size target: 150–180 lines, cut if >200
+
+- **MECE Quality Review — all 3 levels**
+  - US level: 5 missing horizontal links added
+  - REQ level: 8 missing horizontal links added, REQ_CORE_ASPICE removed (orphan)
+  - SPEC level: 4 missing horizontal links added
+  - US_CHG_RECOVERY set to `draft` (no REQ/SPEC exists)
+  - A-SPICE reduced to optional documentation (aspice_alignment.rst kept, references cleaned)
+
+### 📊 Specification Counts
+
+| Level | Count | Status |
+|-------|-------|--------|
+| User Stories | 22 | 21 implemented, 1 draft |
+| Requirements | 38 | 37 implemented, 1 approved |
+| Design Specs | 37 | all implemented |
+
+---
+
 ## v0.1.0-rc.3 - 2026-02-06
 
 ### Summary
