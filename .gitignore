@@ -39,3 +39,7 @@ docs/_build/
 # Local config that shouldn't be shared
 .env
 *.local
+
+# temporary files
+temp/
+
