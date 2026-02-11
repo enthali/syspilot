@@ -16,7 +16,7 @@ syspilot is a requirements engineering toolkit that uses **sphinx-needs traceabi
 - **Markup**: reStructuredText (RST)
 - **Python Runner**: uv (Astral's fast Python package manager)
 - **Theme**: Furo
-- **Process Alignment**: Automotive SPICE (A-SPICE)
+- **Process Alignment**: Optional (see `docs/40_process/`)
 
 ## Project Structure
 

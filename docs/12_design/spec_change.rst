@@ -144,7 +144,7 @@ Design specifications for the Change Agent — iterative level-based change anal
 .. spec:: Atomic RST Updates with Status Lifecycle
    :id: SPEC_CHG_ATOMIC_UPDATE
    :status: implemented
-   :links: REQ_CHG_ANALYSIS_AGENT, REQ_CHG_FINAL_CHECK, REQ_CHG_MECE_PER_LEVEL
+   :links: REQ_CHG_ANALYSIS_AGENT, REQ_CHG_FINAL_CHECK, REQ_CHG_MECE_PER_LEVEL, SPEC_CHG_LEVEL_PROCESSING
    :tags: change, commit, status
 
    **Design:**

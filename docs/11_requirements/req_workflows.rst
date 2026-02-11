@@ -11,7 +11,7 @@ Requirements for the end-to-end workflows that orchestrate syspilot agents.
    :status: implemented
    :priority: mandatory
    :tags: workflow, change, orchestration
-   :links: US_WF_CHANGE
+   :links: US_WF_CHANGE, REQ_CHG_ANALYSIS_AGENT, REQ_CHG_IMPL_AGENT, REQ_CHG_VERIFY_AGENT, REQ_DX_MEMORY_AGENT
 
    **Description:**
    syspilot SHALL define a change workflow with the following sequence:

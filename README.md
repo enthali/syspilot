@@ -50,7 +50,7 @@ When you request a change, syspilot follows these links to find only the affecte
 
 📖 **Full docs:** [enthali.github.io/syspilot](https://enthali.github.io/syspilot/index.html)
 
-Includes methodology, naming conventions, traceability matrices, and A-SPICE alignment.
+Includes methodology, naming conventions, and traceability matrices.
 
 ## Requirements
 

@@ -80,7 +80,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    :status: implemented
    :priority: mandatory
    :tags: install, new-project
-   :links: US_INST_NEW_PROJECT
+   :links: US_INST_NEW_PROJECT, REQ_INST_AUTO_DETECT
 
    **Description:**
    syspilot SHALL be installable into a new project.
@@ -103,7 +103,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    :status: implemented
    :priority: mandatory
    :tags: install, adoption
-   :links: US_INST_ADOPT_EXISTING
+   :links: US_INST_ADOPT_EXISTING, REQ_INST_AUTO_DETECT
 
    **Description:**
    syspilot SHALL be adoptable into an existing project without data loss.
@@ -126,7 +126,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    :status: implemented
    :priority: mandatory
    :tags: update, migration
-   :links: US_INST_UPDATE
+   :links: US_INST_UPDATE, REQ_INST_AUTO_DETECT
 
    **Description:**
    syspilot SHALL be updatable to newer versions.

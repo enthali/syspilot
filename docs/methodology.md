@@ -53,7 +53,7 @@ User Stories group by **domain/theme** — areas of stakeholder concern or value
 | `us_release.rst` | Versioning, update, rollback |
 | `us_change_mgmt.rst` | Change workflow, agents, analysis |
 | `us_traceability.rst` | Link discovery, MECE, verification |
-| `us_process.rst` | A-SPICE alignment, methodology |
+| `us_process.rst` | Process methodology |
 | `us_developer_experience.rst` | DX, onboarding, ergonomics |
 | `us_integration.rst` | CI/CD, external tool integration |
 | `us_security.rst` | Access control, credentials |

@@ -50,28 +50,6 @@ Requirements for the foundational methodology and framework.
    * AC-4: Orphan detection (specs without requirements, requirements without specs)
 
 
-.. req:: A-SPICE Process Alignment
-   :id: REQ_CORE_ASPICE
-   :status: implemented
-   :priority: medium
-   :tags: aspice, automotive
-
-   **Description:**
-   syspilot SHOULD align with A-SPICE process areas for automotive
-   software development.
-
-   **Rationale:**
-   A-SPICE alignment enables use in automotive projects with
-   certification requirements.
-
-   **Acceptance Criteria:**
-
-   * AC-1: change agent maps to SWE.1 (Requirements Analysis)
-   * AC-2: implement agent maps to SWE.2/SWE.3 (Design/Construction)
-   * AC-3: verify agent maps to SWE.4 (Unit Verification)
-   * AC-4: Documentation structure supports A-SPICE work products
-
-
 File Organization
 -----------------
 

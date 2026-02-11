@@ -54,7 +54,7 @@ Installation
 .. spec:: Setup Agent Design
    :id: SPEC_INST_SETUP_AGENT
    :status: implemented
-   :links: REQ_INST_NEW_PROJECT, REQ_INST_ADOPT_EXISTING, REQ_INST_SPHINX_NEEDS_DEP
+   :links: REQ_INST_NEW_PROJECT, REQ_INST_ADOPT_EXISTING, REQ_INST_SPHINX_NEEDS_DEP, SPEC_INST_AUTO_DETECT, SPEC_INST_FILE_OWNERSHIP, SPEC_INST_UPDATE_PROCESS
    :tags: install, agent, setup
 
    **Design:**
@@ -194,7 +194,7 @@ File Ownership & Updates
 .. spec:: Update Process
    :id: SPEC_INST_UPDATE_PROCESS
    :status: implemented
-   :links: REQ_INST_VERSION_UPDATE
+   :links: REQ_INST_VERSION_UPDATE, SPEC_INST_AUTO_DETECT, SPEC_INST_FILE_OWNERSHIP
    :tags: update, migration
 
    **Design:**

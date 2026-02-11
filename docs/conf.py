@@ -67,26 +67,9 @@ html_sidebars = {
 
 # -- Sphinx-Needs Configuration ----------------------------------------------
 # https://sphinx-needs.readthedocs.io/
-#
-# A-SPICE Process Alignment:
-# --------------------------
-# This configuration aligns with Automotive SPICE (A-SPICE) process areas:
-#
-#   Type     | A-SPICE Process           | Work Product
-#   ---------|---------------------------|---------------------------
-#   story    | SWE.1 (partly)            | Stakeholder Requirements
-#   req      | SWE.1 Software Req.       | Software Requirements Spec
-#   spec     | SWE.2/SWE.3 Arch/Design   | Software Architecture/Design
-#   impl     | SWE.3 Detailed Design     | Implementation Reference
-#   test     | SWE.4 Unit Verification   | Test Specification
-#
-# Traceability (as required by A-SPICE):
-#   story → req → spec → impl → test
-#
 
 needs_types = [
     # User Stories - WHY (Stakeholder perspective)
-    # A-SPICE: Input to SWE.1 (Stakeholder Requirements)
     dict(
         directive="story",
         title="User Story",
@@ -95,7 +78,6 @@ needs_types = [
         style="node"
     ),
     # Requirements - WHAT (System behavior)
-    # A-SPICE: SWE.1 Software Requirements Analysis
     dict(
         directive="req",
         title="Requirement",
@@ -104,7 +86,6 @@ needs_types = [
         style="node"
     ),
     # Design Specifications - HOW (Technical approach)
-    # A-SPICE: SWE.2 Software Architectural Design / SWE.3 Detailed Design
     dict(
         directive="spec",
         title="Design Specification",
@@ -113,7 +94,6 @@ needs_types = [
         style="node"
     ),
     # Implementation - WHERE (Code location)
-    # A-SPICE: SWE.3 Detailed Design (output)
     dict(
         directive="impl",
         title="Implementation",
@@ -122,7 +102,6 @@ needs_types = [
         style="node"
     ),
     # Test Cases - VERIFY (Validation)
-    # A-SPICE: SWE.4 Software Unit Verification
     dict(
         directive="test",
         title="Test Case",

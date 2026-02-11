@@ -158,7 +158,7 @@ This document contains design specifications for the syspilot release process.
 .. spec:: Validation Checklist
    :id: SPEC_REL_VALIDATION_CHECKLIST
    :status: implemented
-   :links: REQ_REL_VALIDATION, REQ_REL_DOC_BUILD, REQ_REL_AGENT_TEST
+   :links: REQ_REL_VALIDATION, REQ_REL_DOC_BUILD, REQ_REL_AGENT_TEST, SPEC_REL_GITHUB_ACTIONS
    :tags: release, validation, quality
 
    **Design:**

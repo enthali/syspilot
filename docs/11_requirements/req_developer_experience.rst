@@ -60,7 +60,7 @@ Requirements for developer experience, project memory, and process ergonomics.
    :status: implemented
    :priority: high
    :tags: agent, ux, developer-experience, skills
-   :links: US_DX_AGENT_INTERACTION
+   :links: US_DX_AGENT_INTERACTION, REQ_DX_AGENT_SELECTION_MENUS
 
    **Description:**
    syspilot SHALL provide a mechanism for consolidating reusable interaction

@@ -42,7 +42,7 @@ Requirements for the change analysis, implementation, and verification workflow.
    :status: implemented
    :priority: mandatory
    :tags: agent, implementation
-   :links: US_CHG_IMPLEMENT, REQ_CORE_SPHINX_NEEDS, REQ_CORE_TRACEABILITY
+   :links: US_CHG_IMPLEMENT, REQ_CORE_SPHINX_NEEDS, REQ_CORE_TRACEABILITY, REQ_CHG_CHANGE_DOC
 
    **Description:**
    syspilot SHALL provide an implement agent that:
@@ -72,7 +72,7 @@ Requirements for the change analysis, implementation, and verification workflow.
    :status: implemented
    :priority: mandatory
    :tags: agent, verification
-   :links: US_CHG_VERIFY, REQ_CHG_IMPL_AGENT
+   :links: US_CHG_VERIFY, REQ_CHG_IMPL_AGENT, REQ_CHG_CHANGE_DOC
 
    **Description:**
    syspilot SHALL provide a verify agent that validates implementation
@@ -95,7 +95,7 @@ Requirements for the change analysis, implementation, and verification workflow.
    :status: implemented
    :priority: high
    :tags: agent, handoffs, workflow
-   :links: US_WF_CHANGE, US_CHG_ANALYZE, US_CHG_IMPLEMENT, US_CHG_VERIFY, US_TRACE_MECE, US_TRACE_VERTICAL
+   :links: US_WF_CHANGE, US_CHG_ANALYZE, US_CHG_IMPLEMENT, US_CHG_VERIFY, US_TRACE_MECE, US_TRACE_VERTICAL, REQ_CHG_ANALYSIS_AGENT, REQ_CHG_IMPL_AGENT, REQ_CHG_VERIFY_AGENT, REQ_TRACE_MECE, REQ_TRACE_VERTICAL
 
    **Description:**
    syspilot SHALL suggest appropriate next workflow steps after agent completion.
@@ -103,14 +103,6 @@ Requirements for the change analysis, implementation, and verification workflow.
    **Rationale:**
    Users need guidance on which agent to invoke next based on the current workflow state.
    This reduces cognitive load and ensures the correct workflow is followed.
-
-   **Horizontal Links:**
-
-   * REQ_CHG_ANALYSIS_AGENT (Change Analysis Agent - gets handoff capability)
-   * REQ_CHG_IMPL_AGENT (Implementation Agent - gets handoff capability)
-   * REQ_CHG_VERIFY_AGENT (Verification Agent - gets handoff capability)
-   * REQ_TRACE_MECE (MECE Review Agent - gets handoff capability)
-   * REQ_TRACE_VERTICAL (Trace Agent - gets handoff capability)
 
    **Acceptance Criteria:**
 
