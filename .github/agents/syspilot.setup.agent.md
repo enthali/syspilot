@@ -126,26 +126,52 @@ If successful, proceed with syspilot installation.
 Use the PowerShell function from SPEC_INST_AUTO_DETECT (see function definition below).
 
 The function:
-1. Searches parent directories (up to 3 levels)
+1. Searches **only within the project directory** (workspace root + subdirectories)
 2. Finds all `version.json` files (recursive, depth 3)
 3. Parses JSON and filters for `"name": "syspilot"`
 4. Compares semantic versions (including pre-releases like beta.2)
 5. Returns path to newest syspilot installation
 6. Logs all found versions for transparency
+7. **SHALL NOT search above the project root directory**
 
 **Success**: Proceed with `$syspilotRoot` from auto-detection
-**Failure**: Show helpful error and suggest manual download
+
+**Failure (not found in project directory)**:
+
+Inform the user that syspilot was not found within the project directory.
+Offer to download the latest version from GitHub Releases automatically:
 
 ```powershell
-# Error message on failure:
-❌ Could not find syspilot installation.
-
-Please download syspilot:
-1. Visit https://github.com/OWNER/syspilot/releases/latest
-2. Download the ZIP file
-3. Extract to any location (e.g., C:\workspace\syspilot-X.Y.Z)
-4. Re-run this agent
+# Message on failure:
+Write-Host "No syspilot installation found in project directory."
+Write-Host ""
+Write-Host "Would you like me to download the latest version from GitHub?"
+Write-Host "I can fetch the latest release and extract it into your project."
 ```
+
+If the user agrees, download using the GitHub Release Query mechanism
+(same as used in the Update Workflow, Section 7):
+
+```powershell
+# Download latest release
+$repo = "OWNER/syspilot"  # Replace with actual repo
+$apiUrl = "https://api.github.com/repos/$repo/releases/latest"
+$release = Invoke-RestMethod -Uri $apiUrl
+$downloadUrl = $release.zipball_url
+$latestVersion = $release.tag_name.TrimStart('v')
+
+# Download and extract into project directory
+$tempZip = "syspilot-latest.zip"
+Invoke-WebRequest -Uri $downloadUrl -OutFile $tempZip
+Expand-Archive -Path $tempZip -DestinationPath . -Force
+Remove-Item $tempZip
+
+# Re-run auto-detect to find the downloaded version
+$syspilotRoot = Find-SyspilotInstallation
+```
+
+After download and extraction, re-run `Find-SyspilotInstallation` to locate
+the downloaded version within the project directory.
 
 **PowerShell Function (SPEC_INST_AUTO_DETECT):**
 
@@ -156,73 +182,63 @@ function Find-SyspilotInstallation {
         Auto-detect syspilot installation by searching for version.json
     
     .DESCRIPTION
-        Searches parent directories and their children for syspilot installations.
+        Searches ONLY within the project directory (workspace root and
+        subdirectories) for syspilot installations.
         Returns path to the newest version found.
+        SHALL NOT search above the project root directory.
         
         Implements: REQ_INST_AUTO_DETECT, SPEC_INST_AUTO_DETECT
     #>
     
     [CmdletBinding()]
     param(
-        [int]$MaxParentLevels = 3,
         [int]$MaxSearchDepth = 3
     )
     
-    Write-Host "Searching for syspilot installations..." -ForegroundColor Cyan
+    Write-Host "Searching for syspilot installations in project directory..." -ForegroundColor Cyan
     
-    # Get current directory and parent paths
-    $currentPath = Get-Location
-    $searchPaths = @($currentPath.Path)
+    # Search ONLY within the project directory (workspace root)
+    $projectRoot = Get-Location
+    Write-Host "  Project root: $projectRoot" -ForegroundColor Gray
     
-    # Add parent directories (up to MaxParentLevels)
-    $tempPath = $currentPath
-    for ($i = 1; $i -le $MaxParentLevels; $i++) {
-        $tempPath = Split-Path -Parent $tempPath
-        if ($tempPath) {
-            $searchPaths += $tempPath
-        } else {
-            break
-        }
-    }
-    
-    # Find all version.json files
+    # Find all version.json files within project directory only
     $foundInstallations = @()
     
-    foreach ($path in $searchPaths) {
-        Write-Verbose "Searching in: $path"
+    try {
+        $versionFiles = Get-ChildItem -Path $projectRoot -Filter "version.json" -Recurse -Depth $MaxSearchDepth -ErrorAction SilentlyContinue
         
-        try {
-            $versionFiles = Get-ChildItem -Path $path -Filter "version.json" -Recurse -Depth $MaxSearchDepth -ErrorAction SilentlyContinue
-            
-            foreach ($file in $versionFiles) {
-                try {
-                    $content = Get-Content -Path $file.FullName -Raw | ConvertFrom-Json
+        foreach ($file in $versionFiles) {
+            try {
+                $content = Get-Content -Path $file.FullName -Raw | ConvertFrom-Json
+                
+                # Check if this is a syspilot version.json
+                if ($content.name -eq "syspilot") {
+                    $installPath = Split-Path -Parent $file.FullName
                     
-                    # Check if this is a syspilot version.json
-                    if ($content.name -eq "syspilot") {
-                        $installPath = Split-Path -Parent $file.FullName
-                        
-                        $foundInstallations += [PSCustomObject]@{
-                            Path = $installPath
-                            Version = $content.version
-                            VersionObject = $null  # Will parse later
-                        }
-                        
-                        Write-Host "  Found: $($content.version) at $installPath" -ForegroundColor Gray
+                    $foundInstallations += [PSCustomObject]@{
+                        Path = $installPath
+                        Version = $content.version
+                        VersionObject = $null  # Will parse later
                     }
-                }
-                catch {
-                    Write-Verbose "Skipped invalid JSON: $($file.FullName)"
+                    
+                    Write-Host "  Found: $($content.version) at $installPath" -ForegroundColor Gray
                 }
             }
+            catch {
+                Write-Verbose "Skipped invalid JSON: $($file.FullName)"
+            }
         }
-        catch {
-            Write-Verbose "Could not search path: $path"
-        }
+    }
+    catch {
+        Write-Verbose "Could not search project directory: $projectRoot"
     }
     
     if ($foundInstallations.Count -eq 0) {
-        Write-Host "❌ No syspilot installations found." -ForegroundColor Red
+        Write-Host "" 
+        Write-Host "No syspilot installation found in project directory: $projectRoot" -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "Would you like to download the latest version from GitHub?" -ForegroundColor Cyan
+        Write-Host "  The setup agent can fetch the latest release automatically."
         return $null
     }
     
@@ -269,9 +285,23 @@ function Find-SyspilotInstallation {
 ```powershell
 $syspilotRoot = Find-SyspilotInstallation
 if (-not $syspilotRoot) {
-    # Show error and exit
-    Write-Host "Please download syspilot and try again."
-    return
+    # Offer GitHub download
+    Write-Host "Downloading latest syspilot release from GitHub..."
+    $repo = "OWNER/syspilot"  # Replace with actual repo
+    $apiUrl = "https://api.github.com/repos/$repo/releases/latest"
+    $release = Invoke-RestMethod -Uri $apiUrl
+    $downloadUrl = $release.zipball_url
+    
+    Invoke-WebRequest -Uri $downloadUrl -OutFile "syspilot-latest.zip"
+    Expand-Archive -Path "syspilot-latest.zip" -DestinationPath . -Force
+    Remove-Item "syspilot-latest.zip"
+    
+    # Re-run auto-detect to find the downloaded version
+    $syspilotRoot = Find-SyspilotInstallation
+    if (-not $syspilotRoot) {
+        Write-Host "❌ Download failed. Please check your internet connection."
+        return
+    }
 }
 
 # Proceed with installation using $syspilotRoot

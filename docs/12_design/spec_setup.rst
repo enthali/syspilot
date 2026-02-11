@@ -73,7 +73,11 @@ Installation
    1. Run Find-SyspilotInstallation (SPEC_INST_AUTO_DETECT)
    2. Log all found versions for transparency
    3. Select newest version
-   4. If none found: Error with helpful instructions
+   4. If none found: Inform user that syspilot was not found in the project
+      directory. Offer to download the latest version from GitHub Releases
+      (reuse GitHub Release Query mechanism from SPEC_INST_UPDATE_PROCESS).
+      After download and extraction into the project directory, re-run
+      Find-SyspilotInstallation to locate the downloaded version.
 
    **Section 2: Check Dependencies (Interactive)**
 
@@ -252,62 +256,57 @@ Auto-Detection
 
 .. spec:: syspilot Auto-Detection Algorithm
    :id: SPEC_INST_AUTO_DETECT
-   :status: draft
+   :status: implemented
    :links: REQ_INST_AUTO_DETECT
    :tags: install, autodetect, powershell
 
    **Design:**
-   PowerShell/Bash function that finds syspilot installation via version.json search.
+   PowerShell/Bash function that finds syspilot installation via version.json search
+   within the project directory only.
 
    **Algorithm (PowerShell):**
 
    ::
 
       function Find-SyspilotInstallation {
-          # Search up to 3 parent directory levels
-          $searchPaths = @(
-              Get-Location,
-              (Get-Location).Parent,
-              (Get-Location).Parent.Parent,
-              (Get-Location).Parent.Parent.Parent
-          ) | Where-Object { $_ -ne $null }
-          
+          # Search ONLY within the project directory (workspace root)
+          $projectRoot = Get-Location
+
           $foundVersions = @()
-          
-          foreach ($path in $searchPaths) {
-              # Find all version.json files recursively (max depth 3)
-              $versionFiles = Get-ChildItem -Path $path -Filter "version.json" `
-                                           -Recurse -Depth 3 -ErrorAction SilentlyContinue
-              
-              foreach ($file in $versionFiles) {
-                  try {
-                      $content = Get-Content $file.FullName | ConvertFrom-Json
-                      $version = $content.version
-                      
-                      # Skip if not syspilot version format
-                      if ($version -notmatch '^(\d+)\.(\d+)\.(\d+)(-\w+(\.\d+)?)?$') {
-                          continue
-                      }
-                      
-                      $foundVersions += [PSCustomObject]@{
-                          Path = $file.Directory.FullName
-                          Version = $version
-                          File = $file.FullName
-                      }
-                  } catch {
-                      # Skip invalid JSON
+
+          # Find all version.json files recursively within project directory
+          $versionFiles = Get-ChildItem -Path $projectRoot -Filter "version.json" `
+                                        -Recurse -Depth 3 -ErrorAction SilentlyContinue
+
+          foreach ($file in $versionFiles) {
+              try {
+                  $content = Get-Content $file.FullName | ConvertFrom-Json
+                  $version = $content.version
+
+                  # Skip if not syspilot version format
+                  if ($version -notmatch '^(\d+)\.(\d+)\.(\d+)(-\w+(\.\d+)?)?$') {
                       continue
                   }
+
+                  $foundVersions += [PSCustomObject]@{
+                      Path = $file.Directory.FullName
+                      Version = $version
+                      File = $file.FullName
+                  }
+              } catch {
+                  # Skip invalid JSON
+                  continue
               }
           }
-          
+
           if ($foundVersions.Count -eq 0) {
-              Write-Error "No syspilot installation found (no version.json)"
-              Write-Host "Searched in:"
-              $searchPaths | ForEach-Object { Write-Host "  $_" }
-              return $null
+              Write-Host "No syspilot installation found in project directory: $projectRoot"
+              Write-Host ""
+              Write-Host "Would you like to download the latest version from GitHub?"
+              Write-Host "  The setup agent can fetch the latest release automatically."
+              return $null  # Agent handles GitHub download interactively
           }
-          
+
           # Sort by version (newest first)
           $sorted = $foundVersions | Sort-Object {
               if ($_.Version -match '^(\d+)\.(\d+)\.(\d+)(-(\w+)\.?(\d+)?)?') {
@@ -319,17 +318,17 @@ Auto-Detection
                   return @($major, $minor, $patch, $(if ($prerelease) { 0 } else { 999 }), $prereleaseNum)
               }
           } -Descending
-          
+
           # Log all found versions
           Write-Host "Found syspilot installations:"
           $sorted | ForEach-Object {
               Write-Host "  v$($_.Version) at $($_.Path)"
           }
-          
+
           # Return newest
           $newest = $sorted[0]
           Write-Host "Selected newest: v$($newest.Version)" -ForegroundColor Green
-          
+
           return $newest.Path
       }
 
@@ -339,18 +338,21 @@ Auto-Detection
 
    **Edge Cases:**
 
-   1. **No version.json found**: Error with helpful message
+   1. **No version.json found**: Inform user, offer GitHub download
    2. **Multiple identical versions**: Pick first found (arbitrary but consistent)
    3. **Invalid JSON**: Skip file and continue search
    4. **Non-syspilot version.json**: Skip (version format check)
+   5. **syspilot downloaded outside project**: Not found — GitHub fallback offered
 
    **Rationale:**
 
-   * Works with release ZIP structure (syspilot-0.1.0-beta.3/)
-   * Works with git clone
+   * Searches only within project directory — never escapes project root
+   * Works with release ZIP extracted into project directory
+   * Works with git clone within project directory
    * Works with multiple versions side-by-side
    * Always selects newest (important for updates)
    * Transparent debugging (logs all found versions)
+   * Falls back to GitHub download when not found locally
 
 
 Distribution

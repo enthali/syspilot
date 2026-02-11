@@ -94,7 +94,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    * AC-1: User can invoke syspilot agents after installation
    * AC-2: User can build sphinx-needs documentation after installation
    * AC-3: User receives clear confirmation of successful installation
-   * AC-4: Setup agent SHALL use REQ_INST_AUTO_DETECT auto-detection to locate syspilot files
+   * AC-4: Setup agent SHALL use REQ_INST_AUTO_DETECT auto-detection to locate syspilot files within the project directory
    * AC-5: Setup agent SHALL NOT require manual path input
 
 
@@ -118,7 +118,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    * AC-2: User's existing code is preserved
    * AC-3: User is guided through any required decisions
    * AC-4: User can invoke syspilot agents after adoption
-   * AC-5: Setup agent SHALL use REQ_INST_AUTO_DETECT auto-detection to locate syspilot files
+   * AC-5: Setup agent SHALL use REQ_INST_AUTO_DETECT auto-detection to locate syspilot files within the project directory
 
 
 .. req:: Version Update and Migration
@@ -190,27 +190,31 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
 
 .. req:: Auto-Detection of syspilot Installation
    :id: REQ_INST_AUTO_DETECT
-   :status: draft
+   :status: implemented
    :priority: mandatory
    :tags: install, autodetect
    :links: US_INST_NEW_PROJECT, US_INST_ADOPT_EXISTING, US_INST_UPDATE
 
    **Description:**
-   syspilot SHALL auto-detect its own location by searching for version.json files.
+   syspilot SHALL auto-detect its own location by searching for version.json files
+   within the project directory only.
 
    **Rationale:**
    Release ZIP structure places syspilot in versioned folders (syspilot-X.Y.Z/).
    Manual path input is error-prone and breaks user experience. Auto-detection
    enables seamless installation from arbitrary extraction locations.
+   Searching above the project root is a security/correctness risk when the
+   download location is outside the workspace.
 
    **Acceptance Criteria:**
 
-   * AC-1: Search parent directories (up to 3 levels) for version.json files
+   * AC-1: Search within the project directory (workspace root and subdirectories) for version.json files
    * AC-2: Parse each version.json to extract version number
    * AC-3: When multiple found, select newest semantic version (including pre-release tags)
    * AC-4: Return syspilot root directory (where version.json was found)
-   * AC-5: Fail gracefully with helpful message if no version.json found
+   * AC-5: If no version.json found within project directory, inform user and offer to download the latest version from GitHub Releases
    * AC-6: Log all found versions for debugging
+   * AC-7: SHALL NOT search above the project root directory
 
 
 Traceability

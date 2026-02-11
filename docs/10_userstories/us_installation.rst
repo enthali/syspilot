@@ -53,9 +53,10 @@ Stories covering bootstrap, portability, installation, adoption, and updates.
 
    **Acceptance Scenarios:**
 
-   1. Given I download and extract syspilot release, When I follow the installation process, Then syspilot structure is created without requiring manual path configuration
-   2. Given installation completes, When I check, Then I'm ready to run bootstrap
-   3. Given I need a specific version, When I install, Then I can obtain that version
+   1. Given the setup agent is available in .github/agents/, When I invoke @syspilot.setup, Then syspilot structure is created without requiring manual path configuration
+   2. Given syspilot is not found in the project directory, When I invoke @syspilot.setup, Then the agent offers to download the latest version from GitHub
+   3. Given installation completes, When I check, Then I'm ready to run bootstrap
+   4. Given I need a specific version, When I install, Then I can obtain that version
 
 
 .. story:: Adopt syspilot in Existing Project
@@ -74,6 +75,7 @@ Stories covering bootstrap, portability, installation, adoption, and updates.
    1. Given I have an existing project with code, When I follow the adoption process, Then syspilot is added alongside existing files
    2. Given I have existing documentation, When I adopt syspilot, Then my existing docs are not overwritten
    3. Given adoption completes, When I check, Then I can start creating User Stories
+   4. Given syspilot is not found in the project directory, When I start adoption, Then the agent offers to download the latest version from GitHub
 
 
 .. story:: Update syspilot to Latest Version
