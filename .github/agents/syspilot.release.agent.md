@@ -185,19 +185,20 @@ Read each Change Document and extract:
 
 ### 3. Show Preview & Get Approval
 
-Display the generated release notes entry and ask:
+Display the generated release notes entry and present choices using `ask_questions`:
 
 ```
-Preview of release notes entry:
-
-[... generated content ...]
-
-Actions:
-1. Approve and proceed with release
-2. Edit manually (I'll wait while you edit)
-3. Cancel release process
-
-Your choice?
+ask_questions({
+  questions: [{
+    header: "Release",
+    question: "Release notes preview is ready. How do you want to proceed?",
+    options: [
+      { label: "Approve and proceed", description: "Continue with release", recommended: true },
+      { label: "Edit manually", description: "I'll wait while you edit" },
+      { label: "Cancel release", description: "Abort the release process" }
+    ]
+  }]
+})
 ```
 
 If approved, proceed automatically with remaining steps (no manual intervention needed).
@@ -256,19 +257,21 @@ python scripts/python/get_need_links.py US_CORE_SPEC_AS_CODE --depth 1 --simple
 
 **If validation FAILS:**
 - Display detailed error information
-- Ask user:
-  ```
-  ❌ Validation failed:
-  
-  [List specific failures]
-  
-  Options:
-  1. Fix the issues (I'll wait, then re-run validation)
-  2. Proceed anyway (not recommended - may break release)
-  3. Cancel release
-  
-  Your choice?
-  ```
+- Present choices using `ask_questions`:
+
+```
+ask_questions({
+  questions: [{
+    header: "Validation",
+    question: "❌ Validation failed:\n\n[List specific failures]\n\nHow do you want to proceed?",
+    options: [
+      { label: "Fix issues", description: "I'll wait while you fix, then re-run validation", recommended: true },
+      { label: "Proceed anyway", description: "Not recommended - may break release" },
+      { label: "Cancel release", description: "Abort the release process" }
+    ]
+  }]
+})
+```
 
 ### 6. Commit and Tag (Automatic after validation)
 
@@ -352,12 +355,21 @@ If no Change Documents found:
 ⚠️ WARNING: No Change Documents found in docs/changes/
 
 This is unusual. Releases should be based on merged changes.
+```
 
-Options:
-1. Create a minimal release (patch version, documentation updates only)
-2. Cancel and investigate
+Present choices using `ask_questions`:
 
-Your choice?
+```
+ask_questions({
+  questions: [{
+    header: "No Changes",
+    question: "No Change Documents found. This is unusual. How do you want to proceed?",
+    options: [
+      { label: "Minimal release", description: "Patch version, documentation updates only" },
+      { label: "Cancel and investigate", description: "Abort release and check what happened", recommended: true }
+    ]
+  }]
+})
 ```
 
 ### Validation Failures
@@ -396,14 +408,9 @@ User: yes
 Agent: [Generates release notes]
        [Shows preview]
        
-       Actions:
-       1. Approve and proceed with release
-       2. Edit manually
-       3. Cancel
-       
-       Your choice?
+       [Uses ask_questions to present: Approve / Edit / Cancel]
 
-User: 1
+User: [Selects "Approve and proceed"]
 
 Agent: ✅ Approved. Proceeding with release...
        

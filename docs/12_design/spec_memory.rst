@@ -3,8 +3,8 @@ Memory Agent Design
 
 Design specifications for the Memory Agent — project memory maintenance.
 
-**Document Version**: 0.1
-**Last Updated**: 2026-02-06
+**Document Version**: 0.2
+**Last Updated**: 2026-02-11
 
 
 .. spec:: Memory Update Process
@@ -14,40 +14,38 @@ Design specifications for the Memory Agent — project memory maintenance.
    :tags: memory, agent, workflow
 
    **Design:**
-   The Memory Agent follows a four-step process to keep
+   The Memory Agent follows a three-step process to keep
    ``copilot-instructions.md`` synchronized with the codebase.
+
+   **Core Principle:**
+   If an agent can learn it by reading an existing file, don't put it in
+   copilot-instructions.md. The file contains only what agents **cannot
+   easily discover** from the codebase.
 
    **Step 1 — Gather Current State:**
 
-   Read these sources to understand what has changed:
-
-   * Git history (recent commits and messages)
-   * Directory structure (current file organization)
-   * Package files (pyproject.toml, requirements.txt)
-   * README.md (current documentation)
-   * Existing copilot-instructions.md (what's already documented)
+   * ``git log --oneline main..HEAD`` or recent commits on main
+   * ``copilot-instructions.md`` — what's already documented
+   * Directory structure — has anything moved?
+   * New agent/skill/prompt files — do naming conventions need updating?
 
    **Step 2 — Identify Gaps:**
 
-   Compare current state vs documented state across all categories:
+   Compare documented state vs reality. Focus on:
 
-   ::
+   * Structure: Did directories change?
+   * Conventions: New naming patterns or file types?
+   * Workflows: Changed agent chain or handoffs?
+   * Commands: Build or query commands changed?
+   * Tech stack: New tools?
+   * Version: Has ``version.json`` been bumped?
 
-      | Aspect   | Documented | Current | Action      |
-      |----------|------------|---------|-------------|
-      | Features | [list]     | [list]  | Add/Remove  |
-      | Files    | [list]     | [list]  | Update      |
-      | Patterns | [list]     | [list]  | Document    |
+   Before adding anything, ask: *"Can the agent discover this by reading
+   an existing file?"* — if yes, don't add (at most add a one-line pointer).
 
-   **Step 3 — Propose Updates:**
+   **Step 3 — Apply Updates:**
 
-   Present additions, modifications, and deletions to the user with
-   rationale for each change.
-
-   **Step 4 — Apply Updates:**
-
-   Update ``.github/copilot-instructions.md`` with clear, concise descriptions,
-   accurate file paths, current commands, and relevant examples.
+   Add, modify, or remove sections. Commit the change.
 
    **Invocation:** Invoked after verify in the change workflow.
    Hands off to change (for another change) or release (to bundle into a release).
@@ -55,37 +53,38 @@ Design specifications for the Memory Agent — project memory maintenance.
    **File:** ``.github/agents/syspilot.memory.agent.md``
 
 
-.. spec:: Memory Content Categories
+.. spec:: Memory Content Rules
    :id: SPEC_MEM_CONTENT_CATEGORIES
    :status: implemented
    :links: REQ_DX_MEMORY_AGENT
    :tags: memory, content, structure
 
    **Design:**
-   The Memory Agent tracks six categories of project information
-   and maintains explicit exclusion rules.
+   The Memory Agent decides what belongs in copilot-instructions.md using
+   a single criterion: **discoverability**.
 
-   **Categories to Track:**
+   **Include (not discoverable from code):**
 
-   1. **Project Overview** — Capabilities, scope, tech stack
-   2. **Directory Structure** — New directories, reorganizations, folder purposes
-   3. **Key Files** — Important files, changed purposes, deprecated files
-   4. **Patterns & Conventions** — Coding patterns, naming conventions,
-      architecture decisions
-   5. **Development Guidelines** — Workflow steps, build commands, testing procedures
-   6. **Dependencies** — New/removed/updated dependencies
+   * Project structure and mental map (directory tree with folder purposes)
+   * Naming conventions and ID schemes (hard to infer from files alone)
+   * Workflow chains and agent handoffs (cross-cutting, not in any one file)
+   * Build commands (agents need these before reading docs)
+   * Specification hierarchy and theme abbreviations
 
-   **Exclusion Rules (What NOT to Include):**
+   **Exclude (discoverable from existing files):**
 
-   * ❌ Detailed implementation specifics (that's in the code)
-   * ❌ Every single file (only key/important ones)
-   * ❌ Temporary workarounds (unless long-term)
-   * ❌ Personal preferences (only team conventions)
-   * ❌ Duplicate information (link to docs instead)
+   * ❌ Directive format examples (visible in every RST file)
+   * ❌ Status value lists (visible in specs)
+   * ❌ RST formatting rules (follow existing files)
+   * ❌ Dependency lists (agents can read ``requirements.txt``)
+   * ❌ Installation/release workflow details (each agent has its own file)
+   * ❌ Key files table (discoverable from project structure tree)
+   * ❌ Element counts or current state checklists (stale within one commit)
+   * ❌ Per-file listings inside directory levels
+   * ❌ Duplicate info — link to the source instead
 
-   **Rationale:** The exclusion rules prevent copilot-instructions.md from
-   becoming a dump of all project information. It should be a concise
-   "constitution" that gives any new Copilot session full project context.
+   **Rule of thumb:** If it changes every commit, it shouldn't be documented.
+   If another file already says it, link don't copy.
 
 
 .. spec:: copilot-instructions.md Structure
@@ -95,31 +94,28 @@ Design specifications for the Memory Agent — project memory maintenance.
    :tags: memory, structure, template
 
    **Design:**
-   The Memory Agent maintains a canonical structure for ``copilot-instructions.md``.
+   The Memory Agent maintains a fixed set of sections in
+   ``copilot-instructions.md``. Resist adding new top-level sections.
 
-   **Required Sections:**
+   **Target Structure:**
 
    ::
 
       # [Project Name] - Copilot Instructions
 
-      ## Project Overview
-      ## Tech Stack
-      ## Project Structure
-      ## Key Files
-      ## Development Setup
-      ## Common Commands
-      ## Architecture
-      ## Patterns & Conventions
-      ## Current State
-      ## Known Issues
+      ## Project Overview          — 3-5 lines, version
+      ## Tech Stack                — bullet list, no versions
+      ## Project Structure         — directory tree (no per-file listings)
+      ## Specification Hierarchy   — 3-level diagram with prefixes
+      ## Agent System              — table: agent → purpose
+      ## Sphinx-Needs Conventions  — ID prefixes, theme abbreviations
+      ## Development Commands      — build + query commands only
+      ## Development Workflow      — agent chain diagram, one-liners
+      ## Patterns & Conventions    — file organization, file naming, authoring
+      ## Agent Interaction         — skill file activation reference
 
-   **Quality Criteria:**
-
-   * Every section has clear, concise descriptions
-   * File paths are accurate and current
-   * Commands and versions are up-to-date
-   * Code examples are relevant and working
+   **Size target:** ~150–180 lines. If it grows past 200, something should
+   be cut.
 
    **Location:** ``.github/copilot-instructions.md``
 

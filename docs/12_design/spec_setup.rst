@@ -122,6 +122,7 @@ Installation
 
    * Copy agents: ``$syspilotRoot/.github/agents/*.agent.md`` → ``.github/agents/``
    * Copy prompts: ``$syspilotRoot/.github/prompts/*.prompt.md`` → ``.github/prompts/``
+   * Copy skills: ``$syspilotRoot/.github/skills/*.skill.md`` → ``.github/skills/``
    * Apply intelligent merge (SPEC_INST_FILE_OWNERSHIP)
 
    **Section 4: Validate and Confirm**
@@ -156,6 +157,7 @@ File Ownership & Updates
    * ``.syspilot/**`` (entire folder) - replaceable
    * ``.github/agents/syspilot.*.agent.md`` - merge if modified
    * ``.github/prompts/syspilot.*.prompt.md`` - merge if modified
+   * ``.github/skills/syspilot.*.skill.md`` - merge if modified
 
    **Intelligent Merge for Agent Files:**
 
@@ -224,7 +226,7 @@ File Ownership & Updates
       b. **Backup**: Rename ``.syspilot/`` → ``.syspilot_backup/``
       c. **Download**: Fetch latest release ZIP from GitHub
       d. **Extract**: Unpack to ``.syspilot/``
-      e. **Merge**: Copy agents/prompts with intelligent merge (see SPEC_INST_FILE_OWNERSHIP)
+      e. **Merge**: Copy agents/prompts/skills with intelligent merge (see SPEC_INST_FILE_OWNERSHIP)
       f. **Validate**: Run ``sphinx-build`` to verify
       g. **Success**: Delete ``.syspilot_backup/``
       h. **Failure**: Restore ``.syspilot_backup/`` → ``.syspilot/``, inform user
@@ -384,6 +386,7 @@ Distribution
       ├── .github/
       │   ├── agents/       # Agent definitions (*.agent.md)
       │   ├── prompts/      # Prompt files (*.prompt.md)
+      │   ├── skills/       # Skill files (*.skill.md)
       │   └── copilot-instructions.md
       ├── scripts/          # Init and utility scripts
       ├── templates/        # Document templates

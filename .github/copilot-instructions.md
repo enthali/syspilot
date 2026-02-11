@@ -25,6 +25,7 @@ syspilot/
 ├── .github/
 │   ├── agents/                 # Agent definition files (*.agent.md)
 │   ├── prompts/                # Prompt configuration files (*.prompt.md)
+│   ├── skills/                 # Shared skill files (*.skill.md)
 │   └── copilot-instructions.md # This file
 ├── scripts/
 │   ├── powershell/init.ps1     # Bootstrap script (Windows)
@@ -39,25 +40,8 @@ syspilot/
 │   ├── namingconventions.md    # ID naming conventions
 │   ├── releasenotes.md         # Release notes (newest first)
 │   ├── 10_userstories/         # Level 0: WHY (User Stories)
-│   │   ├── us_core.rst         # Core methodology stories
-│   │   ├── us_workflows.rst    # Workflow orchestration stories
-│   │   ├── us_change_mgmt.rst  # Change management stories
-│   │   ├── us_traceability.rst # Traceability & quality stories
-│   │   ├── us_installation.rst # Installation stories
-│   │   ├── us_release.rst      # Release stories
-│   │   └── us_developer_experience.rst
 │   ├── 11_requirements/        # Level 1: WHAT (Requirements)
-│   │   └── req_<theme>.rst     # 1:1 mapping with us_<theme>.rst
 │   ├── 12_design/              # Level 2: HOW (Design Specs)
-│   │   ├── spec_agent_framework.rst  # Shared agent workflow & prompts
-│   │   ├── spec_change.rst           # Change Agent design
-│   │   ├── spec_implement.rst        # Implement Agent design
-│   │   ├── spec_verify.rst           # Verify Agent design
-│   │   ├── spec_traceability.rst     # MECE + Trace Agents
-│   │   ├── spec_memory.rst           # Memory Agent design
-│   │   ├── spec_setup.rst            # Setup Agent design
-│   │   ├── spec_doc_structure.rst    # Documentation structure
-│   │   └── spec_release.rst          # Release pipeline
 │   ├── 31_traceability/        # Traceability matrices
 │   ├── 40_process/             # A-SPICE process alignment
 │   ├── changes/                # Change Documents (deleted after release)
@@ -116,89 +100,17 @@ Level 2 uses component-based themes: `AGENT`, `CHG`, `IMPL`, `VERIFY`, `MECE`, `
 
 See [docs/namingconventions.md](../docs/namingconventions.md) for full conventions.
 
-### Directive Format
-
-```rst
-.. req:: Requirement Title
-   :id: REQ_FEATURE_001
-   :status: draft
-   :priority: mandatory
-   :links: US_FEATURE_001
-
-   The system SHALL do something specific.
-
-   **Acceptance Criteria:**
-   - Criterion 1
-   - Criterion 2
-```
-
-### Status Values
-
-- `draft` - Initial creation
-- `in-review` - Under review
-- `approved` - Approved for implementation
-- `implemented` - Code complete
-- `verified` - Tests passing
-
 ## Development Commands
 
-### Build Documentation
-
 ```powershell
-# Using build script (recommended)
-.\docs\build.ps1
-
-# Clean build
-.\docs\build.ps1 -Clean
-
-# Direct uv command (from docs/ directory)
+# Build documentation (from docs/ directory)
 cd docs
 uv run sphinx-build -b html . _build/html
+
+# Query sphinx-needs links
+python scripts/python/get_need_links.py <ID> --simple
+python scripts/python/get_need_links.py <ID> --flat --depth 3
 ```
-
-### Query Sphinx-Needs Links
-
-```powershell
-# Get links for a specific ID
-python scripts/python/get_need_links.py US_CORE_SPEC_AS_CODE --simple
-
-# Trace with depth
-python scripts/python/get_need_links.py REQ_CHG_ANALYSIS_AGENT --depth 2
-
-# Flat list of all impacted IDs
-python scripts/python/get_need_links.py US_CORE_SPEC_AS_CODE --flat --depth 3
-```
-
-## Installation Workflow
-
-syspilot uses a two-step installation:
-
-### Step 1: Init Script (minimal)
-
-```powershell
-# From your project directory, run syspilot's init script
-C:\path\to\syspilot\scripts\powershell\init.ps1
-```
-
-This only copies `syspilot.setup.agent.md` to `.github/agents/`.
-
-### Step 2: Setup Agent (interactive)
-
-Open VS Code, start GitHub Copilot Chat, select `@syspilot.setup`.
-
-The agent handles:
-- Dependency installation (sphinx, sphinx-needs, furo, myst-parser)
-- Copying remaining agents and prompts
-- VS Code configuration
-- Validation
-
-### Update Process
-
-Updates use backup/rollback:
-1. `.syspilot/` → `.syspilot_backup/`
-2. Download latest release
-3. Intelligent merge for modified agent files
-4. Success: delete backup / Failure: rollback
 
 ## Development Workflow (Dogfooding)
 
@@ -228,40 +140,7 @@ change → implement → verify → memory → change / release
 
 ### Release Workflow (bundles changes)
 
-1. **Merge** feature branch to main (squash)
-2. **Version** → Determine version, update `version.json`
-3. **Validate** → `sphinx-build`, schema validation
-4. **Release Notes** → Prepend to `docs/releasenotes.md`
-5. **Clean up** → Delete processed Change Documents
-6. **Tag & Push** → Annotated tag triggers GitHub Actions
-7. **Next** → Start a new change workflow (@change) or end
-
-## Key Files
-
-| File | Purpose |
-|------|---------|
-| [docs/conf.py](../docs/conf.py) | Sphinx + sphinx-needs configuration |
-| [docs/requirements.txt](../docs/requirements.txt) | Python dependencies |
-| [scripts/python/get_need_links.py](../scripts/python/get_need_links.py) | Link discovery utility |
-| [templates/change-document.md](../templates/change-document.md) | Change Document template |
-| [scripts/powershell/init.ps1](../scripts/powershell/init.ps1) | Bootstrap script |
-| [docs/methodology.md](../docs/methodology.md) | File organization & methodology guide |
-| [docs/namingconventions.md](../docs/namingconventions.md) | ID naming conventions |
-| [docs/releasenotes.md](../docs/releasenotes.md) | Release notes (newest first) |
-
-## Dependencies
-
-From `docs/requirements.txt`:
-
-```
-sphinx>=7.0.0
-sphinx-needs>=2.0.0
-furo>=2024.0.0
-myst-parser>=2.0.0
-graphviz>=0.20.0
-```
-
-**Note**: No `pyproject.toml` yet - dependencies managed via `docs/requirements.txt` and `uv run`.
+See `@syspilot.release` agent for full process. Key steps: merge to main → version bump → validate → release notes → tag & push.
 
 ## Patterns & Conventions
 
@@ -269,45 +148,29 @@ graphviz>=0.20.0
 
 Levels 0–1 organize by **problem domain** (stakeholder themes). Level 2 organizes by **solution domain** (technical components). This asymmetry is intentional.
 
-- **Level 0 — User Stories**: one `us_<theme>.rst` per stakeholder theme/value stream
-- **Level 1 — Requirements**: one `req_<theme>.rst` per US file (1:1 mapping)
-- **Level 2 — Design Specs**: one `spec_<component>.rst` per technical component (independent of US structure)
-
 ### File Naming
 
 - Agents: `syspilot.<name>.agent.md`
 - Prompts: `syspilot.<name>.prompt.md`
+- Skills: `syspilot.<name>.skill.md` (shared patterns, e.g., `syspilot.ask-questions.skill.md`)
 - User Stories: `us_<theme>.rst` (one per stakeholder theme)
 - Requirements: `req_<theme>.rst` (mirrors matching `us_` file)
 - Design Specs: `spec_<component>.rst` (one per technical component)
+- Change Documents: `docs/changes/<name>.md`
 
-### RST Formatting
+### Sphinx-Needs Authoring
 
-- Use `.. <directive>::` for sphinx-needs elements
+Follow the conventions visible in existing RST files. Key points:
 - Always include `:id:`, `:status:`, `:links:` (where applicable)
 - Use `SHALL` for mandatory requirements
 - Include **Acceptance Criteria** in requirements
+- See [docs/namingconventions.md](../docs/namingconventions.md) for ID naming rules
 
-### Change Documents
+## Agent Interaction
 
-- Stored in `docs/changes/<name>.md`
-- Track status per level (⏳ not started | 🔄 in progress | ✅ completed)
-- Include horizontal MECE checks
-
-## Current State
-
-- ✅ Core agent system implemented (7 agents)
-- ✅ Self-documentation with sphinx-needs (18 US, 28 REQ, 36 SPEC)
-- ✅ L2 design specs split by component (9 spec files)
-- ✅ File organization methodology formalized in spec chain
-- ✅ Core workflows (change, quality, release) formalized in spec chain
-- ✅ Bootstrap scripts for Windows/Linux (minimal)
-- ✅ Link discovery utility
-- ✅ Install/Update workflow with backup/rollback
-- ✅ Intelligent merge for user-modified agent files
-- ✅ `.github/` as single source for agents/prompts
-- ⏳ A-SPICE alignment documentation in progress
+When presenting choices to the user during agent sessions,
+read and follow `.github/skills/syspilot.ask-questions.skill.md`.
 
 ---
 
-*syspilot v0.1.0-rc.3 - Last updated: 2026-02-06*
+*syspilot v0.1.0-rc.3 - Last updated: 2026-02-11*

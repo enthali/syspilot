@@ -49,13 +49,14 @@ Level 2: Design          (HOW - how the system should do it)
    - Propose new/modified US
    - Horizontal MECE check
    - Discuss with user, update Change Document as agreements are reached
-6. Ask: "Where do you want to continue? (Level 1 / revise Level 0 / pause)"
+6. Confirm Level 0 is saved, then ask navigation using `ask_questions`:
+   "Level 0 is saved to the Change Document. Where do you want to continue?"
 7. Process Level 1 (Requirements)
    - Find impacted REQ via links from US above
    - Horizontal MECE check against other REQs
    - Propose new/modified REQ
    - Discuss with user, update Change Document as agreements are reached
-8. Ask: "Where do you want to continue?"
+8. Confirm Level 1 is saved, then ask navigation using `ask_questions`
 9. Process Level 2 (Design)
    - Find impacted SPEC via links from REQ above
    - Horizontal MECE check against other SPECs
@@ -192,19 +193,21 @@ For each question or proposal:
 
 ### 3. Level Complete
 
-Once all items are agreed and documented:
+Once all items are agreed and documented, confirm save status and
+present navigation using `ask_questions`:
 
-```markdown
----
-
-**Level {N} Complete** ✅
-
-{Summary of what was decided and documented}
-
-**Where do you want to continue?**
-1. **Proceed to Level {N+1}** ({Next Level Name})
-2. **Go back to Level {N-1}** - Revisit previous decisions
-3. **Pause here** - Save progress and continue later
+```
+ask_questions({
+  questions: [{
+    header: "Continue?",
+    question: "Level {N} is saved to the Change Document. Where do you want to continue?",
+    options: [
+      { label: "Proceed to Level {N+1} ({Next Level Name})", description: "Analyze next level", recommended: true },
+      { label: "Revise Level {N-1}", description: "Go back and revise previous decisions" },
+      { label: "Pause here", description: "Save progress and continue later" }
+    ]
+  }]
+})
 ```
 
 ## Change Document Management

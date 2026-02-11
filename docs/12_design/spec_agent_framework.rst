@@ -168,6 +168,91 @@ Prompt Architecture
    - Consistent with speckit design pattern
 
 
+Agent Interaction
+-----------------
+
+.. spec:: Agent Interaction via Selection Menus
+   :id: SPEC_AGENT_INTERACTION
+   :status: implemented
+   :links: REQ_DX_AGENT_SELECTION_MENUS, REQ_DX_AGENT_SKILL_FILES
+   :tags: architecture, agents, ux
+
+   **Design:**
+   All syspilot agents use the ``ask_questions`` tool for presenting choices
+   to the user. This replaces free-text menus with VS Code's native
+   quick-pick selection UI for a consistent, efficient interaction.
+
+   **When to Use ``ask_questions``:**
+
+   * Workflow transitions (level navigation, agent handoffs within session)
+   * Decisions with 2–6 discrete options
+   * Confirmations where alternatives exist (approve / revise / pause)
+
+   **When NOT to Use:**
+
+   * Free-form questions requiring typed answers (use normal conversation)
+   * Single yes/no confirmations with no meaningful alternatives
+
+   **Format Reference:**
+
+   ::
+
+      ask_questions({
+        questions: [{
+          header: "≤12 chars",        // Quick-pick title, unique ID
+          question: "Full context",    // Explains what is being decided
+          options: [
+            { label: "Option A", description: "Brief detail" },
+            { label: "Option B", description: "Brief detail", recommended: true }
+          ],
+          allowFreeformInput: false    // true when custom response is expected
+        }]
+      })
+
+   **Rules:**
+
+   * ``recommended`` marks the agent's suggested default — user sees it pre-selected
+   * ``allowFreeformInput: true`` when the user's custom input would be valuable
+   * Max 4 questions per call, 2–6 options each
+   * Batch related questions into a single call
+
+   **Implementation via Skill File:**
+
+   The interaction pattern is consolidated in a skill file instead of
+   being duplicated across agent files:
+
+   * **Skill file:** ``.github/skills/syspilot.ask-questions.skill.md``
+     Contains the full pattern description, format reference, rules,
+     and examples.
+
+   * **Activation:** A single reference in ``.github/copilot-instructions.md``:
+
+     ::
+
+        When presenting choices to the user during agent sessions,
+        read and follow .github/skills/syspilot.ask-questions.skill.md.
+
+   * **Effect:** All agents (change, implement, verify, memory, mece,
+     trace, setup) automatically pick up the skill without needing
+     individual instructions in each agent file.
+
+   **Example — Level Transition (Change Agent):**
+
+   ::
+
+      ask_questions({
+        questions: [{
+          header: "Continue?",
+          question: "Level 1 is saved to the Change Document. Where do you want to continue?",
+          options: [
+            { label: "Proceed to Level 2 (Design)", description: "Analyze design specs", recommended: true },
+            { label: "Revise Level 1", description: "Go back and revise requirements" },
+            { label: "Pause here", description: "Save progress and continue later" }
+          ]
+        }]
+      })
+
+
 Traceability
 ------------
 

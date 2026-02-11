@@ -295,32 +295,32 @@ Copy-Item "$syspilotRoot\.github\agents\*" ".github\agents\" -Force
 |--------|-------------|----------------|
 | `.github/agents/syspilot.*.agent.md` | `.github/agents/` | Check for modifications first |
 | `.github/prompts/syspilot.*.prompt.md` | `.github/prompts/` | Check for modifications first |
+| `.github/skills/syspilot.*.skill.md` | `.github/skills/` | Check for modifications first |
 | `scripts/python/get_need_links.py` | `.syspilot/scripts/python/` | Replace (syspilot-owned) |
 | `templates/change-document.md` | `.syspilot/templates/` | Replace (syspilot-owned) |
 | `templates/sphinx/build.ps1` | `docs/build.ps1` | Replace (syspilot-owned) |
 
-**Intelligent Merge for Agent/Prompt Files:**
+**Intelligent Merge for Agent/Prompt/Skill Files:**
 
-Before copying each `syspilot.*.agent.md` or `syspilot.*.prompt.md`:
+Before copying each `syspilot.*.agent.md`, `syspilot.*.prompt.md`, or `syspilot.*.skill.md`:
 
 1. **Check if target exists**: If not, just copy
 2. **Check if modified**: Compare target with original syspilot version
 3. **If unmodified**: Replace silently
-4. **If modified**: Show user the diff and ask:
+4. **If modified**: Show user the diff and present choices using `ask_questions`:
 
 ```
-The file syspilot.change.agent.md has been modified.
-
-Your changes:
-+ Added custom workflow step
-- Removed example section
-
-Options:
-1. Overwrite - Replace with new syspilot version (lose your changes)
-2. Keep - Keep your version (may miss new features)
-3. Show full diff - See complete comparison
-
-Choose (1/2/3):
+ask_questions({
+  questions: [{
+    header: "File Merge",
+    question: "syspilot.change.agent.md has been modified.\n\nYour changes:\n+ Added custom workflow step\n- Removed example section",
+    options: [
+      { label: "Overwrite", description: "Replace with new syspilot version (lose your changes)" },
+      { label: "Keep", description: "Keep your version (may miss new features)" },
+      { label: "Show diff", description: "See complete comparison before deciding" }
+    ]
+  }]
+})
 ```
 
 ### 5. Configure VS Code

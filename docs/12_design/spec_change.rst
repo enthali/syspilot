@@ -10,7 +10,7 @@ Design specifications for the Change Agent — iterative level-based change anal
 .. spec:: Iterative Level Processing
    :id: SPEC_CHG_LEVEL_PROCESSING
    :status: implemented
-   :links: REQ_CHG_ANALYSIS_AGENT, REQ_CHG_WORKFLOW_STEPS, REQ_CHG_LINK_DISCOVERY
+   :links: REQ_CHG_ANALYSIS_AGENT, REQ_CHG_WORKFLOW_STEPS, REQ_CHG_LINK_DISCOVERY, REQ_DX_AGENT_SELECTION_MENUS
    :tags: change, agent, workflow
 
    **Design:**
@@ -32,7 +32,11 @@ Design specifications for the Change Agent — iterative level-based change anal
    3. **Propose Changes** — Present new/modified items with rationale
    4. **Discuss with User** — Resolve questions and conflicts interactively
    5. **Update Change Document** — Record agreements immediately
-   6. **Ask Navigation** — "Proceed to Level N+1 / Revise Level N-1 / Pause?"
+   6. **Ask Navigation** — Confirm that the current level is saved to the
+      Change Document, then present navigation using ``ask_questions``:
+      "Level N is saved to the Change Document. Where do you want to continue?"
+      Options: Proceed to Level N+1 / Revise Level N-1 / Pause
+      (see SPEC_AGENT_INTERACTION for format)
 
    **Don't Skip Levels Rule:**
    Even if the answer seems obvious, the agent processes each level
