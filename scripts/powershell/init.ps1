@@ -1,28 +1,18 @@
 # syspilot Bootstrap Script (Windows)
-# 
-# Copies the Setup Agent to your project. That's it.
+#
+# Downloads the Setup Agent to your project via curl. That's it.
 # The Setup Agent handles everything else interactively.
 #
-# Usage: C:\path\to\syspilot\scripts\powershell\init.ps1
+# Usage: irm https://raw.githubusercontent.com/enthali/syspilot/main/scripts/powershell/init.ps1 | iex
+#    or: C:\path\to\syspilot\scripts\powershell\init.ps1
 #
 
 $ErrorActionPreference = "Stop"
 
-# Find syspilot root (3 levels up from this script)
-$SyspilotRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-$ProjectRoot = Get-Location
+New-Item -ItemType Directory -Path ".github\agents" -Force | Out-Null
 
-# Don't install into syspilot itself
-if ($SyspilotRoot -eq $ProjectRoot) {
-    Write-Host "Run this from your project directory, not from syspilot." -ForegroundColor Red
-    exit 1
-}
-
-# Create .github/agents and copy Setup Agent
-$AgentsDir = Join-Path $ProjectRoot ".github\agents"
-New-Item -ItemType Directory -Path $AgentsDir -Force | Out-Null
-
-$SetupAgentSource = Join-Path $SyspilotRoot ".github\agents\syspilot.setup.agent.md"
-Copy-Item -Path $SetupAgentSource -Destination $AgentsDir -Force
+$Url = "https://raw.githubusercontent.com/enthali/syspilot/main/.github/agents/syspilot.setup.agent.md"
+$Destination = Join-Path (Get-Location) ".github\agents\syspilot.setup.agent.md"
+Invoke-WebRequest -Uri $Url -OutFile $Destination -UseBasicParsing
 
 Write-Host "Done. Open VS Code, start GitHub Copilot Chat, and select @syspilot.setup" -ForegroundColor Green
