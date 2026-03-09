@@ -12,15 +12,19 @@
 
 ## Quick Start
 
-```powershell
-# 1. Download latest release from GitHub
-# 2. Run init script from YOUR project directory:
-C:\path\to\syspilot\scripts\powershell\init.ps1    # Windows
-/path/to/syspilot/scripts/bash/init.sh              # Linux/Mac
-
-# 3. Open VS Code Copilot Chat:
-@syspilot.setup
+**Linux / Mac / GitHub Codespaces:**
+```bash
+mkdir -p .github/agents && curl -fsSL \
+  "https://raw.githubusercontent.com/enthali/syspilot/main/.github/agents/syspilot.setup.agent.md" \
+  -o .github/agents/syspilot.setup.agent.md
 ```
+
+**Windows (PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/enthali/syspilot/main/scripts/powershell/init.ps1 | iex
+```
+
+Then open VS Code Copilot Chat and run `@syspilot.setup`.
 
 That's it. The setup agent handles dependencies, configuration, and validation automatically.
 
