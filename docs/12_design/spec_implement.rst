@@ -65,6 +65,50 @@ Design specifications for the Implement Agent — code implementation with trace
    * Do NOT update version.json (that's the Release Agent's job)
 
 
+.. spec:: Implementation Completeness Check
+   :id: SPEC_IMPL_COMPLETENESS_CHECK
+   :status: implemented
+   :links: REQ_CHG_IMPL_AGENT
+   :tags: implement, completeness, validation
+
+   **Design:**
+   Before running quality gates, the Implement Agent SHALL verify that every
+   requirement acceptance criterion and design spec from the Change Document
+   has been addressed in the implementation.
+
+   **Procedure:**
+
+   1. Re-read the Change Document and list every REQ_* with its ACs
+   2. For each AC, confirm there is corresponding code or configuration
+   3. Check **modified** requirements — new ACs added to existing REQs are easy to miss
+   4. For each SPEC_*, confirm the implementation matches the design
+   5. Create a checklist (using the todo list tool) with one item per requirement
+
+   **Checklist Format:**
+
+   ::
+
+      ☐ REQ_xxx_1: AC-1 ✓, AC-2 ✓, AC-3 ✓
+      ☐ REQ_xxx_2: AC-1 ✓, AC-2 ✗ ← MISSING — implement before proceeding
+
+   **Common Gaps to Watch For:**
+
+   * Modified requirements with new ACs (not just new requirements)
+   * Design specs with multiple trigger conditions or branches
+   * Cross-component integration points
+   * Config keys that need to be added to schemas
+
+   **Gate Rule:** Do NOT proceed to quality gates until every AC is covered.
+
+   **Rationale:** Without this check, the Implement Agent moves to build/commit
+   after writing the main feature code — missing integration points, new ACs
+   on modified requirements, and multi-condition specs. The Verify Agent then
+   catches these gaps, causing extra fix-and-reverify cycles.
+
+   **File:** ``.github/agents/syspilot.implement.agent.md``
+   (section: "Implementation Completeness Check", between Code and Quality Gates)
+
+
 .. spec:: Implementation Quality Gates
    :id: SPEC_IMPL_QUALITY_GATES
    :status: implemented
@@ -79,9 +123,11 @@ Design specifications for the Implement Agent — code implementation with trace
    1. **Pre-Implementation Build** — Run sphinx-build to establish baseline
    2. If FAIL → fix docs before proceeding (do not start coding)
    3. If PASS → implement code with SPEC references
-   4. Write tests with REQ references
-   5. Run tests
-   6. **Post-Implementation Build** — Final sphinx-build validation
+   4. **Implementation Completeness Check** — Verify all ACs covered
+      (see SPEC_IMPL_COMPLETENESS_CHECK)
+   5. Write tests with REQ references
+   6. Run tests
+   7. **Post-Implementation Build** — Final sphinx-build validation
 
    **Commands:**
 

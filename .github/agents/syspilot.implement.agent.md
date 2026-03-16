@@ -17,10 +17,11 @@ You are the **Implement Agent** for the syspilot requirements engineering workfl
 A. **Read the Change Document** - Understand what needs to be implemented
 B. **Query and read impacted needs** - Use get_need_links.py to find all REQ_* and SPEC_* and read them
 C. **Implement code changes** - Write code according to the approved Design Specs
-D. **Write tests** - Create tests that verify the Requirements
-E. **Run tests** - Execute tests and ensure they pass
-F. **Update user documentation** - README, user guides, AND agent.md files
-G. **Commit with traceability** - Clean commit referencing the Change Document
+D. **Verify implementation completeness** - Check every AC before quality gates
+E. **Write tests** - Create tests that verify the Requirements
+F. **Run tests** - Execute tests and ensure they pass
+G. **Update user documentation** - README, user guides, AND agent.md files
+H. **Commit with traceability** - Clean commit referencing the Change Document
 
 ⚠️ **IMPORTANT**: 
 - Do NOT modify User Stories, Requirements, or Design Specs - that's the Change Agent's job
@@ -30,7 +31,7 @@ G. **Commit with traceability** - Clean commit referencing the Change Document
 ## Workflow
 
 ```
-Change Document → Query Needs → Read Specs → Code → Tests → Run Tests → Update Docs → Commit
+Change Document → Query Needs → Read Specs → Code → Completeness Check → Tests → Run Tests → Update Docs → Commit
 ```
 
 ## Input Sources
@@ -89,7 +90,34 @@ def my_function():
     pass
 ```
 
-### 4. Test Implementation
+### 4. Implementation Completeness Check
+
+Before running tests or quality gates, verify **every** requirement and acceptance
+criterion from the Change Document has been addressed.
+
+**Procedure:**
+
+1. Re-open the Change Document and list **every** REQ_* with its ACs
+2. For each AC, confirm there is corresponding code or configuration
+3. Check **modified** requirements too — new ACs added to existing REQs are easy to miss
+4. For each SPEC_*, confirm the implementation matches the design
+5. Create a checklist (use todo list tool) with one item per requirement:
+
+```
+☐ REQ_xxx_1: AC-1 ✓, AC-2 ✓, AC-3 ✓
+☐ REQ_xxx_2: AC-1 ✓, AC-2 ✗ ← MISSING — implement before proceeding
+```
+
+**Common gaps to watch for:**
+
+- Modified requirements with new ACs (not just new requirements)
+- Design specs with multiple trigger conditions or branches
+- Cross-component integration points
+- Config keys that need to be added to schemas
+
+**Do NOT proceed to tests or quality gates until every AC is covered.**
+
+### 5. Test Implementation
 
 Create tests that verify Requirements and their Acceptance Criteria:
 
@@ -113,7 +141,7 @@ class TestFeatureName:
         pass
 ```
 
-### 5. Run Tests
+### 6. Run Tests
 
 Execute tests and ensure they pass:
 
@@ -123,7 +151,7 @@ pytest tests/ -v
 
 **If tests fail**: Fix code or tests before proceeding.
 
-### 6. Update Documentation
+### 7. Update Documentation
 
 Update all user-facing documentation to reflect the changes:
 
@@ -132,7 +160,7 @@ Update all user-facing documentation to reflect the changes:
 - **Agent files** (.github/agents/*.agent.md) - Update if agent behavior changed
 - **copilot-instructions.md** - Update project memory if needed (or hand off to Memory Agent)
 
-### 7. Commit with Traceability
+### 8. Commit with Traceability
 
 Commit with a message that references the Change Document:
 

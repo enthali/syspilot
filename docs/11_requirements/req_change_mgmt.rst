@@ -52,6 +52,7 @@ Requirements for the change analysis, implementation, and verification workflow.
    3. Implements code, scripts, agents, and documentation according to these SPECs
    4. Writes tests that verify the implementation
    5. Maintains traceability via comments and references
+   6. Verifies implementation completeness against all acceptance criteria before quality gates
 
    **Rationale:**
    The Change Document provides focused context. The implement agent
@@ -65,6 +66,9 @@ Requirements for the change analysis, implementation, and verification workflow.
    * AC-4: Agent writes code with traceability comments (SPEC IDs)
    * AC-5: Agent writes tests referencing requirement IDs
    * AC-6: Agent runs tests and ensures they pass
+   * AC-7: Agent SHALL verify every REQ acceptance criterion and SPEC from the
+     Change Document has corresponding implementation before proceeding to
+     quality gates
 
 
 .. req:: Verification Agent

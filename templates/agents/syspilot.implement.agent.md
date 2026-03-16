@@ -17,9 +17,10 @@ You are the **Implement Agent** for the syspilot requirements engineering workfl
 A. **Read the Change Document** - Understand what needs to be implemented
 B. **Query and read impacted needs** - Use get_need_links.py to find all REQ_* and SPEC_* and read them
 C. **Implement code changes** - Write code according to the approved Design Specs
-D. **Run quality gates** - Build and test the implementation
-E. **Update user documentation** - README, user guides, AND agent.md files
-F. **Commit with traceability** - Clean commit referencing the Change Document
+D. **Verify implementation completeness** - Check every AC before quality gates
+E. **Run quality gates** - Build and test the implementation
+F. **Update user documentation** - README, user guides, AND agent.md files
+G. **Commit with traceability** - Clean commit referencing the Change Document
 
 ⚠️ **IMPORTANT**: 
 - Do NOT modify User Stories, Requirements, or Design Specs - that's the Change Agent's job
@@ -29,7 +30,7 @@ F. **Commit with traceability** - Clean commit referencing the Change Document
 ## Workflow
 
 ```
-Change Document → Query Needs → Read Specs → Code → Quality Gates → Update Docs → Commit
+Change Document → Query Needs → Read Specs → Code → Completeness Check → Quality Gates → Update Docs → Commit
 ```
 
 ## Input Sources
@@ -101,7 +102,34 @@ Traceability pattern (adapt to your language):
 //   - SPEC_xxx: [Design reference]
 ```
 
-### 4. Quality Gates
+### 4. Implementation Completeness Check
+
+Before running quality gates, verify **every** requirement and acceptance
+criterion from the Change Document has been addressed.
+
+**Procedure:**
+
+1. Re-open the Change Document and list **every** REQ_* with its ACs
+2. For each AC, confirm there is corresponding code or configuration
+3. Check **modified** requirements too — new ACs added to existing REQs are easy to miss
+4. For each SPEC_*, confirm the implementation matches the design
+5. Create a checklist (use todo list tool) with one item per requirement:
+
+```
+☐ REQ_xxx_1: AC-1 ✓, AC-2 ✓, AC-3 ✓
+☐ REQ_xxx_2: AC-1 ✓, AC-2 ✗ ← MISSING — implement before proceeding
+```
+
+**Common gaps to watch for:**
+
+- Modified requirements with new ACs (not just new requirements)
+- Design specs with multiple trigger conditions or branches
+- Cross-component integration points
+- Config keys that need to be added to schemas
+
+**Do NOT proceed to quality gates until every AC is covered.**
+
+### 5. Quality Gates
 
 <!-- TODO: Configure your project's build and test commands -->
 <!-- Examples: idf.py build, cargo build, npm test, make, dotnet build -->
@@ -129,7 +157,7 @@ sphinx-build -b html . _build/html -W --keep-going
 **Fail-Fast Rule:** If pre-implementation build fails, fix documentation
 issues before touching any code.
 
-### 5. Test Implementation
+### 6. Test Implementation
 
 Create tests that verify Requirements and their Acceptance Criteria.
 
@@ -143,7 +171,7 @@ Test: [REQ_xxx_1 AC-1] Description of what is being verified
 Test: [REQ_xxx_1 AC-2] Description of what is being verified
 ```
 
-### 6. Update Documentation
+### 7. Update Documentation
 
 Update all user-facing documentation to reflect the changes:
 
@@ -152,7 +180,7 @@ Update all user-facing documentation to reflect the changes:
 - **Agent files** (.github/agents/*.agent.md) - Update if agent behavior changed
 - **copilot-instructions.md** - Update project memory if needed (or hand off to Memory Agent)
 
-### 7. Commit with Traceability
+### 8. Commit with Traceability
 
 Commit with a message that references the Change Document:
 
@@ -178,11 +206,11 @@ Design:
 This implement agent is a skeleton. You need to customize the following
 sections for your project's tech stack:
 
-1. **Quality Gates (Section 4)**: Replace TODO placeholders with your
+1. **Quality Gates (Section 5)**: Replace TODO placeholders with your
    actual build and test commands
 2. **Code Traceability (Section 3)**: Adapt comment format to your
    programming language
-3. **Test Implementation (Section 5)**: Adapt to your test framework
+3. **Test Implementation (Section 6)**: Adapt to your test framework
 
 After customizing, the Change → Implement → Verify workflow will work
 end-to-end with your project's toolchain.

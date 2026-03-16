@@ -40,6 +40,8 @@ Stories covering the full change lifecycle: analyze, implement, verify, recover.
    1. Given an approved Change Proposal, When implement agent runs, Then docs are updated first
    2. Given code is written, When I check, Then it references SPEC IDs
    3. Given tests are written, When I check, Then they reference REQ IDs
+   4. Given code is written, When the agent checks completeness, Then every
+      acceptance criterion from the Change Document has corresponding code
 
 
 .. story:: Verify Implementation Completeness
