@@ -15,13 +15,16 @@
 **Linux / Mac / GitHub Codespaces:**
 ```bash
 mkdir -p .github/agents && curl -fsSL \
-  "https://raw.githubusercontent.com/enthali/syspilot/main/.github/agents/syspilot.setup.agent.md" \
+  "https://raw.githubusercontent.com/enthali/syspilot/main/templates/agents/syspilot.setup.agent.md" \
   -o .github/agents/syspilot.setup.agent.md
 ```
 
 **Windows (PowerShell):**
 ```powershell
-irm https://raw.githubusercontent.com/enthali/syspilot/main/scripts/powershell/init.ps1 | iex
+New-Item -ItemType Directory -Force -Path .github/agents | Out-Null
+Invoke-WebRequest `
+  -Uri "https://raw.githubusercontent.com/enthali/syspilot/main/templates/agents/syspilot.setup.agent.md" `
+  -OutFile ".github/agents/syspilot.setup.agent.md"
 ```
 
 Then open VS Code Copilot Chat and run `@syspilot.setup`.
@@ -30,13 +33,14 @@ That's it. The setup agent handles dependencies, configuration, and validation a
 
 ## What You Get
 
-Seven AI agents that work through your spec hierarchy:
+Eight AI agents that work through your spec hierarchy:
 
 | Agent | What it does |
 |-------|-------------|
 | `@syspilot.change` | Analyzes a change request, creates a Change Document |
 | `@syspilot.implement` | Executes approved changes with traceability |
 | `@syspilot.verify` | Checks implementation against the Change Document |
+| `@syspilot.memory` | Keeps project memory (copilot-instructions.md) current |
 | `@syspilot.mece` | Finds gaps and redundancies in your specs |
 | `@syspilot.trace` | Traces one item through all levels |
 | `@syspilot.release` | Manages versioning and release process |

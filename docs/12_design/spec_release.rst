@@ -14,7 +14,7 @@ This document contains design specifications for the syspilot release process.
    :tags: release, versioning
 
    **Design:**
-   syspilot uses Semantic Versioning with structure stored in version.json.
+   syspilot uses Semantic Versioning with structure stored in ``templates/version.json``.
 
    **Version Format:**
 
@@ -24,16 +24,16 @@ This document contains design specifications for the syspilot release process.
    * PATCH: Bug fixes (backward compatible)
    * Pre-release suffixes: ``-alpha``, ``-beta``, ``-rc.N``
 
-   **version.json Structure:**
+   **templates/version.json Structure:**
    
    .. code-block:: json
 
       {
-          "version": "0.2.0",
-          "installedAt": "2026-01-30",
-          "syspilotPath": "C:\\workspace\\syspilot",
-          "docsType": "sphinx"
+          "version": "0.2.0"
       }
+
+   Note: The ``installedAt`` and ``source`` fields only exist in consumer
+   projects' ``.syspilot/version.json`` (see SPEC_INST_VERSION_MARKER).
 
    **Version Bump Rules:**
 
@@ -61,15 +61,15 @@ This document contains design specifications for the syspilot release process.
 
    * Format: ``vMAJOR.MINOR.PATCH`` (e.g., ``v0.2.0``)
    * Prefix ``v`` required by GitHub convention
-   * Must match version in version.json
+   * Must match version in templates/version.json
 
    **Tag Creation Process:**
    
    .. code-block:: bash
 
-      # 1. Update version.json with new version
+      # 1. Update templates/version.json with new version
       # 2. Commit version.json change
-      git add version.json
+      git add templates/version.json
       git commit -m "chore: bump version to 0.2.0"
 
       # 3. Create annotated tag
@@ -81,12 +81,12 @@ This document contains design specifications for the syspilot release process.
    **Tag Content:**
 
    * Annotated tag with release summary message
-   * Points to commit where version.json was updated
+   * Points to commit where templates/version.json was updated
    * Triggers GitHub Actions workflow (if configured)
 
    **Validation:**
 
-   * Tag version must match version.json
+   * Tag version must match templates/version.json
    * All tests must pass on tagged commit
    * Documentation must build successfully
 
@@ -94,7 +94,7 @@ This document contains design specifications for the syspilot release process.
 .. spec:: Release Notes Structure
    :id: SPEC_REL_NOTES_STRUCTURE
    :status: implemented
-   :links: REQ_REL_NOTES
+   :links: REQ_REL_NOTES, SPEC_DOC_RELEASE_NOTES_STRUCTURE
    :tags: release, documentation
 
    **Design:**
@@ -168,7 +168,7 @@ This document contains design specifications for the syspilot release process.
 
    **Documentation:**
 
-   * [ ] version.json updated with new version
+   * [ ] templates/version.json updated with new version
    * [ ] docs/releasenotes.md updated with release entry
    * [ ] All sphinx-needs links valid (sphinx-build succeeds)
    * [ ] No orphaned requirements or specs
@@ -184,7 +184,7 @@ This document contains design specifications for the syspilot release process.
 
    **Scripts:**
 
-   * [ ] init.ps1 / init.sh work on target platforms
+   * [ ] Curl bootstrap command works (download setup agent from GitHub)
    * [ ] get_need_links.py executes correctly
    * [ ] Build scripts execute successfully
 
@@ -255,10 +255,10 @@ This document contains design specifications for the syspilot release process.
       .. code-block:: yaml
 
          - run: |
-             VERSION=$(jq -r .version version.json)
+             VERSION=$(jq -r .version templates/version.json)
              TAG=${GITHUB_REF#refs/tags/v}
              if [ "$VERSION" != "$TAG" ]; then
-               echo "Version mismatch: version.json=$VERSION tag=$TAG"
+               echo "Version mismatch: templates/version.json=$VERSION tag=$TAG"
                exit 1
              fi
 
@@ -401,7 +401,7 @@ This document contains design specifications for the syspilot release process.
    3. **Version Update:**
 
       * Calculate new version number based on release type
-      * Update version.json
+      * Update templates/version.json
       * Commit: "chore: bump version to X.Y.Z"
 
    4. **Validation Guidance:**
@@ -473,7 +473,7 @@ Release Workflow
 .. spec:: Release Workflow Orchestration
    :id: SPEC_REL_WORKFLOW
    :status: implemented
-   :links: REQ_WF_RELEASE_SEQUENCE, REQ_REL_SEMVER, REQ_REL_VALIDATION, REQ_REL_GITHUB_PUBLISH
+   :links: REQ_WF_RELEASE_SEQUENCE, REQ_REL_SEMVER, REQ_REL_VALIDATION, REQ_REL_GITHUB_PUBLISH, SPEC_REL_AGENT
    :tags: workflow, release, orchestration
 
    **Design:**
@@ -487,7 +487,7 @@ Release Workflow
           │
           ▼
       ┌─────────────────┐
-      │  1. Version      │ ──→ Update version.json, determine SemVer bump
+      │  1. Version      │ ──→ Update templates/version.json, determine SemVer bump
       └─────────────────┘
           │
           ▼

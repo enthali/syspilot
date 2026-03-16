@@ -12,17 +12,19 @@ Agent Workflow
 
 .. spec:: Four-Agent Workflow
    :id: SPEC_AGENT_WORKFLOW
-   :status: implemented
+   :status: approved
    :links: REQ_WF_CHANGE_SEQUENCE, REQ_CHG_ANALYSIS_AGENT, REQ_CHG_IMPL_AGENT, REQ_CHG_VERIFY_AGENT, REQ_DX_MEMORY_AGENT, REQ_CHG_WORKFLOW_STEPS
    :tags: architecture, agents
 
    **Design:**
    syspilot implements a four-agent workflow for structured change management.
+   Documentation is maintained by the implement agent as part of its
+   implementation artifacts, guided by per-document Chapter Structure SPECs.
 
    **Agent Responsibilities:**
 
    1. **change agent**: Analyze request + current implementation → Change Document + US/REQ/SPEC updates
-   2. **implement agent**: Read Change Document → Code + Scripts + Tests (no spec changes)
+   2. **implement agent**: Read Change Document → Code + Scripts + Tests + Documentation
    3. **verify agent**: Implementation → Verification Report
    4. **memory agent**: Project → Updated copilot-instructions.md
 
@@ -39,7 +41,7 @@ Agent Workflow
            │
            ▼ (approved)
       ┌─────────────┐
-      │  implement  │ ──→ Code + Scripts + Tests (reads SPECs from Change Doc)
+      │  implement  │ ──→ Code + Scripts + Tests + Documentation
       └─────────────┘
            │
            ▼
@@ -133,7 +135,7 @@ Prompt Architecture
 .. spec:: Prompt-Agent Separation
    :id: SPEC_AGENT_PROMPT_SEPARATION
    :status: implemented
-   :links: REQ_CORE_SPHINX_NEEDS
+   :links: REQ_CORE_SPHINX_NEEDS, REQ_DX_AGENT_SKILL_FILES
    :tags: architecture, prompts
 
    **Design:**

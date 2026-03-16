@@ -3,81 +3,71 @@ Setup Agent Design
 
 Design specifications for the Setup Agent — installation, update, and environment management.
 
-**Document Version**: 0.2
-**Last Updated**: 2026-02-06
+**Document Version**: 0.3
+**Last Updated**: 2026-03-16
 
 
 Installation
 ------------
 
-.. spec:: Init Scripts for Environment Setup
-   :id: SPEC_INST_INIT_SCRIPTS
+.. spec:: Curl-Based Bootstrap
+   :id: SPEC_INST_CURL_BOOTSTRAP
    :status: implemented
-   :links: REQ_INST_AUTO_SETUP, REQ_INST_PORTABLE, REQ_INST_NEW_PROJECT, REQ_INST_ADOPT_EXISTING
-   :tags: init, scripts, install
+   :links: REQ_INST_AUTO_SETUP, REQ_INST_NEW_PROJECT, REQ_INST_ADOPT_EXISTING
+   :tags: init, install, curl
 
    **Design:**
-   Minimal init scripts copy only the Setup Agent to enable installation.
-   All other setup is handled interactively by the Setup Agent.
+   Users bootstrap syspilot by downloading the Setup Agent directly from
+   GitHub using curl (Unix) or Invoke-WebRequest (Windows). No local
+   syspilot repository or init scripts are needed.
 
-   **Script Locations (in syspilot installation):**
+   **Bootstrap Steps:**
 
-   * Windows: ``scripts/powershell/init.ps1``
-   * Unix: ``scripts/bash/init.sh``
+   1. Create agent directory: ``mkdir -p .github/agents/``
+   2. Download Setup Agent from GitHub main:
 
-   **Script Behavior (minimal):**
+      ::
 
-   1. Create ``.github/agents/`` in target project
-   2. Copy ``syspilot.setup.agent.md`` from syspilot's ``.github/agents/``
-   3. Display message: "Open VS Code, start GitHub Copilot Chat, and select @syspilot.setup"
+         # Unix
+         curl -o .github/agents/syspilot.setup.agent.md \
+           https://raw.githubusercontent.com/OWNER/syspilot/main/templates/agents/syspilot.setup.agent.md
+
+         # Windows (PowerShell)
+         Invoke-WebRequest `
+           -Uri "https://raw.githubusercontent.com/OWNER/syspilot/main/templates/agents/syspilot.setup.agent.md" `
+           -OutFile ".github/agents/syspilot.setup.agent.md"
+
+   3. Open VS Code, start GitHub Copilot Chat, invoke ``@syspilot.setup``
 
    **Rationale:**
 
-   * Scripts are static and cannot adapt to user environment
-   * Agent can interactively handle dependencies, conflicts, and user choices
-   * Minimal script = less maintenance, fewer platform-specific issues
-
-   **Usage:**
-
-   ::
-
-      # Windows (from target project directory)
-      C:\path\to\syspilot\scripts\powershell\init.ps1
-
-      # Unix (from target project directory)
-      /path/to/syspilot/scripts/bash/init.sh
-
-   **Note:** This is Step 1 of the installation process.
-   Step 2 is invoking ``@syspilot.setup`` agent.
+   * No local syspilot repository needed
+   * Platform-independent (curl/Invoke-WebRequest available everywhere)
+   * Always fetches current version from main
+   * Single command instead of finding and running init scripts
 
 
 .. spec:: Setup Agent Design
    :id: SPEC_INST_SETUP_AGENT
    :status: implemented
-   :links: REQ_INST_NEW_PROJECT, REQ_INST_ADOPT_EXISTING, REQ_INST_SPHINX_NEEDS_DEP, SPEC_INST_AUTO_DETECT, SPEC_INST_FILE_OWNERSHIP, SPEC_INST_UPDATE_PROCESS
+   :links: REQ_INST_NEW_PROJECT, REQ_INST_ADOPT_EXISTING, REQ_INST_SPHINX_NEEDS_DEP, SPEC_INST_FILE_OWNERSHIP, SPEC_INST_UPDATE_PROCESS
    :tags: install, agent, setup
 
    **Design:**
-   Installation is a two-step process: init script, then setup agent.
+   Installation is curl-based: user downloads setup agent, then runs it.
 
-   **Step 1: Init Script (manual)**
+   **Step 1: Bootstrap (manual)**
 
-   * User runs ``scripts/powershell/init.ps1`` (or ``bash/init.sh``) from syspilot location
-   * Script copies ``syspilot.setup.agent.md`` from ``.github/agents/`` to target project's ``.github/agents/``
-   * Covered by SPEC_INST_INIT_SCRIPTS
+   * User curls setup agent from GitHub (SPEC_INST_CURL_BOOTSTRAP)
+   * No init scripts, no local syspilot repo needed
 
    **Step 2: Setup Agent (@syspilot.setup)**
 
-   **Section 1: Auto-Detect syspilot Location**
+   **Section 1: Determine Mode**
 
-   1. Run Find-SyspilotInstallation (SPEC_INST_AUTO_DETECT)
-   2. Log all found versions for transparency
-   3. Select newest version
-   4. If none found: Inform user that syspilot was not found in the project
-      directory. Offer to download the latest version from GitHub Releases
-      (reuse GitHub Release Query mechanism from SPEC_INST_UPDATE_PROCESS).
-      After download and extraction into the project directory, re-run
-      Find-SyspilotInstallation to locate the downloaded version.
+   1. Check if ``.syspilot/version.json`` exists
+   2. If yes → UPDATE MODE (see SPEC_INST_UPDATE_PROCESS)
+   3. If no → FRESH INSTALL (continue with Section 2)
 
    **Section 2: Check Dependencies (Interactive)**
 
@@ -94,7 +84,7 @@ Installation
          - sphinx-needs >= 2.0.0 (requirements traceability)
          - furo >= 2024.0.0 (documentation theme)
          - myst-parser >= 2.0.0 (Markdown support)
-         
+
          Optional (for diagrams):
          - graphviz (Python package + system tool)
 
@@ -113,26 +103,39 @@ Installation
         ::
 
            Windows: winget install Graphviz.Graphviz
-           macOS:   brew install graphviz  
+           macOS:   brew install graphviz
            Linux:   sudo apt install graphviz
 
       * Note: System package managers may require admin rights
 
    6. **Validate**: Run ``sphinx-build --version`` to confirm
 
-   **Section 3: Copy Files from syspilot**
+   **Section 3: Fetch Files from GitHub**
 
-   Using ``$syspilotRoot`` from auto-detection:
+   Fetch files from ``templates/`` on GitHub main:
 
-   * Copy agents: ``$syspilotRoot/.github/agents/*.agent.md`` → ``.github/agents/``
-   * Copy prompts: ``$syspilotRoot/.github/prompts/*.prompt.md`` → ``.github/prompts/``
-   * Copy skills: ``$syspilotRoot/.github/skills/*.skill.md`` → ``.github/skills/``
-   * Apply intelligent merge (SPEC_INST_FILE_OWNERSHIP)
+   1. Fetch ``templates/version.json`` → determine version
+   2. Use GitHub API to list ``templates/`` contents:
+      ``api.github.com/repos/OWNER/syspilot/contents/templates/``
+   3. Download and copy:
 
-   **Section 4: Validate and Confirm**
+      * ``templates/agents/*.agent.md`` → ``.github/agents/``
+      * ``templates/prompts/*.prompt.md`` → ``.github/prompts/``
+      * ``templates/skills/*.skill.md`` → ``.github/skills/``
+      * ``templates/scripts/python/`` → ``.syspilot/scripts/python/``
+      * ``templates/sphinx/`` → ``docs/`` (build.ps1, build.sh)
+      * ``templates/change-document.md`` → ``.syspilot/templates/``
+
+   4. Apply intelligent merge for existing projects (SPEC_INST_FILE_OWNERSHIP)
+
+   **Section 4: Create Version Marker**
+
+   * Write ``.syspilot/version.json`` with version, date, and source
+     (see SPEC_INST_VERSION_MARKER)
+
+   **Section 5: Validate and Confirm**
 
    * Validate successful ``sphinx-build``
-   * Rename ``version.json`` to ``version_installed.json``
    * Confirm success
 
    **Works for both new and existing projects.**
@@ -142,6 +145,50 @@ Installation
    * Detects existing ``docs/conf.py`` and merges sphinx-needs config
    * Detects existing ``.github/`` content and merges safely
    * Prompts user for decisions on conflicts
+
+
+Version Tracking
+----------------
+
+.. spec:: Installed Version Marker
+   :id: SPEC_INST_VERSION_MARKER
+   :status: implemented
+   :links: REQ_INST_VERSION_MARKER, REQ_INST_VERSION_UPDATE
+   :tags: install, update, version
+
+   **Design:**
+   After installation, the Setup Agent stores a version marker in the
+   target project's ``.syspilot/`` directory.
+
+   **File:** ``.syspilot/version.json``
+
+   **Content:**
+
+   ::
+
+      {
+        "version": "0.1.0",
+        "installedAt": "2026-03-16",
+        "source": "https://github.com/OWNER/syspilot"
+      }
+
+   **Fields:**
+
+   * ``version``: Semantic version that was installed (from ``templates/version.json``)
+   * ``installedAt``: ISO date of installation or last update
+   * ``source``: GitHub repository URL (supports forks)
+
+   **Usage:**
+
+   * Update process compares ``version`` with ``templates/version.json`` on GitHub main
+   * No hash tracking — agent compares files directly when needed
+
+   **Rationale:**
+
+   * Minimal file, no overhead
+   * Sufficient for version comparison
+   * ``source`` field enables forks and custom repos
+   * ``.syspilot/`` directory serves as config home for future extensions
 
 
 File Ownership & Updates
@@ -156,9 +203,11 @@ File Ownership & Updates
    **Design:**
    Clear separation between syspilot core files and user content.
 
-   **Syspilot Core (with intelligent merge):**
+   **Syspilot Core (managed by setup agent):**
 
-   * ``.syspilot/**`` (entire folder) - replaceable
+   * ``.syspilot/version.json`` - version marker, replaced on update
+   * ``.syspilot/scripts/**`` - utility scripts, replaced on update
+   * ``.syspilot/templates/**`` - document templates, replaced on update
    * ``.github/agents/syspilot.*.agent.md`` - merge if modified
    * ``.github/prompts/syspilot.*.prompt.md`` - merge if modified
    * ``.github/skills/syspilot.*.skill.md`` - merge if modified
@@ -167,9 +216,9 @@ File Ownership & Updates
 
    When updating agent/prompt files, the setup agent SHALL:
 
-   1. **Check for modifications**: Compare target file with original syspilot version
-   2. **If unmodified**: Replace silently
-   3. **If modified**: Show diff to user and ask:
+   1. **Read both versions**: Local file and new file from GitHub
+   2. **If identical**: Skip silently
+   3. **If different**: Agent merges intelligently, asks user on conflicts:
 
       * **Overwrite**: Replace with new syspilot version (lose customizations)
       * **Keep**: Keep user's version (may miss new features)
@@ -194,27 +243,24 @@ File Ownership & Updates
 .. spec:: Update Process
    :id: SPEC_INST_UPDATE_PROCESS
    :status: implemented
-   :links: REQ_INST_VERSION_UPDATE, SPEC_INST_AUTO_DETECT, SPEC_INST_FILE_OWNERSHIP
+   :links: REQ_INST_VERSION_UPDATE, SPEC_INST_VERSION_MARKER, SPEC_INST_FILE_OWNERSHIP
    :tags: update, migration
 
    **Design:**
-   Update is agent-driven with backup and rollback support.
+   Update is agent-driven with curl from GitHub and intelligent merge.
+   Git serves as the backup mechanism — no separate backup/rollback needed.
 
    **Update Flow:**
 
-   **Step 0: Find Newest syspilot Version**
+   **Step 0: Check for Updates**
 
-   1. Run Find-SyspilotInstallation (SPEC_INST_AUTO_DETECT)
-   2. Log all found versions for transparency
-   3. Select newest version as source for update
-   4. Compare with currently installed version (``.syspilot/version.json``)
-   5. If found version <= installed version:
+   1. Fetch ``templates/version.json`` from GitHub main
+   2. Compare with local ``.syspilot/version.json``
+   3. If remote version > local version → proceed to Step 1
+   4. If remote version <= local version:
 
-      * Warn user: "Found version X.Y.Z is not newer than installed X.Y.Z"
-      * Suggest checking for latest release on GitHub
+      * Inform user: "Version X.Y.Z is current (remote: X.Y.Z)"
       * Abort update
-
-   6. If found version > installed version: Proceed to Step 1
 
    **Step 1: Detect Update Mode**
 
@@ -222,137 +268,26 @@ File Ownership & Updates
    2. Agent detects existing ``.syspilot/version.json`` → update mode
    3. Inform user of current and target versions
 
-   **Step 2: Backup and Update**
+   **Step 2: Fetch and Merge**
 
-   If newer version available (from Step 0):
+   1. Download all files from ``templates/`` on GitHub main
+   2. For each file, apply intelligent merge (SPEC_INST_FILE_OWNERSHIP):
 
-      a. **Backup**: Check for ``.syspilot_backup/`` → delete if exists
-      b. **Backup**: Rename ``.syspilot/`` → ``.syspilot_backup/``
-      c. **Download**: Fetch latest release ZIP from GitHub
-      d. **Extract**: Unpack to ``.syspilot/``
-      e. **Merge**: Copy agents/prompts/skills with intelligent merge (see SPEC_INST_FILE_OWNERSHIP)
-      f. **Validate**: Run ``sphinx-build`` to verify
-      g. **Success**: Delete ``.syspilot_backup/``
-      h. **Failure**: Restore ``.syspilot_backup/`` → ``.syspilot/``, inform user
+      * ``.syspilot/**`` files → replace directly
+      * Agent/prompt/skill files → compare and merge if modified
 
-   **GitHub Release Query:**
+   3. Update ``.syspilot/version.json`` with new version and date
 
-   ::
+   **Step 3: Validate**
 
-      # Agent uses fetch_webpage or terminal curl
-      curl -s https://api.github.com/repos/OWNER/syspilot/releases/latest
-
-   **Rollback on Failure:**
-
-   If any step fails after backup:
-
-   * Remove partial ``.syspilot/``
-   * Rename ``.syspilot_backup/`` back to ``.syspilot/``
-   * Inform user: "Update failed, rolled back to previous version"
-
-
-Auto-Detection
---------------
-
-.. spec:: syspilot Auto-Detection Algorithm
-   :id: SPEC_INST_AUTO_DETECT
-   :status: implemented
-   :links: REQ_INST_AUTO_DETECT
-   :tags: install, autodetect, powershell
-
-   **Design:**
-   PowerShell/Bash function that finds syspilot installation via version.json search
-   within the project directory only.
-
-   **Algorithm (PowerShell):**
-
-   ::
-
-      function Find-SyspilotInstallation {
-          # Search ONLY within the project directory (workspace root)
-          $projectRoot = Get-Location
-
-          $foundVersions = @()
-
-          # Find all version.json files recursively within project directory
-          $versionFiles = Get-ChildItem -Path $projectRoot -Filter "version.json" `
-                                        -Recurse -Depth 3 -ErrorAction SilentlyContinue
-
-          foreach ($file in $versionFiles) {
-              try {
-                  $content = Get-Content $file.FullName | ConvertFrom-Json
-                  $version = $content.version
-
-                  # Skip if not syspilot version format
-                  if ($version -notmatch '^(\d+)\.(\d+)\.(\d+)(-\w+(\.\d+)?)?$') {
-                      continue
-                  }
-
-                  $foundVersions += [PSCustomObject]@{
-                      Path = $file.Directory.FullName
-                      Version = $version
-                      File = $file.FullName
-                  }
-              } catch {
-                  # Skip invalid JSON
-                  continue
-              }
-          }
-
-          if ($foundVersions.Count -eq 0) {
-              Write-Host "No syspilot installation found in project directory: $projectRoot"
-              Write-Host ""
-              Write-Host "Would you like to download the latest version from GitHub?"
-              Write-Host "  The setup agent can fetch the latest release automatically."
-              return $null  # Agent handles GitHub download interactively
-          }
-
-          # Sort by version (newest first)
-          $sorted = $foundVersions | Sort-Object {
-              if ($_.Version -match '^(\d+)\.(\d+)\.(\d+)(-(\w+)\.?(\d+)?)?') {
-                  $major = [int]$matches[1]
-                  $minor = [int]$matches[2]
-                  $patch = [int]$matches[3]
-                  $prerelease = $matches[5]
-                  $prereleaseNum = if ($matches[6]) { [int]$matches[6] } else { 0 }
-                  return @($major, $minor, $patch, $(if ($prerelease) { 0 } else { 999 }), $prereleaseNum)
-              }
-          } -Descending
-
-          # Log all found versions
-          Write-Host "Found syspilot installations:"
-          $sorted | ForEach-Object {
-              Write-Host "  v$($_.Version) at $($_.Path)"
-          }
-
-          # Return newest
-          $newest = $sorted[0]
-          Write-Host "Selected newest: v$($newest.Version)" -ForegroundColor Green
-
-          return $newest.Path
-      }
-
-   **Bash Version:**
-
-   Equivalent logic in bash using find, jq, and sort.
-
-   **Edge Cases:**
-
-   1. **No version.json found**: Inform user, offer GitHub download
-   2. **Multiple identical versions**: Pick first found (arbitrary but consistent)
-   3. **Invalid JSON**: Skip file and continue search
-   4. **Non-syspilot version.json**: Skip (version format check)
-   5. **syspilot downloaded outside project**: Not found — GitHub fallback offered
+   * Run ``sphinx-build`` to verify
+   * Confirm success
 
    **Rationale:**
 
-   * Searches only within project directory — never escapes project root
-   * Works with release ZIP extracted into project directory
-   * Works with git clone within project directory
-   * Works with multiple versions side-by-side
-   * Always selects newest (important for updates)
-   * Transparent debugging (logs all found versions)
-   * Falls back to GitHub download when not found locally
+   * No backup/rollback mechanism needed — Git is the backup
+   * AI agent handles merge intelligently, no programmatic diff needed
+   * Simple and reliable
 
 
 Distribution
@@ -361,40 +296,45 @@ Distribution
 .. spec:: Release Structure
    :id: SPEC_INST_RELEASE_STRUCTURE
    :status: implemented
-   :links: REQ_INST_GITHUB_RELEASES, REQ_REL_GITHUB_PUBLISH
+   :links: REQ_INST_GITHUB_RELEASES, REQ_REL_GITHUB_PUBLISH, SPEC_INST_TEMPLATE_LAYOUT
    :tags: install, distribution, release
 
    **Design:**
-   syspilot releases are distributed via GitHub Releases, which automatically
-   creates .zip and .tar.gz archives of the repository at tagged commits.
+   syspilot releases correspond to the main branch. GitHub Releases
+   with tags provide version history and optional archive downloads.
 
    **Release Contents:**
 
    * Complete syspilot repository structure
-   * ``version.json`` with release version
-   * README with installation instructions
+   * ``templates/version.json`` with release version
+   * README with installation instructions (curl commands)
    * docs/releasenotes.md with release history
 
-   **Version Identification:**
+   **Primary Distribution Channel:**
 
-   * ``version.json`` at repository root contains release version
-   * After successful install: copied to project's ``.syspilot/version.json``
+   Users fetch files directly from GitHub main via curl/Invoke-WebRequest.
+   The ``templates/`` directory on main is always the current release.
 
-   **Directory Structure in Release Archive:**
+   **Directory Structure in Repository:**
 
    ::
 
-      syspilot-X.Y.Z/
+      syspilot/
       ├── .github/
-      │   ├── agents/       # Agent definitions (*.agent.md)
-      │   ├── prompts/      # Prompt files (*.prompt.md)
-      │   ├── skills/       # Skill files (*.skill.md)
+      │   ├── agents/       # syspilot's own installation (consumer)
+      │   ├── prompts/      # syspilot's own prompts
+      │   ├── skills/       # syspilot's own skills
       │   └── copilot-instructions.md
-      ├── scripts/          # Init and utility scripts
-      ├── templates/        # Document templates
+      ├── templates/        # Distribution source (PRODUCT)
+      │   ├── version.json  # Release version
+      │   ├── agents/       # Generic agent templates (*.agent.md)
+      │   ├── prompts/      # Generic prompt templates (*.prompt.md)
+      │   ├── skills/       # Generic skill templates (*.skill.md)
+      │   ├── scripts/      # Utility scripts
+      │   ├── sphinx/       # Build scripts
+      │   └── change-document.md
       ├── docs/             # Self-documentation (including releasenotes.md)
-      ├── version.json      # Release version
-      └── README.md         # Installation instructions
+      └── README.md         # Installation instructions (curl commands)
 
    **GitHub Release Mechanism:**
 
@@ -405,10 +345,103 @@ Distribution
 
    **Rationale:**
 
-   * ``.github/agents/`` is the standard location for GitHub Copilot agents
-   * Single source of truth - no duplication between ``agents/`` and ``.github/agents/``
-   * Works immediately after ``git clone`` or archive extraction without additional setup
-   * GitHub's automatic archiving ensures consistent distribution
+   * Main branch = current release, simplest possible distribution
+   * ``templates/`` is the complete release package
+   * curl from raw.githubusercontent.com works without GitHub API
+   * GitHub's automatic archiving provides optional ZIP/tar.gz downloads
+
+
+Template Distribution
+---------------------
+
+.. spec:: Template Directory Layout
+   :id: SPEC_INST_TEMPLATE_LAYOUT
+   :status: implemented
+   :links: REQ_INST_TEMPLATE_SOURCE, REQ_INST_IMPL_SKELETON, REQ_INST_PORTABLE
+   :tags: install, distribution, templates
+
+   **Design:**
+   The ``templates/`` directory is the single source for all files
+   distributed to target projects, including the release version.
+   Its structure mirrors the target project layout.
+
+   **Directory Structure:**
+
+   ::
+
+      templates/
+      ├── version.json                     # → .syspilot/version.json
+      ├── agents/                          # → .github/agents/
+      │   ├── syspilot.setup.agent.md
+      │   ├── syspilot.change.agent.md
+      │   ├── syspilot.implement.agent.md  # Skeleton with TODOs
+      │   ├── syspilot.verify.agent.md
+      │   ├── syspilot.mece.agent.md
+      │   ├── syspilot.trace.agent.md
+      │   ├── syspilot.memory.agent.md
+      │   └── syspilot.release.agent.md
+      ├── prompts/                         # → .github/prompts/
+      │   └── syspilot.*.prompt.md
+      ├── skills/                          # → .github/skills/
+      │   └── syspilot.ask-questions.skill.md
+      ├── scripts/                         # → .syspilot/scripts/
+      │   └── python/
+      │       └── get_need_links.py
+      ├── sphinx/                          # → docs/
+      │   ├── build.ps1
+      │   └── build.sh
+      └── change-document.md              # → .syspilot/templates/
+
+   **Mapping Rule:**
+   Each subdirectory in ``templates/`` maps to a specific location in the
+   target project. The Setup Agent uses this mapping when copying files.
+
+   **Skeleton vs Full Agents:**
+
+   * Most agents (change, verify, mece, trace, memory, setup) are
+     distributed as-is — they work at the specification level and are
+     inherently project-agnostic.
+   * The **implement agent** is a skeleton with TODO placeholders for
+     build commands, test commands, and language-specific patterns.
+   * The **release agent** may need minor project customization but
+     is mostly generic.
+
+   **Divergence from .github/:**
+
+   syspilot's own ``.github/agents/`` is a consumer installation.
+   It may contain project-specific customizations (e.g., Python/pytest
+   in the implement agent, Sphinx-specific commands). These divergences
+   are expected and correct — they demonstrate the customization path
+   that every target project follows.
+
+
+.. spec:: Release Self-Install Validation
+   :id: SPEC_INST_SELF_INSTALL
+   :status: implemented
+   :links: REQ_INST_TEMPLATE_SOURCE, REQ_REL_VALIDATION, SPEC_REL_VALIDATION_CHECKLIST, SPEC_INST_SETUP_AGENT
+   :tags: release, validation, self-install
+
+   **Design:**
+   During the release process, syspilot validates the distribution path by
+   installing from its own ``templates/`` directory into its ``.github/``
+   directory, simulating a fresh installation into a target project.
+
+   **Validation Steps:**
+
+   1. Run Setup Agent's copy logic using ``templates/`` as source
+   2. Verify all agent files are valid (parseable YAML frontmatter)
+   3. Verify the implement agent skeleton contains TODO placeholders
+      (not Python-specific commands)
+   4. Verify ``.syspilot/version.json`` is created with correct version
+   5. Verify sphinx-build succeeds with the installed configuration
+
+   **When:** Added to SPEC_REL_VALIDATION_CHECKLIST as an additional
+   validation category.
+
+   **Rationale:**
+   This guarantees that every release actually works when installed
+   into a "foreign" environment. syspilot dogfoods its own distribution
+   path, catching issues before users encounter them.
 
 
 Traceability

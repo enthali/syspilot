@@ -42,14 +42,14 @@ Requirements for the change analysis, implementation, and verification workflow.
    :status: implemented
    :priority: mandatory
    :tags: agent, implementation
-   :links: US_CHG_IMPLEMENT, REQ_CORE_SPHINX_NEEDS, REQ_CORE_TRACEABILITY, REQ_CHG_CHANGE_DOC
+   :links: US_CHG_IMPLEMENT, REQ_CORE_SPHINX_NEEDS, REQ_CORE_TRACEABILITY, REQ_CHG_CHANGE_DOC, REQ_DOC_SCOPE
 
    **Description:**
    syspilot SHALL provide an implement agent that:
 
    1. Reads the Change Document to identify affected SPECs
    2. Reads only the relevant SPEC sections as identified in the Change Document
-   3. Implements code, scripts, and agents according to these SPECs
+   3. Implements code, scripts, agents, and documentation according to these SPECs
    4. Writes tests that verify the implementation
    5. Maintains traceability via comments and references
 
@@ -88,6 +88,8 @@ Requirements for the change analysis, implementation, and verification workflow.
    * AC-2: Agent checks all acceptance criteria have tests
    * AC-3: Agent validates traceability (REQ → SPEC → Code → Test)
    * AC-4: Agent produces verification report with PASS/PARTIAL/FAIL
+   * AC-5: Agent SHALL save the verification report to ``docs/changes/val-<name>.md``
+     where ``<name>`` matches the corresponding Change Document name
 
 
 .. req:: Workflow Step Suggestions
@@ -95,7 +97,7 @@ Requirements for the change analysis, implementation, and verification workflow.
    :status: implemented
    :priority: high
    :tags: agent, handoffs, workflow
-   :links: US_WF_CHANGE, US_CHG_ANALYZE, US_CHG_IMPLEMENT, US_CHG_VERIFY, US_TRACE_MECE, US_TRACE_VERTICAL, REQ_CHG_ANALYSIS_AGENT, REQ_CHG_IMPL_AGENT, REQ_CHG_VERIFY_AGENT, REQ_TRACE_MECE, REQ_TRACE_VERTICAL
+   :links: US_WF_CHANGE, US_CHG_ANALYZE, US_CHG_IMPLEMENT, US_CHG_VERIFY, US_DOC_MAINTAIN, US_TRACE_MECE, US_TRACE_VERTICAL, REQ_CHG_ANALYSIS_AGENT, REQ_CHG_IMPL_AGENT, REQ_CHG_VERIFY_AGENT, REQ_TRACE_MECE, REQ_TRACE_VERTICAL, REQ_WF_CHANGE_SEQUENCE
 
    **Description:**
    syspilot SHALL suggest appropriate next workflow steps after agent completion.
@@ -107,9 +109,9 @@ Requirements for the change analysis, implementation, and verification workflow.
    **Acceptance Criteria:**
 
    * AC-1: After agent execution, VS Code displays handoff suggestions in UI
-   * AC-2: Main workflow chain (change→implement→verify) has directional handoffs
+   * AC-2: Main workflow chain (change→implement→verify→memory) has directional handoffs
    * AC-3: Analysis agents (mece/trace) have bidirectional handoffs
-   * AC-4: Memory agent is suggested after verify or on-demand
+   * AC-4: Memory agent is suggested after verify
    * AC-5: Each handoff includes a default prompt for the target agent
 
 
@@ -160,7 +162,8 @@ Iterative Change Processing
    * AC-2: Each level's work recorded in dedicated section
    * AC-3: Decisions and conflicts documented
    * AC-4: Navigation between levels logged
-   * AC-5: Document deleted after merge (preserved in Git history)
+   * AC-5: Change Document and validation report SHALL be moved to
+     ``docs/changes/archive/`` after merge
 
 
 .. req:: Horizontal MECE Check per Level
@@ -168,7 +171,7 @@ Iterative Change Processing
    :status: implemented
    :priority: high
    :tags: agent, change, mece
-   :links: US_CHG_ITERATIVE, US_TRACE_MECE
+   :links: US_CHG_ITERATIVE, US_TRACE_MECE, REQ_TRACE_MECE
 
    **Description:**
    The Change Agent SHALL perform horizontal consistency check

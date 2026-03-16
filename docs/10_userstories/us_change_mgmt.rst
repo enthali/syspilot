@@ -58,6 +58,8 @@ Stories covering the full change lifecycle: analyze, implement, verify, recover.
    1. Given implementation is done, When verify agent runs, Then it checks all ACs
    2. Given a requirement has no test, When agent verifies, Then it reports gap
    3. Given all checks pass, When agent finishes, Then I get PASS report
+   4. Given verification completes, When the report is generated, Then the report
+      is saved alongside the Change Document for auditable review
 
 
 .. story:: Recover from Agent Failures
@@ -97,7 +99,8 @@ Stories covering the full change lifecycle: analyze, implement, verify, recover.
    3. Given I'm at REQ level, When links are followed, Then impacted REQs are found automatically
    4. Given I'm at DESIGN level, When implementation isn't feasible, Then I can go back to REQ
    5. Given all levels complete, When agent finishes, Then Change Document has full history
-   6. Given Change is merged, When cleanup runs, Then Change Document is deleted (preserved in Git)
+   6. Given Change is merged, When cleanup runs, Then Change Document and validation
+      report are moved to archive (browsable without Git)
 
 
 Traceability

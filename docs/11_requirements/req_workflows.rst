@@ -27,8 +27,10 @@ Requirements for the end-to-end workflows that orchestrate syspilot agents.
    **Rationale:**
    A defined sequence ensures consistent change processing. Each step
    produces output that the next step consumes, creating a pipeline
-   with clear handoff points. The exit point after @memory supports
-   iterative development (multiple changes) before bundling into a release.
+   with clear handoff points. Documentation is maintained by the implement
+   agent as part of its implementation artifacts. The exit point after
+   @memory supports iterative development (multiple changes) before
+   bundling into a release.
 
    **Acceptance Criteria:**
 
@@ -73,7 +75,7 @@ Requirements for the end-to-end workflows that orchestrate syspilot agents.
    :status: implemented
    :priority: mandatory
    :tags: workflow, release, orchestration
-   :links: US_WF_RELEASE
+   :links: US_WF_RELEASE, REQ_REL_SEMVER, REQ_REL_VALIDATION, REQ_REL_GITHUB_PUBLISH
 
    **Description:**
    syspilot SHALL define a release workflow that bundles multiple changes:

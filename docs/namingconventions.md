@@ -40,14 +40,20 @@ self-documenting, grep-friendly, and eliminate the "insert pain" of numbered seq
 | `INST` | Installation & Setup | US, REQ |
 | `DX` | Developer Experience | US, REQ |
 | `REL` | Release | US, REQ |
+| `DOC` | Documentation | US, REQ |
 
 Level 2 (Design Specs) uses **component-based** themes instead of domain themes:
 
 | Abbreviation | Full Name | Level |
 |-------------|-----------|-------|
 | `AGENT` | Agent Architecture | SPEC |
-| `DOC` | Documentation Structure | SPEC |
-| `INST` | Installation Scripts | SPEC |
+| `CHG` | Change Agent | SPEC |
+| `IMPL` | Implement Agent | SPEC |
+| `VERIFY` | Verify Agent | SPEC |
+| `TRACE` | Traceability (MECE + Trace Agents) | SPEC |
+| `MEM` | Memory Agent | SPEC |
+| `DOC` | Documentation (Structure, Agent, Scope) | SPEC |
+| `INST` | Installation & Setup | SPEC |
 | `REL` | Release Process | SPEC |
 
 ### Examples by Level
@@ -59,6 +65,7 @@ US_CHG_ANALYZE              # Change Mgmt: analyze changes
 US_INST_BOOTSTRAP           # Installation: environment bootstrap
 US_REL_CREATE               # Release: create a release
 US_DX_PROJECT_MEMORY        # Dev Experience: maintain project memory
+US_DOC_MAINTAIN             # Documentation: maintain project documentation
 ```
 
 **Level 1 — Requirements:**
@@ -68,13 +75,14 @@ REQ_CHG_ANALYSIS_AGENT      # Change Mgmt: change analysis agent
 REQ_INST_AUTO_SETUP         # Installation: automatic environment setup
 REQ_REL_SEMVER              # Release: semantic versioning
 REQ_TRACE_MECE              # Traceability: MECE review
+REQ_DOC_AGENT               # Documentation: documentation agent
 ```
 
 **Level 2 — Design Specs:**
 ```
 SPEC_AGENT_WORKFLOW         # Agent component: four-agent workflow
 SPEC_DOC_STRUCTURE          # Documentation component: sphinx-needs structure
-SPEC_INST_INIT_SCRIPTS      # Installation component: init scripts
+SPEC_INST_CURL_BOOTSTRAP    # Installation component: curl-based bootstrap
 SPEC_REL_VERSION_FORMAT     # Release component: version format
 ```
 

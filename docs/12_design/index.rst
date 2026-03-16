@@ -15,6 +15,8 @@ This section contains design specifications following Sphinx-Needs methodology.
    spec_memory
    spec_setup
    spec_doc_structure
+   spec_doc_scope_template
+   spec_doc_scope
    spec_release
 
 

@@ -28,13 +28,16 @@ syspilot/
 │   ├── skills/                 # Shared skill files (*.skill.md)
 │   └── copilot-instructions.md # This file
 ├── scripts/
-│   ├── powershell/init.ps1     # Bootstrap script (Windows)
-│   ├── bash/init.sh            # Bootstrap script (Linux/Mac)
 │   └── python/
-│       └── get_need_links.py   # Link discovery utility
+│       └── get_need_links.py   # Link discovery utility (consumer copy)
 ├── templates/
-│   ├── change-document.md      # Change Document template
-│   └── sphinx/                 # Sphinx build script templates
+│   ├── version.json            # Release version (part of distribution)
+│   ├── agents/                 # Distributable agents (product)
+│   ├── prompts/                # Distributable prompts
+│   ├── skills/                 # Distributable skills
+│   ├── scripts/python/         # Distributable scripts
+│   ├── sphinx/                 # Sphinx build script templates
+│   └── change-document.md      # Change Document template
 ├── docs/                        # Self-documentation (dogfooding)
 │   ├── methodology.md          # File organization & methodology guide
 │   ├── namingconventions.md    # ID naming conventions
@@ -44,10 +47,11 @@ syspilot/
 │   ├── 12_design/              # Level 2: HOW (Design Specs)
 │   ├── 31_traceability/        # Traceability matrices
 │   ├── 40_process/             # A-SPICE process alignment
-│   ├── changes/                # Change Documents (deleted after release)
+│   ├── changes/                # Change Documents (archived after merge)
+│   │   └── archive/            # Archived change docs & validation reports
 │   ├── conf.py                 # Sphinx configuration
 │   └── requirements.txt        # Python dependencies for Sphinx
-└── version.json                # Release version info
+└── README.md                   # Installation instructions (curl commands)
 ```
 
 ## Specification Hierarchy
@@ -95,6 +99,7 @@ Level 2: Design Specs (HOW)     docs/12_design/         SPEC_*
 | `INST` | Installation & Setup | US, REQ |
 | `DX` | Developer Experience | US, REQ |
 | `REL` | Release | US, REQ |
+| `DOC` | Documentation | US, REQ |
 
 Level 2 uses component-based themes: `AGENT`, `CHG`, `IMPL`, `VERIFY`, `MECE`, `TRACE`, `MEM`, `DOC`, `INST`, `REL`.
 
@@ -122,14 +127,14 @@ syspilot uses itself for development. Three core workflows:
 2. **@syspilot.implement** → Execute approved changes from Change Document
 3. **@syspilot.verify** → Validate implementation against Change Document
 4. **@syspilot.memory** → Update copilot-instructions.md
-5. **Next** → Either start a new change (@change) or proceed to release (@release)
+6. **Next** → Either start a new change (@change) or proceed to release (@release)
 
 **Agent Handoff Chain:**
 
 ```
 change → implement → verify → memory → change / release
-    ↑                            │
-    └────────────────────────────┘ (next change)
+    ↑                                │
+    └────────────────────────────────┘ (next change)
 ```
 
 ### Quality Workflow (independent, any time)
@@ -157,6 +162,7 @@ Levels 0–1 organize by **problem domain** (stakeholder themes). Level 2 organi
 - Requirements: `req_<theme>.rst` (mirrors matching `us_` file)
 - Design Specs: `spec_<component>.rst` (one per technical component)
 - Change Documents: `docs/changes/<name>.md`
+- Validation Reports: `docs/changes/val-<name>.md`
 
 ### Sphinx-Needs Authoring
 
@@ -173,4 +179,4 @@ read and follow `.github/skills/syspilot.ask-questions.skill.md`.
 
 ---
 
-*syspilot v0.1.0 - Last updated: 2026-02-11*
+*syspilot v0.1.0 - Last updated: 2026-03-16*

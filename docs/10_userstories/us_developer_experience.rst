@@ -11,6 +11,7 @@ Stories covering developer experience, onboarding, and process ergonomics.
    :status: implemented
    :priority: high
    :tags: agent, memory
+   :links: US_CORE_SPEC_AS_CODE
 
    **As a** developer,
    **I want to** have project knowledge automatically maintained,
@@ -28,6 +29,7 @@ Stories covering developer experience, onboarding, and process ergonomics.
    :status: implemented
    :priority: high
    :tags: agent, ux, developer-experience
+   :links: US_CORE_SPEC_AS_CODE
 
    **As a** developer,
    **I want to** have agents present choices using VS Code's native selection menus

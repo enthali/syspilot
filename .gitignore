@@ -2,7 +2,7 @@
 
 # ======================================
 # Dogfooding: syspilot uses itself
-# These are created by our own init.ps1
+# .syspilot/ is created by setup agent
 # ======================================
 .syspilot/
 .vscode/

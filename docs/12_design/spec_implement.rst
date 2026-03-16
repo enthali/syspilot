@@ -19,7 +19,7 @@ Design specifications for the Implement Agent — code implementation with trace
    **Check Sequence:**
 
    1. Run ``sphinx-build --version`` (or ``uv run sphinx-build --version``)
-   2. If NOT found → run init script to bootstrap environment
+   2. If NOT found → inform user to run ``@syspilot.setup`` to bootstrap environment
    3. If found → proceed with implementation
 
    **Rationale:** Cloud environments or fresh checkouts may lack dependencies.
@@ -32,7 +32,7 @@ Design specifications for the Implement Agent — code implementation with trace
 .. spec:: Change Document Consumption
    :id: SPEC_IMPL_CHANGE_DOC_INPUT
    :status: implemented
-   :links: REQ_CHG_IMPL_AGENT, REQ_CHG_CHANGE_DOC
+   :links: REQ_CHG_IMPL_AGENT, REQ_CHG_CHANGE_DOC, SPEC_CHG_CHANGE_DOCUMENT
    :tags: implement, input, change-document
 
    **Design:**
@@ -68,7 +68,7 @@ Design specifications for the Implement Agent — code implementation with trace
 .. spec:: Implementation Quality Gates
    :id: SPEC_IMPL_QUALITY_GATES
    :status: implemented
-   :links: REQ_CHG_IMPL_AGENT
+   :links: REQ_CHG_IMPL_AGENT, REQ_REL_DOC_BUILD
    :tags: implement, quality, validation
 
    **Design:**

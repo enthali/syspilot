@@ -10,7 +10,7 @@ Design specifications for the Memory Agent — project memory maintenance.
 .. spec:: Memory Update Process
    :id: SPEC_MEM_UPDATE_PROCESS
    :status: implemented
-   :links: REQ_DX_MEMORY_AGENT
+   :links: REQ_DX_MEMORY_AGENT, SPEC_AGENT_WORKFLOW
    :tags: memory, agent, workflow
 
    **Design:**

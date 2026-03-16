@@ -118,11 +118,23 @@ Design specifications for the Verify Agent — implementation verification and s
    Each issue includes: Severity (High/Medium/Low), Category, Description,
    Expected vs Actual, and Recommendation.
 
+   **Report Persistence:**
+
+   After generating the verification report in the chat, the Verify Agent
+   SHALL save it to ``docs/changes/val-<name>.md`` where ``<name>`` is
+   derived from the Change Document filename.
+
+   **Derivation Rule:**
+   If the Change Document is ``docs/changes/template-first.md``, the
+   validation report is ``docs/changes/val-template-first.md``.
+
+   **Content:** The saved file is identical to the report shown in the chat.
+
 
 .. spec:: Verification Status Lifecycle
    :id: SPEC_VERIFY_STATUS_LIFECYCLE
    :status: implemented
-   :links: REQ_CHG_VERIFY_AGENT, REQ_CHG_FINAL_CHECK
+   :links: REQ_CHG_VERIFY_AGENT, REQ_CHG_FINAL_CHECK, SPEC_CHG_ATOMIC_UPDATE
    :tags: verify, status, lifecycle
 
    **Design:**

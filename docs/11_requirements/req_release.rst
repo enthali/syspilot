@@ -59,7 +59,7 @@ This document contains requirements for the syspilot release process.
    :status: approved
    :priority: mandatory
    :tags: release, documentation
-   :links: US_REL_CREATE
+   :links: US_REL_CREATE, REQ_DOC_RELEASE_NOTES
 
    **Description:**
    syspilot SHALL generate release notes for each version.
@@ -105,7 +105,7 @@ This document contains requirements for the syspilot release process.
    :status: implemented
    :priority: mandatory
    :tags: release, validation, documentation
-   :links: US_REL_VALIDATE
+   :links: US_REL_VALIDATE, REQ_CORE_SPHINX_NEEDS
 
    **Description:**
    syspilot SHALL verify documentation builds successfully before release.

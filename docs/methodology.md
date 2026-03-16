@@ -49,14 +49,14 @@ User Stories group by **domain/theme** — areas of stakeholder concern or value
 
 | File | Scope |
 |------|-------|
-| `us_installation.rst` | Bootstrap, setup, init scripts |
-| `us_release.rst` | Versioning, update, rollback |
+| `us_core.rst` | Core methodology, spec-as-code |
+| `us_workflows.rst` | End-to-end workflow orchestration |
 | `us_change_mgmt.rst` | Change workflow, agents, analysis |
 | `us_traceability.rst` | Link discovery, MECE, verification |
-| `us_process.rst` | Process methodology |
+| `us_installation.rst` | Bootstrap, setup, init scripts |
+| `us_release.rst` | Versioning, update, rollback |
 | `us_developer_experience.rst` | DX, onboarding, ergonomics |
-| `us_integration.rst` | CI/CD, external tool integration |
-| `us_security.rst` | Access control, credentials |
+| `us_documentation.rst` | Documentation maintenance |
 
 **Guideline:** When identifying themes, ask *"What value does the user get?"* not
 *"What component does this touch?"*
@@ -79,11 +79,14 @@ Requirements files have a **1:1 correspondence** with User Story files.
 **Example mapping:**
 
 ```
-us_installation.rst     →  req_installation.rst
-us_release.rst          →  req_release.rst
-us_change_mgmt.rst      →  req_change_mgmt.rst
-us_traceability.rst     →  req_traceability.rst
-us_process.rst          →  req_process.rst
+us_core.rst              →  req_core.rst
+us_workflows.rst         →  req_workflows.rst
+us_change_mgmt.rst       →  req_change_mgmt.rst
+us_traceability.rst      →  req_traceability.rst
+us_installation.rst      →  req_installation.rst
+us_release.rst           →  req_release.rst
+us_developer_experience.rst →  req_developer_experience.rst
+us_documentation.rst     →  req_documentation.rst
 ```
 
 For cases where a single US file produces very few REQs (2–3), it is acceptable to
@@ -111,6 +114,8 @@ Design Specs shift from problem domain to **solution domain**. They group by
 | `spec_memory.rst` | Memory Agent (update process, content categories) |
 | `spec_setup.rst` | Setup Agent (init, ownership, update, auto-detect) |
 | `spec_doc_structure.rst` | sphinx-needs documentation structure |
+| `spec_doc_agent.rst` | Documentation Agent (process, template scope) |
+| `spec_doc_scope.rst` | Documentation scope (project-specific, chapter structures) |
 | `spec_release.rst` | Release pipeline (versioning, CI/CD, GitHub Pages) |
 
 **Why the shift?** At this level we describe *how the system is built*. A single
@@ -139,18 +144,24 @@ Splitting specifications into multiple files has **no impact** on traceability. 
 docs/
 ├── 10_userstories/             # Level 0: WHY
 │   ├── index.rst
-│   ├── us_installation.rst     # Theme: setup & bootstrap
-│   ├── us_release.rst          # Theme: versioning & updates
+│   ├── us_core.rst             # Theme: core methodology
+│   ├── us_workflows.rst        # Theme: workflow orchestration
 │   ├── us_change_mgmt.rst      # Theme: change workflow
 │   ├── us_traceability.rst     # Theme: tracing & verification
-│   └── us_process.rst          # Theme: process alignment
+│   ├── us_installation.rst     # Theme: setup & bootstrap
+│   ├── us_release.rst          # Theme: versioning & updates
+│   ├── us_developer_experience.rst # Theme: DX & ergonomics
+│   └── us_documentation.rst    # Theme: documentation maintenance
 ├── 11_requirements/            # Level 1: WHAT (mirrors Level 0)
 │   ├── index.rst
-│   ├── req_installation.rst    # REQs for us_installation
-│   ├── req_release.rst         # REQs for us_release
+│   ├── req_core.rst            # REQs for us_core
+│   ├── req_workflows.rst       # REQs for us_workflows
 │   ├── req_change_mgmt.rst     # REQs for us_change_mgmt
 │   ├── req_traceability.rst    # REQs for us_traceability
-│   └── req_process.rst         # REQs for us_process
+│   ├── req_installation.rst    # REQs for us_installation
+│   ├── req_release.rst         # REQs for us_release
+│   ├── req_developer_experience.rst # REQs for us_developer_experience
+│   └── req_documentation.rst   # REQs for us_documentation
 ├── 12_design/                  # Level 2: HOW (mirrors architecture)
 │   ├── index.rst
 │   ├── spec_agent_framework.rst # Shared agent workflow & prompts
@@ -161,6 +172,8 @@ docs/
 │   ├── spec_memory.rst          # Memory Agent
 │   ├── spec_setup.rst           # Setup Agent (init, update)
 │   ├── spec_doc_structure.rst   # Documentation structure
+│   ├── spec_doc_agent.rst       # Doc Agent (process, template scope)
+│   ├── spec_doc_scope.rst       # Doc scope (project-specific)
 │   └── spec_release.rst         # Release pipeline
 ```
 

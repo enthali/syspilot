@@ -73,7 +73,8 @@ Design specifications for the Change Agent — iterative level-based change anal
    2. **Populate** — Copy from ``templates/change-document.md``
    3. **Update** — Record agreements immediately as they are reached
    4. **Simplify** — After final approval, reduce to ID/title summary
-   5. **Delete** — After merge (preserved in Git history)
+   5. **Archive** — After merge, move Change Document and validation report
+      to ``docs/changes/archive/``
 
    **Location:** ``docs/changes/<name>.md``
 

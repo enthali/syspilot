@@ -16,19 +16,24 @@ The result? **O(affected), not O(total).** That's what makes it scale.
 Getting Started
 ---------------
 
-**1. Download & extract** the `latest release <https://github.com/enthali/syspilot/releases>`_.
+**1. Download the setup agent** into your project:
 
-**2. Run the init script** from your project directory:
+.. code-block:: bash
+
+   # Linux / Mac
+   mkdir -p .github/agents && curl -fsSL \
+     "https://raw.githubusercontent.com/enthali/syspilot/main/templates/agents/syspilot.setup.agent.md" \
+     -o .github/agents/syspilot.setup.agent.md
 
 .. code-block:: powershell
 
-   # Windows
-   C:\path\to\syspilot\scripts\powershell\init.ps1
+   # Windows (PowerShell)
+   New-Item -ItemType Directory -Force -Path .github/agents | Out-Null
+   Invoke-WebRequest `
+     -Uri "https://raw.githubusercontent.com/enthali/syspilot/main/templates/agents/syspilot.setup.agent.md" `
+     -OutFile ".github/agents/syspilot.setup.agent.md"
 
-   # Linux / Mac
-   /path/to/syspilot/scripts/bash/init.sh
-
-**3. Open VS Code Copilot Chat** and type ``@syspilot.setup`` — the agent does the rest.
+**2. Open VS Code Copilot Chat** and type ``@syspilot.setup`` — the agent does the rest.
 
 That's it. Dependencies, config, validation — all handled automatically.
 
@@ -51,7 +56,7 @@ elements — then hands that focused context to the AI agent. No guessing, no sc
 Your AI Team
 ------------
 
-Seven agents, each with a clear job:
+Nine agents, each with a clear job:
 
 .. list-table::
    :header-rows: 1
@@ -65,6 +70,8 @@ Seven agents, each with a clear job:
      - Executes approved changes with full traceability
    * - ``@syspilot.verify``
      - Checks implementation against the Change Document
+   * - ``@syspilot.memory``
+     - Keeps project memory (copilot-instructions.md) current
    * - ``@syspilot.mece``
      - Finds gaps and redundancies in your specs (one level at a time)
    * - ``@syspilot.trace``
@@ -74,7 +81,7 @@ Seven agents, each with a clear job:
    * - ``@syspilot.setup``
      - Installs or updates syspilot in your project
 
-The typical workflow: **change** → review → **implement** → **verify**. Done.
+The typical workflow: **change** → **implement** → **verify** → **memory**. Done.
 
 
 FAQ

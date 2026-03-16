@@ -240,8 +240,8 @@ syspilot currently covers key A-SPICE process areas:
      - **implement** (code + IMPL_*)
    * - **SWE.4**
      - Software Unit Verification
-     - ✅ Full
-     - **implement** (TEST_*), **verify** (validation)
+     - ⏳ Partial
+     - **implement** (TEST_*), **verify** (validation) (agent based static analysis, no actual test execution yet)
    * - **SWE.5**
      - Software Integration & Integration Test
      - ⏳ Partial
