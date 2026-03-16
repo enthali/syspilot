@@ -8,7 +8,7 @@ syspilot is a requirements engineering toolkit that uses **sphinx-needs traceabi
 
 **Key Insight**: AI agents need focused context, not the entire codebase. syspilot achieves O(affected) not O(total) complexity.
 
-**Version**: 0.1.0
+**Version**: 0.2.1
 
 ## Tech Stack
 
@@ -179,4 +179,4 @@ read and follow `.github/skills/syspilot.ask-questions.skill.md`.
 
 ---
 
-*syspilot v0.1.0 - Last updated: 2026-03-16*
+*syspilot v0.2.1 - Last updated: 2026-03-16*

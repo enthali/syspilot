@@ -1,5 +1,20 @@
 # syspilot Release Notes
 
+## v0.2.1 - 2026-03-16
+
+### Summary
+Internal improvement to the Implement Agent workflow. Adds a systematic Acceptance Criteria completeness check between Code Implementation and Quality Gates, preventing implementation gaps from reaching the Verify Agent. Based on real-world findings from Issue #4.
+
+### 🔧 Internal Changes
+
+- **Implementation Completeness Check** (US_CHG_IMPLEMENT, REQ_CHG_IMPL_AGENT AC-7)
+  - New Step 4 in Implement Agent: AC-by-AC verification before quality gates (SPEC_IMPL_COMPLETENESS_CHECK)
+  - Updated Quality Gate Workflow with completeness check prerequisite (SPEC_IMPL_QUALITY_GATES)
+  - Common gap detection: modified REQs with new ACs, multi-condition specs, cross-component integration
+  - Applied to both active agent (`.github/agents/`) and distributable template (`templates/agents/`)
+
+---
+
 ## v0.2.0 - 2026-03-16
 
 ### Summary
