@@ -1,5 +1,57 @@
 # syspilot Release Notes
 
+## v0.2.0 - 2026-03-16
+
+### Summary
+Major architecture update introducing template-first distribution, curl-based installation, and documentation-as-implementation-artifact. The `templates/` directory is now the single source for all distributed files, replacing the previous auto-detect + init-script approach with a simple curl/Invoke-WebRequest bootstrap. Documentation maintenance is integrated into the implement and setup agents via per-document chapter structure SPECs. Comprehensive MECE quality review across all three specification levels.
+
+### ✨ New Features
+
+- **Template-First Architecture** (US_INST_AGNOSTIC, US_INST_CROSS_PROJECT, REQ_INST_TEMPLATE_SOURCE)
+  - `templates/` directory as single source for distribution (SPEC_INST_TEMPLATE_LAYOUT)
+  - `.github/` is consumer installation, may diverge from templates
+  - Language-agnostic skeleton implement agent with TODO placeholders (REQ_INST_IMPL_SKELETON)
+  - Self-install validation during release (SPEC_INST_SELF_INSTALL)
+  - 8 agents, 8 prompts, 1 skill, 1 script distributed via templates
+
+- **Curl-Based Setup** (US_INST_BOOTSTRAP, REQ_INST_AUTO_SETUP, REQ_INST_NEW_PROJECT)
+  - Single curl command downloads setup agent from GitHub main (SPEC_INST_CURL_BOOTSTRAP)
+  - Setup agent fetches all files from `templates/` via GitHub API (SPEC_INST_SETUP_AGENT)
+  - Intelligent AI-driven merge for updates (SPEC_INST_FILE_OWNERSHIP)
+  - Version tracking via `.syspilot/version.json` (SPEC_INST_VERSION_MARKER)
+  - Init scripts removed — no local syspilot repo needed
+
+- **Documentation Scope** (US_DOC_MAINTAIN, REQ_DOC_SCOPE)
+  - Documentation as implementation artifact, not a separate workflow step
+  - Per-document requirements: REQ_DOC_README, REQ_DOC_METHODOLOGY, REQ_DOC_NAMING, REQ_DOC_RELEASE_NOTES, REQ_DOC_PROCESS, REQ_DOC_INDEX
+  - Per-document chapter structure SPECs (SPEC_DOC_*_STRUCTURE)
+  - Template documentation scope for new projects (SPEC_DOC_SCOPE_TEMPLATE)
+
+- **Verification Report Persistence** (US_CHG_VERIFY, REQ_CHG_VERIFY_AGENT)
+  - Verification reports saved as `docs/changes/val-<name>.md` (SPEC_VERIFY_REPORT)
+  - Change Documents archived after merge to `docs/changes/archive/`
+
+### 🔧 Internal Changes
+
+- **MECE Quality Review — all 3 levels**
+  - US level: Remove stale doc agent references, add 4 missing links
+  - REQ level: Scope clarity (release notes generation vs structure, dependency declaration vs automation), documentation as implementation artifact, 12 horizontal links added
+  - SPEC level: Stale doc agent reference fixed, 10 cross-links added, `spec_doc_agent.rst` renamed to `spec_doc_scope_template.rst`
+
+- **4-step workflow** (change → implement → verify → memory)
+  - Doc agent removed from workflow chain
+  - Documentation maintained by implement agent guided by chapter structure SPECs
+
+### 📊 Specification Counts
+
+| Level | Count | Status |
+|-------|-------|--------|
+| User Stories | 24 | 23 implemented, 1 draft |
+| Requirements | 47 | 46 implemented, 1 approved |
+| Design Specs | 47 | 45 implemented, 2 approved |
+
+---
+
 ## v0.1.0 - 2026-02-11
 
 ### Summary
