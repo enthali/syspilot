@@ -41,12 +41,12 @@ jobs:
       
       - name: Validate version.json
         run: |
-          if [ ! -f version.json ]; then
-            echo "ERROR: version.json not found"
+          if [ ! -f templates/version.json ]; then
+            echo "ERROR: templates/version.json not found"
             exit 1
           fi
           
-          VERSION=$(jq -r .version version.json)
+          VERSION=$(jq -r .version templates/version.json)
           TAG="${{ steps.tag_version.outputs.version }}"
           
           echo "version.json: $VERSION"
@@ -180,7 +180,7 @@ jobs:
           draft: false
           prerelease: ${{ contains(github.ref, '-alpha') || contains(github.ref, '-beta') || contains(github.ref, '-rc') }}
           files: |
-            version.json
+            templates/version.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
