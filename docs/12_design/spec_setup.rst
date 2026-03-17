@@ -71,28 +71,60 @@ Installation
 
    **Section 2: Check Dependencies (Interactive)**
 
-   The setup agent guides the user through installing required dependencies:
+   The setup agent checks whether sphinx-needs is available before
+   offering to install:
 
    1. **Check Python**: Verify ``python --version`` available
    2. **Check pip/uv**: Verify package manager available
-   3. **Inform user** about what will be installed:
+   3. **Detect sphinx-needs availability**:
 
       ::
 
-         Required dependencies:
-         - sphinx >= 7.0.0 (documentation generator)
-         - sphinx-needs >= 2.0.0 (requirements traceability)
-         - furo >= 2024.0.0 (documentation theme)
-         - myst-parser >= 2.0.0 (Markdown support)
+         python -c "import sphinx_needs; print(sphinx_needs.__version__)"
+         sphinx-build --version
 
-         Optional (for diagrams):
-         - graphviz (Python package + system tool)
+      * If both succeed → sphinx-needs is available; skip to step 6 (Validate):
 
-   4. **Install with user confirmation**:
+        ::
+
+           ✅ sphinx-needs vX.Y.Z detected — skipping installation.
+
+      * If either fails → sphinx-needs is NOT available; proceed to step 4.
+
+   4. **Ask user** (only if sphinx-needs is NOT detected):
 
       ::
 
-         pip install sphinx sphinx-needs furo myst-parser
+         sphinx-needs was not detected. How would you like to proceed?
+
+         A) Install via pip/uv (standard install)
+         B) Use custom mechanism — I will confirm availability manually
+         C) Skip (build will be broken until sphinx-needs is available)
+
+      * **Option A**: Install with user confirmation:
+
+        ::
+
+           uv pip install sphinx sphinx-needs furo myst-parser
+           # or
+           pip install sphinx sphinx-needs furo myst-parser
+
+      * **Option B**: Prompt user:
+
+        ::
+
+           Please ensure sphinx-needs is accessible in your current
+           Python environment (e.g. activate your venv, run your
+           custom script), then confirm to continue.
+
+        Wait for user confirmation, then proceed.
+
+      * **Option C**: Warn and continue:
+
+        ::
+
+           ⚠️ Proceeding without sphinx-needs. Sphinx build will
+           fail until sphinx-needs is available.
 
    5. **Graphviz (optional)**:
 

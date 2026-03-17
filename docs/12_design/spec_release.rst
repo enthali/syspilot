@@ -371,100 +371,50 @@ This document contains design specifications for the syspilot release process.
    4. Wait for first release to create gh-pages branch
 
 
-.. spec:: Release Agent & Automation
+.. spec:: Release Agent Template
    :id: SPEC_REL_AGENT
    :status: implemented
-   :links: REQ_REL_NOTES, REQ_REL_PROCESS_DOC
-   :tags: release, automation, agent
+   :links: REQ_REL_PROCESS_DOC, REQ_REL_NOTES, REQ_CHG_CHANGE_DOC
+   :tags: release, agent, template
 
    **Design:**
-   Release agent guides maintainer through release process interactively.
+   The release agent is a short, generic template. It does NOT prescribe
+   individual release steps — LLMs know standard release procedures.
+   Instead, it documents project-specific **design decisions**.
 
-   **Agent Definition:** ``.github/agents/syspilot.release.agent.md``
+   **Agent File:** ``.github/agents/syspilot.release.agent.md``
 
-   **Agent Responsibilities:**
+   **Structure:**
 
-   1. **Preparation Phase:**
+   1. **Purpose** — One-liner: guide maintainer through releases
+   2. **Release Decisions** — Project-specific config (see below)
+   3. **Constraints** — What the agent must NOT do (e.g., no force-push)
 
-      * List merged feature branches since last release
-      * Identify Change Documents from merged branches
-      * Ask maintainer: "What type of release? (major/minor/patch)"
+   **Release Decisions Section:**
 
-   2. **Release Notes Generation:**
+   Embedded in the agent file as a structured block:
 
-      * Read Change Documents
-      * Extract summaries, new features, bug fixes, breaking changes
-      * Generate release note entry for docs/releasenotes.md
-      * Show preview to maintainer for approval
-      * Commit: "chore: add release notes for vX.Y.Z"
+   * **Version file**: Path and format (e.g., ``version.json``, ``pyproject.toml``)
+   * **Change doc policy**: Archive location (e.g., ``docs/changes/archive/``)
+   * **Validation commands**: Build/test commands to run before release
+   * **Release notes**: Location and format
+   * **Tag format**: Git tag convention (e.g., ``vX.Y.Z``)
 
-   3. **Version Update:**
+   **Bootstrapping:**
 
-      * Calculate new version number based on release type
-      * Update templates/version.json
-      * Commit: "chore: bump version to X.Y.Z"
+   On first invocation without existing decisions:
 
-   4. **Validation Guidance:**
+   1. Agent detects empty/missing Release Decisions section
+   2. Asks user project-specific questions
+   3. Writes answers to the Release Decisions section in the agent file
+   4. Proceeds with release
 
-      * Display validation checklist (SPEC_REL_VALIDATION_CHECKLIST)
-      * Ask maintainer to confirm each item
-      * Warn if any checks fail
+   **What the Agent Does NOT Include:**
 
-   5. **Tag Creation:**
-
-      * Generate Git tag command with proper format
-      * Show command to maintainer for execution
-      * Explain GitHub Actions will trigger after push
-
-   6. **Post-Release:**
-
-      * Archive/delete merged Change Documents
-      * Commit: "chore: archive change documents for vX.Y.Z"
-
-   **Interaction Model:**
-
-   .. code-block:: text
-
-      User: @syspilot.release prepare v0.2.0
-
-      Agent: I found 3 merged Change Documents:
-             - install-update.md
-             - release-process.md
-             - agent-improvements.md
-             
-             Based on these changes, I recommend a MINOR release (0.1.0 → 0.2.0).
-             
-             Shall I generate release notes?
-
-      User: Yes
-
-      Agent: [Generates release note entry]
-             
-             Preview:
-             ## v0.2.0 - 2026-01-30
-             ### Summary
-             This release adds the installation/update workflow...
-             
-             ### New Features
-             - Install/update mechanism (US_INST_NEW_PROJECT through US_INST_UPDATE)
-             - Release process documentation (US_REL_CREATE through US_REL_AGENT_TEMPLATE)
-             
-             Approve and commit?
-
-   **Implementation Options:**
-
-   * Option A: Full agent implementation (interactive, guides entire process)
-   * Option B: Python script helper (automated, called by maintainer)
-   * Option C: Manual process documentation (template for users)
-
-   **Template for Users:**
-
-   The release agent serves as a working example that users can adapt
-   for their own projects, demonstrating:
-
-   * How to read Change Documents programmatically
-   * How to generate release notes from structured docs
-   * How to integrate with Git and GitHub Actions
+   * Step-by-step release instructions
+   * Shell commands or scripts
+   * Platform-specific code
+   * Detailed interaction examples
 
 
 Release Workflow

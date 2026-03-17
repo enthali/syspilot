@@ -44,7 +44,7 @@ Stories covering release creation, validation, and automation.
    4. Given all checks pass, When I approve, Then release is ready for distribution
 
 
-.. story:: Release Agent Template
+.. story:: Release Agent for Consumer Projects
    :id: US_REL_AGENT_TEMPLATE
    :status: implemented
    :priority: medium
@@ -52,14 +52,16 @@ Stories covering release creation, validation, and automation.
    :links: US_REL_CREATE, US_REL_VALIDATE
 
    **As a** syspilot user,
-   **I want to** see how a release agent could work,
-   **so that** I can create my own release automation for my projects.
+   **I want** a release agent that knows how to release and only documents
+   my project-specific decisions (version file, change doc policy, validations),
+   **so that** I get a short, maintainable agent instead of a verbose playbook.
 
    **Acceptance Scenarios:**
 
-   1. Given I read release documentation, When I see the release agent concept, Then I understand how it could automate releases
-   2. Given I want my own release process, When I check syspilot, Then I can use it as a template
-   3. Given installation/update agent handles modified agents, When I create custom release agent, Then update process respects my changes
+   1. Given I install syspilot, When I first invoke @syspilot.release, Then it bootstraps release decisions by asking me project-specific questions and saves them in the agent file
+   2. Given release decisions exist in the agent file, When I invoke @syspilot.release, Then it performs a standard release using those decisions without prescribing every step
+   3. Given the agent encounters a project without archived change docs, When releasing, Then change documents are archived (not deleted)
+   4. Given I want to customize my release process, When I edit the agent file decisions section, Then the agent respects my overrides
 
 
 Traceability

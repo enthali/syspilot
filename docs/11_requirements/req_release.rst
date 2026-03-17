@@ -168,26 +168,30 @@ This document contains requirements for the syspilot release process.
    * AC-6: GitHub Action can be triggered manually for testing
 
 
-.. req:: Release Process Documentation
+.. req:: Release Agent KISS Template
    :id: REQ_REL_PROCESS_DOC
    :status: implemented
    :priority: medium
-   :tags: release, documentation, template
+   :tags: release, agent, template
    :links: US_REL_AGENT_TEMPLATE
 
    **Description:**
-   syspilot SHALL document the release process as a template for users.
+   syspilot SHALL provide a release agent template that is short, generic,
+   and focuses on project-specific design decisions rather than prescribing
+   every release step.
 
    **Rationale:**
-   Documenting syspilot's own release process provides a working
-   example that users can adapt for their projects.
+   LLMs know how to perform standard release tasks (version bump, tagging,
+   release notes). The agent only needs to document project-specific decisions
+   to guide the LLM.
 
    **Acceptance Criteria:**
 
-   * AC-1: Release process documented in sphinx-needs format
-   * AC-2: Documentation includes manual and automated approaches
-   * AC-3: Documentation explains how to customize for user projects
-   * AC-4: Release agent concept is documented (even if not fully automated)
+   * AC-1: Release agent template contains a "Release Decisions" section for project-specific configuration
+   * AC-2: Decisions are stored in the agent file itself (no separate config file)
+   * AC-3: On first invocation without existing decisions, the agent bootstraps by asking the user
+   * AC-4: Agent does not prescribe individual release steps (LLM handles standard release flow)
+   * AC-5: Template is usable for any project, not syspilot-specific
 
 
 Traceability

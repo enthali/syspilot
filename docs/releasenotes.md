@@ -1,5 +1,26 @@
 # syspilot Release Notes
 
+## v0.2.2 - 2026-03-17
+
+### Summary
+Two agent fixes: The release agent is refactored from a ~425-line syspilot-specific playbook into a ~45-line KISS template with an embedded decisions table. The setup agent now detects existing sphinx-needs installations before offering to install.
+
+### 🐛 Bug Fixes
+
+- **Release Agent Template** (US_REL_AGENT_TEMPLATE, REQ_REL_PROCESS_DOC, SPEC_REL_AGENT)
+  - Fixed: agent was syspilot-specific, hard-coded paths like `templates/version.json`
+  - Fixed: agent deleted change documents instead of archiving (violated REQ_CHG_CHANGE_DOC AC-5)
+  - Refactored from ~425 to ~45 lines — KISS template with embedded decisions table
+  - First `@syspilot.release` invocation bootstraps decisions by asking user
+  - Closes [#5](https://github.com/enthali/syspilot/issues/5)
+
+- **Setup Agent Dependency Detection** (US_INST_BOOTSTRAP, REQ_INST_AUTO_SETUP, SPEC_INST_SETUP_AGENT)
+  - Fixed: setup agent installed sphinx-needs without checking if already available
+  - Now detects existing sphinx-needs and offers A/B/C options
+  - Skips installation step when sphinx-needs already available
+
+---
+
 ## v0.2.1 - 2026-03-16
 
 ### Summary

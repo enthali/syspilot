@@ -19,9 +19,10 @@ Stories covering bootstrap, portability, installation, adoption, and updates.
 
    **Acceptance Scenarios:**
 
-   1. Given fresh checkout, When I curl the setup agent and invoke it, Then dependencies are installed
+   1. Given fresh checkout with no sphinx-needs, When I curl the setup agent and invoke it, Then the agent detects the absence and asks whether to install or use a custom mechanism
    2. Given agent runs in cloud, When it needs sphinx, Then setup runs automatically
    3. Given setup completes, When I build docs, Then sphinx-build works
+   4. Given sphinx-needs is already available (e.g. via virtual env or custom scripts), When I invoke the setup agent, Then the agent detects this and skips the installation step
 
 
 .. story:: Use syspilot Across Projects

@@ -49,11 +49,12 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
 
    **Acceptance Criteria:**
 
-   * AC-1: Detect if sphinx-needs is installed
-   * AC-2: Install required dependencies automatically
+   * AC-1: Detect whether sphinx-needs is already available (importable via current Python environment or project scripts)
+   * AC-2: If sphinx-needs is NOT available, ask user whether to install via pip/uv OR confirm that a custom mechanism provides access
    * AC-3: Create required directory structure
    * AC-4: Validate installation before proceeding
    * AC-5: Bootstrap requires only a single curl/Invoke-WebRequest command
+   * AC-6: If sphinx-needs is already available, skip installation and proceed without prompting to install
 
 
 .. req:: syspilot Distribution via GitHub Releases
@@ -196,6 +197,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    * AC-1: Required dependencies are declared (Python, sphinx, sphinx-needs, furo)
    * AC-2: Optional dependencies are declared (graphviz for diagrams)
    * AC-3: Dependency list is maintained in ``docs/requirements.txt``
+   * AC-4: If sphinx-needs is available via a means other than pip (virtual env, custom scripts, etc.), the setup agent SHALL accept user confirmation as proof of availability and proceed
 
 
 .. req:: Installation Version Tracking

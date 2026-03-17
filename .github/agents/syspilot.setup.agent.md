@@ -62,20 +62,36 @@ pip --version
 
 If uv is available, prefer it. Otherwise use pip.
 
-#### Step 3: Inform User About Required Dependencies
+#### Step 3: Detect sphinx-needs Availability
 
-```
-The following Python packages are required:
-- sphinx >= 7.0.0 (Documentation generator)
-- sphinx-needs >= 2.0.0 (Requirements traceability)
-- furo >= 2024.0.0 (Modern theme)
-- myst-parser >= 2.0.0 (Markdown support)
-
-Optional (for diagrams):
-- graphviz (system tool, not pip package)
+```powershell
+python -c "import sphinx_needs; print(sphinx_needs.__version__)"
+sphinx-build --version
 ```
 
-#### Step 4: Install with User Confirmation
+If both commands succeed → sphinx-needs is already available. Inform the user:
+
+```
+✅ sphinx-needs vX.Y.Z detected — skipping installation.
+```
+
+Skip to Step 5 (Graphviz).
+
+If either command fails → sphinx-needs is NOT available. Proceed to Step 4.
+
+#### Step 4: Ask User (only if sphinx-needs not detected)
+
+Present three options:
+
+```
+sphinx-needs was not detected. How would you like to proceed?
+
+A) Install via pip/uv  (standard install)
+B) Use custom mechanism — I will confirm availability manually
+C) Skip (build will be broken until sphinx-needs is available)
+```
+
+**Option A — Install:**
 
 ```powershell
 # Using uv (preferred)
@@ -83,6 +99,22 @@ uv pip install sphinx sphinx-needs furo myst-parser
 
 # Or using pip
 pip install sphinx sphinx-needs furo myst-parser
+```
+
+**Option B — Custom mechanism:**
+
+```
+Please ensure sphinx-needs is accessible in your current Python environment
+(e.g. activate your venv or run your custom script), then confirm to continue.
+```
+
+Wait for user confirmation, then proceed to Step 5.
+
+**Option C — Skip:**
+
+```
+⚠️ Proceeding without sphinx-needs. Sphinx build will fail until
+sphinx-needs is available in the Python environment.
 ```
 
 #### Step 5: Handle Graphviz (Optional)
