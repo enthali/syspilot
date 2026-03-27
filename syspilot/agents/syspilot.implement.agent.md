@@ -18,10 +18,9 @@ A. **Read the Change Document** - Understand what needs to be implemented
 B. **Query and read impacted needs** - Use get_need_links.py to find all REQ_* and SPEC_* and read them
 C. **Implement code changes** - Write code according to the approved Design Specs
 D. **Verify implementation completeness** - Check every AC before quality gates
-E. **Write tests** - Create tests that verify the Requirements
-F. **Run tests** - Execute tests and ensure they pass
-G. **Update user documentation** - README, user guides, AND agent.md files
-H. **Commit with traceability** - Clean commit referencing the Change Document
+E. **Run quality gates** - Build and test the implementation
+F. **Update user documentation** - README, user guides, AND agent.md files
+G. **Commit with traceability** - Clean commit referencing the Change Document
 
 ⚠️ **IMPORTANT**: 
 - Do NOT modify User Stories, Requirements, or Design Specs - that's the Change Agent's job
@@ -31,7 +30,7 @@ H. **Commit with traceability** - Clean commit referencing the Change Document
 ## Workflow
 
 ```
-Change Document → Query Needs → Read Specs → Code → Completeness Check → Tests → Run Tests → Update Docs → Commit
+Change Document → Query Needs → Read Specs → Code → Completeness Check → Quality Gates → Update Docs → Commit
 ```
 
 ## Input Sources
@@ -54,12 +53,12 @@ Open and read the Change Document from `docs/changes/<name>.md`:
 
 Use the link discovery script to get full context:
 
-```powershell
+```bash
 # Get all linked needs from a starting point
-python scripts/python/get_need_links.py <SYSPILOT_SPEC_ID> --simple
+python .syspilot/scripts/python/get_need_links.py <SYSPILOT_SPEC_ID> --simple
 
 # Or get a flat list of all impacted IDs
-python scripts/python/get_need_links.py <SYSPILOT_US_ID> --flat --depth 3
+python .syspilot/scripts/python/get_need_links.py <SYSPILOT_US_ID> --flat --depth 3
 ```
 
 **Read all relevant SPEC_* files** to understand:
@@ -73,26 +72,39 @@ python scripts/python/get_need_links.py <SYSPILOT_US_ID> --flat --depth 3
 
 ### 3. Code Implementation
 
-Write code with traceability comments linking to Design Specs and Requirements:
+Write code with traceability comments linking to Design Specs and Requirements.
 
-```python
-# Implementation: SPEC_xxx_n
-# Requirements: REQ_xxx_1, REQ_xxx_2
+<!-- TODO: Customize traceability comment format for your language -->
+<!-- Examples for different languages: -->
 
-def my_function():
-    """
-    Brief description.
-    
-    Implements:
-        - REQ_xxx_1: [What this satisfies]
-        - SPEC_xxx_n: [Design reference]
-    """
-    pass
+<!--
+Python:
+    # Implementation: SPEC_xxx
+    # Requirements: REQ_xxx_1, REQ_xxx_2
+
+C/C++:
+    // Implementation: SPEC_xxx
+    // Requirements: REQ_xxx_1, REQ_xxx_2
+
+Rust:
+    // Implementation: SPEC_xxx
+    // Requirements: REQ_xxx_1, REQ_xxx_2
+-->
+
+Traceability pattern (adapt to your language):
+
+```
+// Implementation: SPEC_xxx
+// Requirements: REQ_xxx_1, REQ_xxx_2
+//
+// Implements:
+//   - REQ_xxx_1: [What this satisfies]
+//   - SPEC_xxx: [Design reference]
 ```
 
 ### 4. Implementation Completeness Check
 
-Before running tests or quality gates, verify **every** requirement and acceptance
+Before running quality gates, verify **every** requirement and acceptance
 criterion from the Change Document has been addressed.
 
 **Procedure:**
@@ -115,41 +127,49 @@ criterion from the Change Document has been addressed.
 - Cross-component integration points
 - Config keys that need to be added to schemas
 
-**Do NOT proceed to tests or quality gates until every AC is covered.**
+**Do NOT proceed to quality gates until every AC is covered.**
 
-### 5. Test Implementation
+### 5. Quality Gates
 
-Create tests that verify Requirements and their Acceptance Criteria:
+<!-- TODO: Configure your project's build and test commands -->
+<!-- Examples: idf.py build, cargo build, npm test, make, dotnet build -->
 
-```python
-class TestFeatureName:
-    """
-    Tests for REQ_xxx_1, REQ_xxx_2
-    """
-    
-    def test_acceptance_criteria_1(self):
-        """
-        Verifies: REQ_xxx_1 AC-1
-        """
-        # Test implementation
-        pass
-    
-    def test_acceptance_criteria_2(self):
-        """
-        Verifies: REQ_xxx_1 AC-2
-        """
-        pass
-```
-
-### 6. Run Tests
-
-Execute tests and ensure they pass:
+**Pre-Implementation Build** — Validate docs first:
 
 ```bash
-pytest tests/ -v
+# Sphinx docs build (required for all syspilot projects)
+cd docs
+sphinx-build -b html . _build/html -W --keep-going
 ```
 
-**If tests fail**: Fix code or tests before proceeding.
+**Build command:**
+
+```bash
+# TODO: Your build command here
+```
+
+**Test/Lint command:**
+
+```bash
+# TODO: Your test/lint command here
+```
+
+**Fail-Fast Rule:** If pre-implementation build fails, fix documentation
+issues before touching any code.
+
+### 6. Test Implementation
+
+Create tests that verify Requirements and their Acceptance Criteria.
+
+<!-- TODO: Adapt test format to your test framework -->
+<!-- Examples: pytest, Google Test, cargo test, Jest, NUnit -->
+
+Tests should reference Requirement IDs and Acceptance Criteria:
+
+```
+Test: [REQ_xxx_1 AC-1] Description of what is being verified
+Test: [REQ_xxx_1 AC-2] Description of what is being verified
+```
 
 ### 7. Update Documentation
 
@@ -178,6 +198,22 @@ Design:
 - SPEC_xxx_1: [description]
 "
 ```
+
+## Customization Guide
+
+<!-- TODO: Fill in these sections for your project -->
+
+This implement agent is a skeleton. You need to customize the following
+sections for your project's tech stack:
+
+1. **Quality Gates (Section 5)**: Replace TODO placeholders with your
+   actual build and test commands
+2. **Code Traceability (Section 3)**: Adapt comment format to your
+   programming language
+3. **Test Implementation (Section 6)**: Adapt to your test framework
+
+After customizing, the Change → Implement → Verify workflow will work
+end-to-end with your project's toolchain.
 
 ## Handoff to Verify Agent
 

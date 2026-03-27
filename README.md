@@ -15,7 +15,7 @@
 **Linux / Mac / GitHub Codespaces:**
 ```bash
 mkdir -p .github/agents && curl -fsSL \
-  "https://raw.githubusercontent.com/enthali/syspilot/main/templates/agents/syspilot.setup.agent.md" \
+  "https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/agents/syspilot.setup.agent.md" \
   -o .github/agents/syspilot.setup.agent.md
 ```
 
@@ -23,7 +23,7 @@ mkdir -p .github/agents && curl -fsSL \
 ```powershell
 New-Item -ItemType Directory -Force -Path .github/agents | Out-Null
 Invoke-WebRequest `
-  -Uri "https://raw.githubusercontent.com/enthali/syspilot/main/templates/agents/syspilot.setup.agent.md" `
+  -Uri "https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/agents/syspilot.setup.agent.md" `
   -OutFile ".github/agents/syspilot.setup.agent.md"
 ```
 

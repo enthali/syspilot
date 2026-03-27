@@ -1,6 +1,6 @@
 # GitHub Actions Release Workflow
 # 
-# Implements: SPEC_REL_GITHUB_ACTIONS, REQ_REL_GITHUB_ACTIONS
+# Implements: SYSPILOT_SPEC_REL_GITHUB_ACTIONS, SYSPILOT_REQ_REL_GITHUB_ACTIONS
 # 
 # Automates release validation, documentation build, and publication.
 # Triggered on Git tags matching v*.*.* pattern.
@@ -41,12 +41,12 @@ jobs:
       
       - name: Validate version.json
         run: |
-          if [ ! -f templates/version.json ]; then
-            echo "ERROR: templates/version.json not found"
+          if [ ! -f syspilot/version.json ]; then
+            echo "ERROR: syspilot/version.json not found"
             exit 1
           fi
           
-          VERSION=$(jq -r .version templates/version.json)
+          VERSION=$(jq -r .version syspilot/version.json)
           TAG="${{ steps.tag_version.outputs.version }}"
           
           echo "version.json: $VERSION"
@@ -180,7 +180,7 @@ jobs:
           draft: false
           prerelease: ${{ contains(github.ref, '-alpha') || contains(github.ref, '-beta') || contains(github.ref, '-rc') }}
           files: |
-            templates/version.json
+            syspilot/version.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       

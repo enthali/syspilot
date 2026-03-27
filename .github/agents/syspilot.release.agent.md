@@ -10,7 +10,7 @@ handoffs:
 
 > **Purpose**: Guide maintainers through the syspilot release process with automated release note generation.
 
-**Implements**: SPEC_REL_AGENT, REQ_REL_NOTES, REQ_REL_PROCESS_DOC
+**Implements**: SYSPILOT_SPEC_REL_AGENT, SYSPILOT_REQ_REL_NOTES, SYSPILOT_REQ_REL_PROCESS_DOC
 
 ---
 
@@ -120,17 +120,17 @@ Current version: 0.1.0 (from version.json)
 I found 3 merged Change Documents since last release:
 
 1. **install-update.md** (feature/install-update)
-   - US_INST_NEW_PROJECT through US_INST_UPDATE: Installation & Update System
+   - SYSPILOT_US_INST_NEW_PROJECT through SYSPILOT_US_INST_UPDATE: Installation & Update System
    - 6 Requirements, 5 Design Specs
    - Impact: New feature (MINOR)
 
 2. **release-process.md** (feature/release-process)
-   - US_REL_CREATE through US_REL_AGENT_TEMPLATE: Release Process
+   - SYSPILOT_US_REL_CREATE through SYSPILOT_US_REL_AGENT_TEMPLATE: Release Process
    - 8 Requirements, 7 Design Specs
    - Impact: New feature (MINOR)
 
 3. **agent-workflow-fix.md** (feature/agent-improvements)
-   - SPEC_AGENT_QUALITY_GATES: Improved Change Agent workflow
+   - SYSPILOT_SPEC_AGENT_QUALITY_GATES: Improved Change Agent workflow
    - Impact: Internal improvement (PATCH)
 
 **Analysis:**
@@ -155,7 +155,7 @@ Read each Change Document and extract:
 - **Documentation**: Documentation updates
 - **Internal Changes**: Spec improvements, refactoring
 
-**Output Format** (per SPEC_REL_NOTES_STRUCTURE):
+**Output Format** (per SYSPILOT_SPEC_REL_NOTES_STRUCTURE):
 
 ```markdown
 ## v{NEW_VERSION} - {DATE}
@@ -165,12 +165,12 @@ Read each Change Document and extract:
 
 ### ⚠️ Breaking Changes
 - [If any, with migration guidance]
-- References: US_XXX, REQ_YYY
+- References: SYSPILOT_US_XXX, SYSPILOT_REQ_YYY
 
 ### ✨ New Features
-- [Feature description from Change Document] (US_XXX, REQ_YYY)
-  - [Detail from SPEC] (SPEC_XXX)
-  - [Detail from SPEC] (SPEC_YYY)
+- [Feature description from Change Document] (SYSPILOT_US_XXX, SYSPILOT_REQ_YYY)
+  - [Detail from SPEC] (SYSPILOT_SPEC_XXX)
+  - [Detail from SPEC] (SYSPILOT_SPEC_YYY)
 
 ### 🐛 Bug Fixes
 - [If any, with requirement references]
@@ -180,7 +180,7 @@ Read each Change Document and extract:
 - A-SPICE alignment notes
 
 ### 🔧 Internal Changes
-- Improved Change Agent workflow (SPEC_AGENT_QUALITY_GATES)
+- Improved Change Agent workflow (SYSPILOT_SPEC_AGENT_QUALITY_GATES)
 ```
 
 ### 3. Show Preview & Get Approval
@@ -248,7 +248,7 @@ cd ..
 git status --porcelain
 
 # Test link discovery
-python scripts/python/get_need_links.py US_CORE_SPEC_AS_CODE --depth 1 --simple
+python scripts/python/get_need_links.py SYSPILOT_US_CORE_SPEC_AS_CODE --depth 1 --simple
 ```
 
 **If validation PASSES:**

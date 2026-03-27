@@ -8,6 +8,8 @@ syspilot is a requirements engineering toolkit that uses **sphinx-needs traceabi
 
 **Key Insight**: AI agents need focused context, not the entire codebase. syspilot achieves O(affected) not O(total) complexity.
 
+**Principle**: Spec-driven development for everything — not just the product, but also processes, methods, and tools. Every decision is traceable through User Stories → Requirements → Design Specs.
+
 **Version**: 0.2.2
 
 ## Tech Stack
@@ -16,54 +18,57 @@ syspilot is a requirements engineering toolkit that uses **sphinx-needs traceabi
 - **Markup**: reStructuredText (RST)
 - **Python Runner**: uv (Astral's fast Python package manager)
 - **Theme**: Furo
-- **Process Alignment**: Optional (see `docs/40_process/`)
+- **Process Alignment**: Optional (see `docs/syspilot/process/`)
 
 ## Project Structure
 
 ```
-syspilot/
+syspilot/                            # Repository root (also the product dir)
 ├── .github/
-│   ├── agents/                 # Agent definition files (*.agent.md)
+│   ├── agents/                 # Installed agent files (*.agent.md)
 │   ├── prompts/                # Prompt configuration files (*.prompt.md)
 │   ├── skills/                 # Shared skill files (*.skill.md)
 │   └── copilot-instructions.md # This file
 ├── scripts/
 │   └── python/
 │       └── get_need_links.py   # Link discovery utility (consumer copy)
-├── templates/
-│   ├── version.json            # Release version (part of distribution)
+├── syspilot/                    # syspilot family product artifacts
+│   ├── version.json            # Release version
 │   ├── agents/                 # Distributable agents (product)
 │   ├── prompts/                # Distributable prompts
 │   ├── skills/                 # Distributable skills
 │   ├── scripts/python/         # Distributable scripts
 │   ├── sphinx/                 # Sphinx build script templates
 │   └── change-document.md      # Change Document template
-├── docs/                        # Self-documentation (dogfooding)
-│   ├── methodology.md          # File organization & methodology guide
-│   ├── namingconventions.md    # ID naming conventions
+├── docs/
+│   ├── methodology.md          # Framework methodology
+│   ├── namingconventions.md    # Framework naming conventions
 │   ├── releasenotes.md         # Release notes (newest first)
-│   ├── 10_userstories/         # Level 0: WHY (User Stories)
-│   ├── 11_requirements/        # Level 1: WHAT (Requirements)
-│   ├── 12_design/              # Level 2: HOW (Design Specs)
-│   ├── 31_traceability/        # Traceability matrices
-│   ├── 40_process/             # A-SPICE process alignment
-│   ├── changes/                # Change Documents (archived after merge)
-│   │   └── archive/            # Archived change docs & validation reports
+│   ├── syspilot/               # syspilot family specs
+│   │   ├── userstories/        # Level 0: WHY (User Stories)
+│   │   ├── requirements/       # Level 1: WHAT (Requirements)
+│   │   ├── design/             # Level 2: HOW (Design Specs)
+│   │   ├── process/            # A-SPICE process alignment
+│   │   ├── methodology.md      # Family-specific methodology
+│   │   └── namingconventions.md # Family-specific naming
+│   ├── traceability/           # Cross-family traceability matrices
+│   ├── changes/                # Change Documents
+│   │   └── archive/            # Archived by version after release
 │   ├── conf.py                 # Sphinx configuration
 │   └── requirements.txt        # Python dependencies for Sphinx
-└── README.md                   # Installation instructions (curl commands)
+└── README.md                   # Installation instructions
 ```
 
 ## Specification Hierarchy
 
 ```
-Level 0: User Stories (WHY)     docs/10_userstories/    US_*
+Level 0: User Stories (WHY)     docs/syspilot/userstories/    SYSPILOT_US_*
          │ :links:
          ▼
-Level 1: Requirements (WHAT)    docs/11_requirements/   REQ_*
+Level 1: Requirements (WHAT)    docs/syspilot/requirements/   SYSPILOT_REQ_*
          │ :links:
          ▼
-Level 2: Design Specs (HOW)     docs/12_design/         SPEC_*
+Level 2: Design Specs (HOW)     docs/syspilot/design/         SYSPILOT_SPEC_*
 ```
 
 ## Agent System
@@ -84,9 +89,9 @@ Level 2: Design Specs (HOW)     docs/12_design/         SPEC_*
 
 | Type | Prefix | Example | Level |
 |------|--------|---------|-------|
-| User Story | `US_` | `US_CORE_SPEC_AS_CODE` | 0 |
-| Requirement | `REQ_` | `REQ_CHG_ANALYSIS_AGENT` | 1 |
-| Design Spec | `SPEC_` | `SPEC_AGENT_WORKFLOW` | 2 |
+| User Story | `US_` | `SYSPILOT_US_CORE_SPEC_AS_CODE` | 0 |
+| Requirement | `REQ_` | `SYSPILOT_REQ_CHG_ANALYSIS_AGENT` | 1 |
+| Design Spec | `SPEC_` | `SYSPILOT_SPEC_AGENT_WORKFLOW` | 2 |
 
 ### Theme Abbreviations
 

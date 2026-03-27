@@ -22,7 +22,7 @@ Getting Started
 
    # Linux / Mac
    mkdir -p .github/agents && curl -fsSL \
-     "https://raw.githubusercontent.com/enthali/syspilot/main/templates/agents/syspilot.setup.agent.md" \
+     "https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/agents/syspilot.setup.agent.md" \
      -o .github/agents/syspilot.setup.agent.md
 
 .. code-block:: powershell
@@ -30,7 +30,7 @@ Getting Started
    # Windows (PowerShell)
    New-Item -ItemType Directory -Force -Path .github/agents | Out-Null
    Invoke-WebRequest `
-     -Uri "https://raw.githubusercontent.com/enthali/syspilot/main/templates/agents/syspilot.setup.agent.md" `
+     -Uri "https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/agents/syspilot.setup.agent.md" `
      -OutFile ".github/agents/syspilot.setup.agent.md"
 
 **2. Open VS Code Copilot Chat** and type ``@syspilot.setup`` — the agent does the rest.
@@ -102,7 +102,7 @@ FAQ
 
 **Is this only for automotive / A-SPICE?**
    No. The spec hierarchy (User Stories → Requirements → Design) is universal.
-   The A-SPICE alignment is optional and documented under :doc:`40_process/index`.
+   The A-SPICE alignment is optional and documented under :doc:`syspilot/process/index`.
 
 **How is this different from just using Copilot?**
    Copilot is great at writing code. But it doesn't know *which* of your 500 requirements
@@ -115,12 +115,29 @@ Specification Reference
 
 .. toctree::
    :maxdepth: 2
-   :caption: Specs & Traceability
+   :caption: syspilot Family
 
-   10_userstories/index
-   11_requirements/index
-   12_design/index
-   31_traceability/index
+   syspilot/userstories/index
+   syspilot/requirements/index
+   syspilot/design/index
+
+.. toctree::
+   :maxdepth: 2
+   :caption: syspilot Instance (Dogfooding)
+
+   inst/syspilot/userstories/index
+   inst/syspilot/requirements/index
+   inst/syspilot/design/index
+
+
+Traceability
+------------
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Traceability
+
+   traceability/index
 
 
 Guides & Process
@@ -132,7 +149,9 @@ Guides & Process
 
    methodology
    namingconventions
-   40_process/index
+   syspilot/methodology
+   syspilot/namingconventions
+   syspilot/process/index
    releasenotes
 
 
