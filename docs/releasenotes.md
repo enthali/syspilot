@@ -1,5 +1,49 @@
 # syspilot Release Notes
 
+## v0.2.3 - 2026-03-30
+
+### Summary
+Agent Family Framework with product/instance architecture, plus setup agent update process with file ownership model. Specs are now organized around agent families with independent spec trees. Instance-level specs capture project-specific decisions for release and implement agents. The setup agent bootstraps itself first, then uses a 3-category ownership model (methodology/project/user) to decide which files to update.
+
+### ✨ New Features
+
+- **Agent Family Framework** (SYSPILOT_US_CORE_SPEC_AS_CODE, SYSPILOT_REQ_CORE_FAMILY_ARCH)
+  - Product/Instance two-layer spec architecture
+  - Product specs define WHAT (generic), instance specs define HOW (project-specific)
+  - Family-based naming: `SYSPILOT_*` (product), `INST_SYSPILOT_*` (instance)
+  - Framework-level docs separated from family-specific docs
+  - `docs/syspilot/` = product specs, `docs/inst/syspilot/` = instance specs
+
+- **Instance Spec Tree** (SYSPILOT_US_INST_AGNOSTIC, SYSPILOT_REQ_INST_CUSTOM_PRESERVE)
+  - 14 new INST spec elements across all 3 levels (US → REQ → SPEC)
+  - Release agent instance config: version file, tag format, archive policy, validation
+  - Implement agent instance config: language, framework, testing conventions
+
+- **Setup Agent Self-Update** (SYSPILOT_US_INST_UPDATE, SYSPILOT_REQ_INST_BOOTSTRAP_SELF)
+  - Bootstrap Step 0: setup agent updates itself first before updating anything else
+  - 3-category file ownership model: methodology (always replace), project (copy once), user (never touch)
+  - Template banner on generic release/implement agents prompting customization
+
+### 🐛 Bug Fixes
+
+- **Release Agent** (INST_SYSPILOT_SPEC_REL_AGENT_CONFIG)
+  - Replaced 441-line v0.2.1 fossil with customized KISS template (~60 lines)
+  - Fixed: agent still contained `git rm` (delete) instead of `git mv` (archive)
+  - Added squash merge step per SYSPILOT_SPEC_REL_WORKFLOW
+
+- **Stale Path References**
+  - Fixed 12× `templates/` → `syspilot/` in spec_release.rst, spec_change.rst
+  - Moved `change-document.md` to `syspilot/templates/`
+
+### 📦 Migration
+
+- 130 spec IDs renamed with `SYSPILOT_` prefix
+- 6 directory moves: `docs/{userstories,requirements,design}` → `docs/syspilot/`
+- ~510 cross-reference updates across all RST files
+- `copilot-instructions.md` updated with instance-level architecture
+
+---
+
 ## v0.2.2 - 2026-03-17
 
 ### Summary

@@ -10,7 +10,7 @@ syspilot is a requirements engineering toolkit that uses **sphinx-needs traceabi
 
 **Principle**: Spec-driven development for everything — not just the product, but also processes, methods, and tools. Every decision is traceable through User Stories → Requirements → Design Specs.
 
-**Version**: 0.2.2
+**Version**: 0.2.3
 
 ## Tech Stack
 
@@ -192,4 +192,4 @@ read and follow `.github/skills/syspilot.ask-questions.skill.md`.
 
 ---
 
-*syspilot v0.2.2 - Last updated: 2026-03-30*
+*syspilot v0.2.3 - Last updated: 2026-03-30*
