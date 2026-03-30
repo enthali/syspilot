@@ -8,7 +8,7 @@ Project-specific release design specifications for syspilot.
 
 .. spec:: Release Agent Configuration
    :id: INST_SYSPILOT_SPEC_REL_AGENT_CONFIG
-   :status: approved
+   :status: implemented
    :tags: instance, release, agent
    :links: INST_SYSPILOT_REQ_REL_VERSION_FILE, INST_SYSPILOT_REQ_REL_GITHUB_PUBLISH, INST_SYSPILOT_REQ_REL_NOTES_FORMAT
 
@@ -42,7 +42,7 @@ Project-specific release design specifications for syspilot.
 
 .. spec:: Release CI/CD Workflow
    :id: INST_SYSPILOT_SPEC_REL_WORKFLOW
-   :status: approved
+   :status: implemented
    :tags: instance, release, ci-cd
    :links: INST_SYSPILOT_REQ_REL_CI_PIPELINE
 
@@ -65,7 +65,7 @@ Project-specific release design specifications for syspilot.
 
 .. spec:: Change Document Archive Process
    :id: INST_SYSPILOT_SPEC_REL_ARCHIVE_PROCESS
-   :status: approved
+   :status: implemented
    :tags: instance, release, traceability
    :links: INST_SYSPILOT_REQ_REL_CHANGE_ARCHIVE
 

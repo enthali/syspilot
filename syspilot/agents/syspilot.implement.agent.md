@@ -8,6 +8,8 @@ handoffs:
 
 # syspilot Implement Agent
 
+> ⚠️ **This is the generic syspilot template.** Customize for your project via `@syspilot.change`. Remove this banner after customization.
+
 > **Purpose**: Take an approved Change Proposal and implement code changes with full traceability. The Change Agent has already created/updated all User Stories, Requirements, and Design Specs.
 
 You are the **Implement Agent** for the syspilot requirements engineering workflow. Your role is to implement code based on approved specifications.

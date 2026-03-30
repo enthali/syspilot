@@ -8,7 +8,7 @@ Project-specific implementation decisions for syspilot.
 
 .. req:: Implement Agent Write Boundary
    :id: INST_SYSPILOT_REQ_IMPL_WRITE_BOUNDARY
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: instance, implement, boundary
    :links: INST_SYSPILOT_US_IMPL_OWN_AGENTS, SYSPILOT_REQ_CHG_IMPL_AGENT
@@ -23,7 +23,7 @@ Project-specific implementation decisions for syspilot.
 
 .. req:: Setup Agent Synchronization
    :id: INST_SYSPILOT_REQ_IMPL_SETUP_SYNC
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: instance, implement, setup
    :links: INST_SYSPILOT_US_IMPL_OWN_AGENTS, SYSPILOT_REQ_INST_TEMPLATE_SOURCE

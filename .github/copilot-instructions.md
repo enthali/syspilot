@@ -39,18 +39,23 @@ syspilot/                            # Repository root (also the product dir)
 │   ├── skills/                 # Distributable skills
 │   ├── scripts/python/         # Distributable scripts
 │   ├── sphinx/                 # Sphinx build script templates
-│   └── change-document.md      # Change Document template
+│   └── templates/              # Document templates
+│       └── change-document.md  # Change Document template
 ├── docs/
 │   ├── methodology.md          # Framework methodology
 │   ├── namingconventions.md    # Framework naming conventions
 │   ├── releasenotes.md         # Release notes (newest first)
-│   ├── syspilot/               # syspilot family specs
+│   ├── syspilot/               # syspilot family specs (product-level)
 │   │   ├── userstories/        # Level 0: WHY (User Stories)
 │   │   ├── requirements/       # Level 1: WHAT (Requirements)
 │   │   ├── design/             # Level 2: HOW (Design Specs)
 │   │   ├── process/            # A-SPICE process alignment
 │   │   ├── methodology.md      # Family-specific methodology
 │   │   └── namingconventions.md # Family-specific naming
+│   ├── inst/syspilot/          # Instance-level specs (project-specific)
+│   │   ├── userstories/        # Instance User Stories
+│   │   ├── requirements/       # Instance Requirements
+│   │   └── design/             # Instance Design Specs
 │   ├── traceability/           # Cross-family traceability matrices
 │   ├── changes/                # Change Documents
 │   │   └── archive/            # Archived by version after release
@@ -69,6 +74,8 @@ Level 1: Requirements (WHAT)    docs/syspilot/requirements/   SYSPILOT_REQ_*
          │ :links:
          ▼
 Level 2: Design Specs (HOW)     docs/syspilot/design/         SYSPILOT_SPEC_*
+
+Instance specs (project-specific)  docs/inst/syspilot/           INST_SYSPILOT_*
 ```
 
 ## Agent System
@@ -92,6 +99,7 @@ Level 2: Design Specs (HOW)     docs/syspilot/design/         SYSPILOT_SPEC_*
 | User Story | `US_` | `SYSPILOT_US_CORE_SPEC_AS_CODE` | 0 |
 | Requirement | `REQ_` | `SYSPILOT_REQ_CHG_ANALYSIS_AGENT` | 1 |
 | Design Spec | `SPEC_` | `SYSPILOT_SPEC_AGENT_WORKFLOW` | 2 |
+| Instance | `INST_` | `INST_SYSPILOT_SPEC_REL_AGENT_CONFIG` | 0–2 |
 
 ### Theme Abbreviations
 
@@ -184,4 +192,4 @@ read and follow `.github/skills/syspilot.ask-questions.skill.md`.
 
 ---
 
-*syspilot v0.2.2 - Last updated: 2026-03-17*
+*syspilot v0.2.2 - Last updated: 2026-03-30*

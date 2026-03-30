@@ -179,15 +179,24 @@ New-Item -ItemType Directory -Force -Path ".syspilot/templates"
 
 Use GitHub API to list and download each file from `syspilot/`:
 
-| Source (GitHub syspilot/) | Target (local) | Merge |
-|---------------------------|----------------|-------|
-| `agents/syspilot.*.agent.md` | `.github/agents/` | Intelligent merge |
-| `prompts/syspilot.*.prompt.md` | `.github/prompts/` | Intelligent merge |
-| `skills/syspilot.*.skill.md` | `.github/skills/` | Intelligent merge |
+| Source (GitHub syspilot/) | Target (local) | Strategy |
+|---------------------------|----------------|----------|
+| `agents/syspilot.*.agent.md` | `.github/agents/` | Copy all (fresh install) |
+| `prompts/syspilot.*.prompt.md` | `.github/prompts/` | Copy all (fresh install) |
+| `skills/syspilot.*.skill.md` | `.github/skills/` | Replace |
 | `scripts/python/get_need_links.py` | `.syspilot/scripts/python/` | Replace |
 | `sphinx/build.ps1` | `docs/build.ps1` | Replace |
 | `sphinx/build.sh` | `docs/build.sh` | Replace |
-| `change-document.md` | `.syspilot/templates/` | Replace |
+| `templates/change-document.md` | `.syspilot/templates/` | Replace |
+
+**Note:** On fresh install, ALL agents are copied including release and implement.
+These project-owned agents are generic templates with a customization reminder:
+
+```
+⚠️ This is the generic syspilot template. Customize for your project via @syspilot.change.
+```
+
+On subsequent updates, release and implement agents are never modified (see Section 7).
 
 **Download approach:**
 
@@ -266,6 +275,33 @@ Next: Run @syspilot.change to start your first change request.
 
 **Triggered when `.syspilot/version.json` exists.**
 
+**Implements: SYSPILOT_SPEC_INST_UPDATE_PROCESS, SYSPILOT_SPEC_INST_FILE_OWNERSHIP**
+
+### Step 0: Bootstrap Self-Update
+
+Before anything else, update the setup agent itself:
+
+```powershell
+$setupUrl = "$RAW_BASE/syspilot/agents/syspilot.setup.agent.md"
+$remoteSetup = (Invoke-WebRequest -Uri $setupUrl).Content
+$localSetup = Get-Content ".github/agents/syspilot.setup.agent.md" -Raw
+
+if ($remoteSetup -ne $localSetup) {
+    Set-Content ".github/agents/syspilot.setup.agent.md" $remoteSetup
+    Write-Host "⚠️ Setup agent updated. Please re-invoke @syspilot.setup to continue with the new version."
+    return
+}
+Write-Host "✅ Setup agent is current."
+```
+
+Also update the setup prompt if changed:
+
+```powershell
+$promptUrl = "$RAW_BASE/syspilot/prompts/syspilot.setup.prompt.md"
+$remotePrompt = (Invoke-WebRequest -Uri $promptUrl).Content
+Set-Content ".github/prompts/syspilot.setup.prompt.md" $remotePrompt
+```
+
 ### Step 1: Check Current Version
 
 ```powershell
@@ -278,7 +314,6 @@ Write-Host "Current version: $currentVersion"
 ### Step 2: Fetch Latest Version from GitHub
 
 ```powershell
-# Fetch version.json from main
 $remoteVersionUrl = "$RAW_BASE/syspilot/version.json"
 $remoteVersion = (Invoke-RestMethod -Uri $remoteVersionUrl).version
 Write-Host "Latest version:  $remoteVersion"
@@ -291,23 +326,65 @@ If remote > current → proceed with update
 If remote <= current → "Already up to date", abort
 ```
 
-### Step 4: Fetch and Merge
+### Step 4: Fetch and Apply by Ownership
 
-1. Download all files from `syspilot/` on GitHub main
-2. For each file, apply intelligent merge:
-   - `.syspilot/**` files → **replace directly** (syspilot-owned)
-   - Agent/prompt/skill files → **compare and merge** if user modified them
-3. Update `.syspilot/version.json` with new version and date
+Download all files from `syspilot/` on GitHub main. Apply based on file ownership:
 
-### Step 5: Validate
+**Methodology-Owned → REPLACE always:**
+
+| Source (GitHub syspilot/) | Target (local) |
+|---------------------------|----------------|
+| `agents/syspilot.change.agent.md` | `.github/agents/` |
+| `agents/syspilot.verify.agent.md` | `.github/agents/` |
+| `agents/syspilot.mece.agent.md` | `.github/agents/` |
+| `agents/syspilot.trace.agent.md` | `.github/agents/` |
+| `agents/syspilot.memory.agent.md` | `.github/agents/` |
+| `prompts/syspilot.change.prompt.md` | `.github/prompts/` |
+| `prompts/syspilot.verify.prompt.md` | `.github/prompts/` |
+| `prompts/syspilot.mece.prompt.md` | `.github/prompts/` |
+| `prompts/syspilot.trace.prompt.md` | `.github/prompts/` |
+| `prompts/syspilot.memory.prompt.md` | `.github/prompts/` |
+| `skills/syspilot.*.skill.md` | `.github/skills/` |
+| `scripts/python/get_need_links.py` | `.syspilot/scripts/python/` |
+| `sphinx/build.ps1` | `docs/build.ps1` |
+| `sphinx/build.sh` | `docs/build.sh` |
+| `templates/change-document.md` | `.syspilot/templates/` |
+
+**Setup agent → already updated in Step 0** (skip)
+
+**Project-Owned → SKIP (never modify):**
+
+- `.github/agents/syspilot.release.agent.md`
+- `.github/agents/syspilot.implement.agent.md`
+- `.github/prompts/syspilot.release.prompt.md`
+- `.github/prompts/syspilot.implement.prompt.md`
+
+**User-Owned → NEVER touch:**
+
+- `docs/syspilot/**`, `docs/inst/**`, `docs/changes/**`
+- `docs/conf.py`
+- `.github/copilot-instructions.md`
+- Any non-syspilot agents/prompts/skills
+
+### Step 5: Update Version Marker
+
+Update `.syspilot/version.json` with new version and date:
+
+```json
+{
+  "version": "<new version>",
+  "installedAt": "<current ISO date>",
+  "source": "https://github.com/OWNER/syspilot"
+}
+```
+
+### Step 6: Validate
 
 ```powershell
 sphinx-build --version
 ```
 
 Confirm update success. No backup/rollback needed — Git is the backup.
-
-**Implements: SYSPILOT_SPEC_INST_UPDATE_PROCESS, SYSPILOT_SPEC_INST_FILE_OWNERSHIP**
 
 ---
 

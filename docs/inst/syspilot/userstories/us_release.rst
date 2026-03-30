@@ -8,7 +8,7 @@ How the syspilot team releases syspilot itself.
 
 .. story:: Release syspilot Using Our Own Process
    :id: INST_SYSPILOT_US_REL_OWN_RELEASE
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: instance, release, dogfooding
    :links: SYSPILOT_US_REL_CREATE, SYSPILOT_US_REL_AGENT_TEMPLATE

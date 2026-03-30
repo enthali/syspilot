@@ -8,7 +8,7 @@ Project-specific release decisions for syspilot.
 
 .. req:: Version File Location
    :id: INST_SYSPILOT_REQ_REL_VERSION_FILE
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: instance, release
    :links: INST_SYSPILOT_US_REL_OWN_RELEASE, SYSPILOT_REQ_REL_SEMVER
@@ -22,7 +22,7 @@ Project-specific release decisions for syspilot.
 
 .. req:: GitHub Release Publication
    :id: INST_SYSPILOT_REQ_REL_GITHUB_PUBLISH
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: instance, release
    :links: INST_SYSPILOT_US_REL_OWN_RELEASE, SYSPILOT_REQ_REL_GITHUB_PUBLISH
@@ -36,7 +36,7 @@ Project-specific release decisions for syspilot.
 
 .. req:: Release Notes Format
    :id: INST_SYSPILOT_REQ_REL_NOTES_FORMAT
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: instance, release, documentation
    :links: INST_SYSPILOT_US_REL_OWN_RELEASE, SYSPILOT_REQ_REL_NOTES
@@ -50,7 +50,7 @@ Project-specific release decisions for syspilot.
 
 .. req:: Change Document Archival
    :id: INST_SYSPILOT_REQ_REL_CHANGE_ARCHIVE
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: instance, release, traceability
    :links: INST_SYSPILOT_US_REL_OWN_RELEASE, SYSPILOT_REQ_REL_PROCESS_DOC
@@ -65,7 +65,7 @@ Project-specific release decisions for syspilot.
 
 .. req:: CI/CD Pipeline
    :id: INST_SYSPILOT_REQ_REL_CI_PIPELINE
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: instance, release, automation
    :links: INST_SYSPILOT_US_REL_OWN_RELEASE, SYSPILOT_REQ_REL_GITHUB_ACTIONS

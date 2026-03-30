@@ -104,7 +104,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    * AC-3: User receives clear confirmation of successful installation
    * AC-4: Setup agent SHALL fetch distributable files from GitHub main
    * AC-5: Setup agent SHALL NOT require manual path input
-   * AC-6: Setup agent SHALL source distributable files from ``templates/`` directory per SYSPILOT_REQ_INST_TEMPLATE_SOURCE
+   * AC-6: Setup agent SHALL source distributable files from ``syspilot/`` directory per SYSPILOT_REQ_INST_TEMPLATE_SOURCE
 
 
 .. req:: Existing Project Adoption
@@ -128,7 +128,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    * AC-3: User is guided through any required decisions
    * AC-4: User can invoke syspilot agents after adoption
    * AC-5: Setup agent SHALL fetch distributable files from GitHub main
-   * AC-6: Setup agent SHALL source distributable files from ``templates/`` directory per SYSPILOT_REQ_INST_TEMPLATE_SOURCE
+   * AC-6: Setup agent SHALL source distributable files from ``syspilot/`` directory per SYSPILOT_REQ_INST_TEMPLATE_SOURCE
 
 
 .. req:: Version Update and Migration
@@ -149,10 +149,11 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
 
    * AC-1: User can determine currently installed version via local version marker and newest available version via GitHub main
    * AC-2: User can update to a newer version
-   * AC-3: User's customizations are preserved after update
+   * AC-3: User's customizations are preserved after update per SYSPILOT_REQ_INST_FILE_OWNERSHIP
    * AC-4: User receives migration guidance for breaking changes
    * AC-5: Update SHALL fetch latest version from GitHub main
-   * AC-6: Update SHALL source distributable files from ``templates/`` directory per SYSPILOT_REQ_INST_TEMPLATE_SOURCE
+   * AC-6: Update SHALL source distributable files from ``syspilot/`` directory per SYSPILOT_REQ_INST_TEMPLATE_SOURCE
+   * AC-7: Update SHALL update the setup agent itself first per SYSPILOT_REQ_INST_BOOTSTRAP_SELF
 
 
 .. req:: Customization Preservation
@@ -173,7 +174,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
 
    * AC-1: User-created requirements documents are preserved
    * AC-2: User-modified configuration is preserved
-   * AC-3: User can identify what is syspilot core vs user content
+   * AC-3: User can identify what is syspilot-owned vs project-owned per SYSPILOT_REQ_INST_FILE_OWNERSHIP
 
 
 .. req:: Sphinx-Needs Mandatory Dependency
@@ -233,7 +234,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    :links: SYSPILOT_US_INST_AGNOSTIC, SYSPILOT_US_INST_CROSS_PROJECT
 
    **Description:**
-   syspilot SHALL maintain a ``templates/`` directory as the single source
+   syspilot SHALL maintain a ``syspilot/`` directory as the single source
    for all files distributed to target projects, including the release
    version identifier. The Setup Agent SHALL source all distributable
    files (agents, prompts, skills, scripts, document templates, version
@@ -245,16 +246,16 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    consumer (dogfooding). Separating the distributable templates from the
    project-specific installation prevents language-specific or
    project-specific content from leaking into distributed files.
-   Including ``version.json`` makes ``templates/`` the complete release package.
+   Including ``version.json`` makes ``syspilot/`` the complete release package.
 
    **Acceptance Criteria:**
 
-   * AC-1: A ``templates/`` directory SHALL contain all files intended for distribution
-   * AC-2: The Setup Agent SHALL source distributable files exclusively from ``templates/``
+   * AC-1: A ``syspilot/`` directory SHALL contain all files intended for distribution
+   * AC-2: The Setup Agent SHALL source distributable files exclusively from ``syspilot/``
    * AC-3: syspilot's own ``.github/agents/`` SHALL be a consumer installation (may diverge from templates)
    * AC-4: Template files SHALL be language-agnostic and project-neutral
-   * AC-5: The ``templates/`` directory structure SHALL mirror the target project layout
-   * AC-6: ``templates/version.json`` SHALL contain the release version
+   * AC-5: The ``syspilot/`` directory structure SHALL mirror the target project layout
+   * AC-6: ``syspilot/version.json`` SHALL contain the release version
 
 
 .. req:: Skeleton Implement Agent
@@ -283,6 +284,59 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    * AC-3: Traceability comment patterns SHALL be language-agnostic (show pattern, not syntax)
    * AC-4: Agent SHALL include clear instructions on what the user needs to customize
    * AC-5: The workflow (Change → Implement → Verify) SHALL remain functional end-to-end with the skeleton
+   * AC-6: Distributed implement and release agents SHALL contain a visible reminder
+     to customize via @syspilot.change
+
+
+.. req:: Setup Agent Self-Update
+   :id: SYSPILOT_REQ_INST_BOOTSTRAP_SELF
+   :status: implemented
+   :priority: mandatory
+   :tags: update, bootstrap, setup
+   :links: SYSPILOT_US_INST_UPDATE
+
+   **Description:**
+   When running in update mode, the Setup Agent SHALL update itself from
+   GitHub before updating any other files.
+
+   **Rationale:**
+   The locally installed setup agent may contain outdated update logic.
+   By fetching and applying the latest setup agent first, all subsequent
+   update operations use the current logic.
+
+   **Acceptance Criteria:**
+
+   * AC-1: Setup agent fetches its own latest version from GitHub before any other operation
+   * AC-2: If the remote setup agent differs from local, local is replaced immediately
+   * AC-3: All subsequent update steps use the newly fetched setup agent logic
+
+
+.. req:: File Ownership Categories
+   :id: SYSPILOT_REQ_INST_FILE_OWNERSHIP
+   :status: implemented
+   :priority: mandatory
+   :tags: update, ownership, install
+   :links: SYSPILOT_US_INST_UPDATE, SYSPILOT_US_INST_AGNOSTIC
+
+   **Description:**
+   syspilot SHALL define explicit ownership categories for all files it
+   manages, determining update behavior for each category.
+
+   **Rationale:**
+   The update process must distinguish between files that syspilot owns
+   and should replace (methodology agents) and files the project owns
+   and should never touch (release, implement agents).
+
+   **Acceptance Criteria:**
+
+   * AC-1: Methodology agents (change, verify, mece, trace, memory, setup) SHALL be
+     replaced on every update
+   * AC-2: Project-specific agents (release, implement) SHALL be copied on initial
+     install but never modified by the update process
+   * AC-3: Utility files (scripts, build files, skills, prompts, templates) SHALL be
+     replaced on every update
+   * AC-4: User content (specs, change docs, copilot-instructions) SHALL never be
+     modified by the update process
 
 
 Traceability

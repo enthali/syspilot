@@ -8,7 +8,7 @@ Project-specific implementation design specifications for syspilot.
 
 .. spec:: Product Directory Structure
    :id: INST_SYSPILOT_SPEC_IMPL_DIR_STRUCTURE
-   :status: approved
+   :status: implemented
    :tags: instance, implement, structure
    :links: INST_SYSPILOT_REQ_IMPL_WRITE_BOUNDARY
 
@@ -23,8 +23,9 @@ Project-specific implementation design specifications for syspilot.
       ├── skills/             # Shared skills (*.skill.md)
       ├── scripts/python/     # Utility scripts
       ├── sphinx/             # Sphinx build scripts
-      ├── version.json        # Release version
-      └── change-document.md  # Change Document template
+      ├── templates/          # Document templates
+      │   └── change-document.md
+      └── version.json        # Release version
 
    **Write Rules:**
 
@@ -35,7 +36,7 @@ Project-specific implementation design specifications for syspilot.
 
 .. spec:: Setup Agent Synchronization Process
    :id: INST_SYSPILOT_SPEC_IMPL_SYNC_PROCESS
-   :status: approved
+   :status: implemented
    :tags: instance, implement, setup
    :links: INST_SYSPILOT_REQ_IMPL_SETUP_SYNC
 

@@ -98,7 +98,7 @@ Chapter Structures
 
 .. spec:: Methodology Chapter Structure
    :id: SYSPILOT_SPEC_DOC_METHODOLOGY_STRUCTURE
-   :status: approved
+   :status: implemented
    :links: SYSPILOT_REQ_DOC_METHODOLOGY, SYSPILOT_REQ_CORE_DOMAIN_ORG, SYSPILOT_REQ_CORE_L1_MIRROR, SYSPILOT_SPEC_DOC_STRUCTURE
    :tags: documentation, structure, methodology
 
@@ -187,7 +187,7 @@ Chapter Structures
 
 .. spec:: Naming Conventions Chapter Structure
    :id: SYSPILOT_SPEC_DOC_NAMING_STRUCTURE
-   :status: approved
+   :status: implemented
    :links: SYSPILOT_REQ_DOC_NAMING, SYSPILOT_SPEC_DOC_STRUCTURE
    :tags: documentation, structure, naming
 

@@ -8,7 +8,7 @@ How the syspilot team implements changes to product artifacts.
 
 .. story:: Implement syspilot Agents as Product Artifacts
    :id: INST_SYSPILOT_US_IMPL_OWN_AGENTS
-   :status: approved
+   :status: implemented
    :priority: mandatory
    :tags: instance, implement, dogfooding
    :links: SYSPILOT_US_CHG_IMPLEMENT

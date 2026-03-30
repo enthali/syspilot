@@ -30,11 +30,11 @@ Installation
 
          # Unix
          curl -o .github/agents/syspilot.setup.agent.md \
-           https://raw.githubusercontent.com/OWNER/syspilot/main/templates/agents/syspilot.setup.agent.md
+           https://raw.githubusercontent.com/OWNER/syspilot/main/syspilot/agents/syspilot.setup.agent.md
 
          # Windows (PowerShell)
          Invoke-WebRequest `
-           -Uri "https://raw.githubusercontent.com/OWNER/syspilot/main/templates/agents/syspilot.setup.agent.md" `
+           -Uri "https://raw.githubusercontent.com/OWNER/syspilot/main/syspilot/agents/syspilot.setup.agent.md" `
            -OutFile ".github/agents/syspilot.setup.agent.md"
 
    3. Open VS Code, start GitHub Copilot Chat, invoke ``@syspilot.setup``
@@ -144,19 +144,19 @@ Installation
 
    **Section 3: Fetch Files from GitHub**
 
-   Fetch files from ``templates/`` on GitHub main:
+   Fetch files from ``syspilot/`` on GitHub main:
 
-   1. Fetch ``templates/version.json`` → determine version
-   2. Use GitHub API to list ``templates/`` contents:
-      ``api.github.com/repos/OWNER/syspilot/contents/templates/``
+   1. Fetch ``syspilot/version.json`` → determine version
+   2. Use GitHub API to list ``syspilot/`` contents:
+      ``api.github.com/repos/OWNER/syspilot/contents/syspilot/``
    3. Download and copy:
 
-      * ``templates/agents/*.agent.md`` → ``.github/agents/``
-      * ``templates/prompts/*.prompt.md`` → ``.github/prompts/``
-      * ``templates/skills/*.skill.md`` → ``.github/skills/``
-      * ``templates/scripts/python/`` → ``.syspilot/scripts/python/``
-      * ``templates/sphinx/`` → ``docs/`` (build.ps1, build.sh)
-      * ``templates/change-document.md`` → ``.syspilot/templates/``
+      * ``syspilot/agents/*.agent.md`` → ``.github/agents/``
+      * ``syspilot/prompts/*.prompt.md`` → ``.github/prompts/``
+      * ``syspilot/skills/*.skill.md`` → ``.github/skills/``
+      * ``syspilot/scripts/python/`` → ``.syspilot/scripts/python/``
+      * ``syspilot/sphinx/`` → ``docs/`` (build.ps1, build.sh)
+      * ``syspilot/templates/change-document.md`` → ``.syspilot/templates/``
 
    4. Apply intelligent merge for existing projects (SYSPILOT_SPEC_INST_FILE_OWNERSHIP)
 
@@ -206,13 +206,13 @@ Version Tracking
 
    **Fields:**
 
-   * ``version``: Semantic version that was installed (from ``templates/version.json``)
+   * ``version``: Semantic version that was installed (from ``syspilot/version.json``)
    * ``installedAt``: ISO date of installation or last update
    * ``source``: GitHub repository URL (supports forks)
 
    **Usage:**
 
-   * Update process compares ``version`` with ``templates/version.json`` on GitHub main
+   * Update process compares ``version`` with ``syspilot/version.json`` on GitHub main
    * No hash tracking — agent compares files directly when needed
 
    **Rationale:**
@@ -229,97 +229,124 @@ File Ownership & Updates
 .. spec:: File Layout and Ownership
    :id: SYSPILOT_SPEC_INST_FILE_OWNERSHIP
    :status: implemented
-   :links: SYSPILOT_REQ_INST_CUSTOM_PRESERVE
+   :links: SYSPILOT_REQ_INST_CUSTOM_PRESERVE, SYSPILOT_REQ_INST_FILE_OWNERSHIP
    :tags: install, update, ownership
 
    **Design:**
-   Clear separation between syspilot core files and user content.
+   Every file managed by syspilot has a clear owner that determines
+   update behavior.
 
-   **Syspilot Core (managed by setup agent):**
+   **Methodology-Owned (replaced on every update):**
 
-   * ``.syspilot/version.json`` - version marker, replaced on update
-   * ``.syspilot/scripts/**`` - utility scripts, replaced on update
-   * ``.syspilot/templates/**`` - document templates, replaced on update
-   * ``.github/agents/syspilot.*.agent.md`` - merge if modified
-   * ``.github/prompts/syspilot.*.prompt.md`` - merge if modified
-   * ``.github/skills/syspilot.*.skill.md`` - merge if modified
+   * ``.syspilot/version.json`` — version marker
+   * ``.syspilot/scripts/**`` — utility scripts
+   * ``.syspilot/templates/**`` — document templates
+   * ``.github/agents/syspilot.change.agent.md``
+   * ``.github/agents/syspilot.verify.agent.md``
+   * ``.github/agents/syspilot.mece.agent.md``
+   * ``.github/agents/syspilot.trace.agent.md``
+   * ``.github/agents/syspilot.memory.agent.md``
+   * ``.github/agents/syspilot.setup.agent.md``
+   * ``.github/prompts/syspilot.change.prompt.md``
+   * ``.github/prompts/syspilot.verify.prompt.md``
+   * ``.github/prompts/syspilot.mece.prompt.md``
+   * ``.github/prompts/syspilot.trace.prompt.md``
+   * ``.github/prompts/syspilot.memory.prompt.md``
+   * ``.github/prompts/syspilot.setup.prompt.md``
+   * ``.github/skills/syspilot.*.skill.md``
+   * ``docs/build.ps1``, ``docs/build.sh``
 
-   **Intelligent Merge for Agent Files:**
+   **Project-Owned (copied once on install, never updated):**
 
-   When updating agent/prompt files, the setup agent SHALL:
+   * ``.github/agents/syspilot.release.agent.md``
+   * ``.github/agents/syspilot.implement.agent.md``
+   * ``.github/prompts/syspilot.release.prompt.md``
+   * ``.github/prompts/syspilot.implement.prompt.md``
 
-   1. **Read both versions**: Local file and new file from GitHub
-   2. **If identical**: Skip silently
-   3. **If different**: Agent merges intelligently, asks user on conflicts:
+   These are installed as generic templates with a customization reminder.
+   The project team customizes them via @syspilot.change.
+   Subsequent updates never modify these files.
 
-      * **Overwrite**: Replace with new syspilot version (lose customizations)
-      * **Keep**: Keep user's version (may miss new features)
-      * **Merge**: Agent attempts to merge changes interactively
+   **User-Owned (never touched by setup):**
 
-   **User Content (preserved during updates):**
-
-   * ``docs/syspilot/userstories/**`` (user's stories)
-   * ``docs/syspilot/requirements/**`` (user's requirements)
-   * ``docs/syspilot/design/**`` (user's design)
-   * ``docs/changes/**`` (user's change documents)
-   * ``.github/copilot-instructions.md`` (user's memory)
-   * ``.github/agents/*.agent.md`` (non-syspilot agents)
-   * ``.github/prompts/*.prompt.md`` (non-syspilot prompts)
-
-   **Shared/Merged (require interactive merge):**
-
-   * ``docs/conf.py`` (syspilot config + user additions)
-   * ``docs/pyproject.toml`` or ``docs/requirements.txt``
+   * ``docs/syspilot/**`` (user's spec tree)
+   * ``docs/inst/**`` (instance specs)
+   * ``docs/changes/**`` (change documents)
+   * ``docs/conf.py`` (after initial creation)
+   * ``.github/copilot-instructions.md``
+   * Any non-syspilot agents/prompts/skills
 
 
 .. spec:: Update Process
    :id: SYSPILOT_SPEC_INST_UPDATE_PROCESS
    :status: implemented
-   :links: SYSPILOT_REQ_INST_VERSION_UPDATE, SYSPILOT_SPEC_INST_VERSION_MARKER, SYSPILOT_SPEC_INST_FILE_OWNERSHIP
+   :links: SYSPILOT_REQ_INST_VERSION_UPDATE, SYSPILOT_REQ_INST_BOOTSTRAP_SELF, SYSPILOT_REQ_INST_FILE_OWNERSHIP, SYSPILOT_SPEC_INST_VERSION_MARKER, SYSPILOT_SPEC_INST_FILE_OWNERSHIP
    :tags: update, migration
 
    **Design:**
-   Update is agent-driven with curl from GitHub and intelligent merge.
+   Update is agent-driven with curl from GitHub and explicit file ownership rules.
    Git serves as the backup mechanism — no separate backup/rollback needed.
 
    **Update Flow:**
 
-   **Step 0: Check for Updates**
+   **Step 0: Bootstrap Self-Update**
 
-   1. Fetch ``templates/version.json`` from GitHub main
+   1. Fetch ``syspilot/agents/syspilot.setup.agent.md`` from GitHub main
+   2. Compare with local ``.github/agents/syspilot.setup.agent.md``
+   3. If different → replace local immediately
+   4. All subsequent steps use the updated setup agent logic
+
+   **Step 1: Check for Updates**
+
+   1. Fetch ``syspilot/version.json`` from GitHub main
    2. Compare with local ``.syspilot/version.json``
-   3. If remote version > local version → proceed to Step 1
-   4. If remote version <= local version:
+   3. If remote version > local version → proceed to Step 2
+   4. If remote version <= local version → inform user, abort
 
-      * Inform user: "Version X.Y.Z is current (remote: X.Y.Z)"
-      * Abort update
+   **Step 2: Fetch and Apply by Ownership**
 
-   **Step 1: Detect Update Mode**
+   Download all files from ``syspilot/`` on GitHub main and apply by category:
 
-   1. User invokes ``@syspilot.setup`` (same agent for install and update)
-   2. Agent detects existing ``.syspilot/version.json`` → update mode
-   3. Inform user of current and target versions
+   .. list-table::
+      :header-rows: 1
 
-   **Step 2: Fetch and Merge**
+      * - Category
+        - Files
+        - Action
+      * - Methodology agents
+        - change, verify, mece, trace, memory (+ prompts)
+        - Replace always
+      * - Setup agent
+        - syspilot.setup.agent.md (+ prompt)
+        - Already updated in Step 0
+      * - Project agents
+        - release, implement (+ prompts)
+        - Skip (never modify)
+      * - Skills
+        - syspilot.ask-questions.skill.md
+        - Replace always
+      * - Scripts & build files
+        - ``.syspilot/scripts/``, ``docs/build.*``
+        - Replace always
+      * - Templates
+        - ``.syspilot/templates/``
+        - Replace always
+      * - User content
+        - ``docs/``, ``.github/copilot-instructions.md``
+        - Never touch
 
-   1. Download all files from ``templates/`` on GitHub main
-   2. For each file, apply intelligent merge (SYSPILOT_SPEC_INST_FILE_OWNERSHIP):
+   **Step 3: Update Version Marker**
 
-      * ``.syspilot/**`` files → replace directly
-      * Agent/prompt/skill files → compare and merge if modified
+   Update ``.syspilot/version.json`` with new version and date.
 
-   3. Update ``.syspilot/version.json`` with new version and date
+   **Step 4: Validate**
 
-   **Step 3: Validate**
+   Run ``sphinx-build`` to verify. Confirm success.
 
-   * Run ``sphinx-build`` to verify
-   * Confirm success
-
-   **Rationale:**
-
-   * No backup/rollback mechanism needed — Git is the backup
-   * AI agent handles merge intelligently, no programmatic diff needed
-   * Simple and reliable
+   **First Install Exception:**
+   On initial install (no ``.syspilot/version.json``), ALL agents including
+   release and implement are copied as generic templates. These templates
+   include a customization reminder banner.
 
 
 Distribution
@@ -338,14 +365,14 @@ Distribution
    **Release Contents:**
 
    * Complete syspilot repository structure
-   * ``templates/version.json`` with release version
+   * ``syspilot/version.json`` with release version
    * README with installation instructions (curl commands)
    * docs/releasenotes.md with release history
 
    **Primary Distribution Channel:**
 
    Users fetch files directly from GitHub main via curl/Invoke-WebRequest.
-   The ``templates/`` directory on main is always the current release.
+   The ``syspilot/`` directory on main is always the current release.
 
    **Directory Structure in Repository:**
 
@@ -357,14 +384,15 @@ Distribution
       │   ├── prompts/      # syspilot's own prompts
       │   ├── skills/       # syspilot's own skills
       │   └── copilot-instructions.md
-      ├── templates/        # Distribution source (PRODUCT)
+      ├── syspilot/         # Distribution source (PRODUCT)
       │   ├── version.json  # Release version
       │   ├── agents/       # Generic agent templates (*.agent.md)
       │   ├── prompts/      # Generic prompt templates (*.prompt.md)
       │   ├── skills/       # Generic skill templates (*.skill.md)
       │   ├── scripts/      # Utility scripts
       │   ├── sphinx/       # Build scripts
-      │   └── change-document.md
+      │   └── templates/    # Document templates
+      │       └── change-document.md
       ├── docs/             # Self-documentation (including releasenotes.md)
       └── README.md         # Installation instructions (curl commands)
 
@@ -378,7 +406,7 @@ Distribution
    **Rationale:**
 
    * Main branch = current release, simplest possible distribution
-   * ``templates/`` is the complete release package
+   * ``syspilot/`` is the complete release package
    * curl from raw.githubusercontent.com works without GitHub API
    * GitHub's automatic archiving provides optional ZIP/tar.gz downloads
 
@@ -393,7 +421,7 @@ Template Distribution
    :tags: install, distribution, templates
 
    **Design:**
-   The ``templates/`` directory is the single source for all files
+   The ``syspilot/`` directory is the single source for all files
    distributed to target projects, including the release version.
    Its structure mirrors the target project layout.
 
@@ -401,7 +429,7 @@ Template Distribution
 
    ::
 
-      templates/
+      syspilot/
       ├── version.json                     # → .syspilot/version.json
       ├── agents/                          # → .github/agents/
       │   ├── syspilot.setup.agent.md
@@ -422,10 +450,11 @@ Template Distribution
       ├── sphinx/                          # → docs/
       │   ├── build.ps1
       │   └── build.sh
-      └── change-document.md              # → .syspilot/templates/
+      └── templates/                       # → .syspilot/templates/
+          └── change-document.md
 
    **Mapping Rule:**
-   Each subdirectory in ``templates/`` maps to a specific location in the
+   Each subdirectory in ``syspilot/`` maps to a specific location in the
    target project. The Setup Agent uses this mapping when copying files.
 
    **Skeleton vs Full Agents:**
@@ -455,12 +484,12 @@ Template Distribution
 
    **Design:**
    During the release process, syspilot validates the distribution path by
-   installing from its own ``templates/`` directory into its ``.github/``
+   installing from its own ``syspilot/`` directory into its ``.github/``
    directory, simulating a fresh installation into a target project.
 
    **Validation Steps:**
 
-   1. Run Setup Agent's copy logic using ``templates/`` as source
+   1. Run Setup Agent's copy logic using ``syspilot/`` as source
    2. Verify all agent files are valid (parseable YAML frontmatter)
    3. Verify the implement agent skeleton contains TODO placeholders
       (not Python-specific commands)

@@ -1,6 +1,6 @@
 # Change Document: prod-inst-migrate
 
-**Status**: draft
+**Status**: approved
 **Branch**: feature/product-instance
 **Created**: 2026-03-20
 **Updated**: 2026-03-27

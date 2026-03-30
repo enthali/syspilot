@@ -70,7 +70,7 @@ Design specifications for the Change Agent — iterative level-based change anal
 
    1. **Create** — Derive short name (<15 chars) from user request
       (e.g., "iterative level processing" → ``iterative-level``)
-   2. **Populate** — Copy from ``templates/change-document.md``
+   2. **Populate** — Copy from ``.syspilot/templates/change-document.md``
    3. **Update** — Record agreements immediately as they are reached
    4. **Simplify** — After final approval, reduce to ID/title summary
    5. **Archive** — After merge, move Change Document and validation report

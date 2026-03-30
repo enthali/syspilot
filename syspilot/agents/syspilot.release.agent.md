@@ -8,6 +8,8 @@ handoffs:
 
 # syspilot Release Agent
 
+> ⚠️ **This is the generic syspilot template.** Customize for your project via `@syspilot.change`. Remove this banner after customization.
+
 > **Purpose**: Guide maintainers through releases using project-specific decisions.
 
 **Implements**: SYSPILOT_SPEC_REL_AGENT, SYSPILOT_REQ_REL_PROCESS_DOC, SYSPILOT_REQ_REL_NOTES

@@ -14,7 +14,7 @@ This document contains design specifications for the syspilot release process.
    :tags: release, versioning
 
    **Design:**
-   syspilot uses Semantic Versioning with structure stored in ``templates/version.json``.
+   syspilot uses Semantic Versioning with structure stored in ``syspilot/version.json``.
 
    **Version Format:**
 
@@ -24,7 +24,7 @@ This document contains design specifications for the syspilot release process.
    * PATCH: Bug fixes (backward compatible)
    * Pre-release suffixes: ``-alpha``, ``-beta``, ``-rc.N``
 
-   **templates/version.json Structure:**
+   **syspilot/version.json Structure:**
    
    .. code-block:: json
 
@@ -61,15 +61,15 @@ This document contains design specifications for the syspilot release process.
 
    * Format: ``vMAJOR.MINOR.PATCH`` (e.g., ``v0.2.0``)
    * Prefix ``v`` required by GitHub convention
-   * Must match version in templates/version.json
+   * Must match version in syspilot/version.json
 
    **Tag Creation Process:**
    
    .. code-block:: bash
 
-      # 1. Update templates/version.json with new version
+      # 1. Update syspilot/version.json with new version
       # 2. Commit version.json change
-      git add templates/version.json
+      git add syspilot/version.json
       git commit -m "chore: bump version to 0.2.0"
 
       # 3. Create annotated tag
@@ -81,12 +81,12 @@ This document contains design specifications for the syspilot release process.
    **Tag Content:**
 
    * Annotated tag with release summary message
-   * Points to commit where templates/version.json was updated
+   * Points to commit where syspilot/version.json was updated
    * Triggers GitHub Actions workflow (if configured)
 
    **Validation:**
 
-   * Tag version must match templates/version.json
+   * Tag version must match syspilot/version.json
    * All tests must pass on tagged commit
    * Documentation must build successfully
 
@@ -168,7 +168,7 @@ This document contains design specifications for the syspilot release process.
 
    **Documentation:**
 
-   * [ ] templates/version.json updated with new version
+   * [ ] syspilot/version.json updated with new version
    * [ ] docs/releasenotes.md updated with release entry
    * [ ] All sphinx-needs links valid (sphinx-build succeeds)
    * [ ] No orphaned requirements or specs
@@ -255,10 +255,10 @@ This document contains design specifications for the syspilot release process.
       .. code-block:: yaml
 
          - run: |
-             VERSION=$(jq -r .version templates/version.json)
+             VERSION=$(jq -r .version syspilot/version.json)
              TAG=${GITHUB_REF#refs/tags/v}
              if [ "$VERSION" != "$TAG" ]; then
-               echo "Version mismatch: templates/version.json=$VERSION tag=$TAG"
+               echo "Version mismatch: syspilot/version.json=$VERSION tag=$TAG"
                exit 1
              fi
 
@@ -437,7 +437,7 @@ Release Workflow
           │
           ▼
       ┌─────────────────┐
-      │  1. Version      │ ──→ Update templates/version.json, determine SemVer bump
+      │  1. Version      │ ──→ Update syspilot/version.json, determine SemVer bump
       └─────────────────┘
           │
           ▼

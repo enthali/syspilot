@@ -94,10 +94,15 @@ Stories covering bootstrap, portability, installation, adoption, and updates.
 
    **Acceptance Scenarios:**
 
-   1. Given syspilot is installed, When a new version is available, Then I can update by following the update process
-   2. Given I update syspilot, When the update completes, Then my project-specific customizations are preserved
+   1. Given syspilot is installed, When a new version is available, Then I can update
+      by invoking @syspilot.setup
+   2. Given I update syspilot, When the update completes, Then methodology agents
+      (change, verify, mece, trace, memory) are replaced with the latest version
+      and project-specific agents (release, implement) are never modified
    3. Given a breaking change exists, When I update, Then I receive migration guidance
    4. Given I update, When I check, Then I can see which version I now have
+   5. Given the setup agent is outdated, When I invoke @syspilot.setup, Then the setup
+      agent updates itself first before updating other files
 
 
 .. story:: Language-Agnostic Implementation Agent
@@ -114,10 +119,17 @@ Stories covering bootstrap, portability, installation, adoption, and updates.
 
    **Acceptance Scenarios:**
 
-   1. Given I install syspilot into any project, When setup completes, Then the implement agent contains no language-specific build/test commands
-   2. Given I read the installed implement agent, When I look for customization points, Then I see clear TODO placeholders for build command, test command, and language-specific patterns
-   3. Given I customize the implement agent for my stack, When syspilot updates, Then my customizations are preserved (existing AC from SYSPILOT_US_INST_UPDATE)
-   4. Given the implement agent is a skeleton, When I follow the workflow structure, Then Change → Implement → Verify still works end-to-end
+   1. Given I install syspilot into any project, When setup completes, Then the
+      implement agent contains no language-specific build/test commands
+   2. Given I read the installed implement agent, When I look for customization
+      points, Then I see clear TODO placeholders for build command, test command,
+      and language-specific patterns
+   3. Given I customize the implement agent for my stack, When syspilot updates,
+      Then the implement agent is never modified by the update process
+   4. Given the implement agent is a skeleton, When I follow the workflow structure,
+      Then Change → Implement → Verify still works end-to-end
+   5. Given I install syspilot, When I see the implement and release agents,
+      Then they contain a reminder to customize via @syspilot.change
 
 
 Traceability

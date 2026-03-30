@@ -39,8 +39,9 @@ syspilot/                       # syspilot family product
 ├── skills/                     #   Shared skills → .github/skills/
 ├── scripts/python/             #   Utilities → .syspilot/scripts/
 ├── sphinx/                     #   Build scripts → docs/
-├── version.json                #   Release version
-└── change-document.md          #   Change doc template
+├── templates/                  #   Document templates → .syspilot/templates/
+│   └── change-document.md      #   Change doc template
+└── version.json                #   Release version
 
 sysmlv2/                        # SysMLv2 family product (future)
 ├── agents/
