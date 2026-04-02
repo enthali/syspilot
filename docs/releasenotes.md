@@ -1,5 +1,37 @@
 # syspilot Release Notes
 
+## v0.3.1 - 2026-04-03
+
+### Summary
+Safety improvement to the update workflow: the Setup Agent now creates a dedicated `update/v{version}` branch before performing any updates, detects project-specific extensions that would be silently lost when replacing methodology-owned files, and creates a change document summarizing what was updated.
+
+### ✨ New Features
+
+- **Update Branch Workflow** (#16, SYSPILOT_SPEC_INST_UPDATE_BRANCH)
+  - `@syspilot.setup` (update mode) now creates `update/v{version}` branch before any file changes
+  - All update work is committed on the dedicated branch
+  - A change document `docs/changes/update-v{version}.md` is created summarizing replaced/skipped files
+  - User reviews the branch diff and merges when ready
+
+- **Post-Update Extension Review** (#16, SYSPILOT_SPEC_INST_POST_UPDATE_REVIEW)
+  - After replacing methodology-owned files, compares old vs new content using `git show HEAD:<path>`
+  - If a file had project-specific additions that are missing in the new version, the user is alerted
+  - Per-file options: accept new version / merge back manually / restore old version
+  - Silent skip if no custom extensions are detected
+
+### 🔧 Fixes & Improvements
+
+- Resolves silent data loss when updating syspilot if methodology-owned files had been customized (e.g., extra verification steps in `syspilot.verify.agent.md`)
+
+### 📋 Specs
+
+- New: `SYSPILOT_REQ_INST_POST_UPDATE_REVIEW`, `SYSPILOT_REQ_INST_UPDATE_BRANCH`
+- New: `SYSPILOT_SPEC_INST_POST_UPDATE_REVIEW`, `SYSPILOT_SPEC_INST_UPDATE_BRANCH`
+- Modified: `SYSPILOT_SPEC_INST_UPDATE_PROCESS` (Steps 0a, 3/4a, 6/7 added)
+- Modified: `SYSPILOT_US_INST_UPDATE` (AC-7 and AC-8 added)
+
+---
+
 ## v0.3.0 - 2026-04-02
 
 ### Summary
