@@ -1,5 +1,60 @@
 # syspilot Release Notes
 
+## v0.3.0 - 2026-04-02
+
+### Summary
+Structural improvements: local install support, skill format migration to VS Code standard, new architecture and workflows documentation pages with Mermaid diagrams, and branching strategy documentation.
+
+### ⚠️ Breaking Changes
+
+- **Skill Format Migration** (#12, SYSPILOT_SPEC_AGENT_SKILL_FORMAT)
+  - Skills now use folder format: `.github/skills/<name>/SKILL.md`
+  - Old format `.github/skills/<name>.skill.md` is no longer recognized
+  - Run `@syspilot.setup` to migrate existing installations
+  - YAML frontmatter with `name`/`description` enables automatic skill discovery
+
+### ✨ New Features
+
+- **Local Install Support** (#9, SYSPILOT_REQ_INST_LOCAL_SOURCE)
+  - Setup agent detects `syspilot/` directory and offers local vs GitHub install
+  - Enables testing agent changes before pushing (dogfooding workflow)
+  - File ownership rules apply equally to local install
+
+- **Architecture Documentation** (#15, SYSPILOT_REQ_DOC_ARCHITECTURE)
+  - New `docs/architecture.md` — explains Product/Instance separation concept
+  - 7 chapters: Why, What (Product + Instance), How They Relate, Concrete Example, Update Safety
+
+- **Workflows Documentation** (#15, SYSPILOT_REQ_DOC_WORKFLOWS)
+  - New `docs/workflows.md` — central syspilot process description
+  - Covers all 3 workflows: Change, Quality, Release
+  - Agent decision guide, workflow diagrams, branching strategy
+
+- **Mermaid Diagram Support**
+  - Added `sphinxcontrib-mermaid` to Sphinx extensions
+  - All ASCII diagrams replaced with Mermaid flowcharts across docs and specs
+  - Client-side rendering via mermaid.js (no build-time dependency)
+
+- **Branching Strategy** (SYSPILOT_SPEC_DOC_WORKFLOWS_STRUCTURE)
+  - Documented chained feature branches model
+  - Main = releases only, squash merge during `@syspilot.release`
+
+### 🔧 Improvements
+
+- **Housekeeping**
+  - Removed version tracking from memory agent scope (SYSPILOT_SPEC_MEM_SCOPE)
+  - Archived v0.2.2 change documents to `docs/changes/archive/v0.2.2/`
+
+- **Traceability**
+  - Added outgoing links from SPEC_DOC_WORKFLOWS_STRUCTURE to agent design specs
+  - Impact analysis now catches documentation when agent specs change
+
+### 📋 Issues Closed
+
+- #9 — Setup Agent: Support local install from syspilot/ directory
+- #12 — Migrate skills to VS Code standard format
+- #15 — Documentation: Architecture page for Product/Instance concept
+
+
 ## v0.2.3 - 2026-03-30
 
 ### Summary
