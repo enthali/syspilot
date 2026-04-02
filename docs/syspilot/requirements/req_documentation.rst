@@ -125,6 +125,7 @@ Per-Document Requirements
 
    * AC-1: Release notes list changes per version (newest first)
    * AC-2: Release notes are updated during the release workflow
+   * AC-3: Release notes are stored in ``docs/releasenotes.md``
 
 
 .. req:: Process Documentation

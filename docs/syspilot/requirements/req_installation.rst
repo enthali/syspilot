@@ -88,7 +88,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    :status: implemented
    :priority: mandatory
    :tags: install, new-project
-   :links: SYSPILOT_US_INST_NEW_PROJECT, SYSPILOT_REQ_INST_TEMPLATE_SOURCE
+   :links: SYSPILOT_US_INST_NEW_PROJECT, SYSPILOT_REQ_INST_TEMPLATE_SOURCE, SYSPILOT_REQ_INST_LOCAL_SOURCE
 
    **Description:**
    syspilot SHALL be installable into a new project.
@@ -112,7 +112,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    :status: implemented
    :priority: mandatory
    :tags: install, adoption
-   :links: SYSPILOT_US_INST_ADOPT_EXISTING, SYSPILOT_REQ_INST_TEMPLATE_SOURCE
+   :links: SYSPILOT_US_INST_ADOPT_EXISTING, SYSPILOT_REQ_INST_TEMPLATE_SOURCE, SYSPILOT_REQ_INST_LOCAL_SOURCE
 
    **Description:**
    syspilot SHALL be adoptable into an existing project without data loss.
@@ -136,7 +136,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    :status: implemented
    :priority: mandatory
    :tags: update, migration
-   :links: SYSPILOT_US_INST_UPDATE, SYSPILOT_REQ_INST_VERSION_MARKER, SYSPILOT_REQ_INST_TEMPLATE_SOURCE
+   :links: SYSPILOT_US_INST_UPDATE, SYSPILOT_REQ_INST_VERSION_MARKER, SYSPILOT_REQ_INST_TEMPLATE_SOURCE, SYSPILOT_REQ_INST_LOCAL_SOURCE
 
    **Description:**
    syspilot SHALL be updatable to newer versions.
@@ -161,7 +161,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    :status: implemented
    :priority: high
    :tags: install, update, preservation
-   :links: SYSPILOT_US_INST_ADOPT_EXISTING, SYSPILOT_US_INST_UPDATE
+   :links: SYSPILOT_US_INST_ADOPT_EXISTING, SYSPILOT_US_INST_UPDATE, SYSPILOT_REQ_INST_FILE_OWNERSHIP
 
    **Description:**
    syspilot SHALL preserve user customizations during adoption and updates.
@@ -293,7 +293,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    :status: implemented
    :priority: mandatory
    :tags: update, bootstrap, setup
-   :links: SYSPILOT_US_INST_UPDATE
+   :links: SYSPILOT_US_INST_UPDATE, SYSPILOT_REQ_INST_LOCAL_SOURCE
 
    **Description:**
    When running in update mode, the Setup Agent SHALL update itself from
@@ -364,6 +364,60 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    * AC-3: If ``syspilot/`` does not exist, Setup Agent SHALL proceed with GitHub fetch (current behavior)
    * AC-4: Local install SHALL follow the same file ownership rules as GitHub install (methodology=replace, project=skip on update)
    * AC-5: Local install SHALL read from the same ``syspilot/`` directory structure defined by SYSPILOT_REQ_INST_TEMPLATE_SOURCE
+
+
+.. req:: Post-Update Extension Review
+   :id: SYSPILOT_REQ_INST_POST_UPDATE_REVIEW
+   :status: implemented
+   :priority: mandatory
+   :tags: update, review, diff
+   :links: SYSPILOT_US_INST_UPDATE, SYSPILOT_REQ_INST_FILE_OWNERSHIP
+
+   **Description:**
+   After replacing methodology-owned files during an update, the Setup Agent
+   SHALL compare the old version (before replacement) with the new version.
+   If the old version contained content not present in the new version
+   (beyond whitespace and formatting), the Setup Agent SHALL warn the user
+   and present the differences for review.
+
+   **Rationale:**
+   Projects may add custom extensions to methodology-owned files (e.g.,
+   additional verification steps in the verify agent). These additions are
+   silently lost when the file is replaced. A post-update review step
+   detects this and lets the user decide how to proceed.
+
+   **Acceptance Criteria:**
+
+   * AC-1: For each replaced methodology-owned file, compare old vs new content
+   * AC-2: If old version had content not present in new → flag for user review
+   * AC-3: Present flagged files with a summary of what was lost
+   * AC-4: User can accept the new version as-is or merge custom content back
+   * AC-5: If no methodology-owned files had custom extensions → skip silently
+
+
+.. req:: Update on Dedicated Branch
+   :id: SYSPILOT_REQ_INST_UPDATE_BRANCH
+   :status: implemented
+   :priority: mandatory
+   :tags: update, branch, traceability
+   :links: SYSPILOT_US_INST_UPDATE
+
+   **Description:**
+   The Setup Agent SHALL perform updates on a dedicated branch and create
+   a change document summarizing what was updated, so that changes are
+   reviewable and traceable via standard git workflows.
+
+   **Rationale:**
+   Performing updates directly on the working branch makes it hard to review
+   what changed and to roll back if needed. A dedicated branch with a change
+   document provides the same traceability as any other syspilot change.
+
+   **Acceptance Criteria:**
+
+   * AC-1: Update creates a dedicated branch (e.g., ``update/v{version}``)
+   * AC-2: A change document is created listing all replaced/updated files
+   * AC-3: User can review the branch diff before merging into their working branch
+   * AC-4: Change document summarizes version change (old → new) and lists affected files
 
 
 Traceability

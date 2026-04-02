@@ -220,7 +220,7 @@ Iterative Change Processing
    :status: implemented
    :priority: mandatory
    :tags: agent, change, verification
-   :links: SYSPILOT_US_CHG_ITERATIVE
+   :links: SYSPILOT_US_CHG_ITERATIVE, SYSPILOT_REQ_TRACE_VERTICAL
 
    **Description:**
    The Change Agent SHALL perform final consistency check across all levels

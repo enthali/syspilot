@@ -346,7 +346,7 @@ File Ownership & Updates
 .. spec:: Update Process
    :id: SYSPILOT_SPEC_INST_UPDATE_PROCESS
    :status: implemented
-   :links: SYSPILOT_REQ_INST_VERSION_UPDATE, SYSPILOT_REQ_INST_BOOTSTRAP_SELF, SYSPILOT_REQ_INST_FILE_OWNERSHIP, SYSPILOT_SPEC_INST_VERSION_MARKER, SYSPILOT_SPEC_INST_FILE_OWNERSHIP
+   :links: SYSPILOT_REQ_INST_VERSION_UPDATE, SYSPILOT_REQ_INST_BOOTSTRAP_SELF, SYSPILOT_REQ_INST_FILE_OWNERSHIP, SYSPILOT_SPEC_INST_VERSION_MARKER, SYSPILOT_SPEC_INST_FILE_OWNERSHIP, SYSPILOT_SPEC_INST_POST_UPDATE_REVIEW, SYSPILOT_SPEC_INST_UPDATE_BRANCH
    :tags: update, migration
 
    **Design:**
@@ -354,6 +354,13 @@ File Ownership & Updates
    Git serves as the backup mechanism — no separate backup/rollback needed.
 
    **Update Flow:**
+
+   **Step 0a: Create Update Branch
+   (SYSPILOT_SPEC_INST_UPDATE_BRANCH)**
+
+   Create and switch to branch ``update/v{new-version}``. If the branch
+   already exists, abort. See SYSPILOT_SPEC_INST_UPDATE_BRANCH for
+   full design.
 
    **Step 0: Bootstrap Self-Update**
 
@@ -402,13 +409,28 @@ File Ownership & Updates
         - ``docs/``, ``.github/copilot-instructions.md``
         - Never touch
 
-   **Step 3: Update Version Marker**
+   **Step 3: Post-Update Extension Review
+   (SYSPILOT_SPEC_INST_POST_UPDATE_REVIEW)**
+
+   For each methodology-owned file replaced in Step 2, compare old vs new
+   content. If the old version had content not present in the new version,
+   flag for user review. See SYSPILOT_SPEC_INST_POST_UPDATE_REVIEW for
+   full design.
+
+   **Step 4: Update Version Marker**
 
    Update ``.syspilot/version.json`` with new version and date.
 
-   **Step 4: Validate**
+   **Step 5: Validate**
 
    Run ``sphinx-build`` to verify. Confirm success.
+
+   **Step 6: Create Change Document and Commit
+   (SYSPILOT_SPEC_INST_UPDATE_BRANCH)**
+
+   Create a change document summarizing what was updated, commit all
+   changes on the update branch. See SYSPILOT_SPEC_INST_UPDATE_BRANCH
+   for full design.
 
    **First Install Exception:**
    On initial install (no ``.syspilot/version.json``), ALL agents including
@@ -571,6 +593,125 @@ Template Distribution
    This guarantees that every release actually works when installed
    into a "foreign" environment. syspilot dogfoods its own distribution
    path, catching issues before users encounter them.
+
+
+Post-Update Review
+------------------
+
+.. spec:: Post-Update Extension Review
+   :id: SYSPILOT_SPEC_INST_POST_UPDATE_REVIEW
+   :status: implemented
+   :links: SYSPILOT_REQ_INST_POST_UPDATE_REVIEW, SYSPILOT_SPEC_INST_UPDATE_PROCESS, SYSPILOT_SPEC_INST_FILE_OWNERSHIP
+   :tags: update, review, diff
+
+   **Design:**
+   After replacing methodology-owned files (Update Process Step 2), the
+   Setup Agent reviews each replaced file for lost project-specific content.
+
+   **Review Logic (Step 3 in Update Process):**
+
+   1. For each methodology-owned file that was replaced in Step 2:
+
+      a. Retrieve the old content via ``git show HEAD:<path>``
+         (the version before replacement, committed on the update branch)
+      b. Compare old content against the newly written file
+      c. Identify lines/sections present in old but absent in new
+
+   2. If any file has lost content:
+
+      ::
+
+         ⚠️  Post-Update Review: Project extensions detected in replaced files
+
+         The following methodology-owned files contained content not present
+         in the new version:
+
+         📄 .github/agents/syspilot.verify.agent.md
+            - Lines 45-62: "Test Protocol Check" section (removed)
+
+         Options:
+         A) Review each file — show diff and decide per file
+         B) Accept all new versions as-is
+         C) Abort update — restore all files from git
+
+      * **Option A**: For each flagged file, show the diff and ask:
+
+        ::
+
+           Accept new version (custom content lost)
+           Merge back — I will manually re-add my extensions to the new file
+           Restore old version (skip update for this file)
+
+      * **Option B**: Continue without changes
+      * **Option C**: Run ``git checkout -- <files>`` to restore
+
+   3. If no files have lost content → skip silently (no output)
+
+   **What counts as "lost content":**
+
+   * Lines present in old version but not in new version
+   * Whitespace-only and comment-only differences are ignored
+   * The comparison is line-based, not semantic
+
+   **Rationale:**
+
+   * Git-based comparison is simple and reliable
+   * Leveraging ``git show HEAD:<path>`` avoids needing temporary backup files
+   * The update branch (SYSPILOT_SPEC_INST_UPDATE_BRANCH) ensures the
+     pre-update state is always available via git
+
+
+Update Branch
+-------------
+
+.. spec:: Update Branch Workflow
+   :id: SYSPILOT_SPEC_INST_UPDATE_BRANCH
+   :status: implemented
+   :links: SYSPILOT_REQ_INST_UPDATE_BRANCH, SYSPILOT_SPEC_INST_UPDATE_PROCESS
+   :tags: update, branch, traceability
+
+   **Design:**
+   The update process runs on a dedicated branch with a change document,
+   providing the same reviewability as any other syspilot change.
+
+   **Branch Creation (Step 0a in Update Process, before self-update):**
+
+   1. Create and switch to branch ``update/v{new-version}``
+      (e.g., ``update/v0.4.0``)
+   2. If branch already exists → abort with message
+      ("Update branch already exists. Complete or delete the previous
+      update first.")
+
+   **Change Document (Step 6 in Update Process, after validation):**
+
+   1. Create ``docs/changes/update-v{version}.md`` with:
+
+      * Source version and target version
+      * List of replaced files (methodology-owned)
+      * List of skipped files (project-owned)
+      * Post-update review results (if any extensions were flagged)
+      * Validation result (sphinx-build)
+
+   2. Commit all changes on the update branch
+
+   **User Workflow After Update:**
+
+   ::
+
+      ✅ Update to v{version} complete on branch update/v{version}.
+
+      Next steps:
+      1. Review changes: git diff main...update/v{version}
+      2. Merge into your working branch when ready
+      3. The change document at docs/changes/update-v{version}.md
+         summarizes what changed.
+
+   **Rationale:**
+
+   * Dedicated branch isolates update from work-in-progress
+   * Change document provides permanent record of what changed
+   * Standard git diff workflow for review
+   * User controls when to merge, not the setup agent
 
 
 Traceability

@@ -75,7 +75,6 @@ This document contains requirements for the syspilot release process.
    * AC-3: Release notes list breaking changes
    * AC-4: Release notes reference User Stories/Requirements where applicable
    * AC-5: Release notes include migration guidance for breaking changes
-   * AC-6: Release notes stored in docs/releasenotes.md
 
 
 .. req:: Pre-Release Validation
@@ -119,7 +118,6 @@ This document contains requirements for the syspilot release process.
    * AC-1: Sphinx build completes without errors
    * AC-2: All sphinx-needs links are valid
    * AC-3: No orphaned requirements or design elements
-   * AC-4: Documentation is published to GitHub Pages
 
 
 .. req:: Agent Functionality Testing
@@ -149,7 +147,7 @@ This document contains requirements for the syspilot release process.
    :status: implemented
    :priority: high
    :tags: release, automation, ci-cd
-   :links: SYSPILOT_US_REL_CREATE, SYSPILOT_US_REL_VALIDATE
+   :links: SYSPILOT_US_REL_CREATE, SYSPILOT_US_REL_VALIDATE, SYSPILOT_REQ_REL_VALIDATION, SYSPILOT_REQ_REL_DOC_BUILD, SYSPILOT_REQ_REL_AGENT_TEST, SYSPILOT_REQ_REL_GITHUB_PUBLISH
 
    **Description:**
    syspilot SHOULD automate release validation and publication via GitHub Actions.

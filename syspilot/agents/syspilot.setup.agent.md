@@ -348,7 +348,40 @@ Next: Run @syspilot.change to start your first change request.
 **Note:** The install source detection from Section 1 runs first. If the user
 chose "local", all fetch operations below use local file copy instead of GitHub.
 
-**Implements: SYSPILOT_SPEC_INST_UPDATE_PROCESS, SYSPILOT_SPEC_INST_FILE_OWNERSHIP**
+**Implements: SYSPILOT_SPEC_INST_UPDATE_PROCESS, SYSPILOT_SPEC_INST_FILE_OWNERSHIP, SYSPILOT_SPEC_INST_POST_UPDATE_REVIEW, SYSPILOT_SPEC_INST_UPDATE_BRANCH**
+
+### Step 0a: Create Update Branch
+
+Before any file changes, create a dedicated branch for the update.
+
+**Determine the target version first** — fetch `syspilot/version.json` from the chosen source:
+
+```powershell
+# If $installSource = "local":
+$newVersion = (Get-Content "syspilot/version.json" | ConvertFrom-Json).version
+
+# If $installSource = "github":
+$newVersion = (Invoke-RestMethod -Uri "$RAW_BASE/syspilot/version.json").version
+```
+
+Create and switch to the update branch:
+
+```powershell
+$branchName = "update/v$newVersion"
+
+# Check if branch already exists
+$existingBranch = git branch --list $branchName
+if ($existingBranch) {
+    Write-Host "❌ Branch '$branchName' already exists."
+    Write-Host "   Complete or delete the previous update first."
+    return
+}
+
+git checkout -b $branchName
+Write-Host "📌 Created branch: $branchName"
+```
+
+**Implements: SYSPILOT_SPEC_INST_UPDATE_BRANCH, SYSPILOT_REQ_INST_UPDATE_BRANCH**
 
 ### Step 0: Bootstrap Self-Update
 
@@ -472,6 +505,94 @@ Apply based on file ownership:
 - `.github/copilot-instructions.md`
 - Any non-syspilot agents/prompts/skills
 
+### Step 4a: Post-Update Extension Review
+
+After replacing methodology-owned files, check if any had project-specific extensions
+that were lost in the replacement.
+
+For each methodology-owned file that was replaced in Step 4:
+
+```powershell
+# Methodology-owned files that were replaced
+$methodologyFiles = @(
+    ".github/agents/syspilot.change.agent.md",
+    ".github/agents/syspilot.verify.agent.md",
+    ".github/agents/syspilot.mece.agent.md",
+    ".github/agents/syspilot.trace.agent.md",
+    ".github/agents/syspilot.memory.agent.md",
+    ".github/prompts/syspilot.change.prompt.md",
+    ".github/prompts/syspilot.verify.prompt.md",
+    ".github/prompts/syspilot.mece.prompt.md",
+    ".github/prompts/syspilot.trace.prompt.md",
+    ".github/prompts/syspilot.memory.prompt.md"
+    # setup agent already handled in Step 0
+)
+
+$flaggedFiles = @()
+
+foreach ($file in $methodologyFiles) {
+    # Get the old content (before replacement) from git
+    $oldContent = git show "HEAD:$file" 2>$null
+    if (-not $oldContent) { continue }  # file didn't exist before
+
+    $newContent = Get-Content $file -Raw
+
+    # Find lines in old that are NOT in new (ignoring blank lines)
+    $oldLines = ($oldContent -split "`n") | Where-Object { $_.Trim() -ne "" }
+    $newLines = ($newContent -split "`n") | Where-Object { $_.Trim() -ne "" }
+    $lostLines = $oldLines | Where-Object { $_ -notin $newLines }
+
+    if ($lostLines.Count -gt 0) {
+        $flaggedFiles += @{ Path = $file; LostLineCount = $lostLines.Count }
+    }
+}
+```
+
+If any files are flagged, present the user with options:
+
+```
+⚠️  Post-Update Review: Project extensions detected in replaced files
+
+The following methodology-owned files contained content not present
+in the new version:
+
+📄 .github/agents/syspilot.verify.agent.md
+   - {N} lines of custom content not present in new version
+
+Options:
+A) Review each file — show diff and decide per file
+B) Accept all new versions as-is
+C) Abort update — restore all files from git
+```
+
+**Option A — Review each file:**
+
+For each flagged file, run `git diff HEAD -- <file>` and ask:
+
+```
+Accept new version (custom content lost)
+Merge back — I will manually re-add my extensions to the new file
+Restore old version (skip update for this file)
+```
+
+If user chooses "Restore old version":
+
+```powershell
+git checkout HEAD -- <file>
+```
+
+**Option B — Accept all:** Continue without changes.
+
+**Option C — Abort update:** Restore all replaced files:
+
+```powershell
+git checkout HEAD -- .github/agents/ .github/prompts/ .github/skills/ .syspilot/ docs/build.*
+```
+
+If no files are flagged, skip this step silently.
+
+**Implements: SYSPILOT_SPEC_INST_POST_UPDATE_REVIEW, SYSPILOT_REQ_INST_POST_UPDATE_REVIEW**
+
 ### Step 5: Update Version Marker
 
 Update `.syspilot/version.json` with new version, date, and source:
@@ -500,7 +621,71 @@ Or if from GitHub:
 sphinx-build --version
 ```
 
-Confirm update success. No backup/rollback needed — Git is the backup.
+Confirm sphinx-build still works after the update.
+
+### Step 7: Create Change Document and Commit
+
+Create a change document summarizing the update:
+
+**File:** `docs/changes/update-v{version}.md`
+
+```markdown
+# Change Document: update-v{version}
+
+**Status**: completed
+**Branch**: update/v{version}
+**Created**: {date}
+**Author**: @syspilot.setup
+
+## Summary
+
+Automated update from syspilot v{old-version} to v{new-version}.
+
+## Replaced Files (methodology-owned)
+
+- .github/agents/syspilot.change.agent.md
+- .github/agents/syspilot.verify.agent.md
+- ... (list all replaced files)
+
+## Skipped Files (project-owned)
+
+- .github/agents/syspilot.release.agent.md
+- .github/agents/syspilot.implement.agent.md
+- ...
+
+## Post-Update Review
+
+{If extensions flagged: list files and user decisions}
+{If none detected: "No project extensions detected in replaced files."}
+
+## Validation
+
+{sphinx-build result}
+```
+
+Commit all changes on the update branch:
+
+```powershell
+git add -A
+git commit -m "chore: update syspilot v{old-version} → v{new-version}
+
+Replaced methodology-owned files.
+See docs/changes/update-v{version}.md for details."
+```
+
+Inform the user:
+
+```
+✅ Update to v{version} complete on branch update/v{version}.
+
+Next steps:
+1. Review changes: git diff main...update/v{version}
+2. Merge into your working branch when ready
+3. The change document at docs/changes/update-v{version}.md
+   summarizes what changed.
+```
+
+**Implements: SYSPILOT_SPEC_INST_UPDATE_BRANCH, SYSPILOT_REQ_INST_UPDATE_BRANCH**
 
 ---
 

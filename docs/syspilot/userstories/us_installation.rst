@@ -107,6 +107,12 @@ Stories covering bootstrap, portability, installation, adoption, and updates.
    5. Given I update, When I check, Then I can see which version I now have
    6. Given the setup agent is outdated, When I invoke @syspilot.setup, Then the setup
       agent updates itself first before updating other files
+   7. Given I update syspilot, When a methodology-owned file I modified contained
+      content not present in the new version, Then I am warned and can review
+      the differences before deciding to accept or merge back my additions
+   8. Given I update syspilot, When the update starts, Then the setup agent
+      creates a dedicated branch and a change document summarizing what was
+      updated, so that changes are reviewable and traceable
 
 
 .. story:: Language-Agnostic Implementation Agent

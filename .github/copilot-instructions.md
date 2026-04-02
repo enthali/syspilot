@@ -166,6 +166,7 @@ See `@syspilot.release` agent for full process. Key steps: merge to main → ver
 Chained feature branches, main = releases only. See [docs/workflows.md](../docs/workflows.md) for details.
 
 - `@syspilot.change` creates `feature/<name>` from latest feature branch (not main)
+- `@syspilot.setup` (update mode) creates `update/v{version}` from current branch
 - All agents commit to the same feature branch
 - Squash merge to main only during `@syspilot.release`
 - Main always equals the latest release
@@ -203,4 +204,4 @@ field — no manual references needed.
 
 ---
 
-*Last updated: 2026-03-31*
+*Last updated: 2026-04-03*
