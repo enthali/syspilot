@@ -77,6 +77,8 @@ Requirements for developer experience, project memory, and process ergonomics.
    * AC-2: Skill files SHALL be accessible to all agents without duplication
    * AC-3: Adding a new skill SHALL require minimal configuration
      (single reference point)
+   * AC-4: Skill files SHALL use the VS Code standard skill format to enable
+     automatic discovery and invocation by Copilot
 
 
 Traceability

@@ -156,3 +156,8 @@ Each family defines its own methodology in `docs/<family>/methodology.md`:
 
 sphinx-needs traceability links bridge this boundary, maintaining full visibility
 from *why* through *what* to *how* — regardless of how files are organized.
+
+---
+
+*For the Product/Instance concept, see [architecture.md](architecture.md).
+For the development process, see [workflows.md](workflows.md).*

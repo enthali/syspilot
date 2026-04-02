@@ -169,6 +169,62 @@ Per-Document Requirements
    * AC-2: Index is updated when documentation structure changes
 
 
+.. req:: Architecture Documentation
+   :id: SYSPILOT_REQ_DOC_ARCHITECTURE
+   :status: implemented
+   :priority: high
+   :tags: documentation, architecture
+   :links: SYSPILOT_US_DOC_MAINTAIN, SYSPILOT_REQ_INST_TEMPLATE_SOURCE, SYSPILOT_REQ_INST_FILE_OWNERSHIP
+
+   **Description:**
+   The architecture document SHALL explain the Product/Instance separation
+   concept so that new users understand how syspilot is structured and
+   how to customize it safely.
+
+   **Rationale:**
+   Product/Instance is a central concept but not explained in any single
+   document. New users must piece it together from methodology, naming
+   conventions, and changelog entries.
+
+   **Acceptance Criteria:**
+
+   * AC-1: Document explains WHY the Product/Instance separation exists
+   * AC-2: Document defines WHAT Product and Instance are with concrete examples
+   * AC-3: Document explains HOW they relate (linking, setup agent, overrides)
+   * AC-4: Document includes a concrete example (e.g., Release Agent)
+   * AC-5: Document describes update safety (how to customize without breaking on updates)
+   * AC-6: Document is linked from methodology.md
+
+
+.. req:: Workflows Documentation
+   :id: SYSPILOT_REQ_DOC_WORKFLOWS
+   :status: implemented
+   :priority: high
+   :tags: documentation, workflows
+   :links: SYSPILOT_US_DOC_MAINTAIN, SYSPILOT_REQ_WF_CHANGE_SEQUENCE
+
+   **Description:**
+   The workflows document SHALL provide a process overview that describes
+   the syspilot development process as the central workflow model, helping
+   new users understand the available workflows and when to use which agent.
+
+   **Rationale:**
+   The syspilot process is the core methodology. It should be documented
+   as a standalone, self-contained workflow description. External standard
+   mappings (A-SPICE, 26262, CMMI etc.) are separate mapping documents
+   that reference this central process.
+
+   **Acceptance Criteria:**
+
+   * AC-1: Document describes the Change Workflow (change → implement → verify → memory)
+   * AC-2: Document describes the Quality Workflow (mece, trace)
+   * AC-3: Document describes the Release Workflow
+   * AC-4: Document includes a visual workflow diagram or clear step-by-step
+   * AC-5: Document explains when to use which agent
+   * AC-6: Document is linked from the documentation index
+   * AC-7: Document describes the branching strategy (feature branches, squash merge to main)
+
+
 Traceability
 ------------
 

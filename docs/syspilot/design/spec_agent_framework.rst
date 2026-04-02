@@ -30,34 +30,16 @@ Agent Workflow
 
    **Workflow:**
 
-   ::
+   .. mermaid::
 
-      User Request
-           │
-           ▼
-      ┌─────────────┐
-      │   change    │ ──→ Change Document + US/REQ/SPEC RST updates
-      └─────────────┘
-           │
-           ▼ (approved)
-      ┌─────────────┐
-      │  implement  │ ──→ Code + Scripts + Tests + Documentation
-      └─────────────┘
-           │
-           ▼
-      ┌─────────────┐
-      │   verify    │ ──→ Verification Report
-      └─────────────┘
-           │
-           ▼ (passed)
-      ┌─────────────┐
-      │   memory    │ ──→ Updated copilot-instructions.md
-      └─────────────┘
-           │
-           ▼
-      ┌──────────┬──────────┐
-      │  change  │ release  │  (user decides)
-      └──────────┴──────────┘
+      flowchart TD
+          A["User Request"] --> change
+          change -- "Change Document +<br/>US/REQ/SPEC RST updates" --> implement
+          implement -- "Code + Scripts +<br/>Tests + Documentation" --> verify
+          verify -- "Verification Report" --> memory
+          memory -- "Updated<br/>copilot-instructions.md" --> decision{"User decides"}
+          decision --> change2["change"]
+          decision --> release["release"]
 
    **Files:**
 
@@ -73,21 +55,21 @@ Agent Workflow
 
    **Main Chain:**
 
-   ::
+   .. mermaid::
 
-      change → implement → verify → memory
-          ↑                            │
-          ├────────────────────────────┘ (next change)
-          │
-          └── or ──→ release (bundle changes)
+      flowchart LR
+          change --> implement --> verify --> memory
+          memory -- "next change" --> change
+          memory -- "bundle changes" --> release
 
    **Analysis Agents (bidirectional):**
 
-   ::
+   .. mermaid::
 
-      mece ↔ trace
-        │       │
-        └───────┴──→ change (to fix issues)
+      flowchart LR
+          mece <--> trace
+          mece -- "findings" --> change
+          trace -- "findings" --> change
 
    **Memory Agent:**
 
@@ -223,16 +205,14 @@ Agent Interaction
    The interaction pattern is consolidated in a skill file instead of
    being duplicated across agent files:
 
-   * **Skill file:** ``.github/skills/syspilot.ask-questions.skill.md``
-     Contains the full pattern description, format reference, rules,
-     and examples.
+   * **Skill file:** ``.github/skills/syspilot.ask-questions/SKILL.md``
+     Contains YAML frontmatter (``name``, ``description``) followed by
+     the full pattern description, format reference, rules, and examples.
 
-   * **Activation:** A single reference in ``.github/copilot-instructions.md``:
-
-     ::
-
-        When presenting choices to the user during agent sessions,
-        read and follow .github/skills/syspilot.ask-questions.skill.md.
+   * **Activation:** Automatic via Copilot skill discovery. The
+     ``description`` field in the YAML frontmatter tells Copilot when
+     to invoke the skill. No manual reference in
+     ``.github/copilot-instructions.md`` is needed.
 
    * **Effect:** All agents (change, implement, verify, memory, mece,
      trace, setup) automatically pick up the skill without needing

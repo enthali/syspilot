@@ -13,7 +13,7 @@ Document Registry
 .. spec:: syspilot Documentation Scope
    :id: SYSPILOT_SPEC_DOC_SCOPE_SYSPILOT
    :status: implemented
-   :links: SYSPILOT_REQ_DOC_SCOPE, SYSPILOT_REQ_DOC_README, SYSPILOT_REQ_DOC_METHODOLOGY, SYSPILOT_REQ_DOC_NAMING, SYSPILOT_REQ_DOC_RELEASE_NOTES, SYSPILOT_REQ_DOC_PROCESS, SYSPILOT_REQ_DOC_INDEX
+   :links: SYSPILOT_REQ_DOC_SCOPE, SYSPILOT_REQ_DOC_README, SYSPILOT_REQ_DOC_METHODOLOGY, SYSPILOT_REQ_DOC_NAMING, SYSPILOT_REQ_DOC_RELEASE_NOTES, SYSPILOT_REQ_DOC_PROCESS, SYSPILOT_REQ_DOC_INDEX, SYSPILOT_REQ_DOC_ARCHITECTURE, SYSPILOT_REQ_DOC_WORKFLOWS
    :tags: documentation, scope, syspilot
 
    **Design:**
@@ -51,6 +51,12 @@ Document Registry
       * - ``docs/syspilot/process/``
         - SYSPILOT_SPEC_DOC_PROCESS_STRUCTURE
         - SYSPILOT_REQ_DOC_PROCESS
+      * - ``docs/architecture.md``
+        - SYSPILOT_SPEC_DOC_ARCHITECTURE_STRUCTURE
+        - SYSPILOT_REQ_DOC_ARCHITECTURE
+      * - ``docs/workflows.md``
+        - SYSPILOT_SPEC_DOC_WORKFLOWS_STRUCTURE
+        - SYSPILOT_REQ_DOC_WORKFLOWS
 
 
 Chapter Structures
@@ -340,8 +346,8 @@ Chapter Structures
           traceability
       * - 7
         - Guides & Process
-        - Toctree: methodology, namingconventions, syspilot/process,
-          releasenotes
+        - Toctree: methodology, architecture, workflows, namingconventions,
+          syspilot/process, releasenotes
 
 
 .. spec:: Process Documentation Structure
@@ -385,6 +391,115 @@ Chapter Structures
         - Traceability Chain
         - SYSPILOT_REQ_CORE_TRACEABILITY (bidirectional link chain,
           current vs planned implementation status)
+
+
+.. spec:: Architecture Chapter Structure
+   :id: SYSPILOT_SPEC_DOC_ARCHITECTURE_STRUCTURE
+   :status: implemented
+   :links: SYSPILOT_REQ_DOC_ARCHITECTURE, SYSPILOT_REQ_INST_TEMPLATE_SOURCE, SYSPILOT_REQ_INST_FILE_OWNERSHIP, SYSPILOT_SPEC_INST_FILE_OWNERSHIP, SYSPILOT_SPEC_INST_RELEASE_STRUCTURE, SYSPILOT_SPEC_INST_SETUP_AGENT
+   :tags: documentation, structure, architecture
+
+   **Design:**
+   Chapter structure for ``docs/architecture.md``.
+
+   .. list-table::
+      :header-rows: 1
+      :widths: 5 30 55
+
+      * - #
+        - Chapter
+        - Content Source
+      * - 1
+        - Overview
+        - Static (the two-layer model: Product + Instance)
+      * - 2
+        - Why the Separation?
+        - SYSPILOT_REQ_INST_TEMPLATE_SOURCE (generic reusable agents),
+          SYSPILOT_REQ_INST_FILE_OWNERSHIP (update safety)
+      * - 3
+        - What is Product?
+        - SYSPILOT_SPEC_INST_RELEASE_STRUCTURE (``syspilot/`` directory),
+          SYSPILOT_REQ_INST_TEMPLATE_SOURCE AC-1..AC-5
+      * - 4
+        - What is Instance?
+        - ``docs/inst/syspilot/`` concept, Instance spec tree
+      * - 5
+        - How They Relate
+        - sphinx-needs ``:links:`` across trees, Setup Agent installs
+          Product → ``.github/``, Instance overrides/extends
+      * - 6
+        - Concrete Example
+        - Release Agent: generic product template + project-specific
+          instance spec (INST_SYSPILOT_SPEC_REL_*)
+      * - 7
+        - Update Safety
+        - SYSPILOT_SPEC_INST_FILE_OWNERSHIP (methodology-owned vs
+          project-owned vs user-owned), how to customize safely
+
+
+.. spec:: Workflows Chapter Structure
+   :id: SYSPILOT_SPEC_DOC_WORKFLOWS_STRUCTURE
+   :status: implemented
+   :links: SYSPILOT_REQ_DOC_WORKFLOWS, SYSPILOT_REQ_WF_CHANGE_SEQUENCE, SYSPILOT_REQ_WF_RELEASE_SEQUENCE, SYSPILOT_REQ_TRACE_MECE, SYSPILOT_REQ_TRACE_VERTICAL, SYSPILOT_SPEC_AGENT_WORKFLOW, SYSPILOT_SPEC_CHG_CHANGE_DOCUMENT, SYSPILOT_SPEC_CHG_LEVEL_PROCESSING, SYSPILOT_SPEC_REL_WORKFLOW, SYSPILOT_SPEC_REL_GIT_TAG
+   :tags: documentation, structure, workflows
+
+   **Design:**
+   Chapter structure for ``docs/workflows.md``.
+
+   This is the central syspilot process description. External standard
+   mappings (A-SPICE, 26262, CMMI) are separate documents that
+   reference this page.
+
+   .. list-table::
+      :header-rows: 1
+      :widths: 5 30 55
+
+      * - #
+        - Chapter
+        - Content Source
+      * - 1
+        - Overview
+        - Static (syspilot as a process framework)
+      * - 2
+        - The Change Workflow
+        - SYSPILOT_REQ_WF_CHANGE_SEQUENCE, SYSPILOT_SPEC_AGENT_WORKFLOW
+          (change → implement → verify → memory chain)
+      * - 2.1
+        - @syspilot.change
+        - Level-by-level analysis (US → REQ → SPEC)
+      * - 2.2
+        - @syspilot.implement
+        - Execute approved changes with traceability
+      * - 2.3
+        - @syspilot.verify
+        - Validate implementation against Change Document
+      * - 2.4
+        - @syspilot.memory
+        - Update project context
+      * - 3
+        - The Quality Workflow
+        - SYSPILOT_REQ_TRACE_MECE, SYSPILOT_REQ_TRACE_VERTICAL
+          (independent checks, any time)
+      * - 3.1
+        - @syspilot.mece
+        - Horizontal consistency check on one level
+      * - 3.2
+        - @syspilot.trace
+        - Vertical traceability check for one element
+      * - 4
+        - The Release Workflow
+        - SYSPILOT_REQ_WF_RELEASE_SEQUENCE
+          (merge → version → validate → publish)
+      * - 5
+        - When to Use Which Agent
+        - Decision guide / quick reference table
+      * - 6
+        - Workflow Diagram
+        - Visual: agent handoff chain with arrows
+      * - 7
+        - Branching Strategy
+        - SYSPILOT_SPEC_CHG_CHANGE_DOCUMENT (branch per change),
+          SYSPILOT_SPEC_REL_GIT_TAG (squash merge + tag on main)
 
 
 Traceability

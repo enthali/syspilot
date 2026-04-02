@@ -102,7 +102,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    * AC-1: User can invoke syspilot agents after installation
    * AC-2: User can build sphinx-needs documentation after installation
    * AC-3: User receives clear confirmation of successful installation
-   * AC-4: Setup agent SHALL fetch distributable files from GitHub main
+   * AC-4: Setup agent SHALL fetch distributable files from GitHub main or local ``syspilot/`` directory per SYSPILOT_REQ_INST_LOCAL_SOURCE
    * AC-5: Setup agent SHALL NOT require manual path input
    * AC-6: Setup agent SHALL source distributable files from ``syspilot/`` directory per SYSPILOT_REQ_INST_TEMPLATE_SOURCE
 
@@ -127,7 +127,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    * AC-2: User's existing code is preserved
    * AC-3: User is guided through any required decisions
    * AC-4: User can invoke syspilot agents after adoption
-   * AC-5: Setup agent SHALL fetch distributable files from GitHub main
+   * AC-5: Setup agent SHALL fetch distributable files from GitHub main or local ``syspilot/`` directory per SYSPILOT_REQ_INST_LOCAL_SOURCE
    * AC-6: Setup agent SHALL source distributable files from ``syspilot/`` directory per SYSPILOT_REQ_INST_TEMPLATE_SOURCE
 
 
@@ -151,7 +151,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    * AC-2: User can update to a newer version
    * AC-3: User's customizations are preserved after update per SYSPILOT_REQ_INST_FILE_OWNERSHIP
    * AC-4: User receives migration guidance for breaking changes
-   * AC-5: Update SHALL fetch latest version from GitHub main
+   * AC-5: Update SHALL fetch latest version from GitHub main or local ``syspilot/`` directory per SYSPILOT_REQ_INST_LOCAL_SOURCE
    * AC-6: Update SHALL source distributable files from ``syspilot/`` directory per SYSPILOT_REQ_INST_TEMPLATE_SOURCE
    * AC-7: Update SHALL update the setup agent itself first per SYSPILOT_REQ_INST_BOOTSTRAP_SELF
 
@@ -297,7 +297,8 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
 
    **Description:**
    When running in update mode, the Setup Agent SHALL update itself from
-   GitHub before updating any other files.
+   the chosen source (GitHub or local ``syspilot/`` directory per
+   SYSPILOT_REQ_INST_LOCAL_SOURCE) before updating any other files.
 
    **Rationale:**
    The locally installed setup agent may contain outdated update logic.
@@ -306,7 +307,7 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
 
    **Acceptance Criteria:**
 
-   * AC-1: Setup agent fetches its own latest version from GitHub before any other operation
+   * AC-1: Setup agent fetches its own latest version from the chosen source (GitHub or local ``syspilot/``) before any other operation
    * AC-2: If the remote setup agent differs from local, local is replaced immediately
    * AC-3: All subsequent update steps use the newly fetched setup agent logic
 
@@ -337,6 +338,32 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
      replaced on every update
    * AC-4: User content (specs, change docs, copilot-instructions) SHALL never be
      modified by the update process
+
+
+.. req:: Local Install Source Detection
+   :id: SYSPILOT_REQ_INST_LOCAL_SOURCE
+   :status: implemented
+   :priority: mandatory
+   :tags: install, local, dogfooding
+   :links: SYSPILOT_US_INST_NEW_PROJECT, SYSPILOT_US_INST_ADOPT_EXISTING, SYSPILOT_US_INST_UPDATE
+
+   **Description:**
+   The Setup Agent SHALL detect if a ``syspilot/`` directory exists in the
+   repository root and, if so, offer the user a choice between installing
+   from the local directory or fetching from GitHub.
+
+   **Rationale:**
+   When developing syspilot itself (dogfooding) or working from a local fork,
+   developers need to test agent changes before pushing to GitHub. A local
+   install mode enables this workflow.
+
+   **Acceptance Criteria:**
+
+   * AC-1: Setup Agent SHALL check for ``syspilot/`` directory in repository root
+   * AC-2: If ``syspilot/`` exists, Setup Agent SHALL prompt user to choose between local copy and GitHub fetch
+   * AC-3: If ``syspilot/`` does not exist, Setup Agent SHALL proceed with GitHub fetch (current behavior)
+   * AC-4: Local install SHALL follow the same file ownership rules as GitHub install (methodology=replace, project=skip on update)
+   * AC-5: Local install SHALL read from the same ``syspilot/`` directory structure defined by SYSPILOT_REQ_INST_TEMPLATE_SOURCE
 
 
 Traceability

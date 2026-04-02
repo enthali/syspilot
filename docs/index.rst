@@ -148,6 +148,8 @@ Guides & Process
    :caption: Guides
 
    methodology
+   architecture
+   workflows
    namingconventions
    syspilot/methodology
    syspilot/namingconventions

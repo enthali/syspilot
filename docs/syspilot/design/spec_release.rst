@@ -431,29 +431,15 @@ Release Workflow
 
    **Release Flow:**
 
-   ::
+   .. mermaid::
 
-      Merged Changes (on main)
-          │
-          ▼
-      ┌─────────────────┐
-      │  1. Version      │ ──→ Update syspilot/version.json, determine SemVer bump
-      └─────────────────┘
-          │
-          ▼
-      ┌─────────────────┐
-      │  2. Validate     │ ──→ sphinx-build, agent tests, quality checks
-      └─────────────────┘
-          │
-          ▼ (all pass)
-      ┌─────────────────┐
-      │  3. Publish      │ ──→ Git tag, GitHub Release, GitHub Pages
-      └─────────────────┘
-          │
-          ▼
-      ┌─────────────────┐
-      │  change / end   │  (user decides)
-      └─────────────────┘
+      flowchart TD
+          A["Merged Changes (on main)"] --> V["1. Version"]
+          V -- "Update version.json,<br/>determine SemVer bump" --> Val["2. Validate"]
+          Val -- "sphinx-build, agent tests,<br/>quality checks" --> P["3. Publish"]
+          P -- "Git tag, GitHub Release,<br/>GitHub Pages" --> D{"User decides"}
+          D --> change
+          D --> done["end"]
 
    **Scope:**
    Unlike the change workflow (operates on one change), the release

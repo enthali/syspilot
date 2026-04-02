@@ -66,7 +66,6 @@ Compare documented state vs reality. Focus on:
 | Workflows | Changed agent chain or handoffs? |
 | Commands | Build or query commands changed? |
 | Tech stack | New tools or dependencies? |
-| Version | Has `version.json` been bumped? |
 
 ### Step 3: Propose & Apply
 
@@ -85,7 +84,7 @@ Maintain this structure — resist adding new top-level sections:
 ```markdown
 # [Project Name] - Copilot Instructions
 
-## Project Overview          — 3-5 lines, version
+## Project Overview          — 3-5 lines
 ## Tech Stack                — bullet list, no versions (read requirements.txt)
 ## Project Structure         — directory tree with comments (no per-file listings)
 ## Specification Hierarchy   — 3-level diagram with prefixes
@@ -94,7 +93,7 @@ Maintain this structure — resist adding new top-level sections:
 ## Development Commands      — build + query commands only
 ## Development Workflow      — agent chain diagram, quality + release one-liners
 ## Patterns & Conventions    — file organization principle, file naming, authoring pointer
-## Agent Interaction         — skill file activation reference
+## Agent Interaction         — skill format and auto-discovery note
 ```
 
 **Size target**: ~150–180 lines. If it grows past 200, something should be cut.

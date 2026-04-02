@@ -32,5 +32,5 @@ Project-specific implementation decisions for syspilot.
    to ``.github/`` when the user requests an update.
 
    * AC-1: ``syspilot/agents/*.agent.md`` → ``.github/agents/``
-   * AC-2: ``syspilot/skills/*.skill.md`` → ``.github/skills/``
+   * AC-2: ``syspilot/skills/*/SKILL.md`` → ``.github/skills/*/``
    * AC-3: User-customized ``.github/`` files are preserved (intelligent merge)

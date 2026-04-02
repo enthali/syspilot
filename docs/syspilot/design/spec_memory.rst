@@ -38,7 +38,6 @@ Design specifications for the Memory Agent — project memory maintenance.
    * Workflows: Changed agent chain or handoffs?
    * Commands: Build or query commands changed?
    * Tech stack: New tools?
-   * Version: Has ``version.json`` been bumped?
 
    Before adding anything, ask: *"Can the agent discover this by reading
    an existing file?"* — if yes, don't add (at most add a one-line pointer).
@@ -81,6 +80,7 @@ Design specifications for the Memory Agent — project memory maintenance.
    * ❌ Key files table (discoverable from project structure tree)
    * ❌ Element counts or current state checklists (stale within one commit)
    * ❌ Per-file listings inside directory levels
+   * ❌ Version number (release artifact — managed by release agent in ``version.json``)
    * ❌ Duplicate info — link to the source instead
 
    **Rule of thumb:** If it changes every commit, it shouldn't be documented.
@@ -103,7 +103,7 @@ Design specifications for the Memory Agent — project memory maintenance.
 
       # [Project Name] - Copilot Instructions
 
-      ## Project Overview          — 3-5 lines, version
+      ## Project Overview          — 3-5 lines
       ## Tech Stack                — bullet list, no versions
       ## Project Structure         — directory tree (no per-file listings)
       ## Specification Hierarchy   — 3-level diagram with prefixes
@@ -112,7 +112,7 @@ Design specifications for the Memory Agent — project memory maintenance.
       ## Development Commands      — build + query commands only
       ## Development Workflow      — agent chain diagram, one-liners
       ## Patterns & Conventions    — file organization, file naming, authoring
-      ## Agent Interaction         — skill file activation reference
+      ## Agent Interaction         — skill format and auto-discovery note
 
    **Size target:** ~150–180 lines. If it grows past 200, something should
    be cut.

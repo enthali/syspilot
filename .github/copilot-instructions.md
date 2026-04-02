@@ -10,12 +10,11 @@ syspilot is a requirements engineering toolkit that uses **sphinx-needs traceabi
 
 **Principle**: Spec-driven development for everything — not just the product, but also processes, methods, and tools. Every decision is traceable through User Stories → Requirements → Design Specs.
 
-**Version**: 0.2.3
-
 ## Tech Stack
 
 - **Documentation**: Sphinx with sphinx-needs extension
-- **Markup**: reStructuredText (RST)
+- **Markup**: reStructuredText (RST) + Markdown (MyST)
+- **Diagrams**: Mermaid via sphinxcontrib-mermaid (client-side rendering)
 - **Python Runner**: uv (Astral's fast Python package manager)
 - **Theme**: Furo
 - **Process Alignment**: Optional (see `docs/syspilot/process/`)
@@ -27,7 +26,7 @@ syspilot/                            # Repository root (also the product dir)
 ├── .github/
 │   ├── agents/                 # Installed agent files (*.agent.md)
 │   ├── prompts/                # Prompt configuration files (*.prompt.md)
-│   ├── skills/                 # Shared skill files (*.skill.md)
+│   ├── skills/                 # Shared skill files (*/SKILL.md)
 │   └── copilot-instructions.md # This file
 ├── scripts/
 │   └── python/
@@ -43,6 +42,8 @@ syspilot/                            # Repository root (also the product dir)
 │       └── change-document.md  # Change Document template
 ├── docs/
 │   ├── methodology.md          # Framework methodology
+│   ├── architecture.md         # Product/Instance concept
+│   ├── workflows.md            # Workflows & branching strategy
 │   ├── namingconventions.md    # Framework naming conventions
 │   ├── releasenotes.md         # Release notes (newest first)
 │   ├── syspilot/               # syspilot family specs (product-level)
@@ -160,6 +161,15 @@ change → implement → verify → memory → change / release
 
 See `@syspilot.release` agent for full process. Key steps: merge to main → version bump → validate → release notes → tag & push.
 
+### Branching Strategy
+
+Chained feature branches, main = releases only. See [docs/workflows.md](../docs/workflows.md) for details.
+
+- `@syspilot.change` creates `feature/<name>` from latest feature branch (not main)
+- All agents commit to the same feature branch
+- Squash merge to main only during `@syspilot.release`
+- Main always equals the latest release
+
 ## Patterns & Conventions
 
 ### File Organization (see [docs/methodology.md](../docs/methodology.md))
@@ -170,7 +180,7 @@ Levels 0–1 organize by **problem domain** (stakeholder themes). Level 2 organi
 
 - Agents: `syspilot.<name>.agent.md`
 - Prompts: `syspilot.<name>.prompt.md`
-- Skills: `syspilot.<name>.skill.md` (shared patterns, e.g., `syspilot.ask-questions.skill.md`)
+- Skills: `.github/skills/syspilot.<name>/SKILL.md` (folder-based, YAML frontmatter with `name`/`description`)
 - User Stories: `us_<theme>.rst` (one per stakeholder theme)
 - Requirements: `req_<theme>.rst` (mirrors matching `us_` file)
 - Design Specs: `spec_<component>.rst` (one per technical component)
@@ -187,9 +197,10 @@ Follow the conventions visible in existing RST files. Key points:
 
 ## Agent Interaction
 
-When presenting choices to the user during agent sessions,
-read and follow `.github/skills/syspilot.ask-questions.skill.md`.
+Skill files use VS Code standard format (`.github/skills/<name>/SKILL.md` with YAML
+frontmatter). Copilot discovers and invokes skills automatically based on the `description`
+field — no manual references needed.
 
 ---
 
-*syspilot v0.2.3 - Last updated: 2026-03-30*
+*Last updated: 2026-03-31*

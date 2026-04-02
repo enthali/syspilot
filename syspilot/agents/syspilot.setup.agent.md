@@ -14,15 +14,49 @@ You are the **Setup Agent** for syspilot. Your role is to help users integrate s
 
 ## Your Responsibilities
 
-1. **Detect Mode** - Fresh install or update (check `.syspilot/version.json`)
-2. **Check Dependencies** - Python, Sphinx, sphinx-needs
-3. **Fetch Files** - Download from GitHub main via curl/API
-4. **Configure** - Create directories, copy files, merge intelligently
-5. **Validate** - Verify sphinx-build works
+1. **Detect Install Source** - Check for local `syspilot/` directory, prompt user
+2. **Detect Mode** - Fresh install or update (check `.syspilot/version.json`)
+3. **Check Dependencies** - Python, Sphinx, sphinx-needs
+4. **Fetch Files** - Copy from local `syspilot/` or download from GitHub main
+5. **Configure** - Create directories, copy files, merge intelligently
+6. **Validate** - Verify sphinx-build works
 
 ## Workflow
 
-### 1. Detect Mode
+### 1. Detect Install Source
+
+Before anything else, check whether a local `syspilot/` directory is available:
+
+```powershell
+# Check for local syspilot/ directory with version.json
+if (Test-Path "syspilot/version.json") {
+    $localVersion = (Get-Content "syspilot/version.json" | ConvertFrom-Json).version
+    Write-Host "Local syspilot/ directory detected (v$localVersion)."
+    # Prompt user — see below
+} else {
+    # No local source — use GitHub (no prompt needed)
+    $installSource = "github"
+}
+```
+
+If local source is detected, present the choice using the VS Code selection menu:
+
+```
+Local syspilot/ directory detected (v{version}).
+Where should I install from?
+
+A) Local — Copy from syspilot/ (fast, no network, for development/testing)
+B) GitHub — Fetch from GitHub main (current release)
+```
+
+- **Option A** → `$installSource = "local"`
+- **Option B** → `$installSource = "github"`
+
+If no local `syspilot/` directory exists, skip the prompt and default to GitHub.
+
+**Implements: SYSPILOT_SPEC_INST_SOURCE_DETECTION, SYSPILOT_REQ_INST_LOCAL_SOURCE**
+
+### 2. Detect Mode
 
 Scan the project to determine install vs update:
 
@@ -40,7 +74,7 @@ Check for:
 **If no `.syspilot/` found:**
 - This is a **FRESH INSTALL** — continue with Section 2
 
-### 2. Check Dependencies (Interactive)
+### 3. Check Dependencies (Interactive)
 
 Guide the user through installing required dependencies:
 
@@ -133,9 +167,10 @@ Graphviz is optional but enables visual traceability diagrams.
 sphinx-build --version
 ```
 
-### 3. Determine GitHub Source
+### 4. Determine GitHub Source (if $installSource = "github")
 
 The setup agent fetches files from the syspilot GitHub repository.
+**Skip this section entirely if `$installSource = "local"`.**
 
 **Default source:** `https://github.com/enthali/syspilot`
 
@@ -150,7 +185,32 @@ RAW_BASE   = "https://raw.githubusercontent.com/{OWNER}/{REPO}/{BRANCH}"
 API_BASE   = "https://api.github.com/repos/{OWNER}/{REPO}/contents"
 ```
 
-### 4. Fetch Files from GitHub
+### 5. Fetch Files
+
+**If `$installSource = "local"`** — copy files directly from `syspilot/`:
+
+```powershell
+# Create target directories
+New-Item -ItemType Directory -Force -Path ".github/agents"
+New-Item -ItemType Directory -Force -Path ".github/prompts"
+New-Item -ItemType Directory -Force -Path ".github/skills"
+New-Item -ItemType Directory -Force -Path ".syspilot/scripts/python"
+New-Item -ItemType Directory -Force -Path ".syspilot/templates"
+
+# Copy from local syspilot/ directory
+Copy-Item "syspilot/agents/syspilot.*.agent.md" ".github/agents/" -Force
+Copy-Item "syspilot/prompts/syspilot.*.prompt.md" ".github/prompts/" -Force
+Copy-Item "syspilot/skills/*" ".github/skills/" -Recurse -Force
+Copy-Item "syspilot/scripts/python/*" ".syspilot/scripts/python/" -Force
+Copy-Item "syspilot/sphinx/build.ps1" "docs/build.ps1" -Force
+Copy-Item "syspilot/sphinx/build.sh" "docs/build.sh" -Force
+Copy-Item "syspilot/templates/*" ".syspilot/templates/" -Force
+
+$version = (Get-Content "syspilot/version.json" | ConvertFrom-Json).version
+Write-Host "Copied syspilot v$version from local directory."
+```
+
+**If `$installSource = "github"`** — download from GitHub (existing behavior):
 
 Download all distributable files from `syspilot/` on GitHub main.
 
@@ -183,7 +243,7 @@ Use GitHub API to list and download each file from `syspilot/`:
 |---------------------------|----------------|----------|
 | `agents/syspilot.*.agent.md` | `.github/agents/` | Copy all (fresh install) |
 | `prompts/syspilot.*.prompt.md` | `.github/prompts/` | Copy all (fresh install) |
-| `skills/syspilot.*.skill.md` | `.github/skills/` | Replace |
+| `skills/syspilot.*/SKILL.md` | `.github/skills/syspilot.*/` | Replace |
 | `scripts/python/get_need_links.py` | `.syspilot/scripts/python/` | Replace |
 | `sphinx/build.ps1` | `docs/build.ps1` | Replace |
 | `sphinx/build.sh` | `docs/build.sh` | Replace |
@@ -228,9 +288,19 @@ For agent/prompt/skill files where the target already exists:
    - **Keep**: Keep user's version
    - **Merge**: AI attempts intelligent merge
 
-### 5. Create Version Marker
+### 6. Create Version Marker
 
 Write `.syspilot/version.json`:
+
+```json
+{
+  "version": "<version from syspilot/version.json>",
+  "installedAt": "<current ISO date>",
+  "source": "local"
+}
+```
+
+If installed from GitHub, set `"source"` to the GitHub URL instead:
 
 ```json
 {
@@ -240,7 +310,7 @@ Write `.syspilot/version.json`:
 }
 ```
 
-### 6. Validate and Hand Off
+### 7. Validate and Hand Off
 
 #### Validate
 
@@ -260,7 +330,7 @@ After validation, inform user:
 Installed:
 - 8 agent files in .github/agents/
 - 8 prompt files in .github/prompts/
-- 1 skill file in .github/skills/
+- 1 skill folder in .github/skills/
 - Utility scripts in .syspilot/scripts/
 - Build scripts in docs/
 
@@ -271,15 +341,40 @@ Next: Run @syspilot.change to start your first change request.
 
 ---
 
-## 7. Update Workflow
+## 8. Update Workflow
 
 **Triggered when `.syspilot/version.json` exists.**
+
+**Note:** The install source detection from Section 1 runs first. If the user
+chose "local", all fetch operations below use local file copy instead of GitHub.
 
 **Implements: SYSPILOT_SPEC_INST_UPDATE_PROCESS, SYSPILOT_SPEC_INST_FILE_OWNERSHIP**
 
 ### Step 0: Bootstrap Self-Update
 
 Before anything else, update the setup agent itself:
+
+**If `$installSource = "local"`:**
+
+```powershell
+$remoteSetup = Get-Content "syspilot/agents/syspilot.setup.agent.md" -Raw
+$localSetup = Get-Content ".github/agents/syspilot.setup.agent.md" -Raw
+
+if ($remoteSetup -ne $localSetup) {
+    Copy-Item "syspilot/agents/syspilot.setup.agent.md" ".github/agents/syspilot.setup.agent.md" -Force
+    Write-Host "⚠️ Setup agent updated from local. Please re-invoke @syspilot.setup to continue with the new version."
+    return
+}
+Write-Host "✅ Setup agent is current."
+```
+
+Also update the setup prompt:
+
+```powershell
+Copy-Item "syspilot/prompts/syspilot.setup.prompt.md" ".github/prompts/syspilot.setup.prompt.md" -Force
+```
+
+**If `$installSource = "github"`:**
 
 ```powershell
 $setupUrl = "$RAW_BASE/syspilot/agents/syspilot.setup.agent.md"
@@ -307,11 +402,19 @@ Set-Content ".github/prompts/syspilot.setup.prompt.md" $remotePrompt
 ```powershell
 $installed = Get-Content .syspilot/version.json | ConvertFrom-Json
 $currentVersion = $installed.version
-$source = $installed.source  # Use stored source repo
 Write-Host "Current version: $currentVersion"
 ```
 
-### Step 2: Fetch Latest Version from GitHub
+### Step 2: Fetch Latest Version
+
+**If `$installSource = "local"`:**
+
+```powershell
+$remoteVersion = (Get-Content "syspilot/version.json" | ConvertFrom-Json).version
+Write-Host "Local source version: $remoteVersion"
+```
+
+**If `$installSource = "github"`:**
 
 ```powershell
 $remoteVersionUrl = "$RAW_BASE/syspilot/version.json"
@@ -328,7 +431,10 @@ If remote <= current → "Already up to date", abort
 
 ### Step 4: Fetch and Apply by Ownership
 
-Download all files from `syspilot/` on GitHub main. Apply based on file ownership:
+**If `$installSource = "local"`:** Copy files from local `syspilot/` directory.
+**If `$installSource = "github"`:** Download files from `syspilot/` on GitHub main.
+
+Apply based on file ownership:
 
 **Methodology-Owned → REPLACE always:**
 
@@ -344,7 +450,7 @@ Download all files from `syspilot/` on GitHub main. Apply based on file ownershi
 | `prompts/syspilot.mece.prompt.md` | `.github/prompts/` |
 | `prompts/syspilot.trace.prompt.md` | `.github/prompts/` |
 | `prompts/syspilot.memory.prompt.md` | `.github/prompts/` |
-| `skills/syspilot.*.skill.md` | `.github/skills/` |
+| `skills/syspilot.*/SKILL.md` | `.github/skills/syspilot.*/` |
 | `scripts/python/get_need_links.py` | `.syspilot/scripts/python/` |
 | `sphinx/build.ps1` | `docs/build.ps1` |
 | `sphinx/build.sh` | `docs/build.sh` |
@@ -368,7 +474,17 @@ Download all files from `syspilot/` on GitHub main. Apply based on file ownershi
 
 ### Step 5: Update Version Marker
 
-Update `.syspilot/version.json` with new version and date:
+Update `.syspilot/version.json` with new version, date, and source:
+
+```json
+{
+  "version": "<new version>",
+  "installedAt": "<current ISO date>",
+  "source": "local"
+}
+```
+
+Or if from GitHub:
 
 ```json
 {

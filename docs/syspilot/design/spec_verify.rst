@@ -51,11 +51,11 @@ Design specifications for the Verify Agent — implementation verification and s
 
    Bidirectional link chain:
 
-   ::
+   .. mermaid::
 
-      REQ → SPEC → Code → Test
-       ↑      ↑      ↑      ↑
-       └──────┴──────┴──────┘ (all linked back)
+      flowchart LR
+          REQ --> SPEC --> Code --> Test
+          Test -.-> Code -.-> SPEC -.-> REQ
 
    **Common Issues Checklist:**
 

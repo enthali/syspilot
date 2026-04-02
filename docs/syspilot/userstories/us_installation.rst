@@ -60,6 +60,7 @@ Stories covering bootstrap, portability, installation, adoption, and updates.
    2. Given the setup agent is available, When I invoke @syspilot.setup, Then the agent fetches all files from GitHub main
    3. Given installation completes, When I check, Then I'm ready to run bootstrap
    4. Given I need a specific version, When I install, Then I can obtain that version
+   5. Given the syspilot/ directory exists locally, When I invoke @syspilot.setup, Then the agent offers me a choice between local copy and GitHub fetch
 
 
 .. story:: Adopt syspilot in Existing Project
@@ -79,6 +80,7 @@ Stories covering bootstrap, portability, installation, adoption, and updates.
    2. Given I have existing documentation, When I adopt syspilot, Then my existing docs are not overwritten
    3. Given adoption completes, When I check, Then I can start creating User Stories
    4. Given the setup agent is available, When I start adoption, Then the agent fetches files from GitHub main and merges with existing content
+   5. Given the syspilot/ directory exists locally, When I invoke @syspilot.setup, Then the agent offers me a choice between local copy and GitHub fetch
 
 
 .. story:: Update syspilot to Latest Version
@@ -98,10 +100,12 @@ Stories covering bootstrap, portability, installation, adoption, and updates.
       by invoking @syspilot.setup
    2. Given I update syspilot, When the update completes, Then methodology agents
       (change, verify, mece, trace, memory) are replaced with the latest version
+   3. Given the syspilot/ directory exists locally, When I update, Then the agent
+      offers me a choice between local copy and GitHub fetch
       and project-specific agents (release, implement) are never modified
-   3. Given a breaking change exists, When I update, Then I receive migration guidance
-   4. Given I update, When I check, Then I can see which version I now have
-   5. Given the setup agent is outdated, When I invoke @syspilot.setup, Then the setup
+   4. Given a breaking change exists, When I update, Then I receive migration guidance
+   5. Given I update, When I check, Then I can see which version I now have
+   6. Given the setup agent is outdated, When I invoke @syspilot.setup, Then the setup
       agent updates itself first before updating other files
 
 

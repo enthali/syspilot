@@ -20,7 +20,7 @@ Project-specific implementation design specifications for syspilot.
       syspilot/
       ├── agents/             # Agent templates (*.agent.md)
       ├── prompts/            # Prompt configurations (*.prompt.md)
-      ├── skills/             # Shared skills (*.skill.md)
+      ├── skills/             # Shared skills (*/SKILL.md)
       ├── scripts/python/     # Utility scripts
       ├── sphinx/             # Sphinx build scripts
       ├── templates/          # Document templates
@@ -56,8 +56,8 @@ Project-specific implementation design specifications for syspilot.
       * - ``prompts/*.prompt.md``
         - ``prompts/``
         - Intelligent merge
-      * - ``skills/*.skill.md``
-        - ``skills/``
+      * - ``skills/*/SKILL.md``
+        - ``skills/*/``
         - Intelligent merge
       * - ``scripts/python/*``
         - N/A (``.syspilot/scripts/``)

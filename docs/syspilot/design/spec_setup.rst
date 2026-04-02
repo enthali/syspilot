@@ -63,6 +63,12 @@ Installation
 
    **Step 2: Setup Agent (@syspilot.setup)**
 
+   **Section 0: Detect Install Source (SYSPILOT_SPEC_INST_SOURCE_DETECTION)**
+
+   1. Check if ``syspilot/`` directory exists in repository root
+   2. If exists and contains ``version.json`` → prompt user: Local or GitHub?
+   3. If not exists → use GitHub (no prompt)
+
    **Section 1: Determine Mode**
 
    1. Check if ``.syspilot/version.json`` exists
@@ -142,9 +148,10 @@ Installation
 
    6. **Validate**: Run ``sphinx-build --version`` to confirm
 
-   **Section 3: Fetch Files from GitHub**
+   **Section 3: Fetch Files**
 
-   Fetch files from ``syspilot/`` on GitHub main:
+   If source = local, copy files from local ``syspilot/`` directory.
+   If source = GitHub, fetch files from ``syspilot/`` on GitHub main:
 
    1. Fetch ``syspilot/version.json`` → determine version
    2. Use GitHub API to list ``syspilot/`` contents:
@@ -153,7 +160,7 @@ Installation
 
       * ``syspilot/agents/*.agent.md`` → ``.github/agents/``
       * ``syspilot/prompts/*.prompt.md`` → ``.github/prompts/``
-      * ``syspilot/skills/*.skill.md`` → ``.github/skills/``
+      * ``syspilot/skills/*/SKILL.md`` → ``.github/skills/*/SKILL.md``
       * ``syspilot/scripts/python/`` → ``.syspilot/scripts/python/``
       * ``syspilot/sphinx/`` → ``docs/`` (build.ps1, build.sh)
       * ``syspilot/templates/change-document.md`` → ``.syspilot/templates/``
@@ -177,6 +184,65 @@ Installation
    * Detects existing ``docs/conf.py`` and merges sphinx-needs config
    * Detects existing ``.github/`` content and merges safely
    * Prompts user for decisions on conflicts
+
+
+Install Source Detection
+------------------------
+
+.. spec:: Install Source Detection
+   :id: SYSPILOT_SPEC_INST_SOURCE_DETECTION
+   :status: implemented
+   :links: SYSPILOT_REQ_INST_LOCAL_SOURCE, SYSPILOT_SPEC_INST_SETUP_AGENT, SYSPILOT_SPEC_INST_UPDATE_PROCESS
+   :tags: install, local, detection
+
+   **Design:**
+   Before fetching any files, the Setup Agent determines the install source
+   by checking for a local ``syspilot/`` directory.
+
+   **Detection Logic:**
+
+   1. Check if ``syspilot/`` directory exists in repository root
+   2. If exists, check for ``syspilot/version.json`` to confirm it's a valid source
+   3. If valid local source found → prompt user:
+
+      ::
+
+         Local syspilot/ directory detected (v{version}).
+         Where should I install from?
+
+         A) Local — Copy from syspilot/ (fast, no network, for development/testing)
+         B) GitHub — Fetch from GitHub main (current release)
+
+   4. If no local source → proceed with GitHub fetch (no prompt needed)
+
+   **Source Mode Affects:**
+
+   * Fresh install (SYSPILOT_SPEC_INST_SETUP_AGENT Section 3)
+   * Update (SYSPILOT_SPEC_INST_UPDATE_PROCESS Steps 0-2)
+   * Self-update of setup agent
+
+   **Local Copy Mechanism:**
+
+   * Uses file system copy instead of curl/API
+   * Same directory mapping as GitHub fetch:
+
+     - ``syspilot/agents/*.agent.md`` → ``.github/agents/``
+     - ``syspilot/prompts/*.prompt.md`` → ``.github/prompts/``
+     - ``syspilot/skills/`` → ``.github/skills/``
+     - ``syspilot/scripts/python/`` → ``.syspilot/scripts/python/``
+     - ``syspilot/sphinx/`` → ``docs/`` (build.ps1, build.sh)
+     - ``syspilot/templates/`` → ``.syspilot/templates/``
+
+   **Version Marker:**
+
+   When installing locally, the version marker's ``source`` field SHALL be
+   set to ``"local"`` instead of the GitHub URL.
+
+   **Rationale:**
+
+   * Simple existence check — no complex heuristics
+   * User always has the final choice (no auto-detection override)
+   * Same file ownership rules apply regardless of source
 
 
 Version Tracking
@@ -208,11 +274,11 @@ Version Tracking
 
    * ``version``: Semantic version that was installed (from ``syspilot/version.json``)
    * ``installedAt``: ISO date of installation or last update
-   * ``source``: GitHub repository URL (supports forks)
+   * ``source``: Install source — GitHub repository URL (supports forks) or ``"local"`` for local installs
 
    **Usage:**
 
-   * Update process compares ``version`` with ``syspilot/version.json`` on GitHub main
+   * Update process compares ``version`` with ``syspilot/version.json`` from chosen source (GitHub main or local)
    * No hash tracking — agent compares files directly when needed
 
    **Rationale:**
@@ -253,7 +319,7 @@ File Ownership & Updates
    * ``.github/prompts/syspilot.trace.prompt.md``
    * ``.github/prompts/syspilot.memory.prompt.md``
    * ``.github/prompts/syspilot.setup.prompt.md``
-   * ``.github/skills/syspilot.*.skill.md``
+   * ``.github/skills/syspilot.*/SKILL.md``
    * ``docs/build.ps1``, ``docs/build.sh``
 
    **Project-Owned (copied once on install, never updated):**
@@ -291,21 +357,22 @@ File Ownership & Updates
 
    **Step 0: Bootstrap Self-Update**
 
-   1. Fetch ``syspilot/agents/syspilot.setup.agent.md`` from GitHub main
+   1. Fetch ``syspilot/agents/syspilot.setup.agent.md`` from chosen source
+      (local ``syspilot/`` or GitHub main per SYSPILOT_SPEC_INST_SOURCE_DETECTION)
    2. Compare with local ``.github/agents/syspilot.setup.agent.md``
    3. If different → replace local immediately
    4. All subsequent steps use the updated setup agent logic
 
    **Step 1: Check for Updates**
 
-   1. Fetch ``syspilot/version.json`` from GitHub main
+   1. Fetch ``syspilot/version.json`` from chosen source
    2. Compare with local ``.syspilot/version.json``
    3. If remote version > local version → proceed to Step 2
    4. If remote version <= local version → inform user, abort
 
    **Step 2: Fetch and Apply by Ownership**
 
-   Download all files from ``syspilot/`` on GitHub main and apply by category:
+   Download all files from ``syspilot/`` (local or GitHub main, per chosen source) and apply by category:
 
    .. list-table::
       :header-rows: 1
@@ -323,7 +390,7 @@ File Ownership & Updates
         - release, implement (+ prompts)
         - Skip (never modify)
       * - Skills
-        - syspilot.ask-questions.skill.md
+        - syspilot.ask-questions/SKILL.md
         - Replace always
       * - Scripts & build files
         - ``.syspilot/scripts/``, ``docs/build.*``
@@ -388,7 +455,7 @@ Distribution
       │   ├── version.json  # Release version
       │   ├── agents/       # Generic agent templates (*.agent.md)
       │   ├── prompts/      # Generic prompt templates (*.prompt.md)
-      │   ├── skills/       # Generic skill templates (*.skill.md)
+      │   ├── skills/       # Generic skill templates (*/SKILL.md)
       │   ├── scripts/      # Utility scripts
       │   ├── sphinx/       # Build scripts
       │   └── templates/    # Document templates
@@ -443,7 +510,8 @@ Template Distribution
       ├── prompts/                         # → .github/prompts/
       │   └── syspilot.*.prompt.md
       ├── skills/                          # → .github/skills/
-      │   └── syspilot.ask-questions.skill.md
+      │   └── syspilot.ask-questions/
+      │       └── SKILL.md
       ├── scripts/                         # → .syspilot/scripts/
       │   └── python/
       │       └── get_need_links.py

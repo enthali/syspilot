@@ -22,6 +22,7 @@ extensions = [
     'sphinx.ext.graphviz',
     'sphinx_needs',
     'myst_parser',
+    'sphinxcontrib.mermaid',
 ]
 
 html_show_sourcelink = False
