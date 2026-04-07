@@ -112,6 +112,9 @@ needs_types = [
     ),
 ]
 
+# Suppress known deprecation warnings from sphinx-needs v5 config migration
+suppress_warnings = ["needs.deprecated"]
+
 # Extra options for needs
 needs_extra_options = [
     "priority",
@@ -144,16 +147,9 @@ needs_id_required = True
 needs_build_json = True
 needs_build_json_per_id = True
 
-# Use Graphviz for needflow diagrams
+# Use Graphviz for needflow diagrams (no needflow directives currently used)
 needs_flow_engine = "graphviz"
 
-# Configure needflow to use SVG
-needs_flow_configs = {
-    'needflow': {
-        'engine': 'dot',
-        'format': 'svg',
-    }
-}
 
 # -- MyST Parser Configuration -----------------------------------------------
 # https://myst-parser.readthedocs.io/

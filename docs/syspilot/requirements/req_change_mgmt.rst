@@ -34,7 +34,8 @@ Requirements for the change analysis, implementation, and verification workflow.
    * AC-5: Agent supports ADD, MODIFY, DELETE actions
    * AC-6: Agent detects conflicting requirements and discusses resolution with user
    * AC-7: Agent ensures every REQ change traces back to a User Story
-   * AC-8: Agent updates US/REQ/SPEC RST files after user approval
+   * AC-8: Agent writes US/REQ/SPEC RST files immediately after user approval of each
+     level (per-level write), not in a single atomic write at the end
 
 
 .. req:: Implementation Agent with Full Traceability
@@ -168,6 +169,8 @@ Iterative Change Processing
    * AC-4: Navigation between levels logged
    * AC-5: Change Document and validation report SHALL be moved to
      ``docs/changes/archive/`` after merge
+   * AC-6: Change Document SHALL contain decision log format (ID + rationale) from
+     the start; no verbose RST blocks are embedded during analysis
 
 
 .. req:: Horizontal MECE Check per Level
@@ -190,6 +193,8 @@ Iterative Change Processing
    * AC-2: Check for redundancies
    * AC-3: Report conflicts before proceeding
    * AC-4: Document resolutions
+   * AC-5: Change Agent SHALL delegate the MECE check to the MECE Agent as a
+     subagent invocation after writing RST for each level; results are advisory
 
 
 .. req:: Bidirectional Level Navigation
@@ -213,6 +218,8 @@ Iterative Change Processing
    * AC-2: Previous level work preserved in Change Document
    * AC-3: New iteration marked in document
    * AC-4: Navigation logged with reason
+   * AC-5: On backward navigation, agent informs user which already-written
+     lower-level RSTs may be inconsistent; user decides whether to update them
 
 
 .. req:: Final Consistency Check
@@ -223,12 +230,13 @@ Iterative Change Processing
    :links: SYSPILOT_US_CHG_ITERATIVE, SYSPILOT_REQ_TRACE_VERTICAL
 
    **Description:**
-   The Change Agent SHALL perform final consistency check across all levels
-   after completing the Design level.
+   The Change Agent SHALL perform a final consistency check across all levels
+   after completing analysis of the Design level, validating already-written RSTs.
 
    **Rationale:**
-   Bidirectional navigation can introduce inconsistencies that need
-   final verification before implementation.
+   With per-level RST writing, the final check validates that the collectively
+   written RSTs are consistent and traceable — it is no longer the trigger for
+   writing RST files.
 
    **Acceptance Criteria:**
 
@@ -236,6 +244,41 @@ Iterative Change Processing
    * AC-2: Verify no orphaned elements
    * AC-3: Verify Change Document is internally consistent
    * AC-4: Produce sign-off checklist
+
+
+.. req:: Per-Level RST Writing
+   :id: SYSPILOT_REQ_CHG_LIVE_RST_PER_LEVEL
+   :status: implemented
+   :priority: mandatory
+   :tags: agent, change, rst, traceability
+   :links: SYSPILOT_US_CHG_ITERATIVE
+
+   **Description:**
+   The Change Agent SHALL write RST files immediately after user approval of
+   each level, not in a single atomic write at the end.
+
+   **Rationale:**
+   Writing RSTs per level makes newly introduced sphinx-needs elements
+   queryable via link discovery during analysis of subsequent levels. This
+   enables correct subsystem constraint traversal and allows the MECE Agent
+   to run as a subagent with live sphinx-needs data.
+
+   **Acceptance Criteria:**
+
+   * AC-1: After user approves Level 0, Change Agent writes all new/modified US
+     RSTs with ``:status: draft``
+   * AC-2: After user approves Level 1, Change Agent writes all new/modified REQ
+     RSTs with ``:status: draft``
+   * AC-3: After user approves Level 2, Change Agent writes all new/modified SPEC
+     RSTs with ``:status: draft``
+   * AC-4: After each level write, sphinx-build is triggered to update
+     ``needs_id/`` data for link discovery
+   * AC-5: After each level write, MECE Agent runs as advisory subagent; findings
+     are shown to the user but do not block progress
+   * AC-6: After final approval of all levels, Change Agent sets all
+     ``:status: draft`` elements introduced in this change to ``:status: approved``
+   * AC-7: The Change Document contains decision log format (ID + rationale)
+     from the start — no verbose RST blocks
 
 
 Traceability

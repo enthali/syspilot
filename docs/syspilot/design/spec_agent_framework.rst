@@ -86,7 +86,12 @@ Agent Workflow
         - label: Display name
           agent: syspilot.targetagent
           prompt: Default prompt text
+      agents: ["syspilot.agentname"]  # optional: enables runSubagent invocation
       ---
+
+   ``agents:`` lists agent names that this agent is allowed to invoke as subagents
+   via ``runSubagent()``. Required when an agent delegates work to another agent
+   (e.g. Change Agent invoking the MECE Agent as an advisory subagent).
 
    **Initial Prompt Recommendations:**
 
@@ -242,4 +247,3 @@ Traceability
    :columns: id, title, status, links
    :filter: id.startswith('SYSPILOT_SPEC_AGENT')
 
-.. needflow:: SYSPILOT_SPEC_AGENT_WORKFLOW

@@ -420,6 +420,34 @@ Requirements for bootstrap, portability, installation, adoption, and updates.
    * AC-4: Change document summarizes version change (old → new) and lists affected files
 
 
+.. req:: Post-Install Git Commit
+   :id: SYSPILOT_REQ_INST_INSTALL_COMMIT
+   :status: implemented
+   :priority: mandatory
+   :tags: install, git, baseline
+   :links: SYSPILOT_US_INST_NEW_PROJECT, SYSPILOT_US_INST_ADOPT_EXISTING, SYSPILOT_REQ_INST_UPDATE_BRANCH
+
+   **Description:**
+   After a successful fresh install or adoption, the Setup Agent SHALL
+   stage all syspilot-placed files and commit them with a descriptive
+   message, providing the user with a clean git baseline.
+
+   **Rationale:**
+   Without an install commit, users must manually stage and commit all
+   created files, which is error-prone and breaks the installation flow.
+   A baseline commit clearly marks the syspilot installation in the
+   project history.
+
+   **Acceptance Criteria:**
+
+   * AC-1: After a successful fresh install or adoption, all syspilot-placed files are staged and committed
+   * AC-2: Commit message follows the pattern ``chore: install syspilot v{version}`` (fresh install) or ``chore: adopt syspilot v{version}`` (adoption)
+   * AC-3: User confirms the commit before it is created
+   * AC-4: If pre-existing uncommitted changes exist, the agent warns and offers options (commit syspilot files separately / skip the commit gracefully)
+   * AC-5: The commit only happens after successful validation (sphinx-build passes)
+   * AC-6: No commit is created in update mode (handled by the update branch workflow per SYSPILOT_REQ_INST_UPDATE_BRANCH)
+
+
 Traceability
 ------------
 

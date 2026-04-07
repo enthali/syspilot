@@ -20,6 +20,7 @@ You are the **Setup Agent** for syspilot. Your role is to help users integrate s
 4. **Fetch Files** - Copy from local `syspilot/` or download from GitHub main
 5. **Configure** - Create directories, copy files, merge intelligently
 6. **Validate** - Verify sphinx-build works
+7. **Git Baseline Commit** - Stage and commit all placed files after successful install
 
 ## Workflow
 
@@ -310,19 +311,104 @@ If installed from GitHub, set `"source"` to the GitHub URL instead:
 }
 ```
 
-### 7. Validate and Hand Off
-
-#### Validate
+### 7. Validate
 
 ```powershell
 sphinx-build --version
 ```
 
-If sphinx-build works, confirm installation is complete.
+If sphinx-build works, proceed to Section 8.
 
-#### Hand off to Documentation Agent
+### 8. Git Baseline Commit
 
-After validation, inform user:
+> **Implements: SYSPILOT_SPEC_INST_INSTALL_COMMIT, SYSPILOT_REQ_INST_INSTALL_COMMIT**
+
+After successful sphinx-build validation, create a git baseline commit so the installation is cleanly recorded in project history.
+
+**Only runs in fresh install and adoption modes** (not in update mode — see Section 8 Update Workflow).
+
+#### Step 1: Check git availability
+
+```powershell
+git rev-parse --is-inside-work-tree 2>$null
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "⚠️ Git repository not detected. Skipping baseline commit."
+    Write-Host "   Run 'git init' and commit manually if needed."
+    # Skip to Hand Off
+}
+```
+
+#### Step 2: Detect pre-existing uncommitted changes
+
+```powershell
+$status = git status --porcelain
+```
+
+If `$status` contains files **not** placed by the setup agent, present choice using VS Code selection menu:
+
+```
+⚠️ Uncommitted changes detected in your repository.
+
+A) Stage and commit only syspilot files (recommended)
+B) Skip the baseline commit — I'll handle git manually
+```
+
+- **Option A** → Use explicit `git add` for each file placed by syspilot (see file list in Section 5). Proceed to Step 3.
+- **Option B** → Skip the commit. Inform user:
+
+  ```
+  Skipped. Files placed by syspilot:
+  .github/agents/  .github/prompts/  .github/skills/
+  .syspilot/  docs/  (see setup log for full list)
+  ```
+
+If no pre-existing changes → stage all with `git add -A` and proceed to Step 3.
+
+#### Step 3: Confirmation prompt
+
+Determine which commit message variant to use:
+
+- If an existing `docs/conf.py` was detected before Section 5 (adoption path) → use `adopt`
+- Otherwise (new project) → use `install`
+
+Present using VS Code selection menu:
+
+```
+Ready to commit:
+  chore: install syspilot v{version}    ← new project
+  chore: adopt syspilot v{version}      ← existing project (docs/conf.py found)
+
+[Y] Yes, commit   [N] Skip this step
+```
+
+- If user selects **N** → skip gracefully, print the placed-files summary from Option B above.
+
+#### Step 4: Commit
+
+```powershell
+$msg = if ($existingConfPy) { "chore: adopt syspilot v$version" } else { "chore: install syspilot v$version" }
+git commit -m $msg
+```
+
+If the commit fails due to missing git identity:
+
+```
+⚠️ Git identity not configured. Run:
+     git config user.email "you@example.com"
+     git config user.name "Your Name"
+   Then commit manually:
+     git commit -m "chore: install syspilot v{version}"
+```
+
+#### Step 5: Success
+
+```
+✅ Committed: chore: install syspilot v{version}
+```
+
+### 9. Hand Off
+
+After validation (and optional git commit), inform user:
 
 ```
 ✅ syspilot v{version} installed successfully!
@@ -337,7 +423,7 @@ Installed:
 Next: Run @syspilot.change to start your first change request.
 ```
 
-**Implements: SYSPILOT_SPEC_INST_CURL_BOOTSTRAP, SYSPILOT_SPEC_INST_SETUP_AGENT, SYSPILOT_SPEC_INST_VERSION_MARKER**
+**Implements: SYSPILOT_SPEC_INST_CURL_BOOTSTRAP, SYSPILOT_SPEC_INST_SETUP_AGENT, SYSPILOT_SPEC_INST_VERSION_MARKER, SYSPILOT_SPEC_INST_INSTALL_COMMIT, SYSPILOT_REQ_INST_INSTALL_COMMIT**
 
 ---
 

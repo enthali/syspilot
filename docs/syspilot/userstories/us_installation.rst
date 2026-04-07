@@ -61,6 +61,10 @@ Stories covering bootstrap, portability, installation, adoption, and updates.
    3. Given installation completes, When I check, Then I'm ready to run bootstrap
    4. Given I need a specific version, When I install, Then I can obtain that version
    5. Given the syspilot/ directory exists locally, When I invoke @syspilot.setup, Then the agent offers me a choice between local copy and GitHub fetch
+   6. Given installation completes successfully, When the Setup Agent finishes,
+      Then it stages all newly created files and commits them with a descriptive
+      message (e.g. "chore: initial syspilot setup v{version}") so I have a
+      clean git baseline
 
 
 .. story:: Adopt syspilot in Existing Project
@@ -81,6 +85,9 @@ Stories covering bootstrap, portability, installation, adoption, and updates.
    3. Given adoption completes, When I check, Then I can start creating User Stories
    4. Given the setup agent is available, When I start adoption, Then the agent fetches files from GitHub main and merges with existing content
    5. Given the syspilot/ directory exists locally, When I invoke @syspilot.setup, Then the agent offers me a choice between local copy and GitHub fetch
+   6. Given adoption completes successfully, When the Setup Agent finishes,
+      Then it stages and commits all added syspilot files with a descriptive
+      message, handling any pre-existing uncommitted changes gracefully
 
 
 .. story:: Update syspilot to Latest Version

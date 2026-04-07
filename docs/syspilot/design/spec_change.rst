@@ -31,10 +31,15 @@ Design specifications for the Change Agent — iterative level-based change anal
       contradictions, and gaps (scoped to affected subset, not entire level)
    3. **Propose Changes** — Present new/modified items with rationale
    4. **Discuss with User** — Resolve questions and conflicts interactively
-   5. **Update Change Document** — Record agreements immediately
-   6. **Ask Navigation** — Confirm that the current level is saved to the
-      Change Document, then present navigation using ``ask_questions``:
-      "Level N is saved to the Change Document. Where do you want to continue?"
+   5. **Update Change Document** — Record agreements (IDs + rationale) immediately
+   6. **Write RST** — Write all new/modified elements for this level with
+      ``:status: draft``; trigger sphinx-build to update ``needs_id/`` data
+      (see ``SYSPILOT_SPEC_CHG_LIVE_RST_PER_LEVEL``)
+   7. **MECE Advisory** — Invoke MECE Agent as subagent scoped to this level;
+      present findings to user (advisory, non-blocking)
+   8. **Ask Navigation** — Confirm that the current level is written and saved,
+      then present navigation using ``ask_questions``:
+      "Level N is written and saved. Where do you want to continue?"
       Options: Proceed to Level N+1 / Revise Level N-1 / Pause
       (see SYSPILOT_SPEC_AGENT_INTERACTION for format)
 
@@ -78,40 +83,26 @@ Design specifications for the Change Agent — iterative level-based change anal
 
    **Location:** ``docs/changes/<name>.md``
 
-   **Content Modes:**
+   **Content Format:**
+   The Change Document is always in decision log format from the start: affected IDs,
+   rationale, and decisions. No verbose RST blocks are embedded. Since RSTs are written
+   per-level immediately after user approval, the Change Document does not need to carry
+   full RST content for session resume — the RST files themselves serve that purpose.
 
-   * **During Analysis (verbose):** Full RST content for each new/modified
-     element embedded in the Change Document. Enables conversation compression
-     and session pause/resume without context loss.
-   * **After Approval (simplified):** Only affected IDs and titles.
-     Full RST content moved to actual ``.rst`` files.
-
-   **Example (during analysis):**
+   **Example:**
 
    ::
 
       ## Level 1: Requirements
 
       ### New Requirements
+      - SYSPILOT_REQ_REL_SEMVER: Semantic Versioning — new because versioning not yet specified
 
-      #### SYSPILOT_REQ_REL_SEMVER: Semantic Versioning
+      ### Modified Requirements
+      - SYSPILOT_REQ_INST_GITHUB_RELEASES: Clarified to specify GitHub Releases
 
-      ```rst
-      .. req:: Semantic Versioning
-         :id: SYSPILOT_REQ_REL_SEMVER
-         :status: draft
-         ...
-      ```
-
-   **Example (after approval):**
-
-   ::
-
-      ## Level 1: Requirements
-
-      ### New Requirements
-      - SYSPILOT_REQ_REL_SEMVER: Semantic Versioning
-      - SYSPILOT_REQ_REL_GITHUB_PUBLISH: GitHub Release Publication
+      ### Decisions
+      - D-1: Use semantic versioning (MAJOR.MINOR.PATCH) per industry standard
 
 
 .. spec:: Bidirectional Level Navigation
@@ -132,7 +123,9 @@ Design specifications for the Change Agent — iterative level-based change anal
    1. Navigate to the requested level section in the Change Document
    2. Make necessary changes to that level
    3. Mark all lower level sections with: ``**⚠️ DEPRECATED — NEEDS REVIEW**``
-   4. Continue working forward from the requested level
+   4. Inform the user which already-written lower-level RSTs may be inconsistent
+      due to the backward revision; user decides whether and how to update those
+      RST files before continuing forward
 
    **Preservation:** Previous level work is preserved in the Change Document.
    Each iteration is marked so the full decision history is retained.
@@ -144,13 +137,17 @@ Design specifications for the Change Agent — iterative level-based change anal
 
 .. spec:: Atomic RST Updates with Status Lifecycle
    :id: SYSPILOT_SPEC_CHG_ATOMIC_UPDATE
-   :status: implemented
+   :status: deprecated
    :links: SYSPILOT_REQ_CHG_ANALYSIS_AGENT, SYSPILOT_REQ_CHG_FINAL_CHECK, SYSPILOT_REQ_CHG_MECE_PER_LEVEL, SYSPILOT_SPEC_CHG_LEVEL_PROCESSING
    :tags: change, commit, status
 
-   **Design:**
-   RST files are only updated after final approval of all levels together,
-   never during analysis. This prevents broken cross-level links.
+   .. note::
+      This spec is deprecated. It is superseded by
+      ``SYSPILOT_SPEC_CHG_LIVE_RST_PER_LEVEL`` (per-level RST write after user
+      approval of each level).
+
+   **Design (historical):**
+   RST files were only updated after final approval of all levels together.
 
    **Status Lifecycle:**
 
@@ -176,6 +173,46 @@ Design specifications for the Change Agent — iterative level-based change anal
 
    **Rationale:** Atomic updates ensure ``sphinx-build`` always succeeds.
    Writing levels individually would create periods with broken links.
+
+
+.. spec:: Per-Level RST Write and MECE Delegation
+   :id: SYSPILOT_SPEC_CHG_LIVE_RST_PER_LEVEL
+   :status: implemented
+   :links: SYSPILOT_REQ_CHG_LIVE_RST_PER_LEVEL, SYSPILOT_REQ_CHG_MECE_PER_LEVEL
+   :tags: change, rst, mece, subagent
+
+   **Design:**
+   After the user approves a level during Change Agent analysis, the agent SHALL
+   execute the following write-and-validate sequence:
+
+   1. Write all new/modified RST elements for that level with ``:status: draft``
+   2. Trigger ``sphinx-build`` to update ``docs/_build/html/needs_id/`` data
+   3. Invoke the MECE Agent as a subagent via ``runSubagent("syspilot.mece", ...)``
+      scoped to the level just written
+   4. Present MECE findings to the user as advisory (non-blocking)
+   5. Proceed to next level (user may review findings first)
+
+   **Status Lifecycle:**
+
+   * Per-level write: ``:status: draft``
+   * After final approval of all levels: Change Agent updates all touched
+     elements introduced in this change to ``:status: approved``
+   * After implementation: Verify Agent sets ``:status: implemented``
+
+   **Subagent Invocation:**
+
+   * Tool: ``runSubagent("syspilot.mece", ...)``
+   * Scope: the level just written (e.g. "Level 1 Requirements, affected IDs: ...")
+   * Result: MECE Agent returns findings or "no issues found"
+   * Advisory: findings shown to user, no automatic blocking or rollback
+   * Prerequisite: ``agents: ["syspilot.mece", "syspilot.trace"]`` must be present
+     in the Change Agent YAML frontmatter to enable ``runSubagent()`` invocation
+
+   **sphinx-build Requirement:**
+   sphinx-build must run between the RST write and the MECE subagent invocation
+   so that ``needs_id/`` data reflects the newly written elements.
+
+   **File:** ``.github/agents/syspilot.change.agent.md``
 
 
 Traceability

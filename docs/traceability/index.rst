@@ -20,10 +20,13 @@ Design to Requirements
    :filter: type == 'spec'
 
 
-Full Traceability Flow
-----------------------
+Full Traceability
+-----------------
 
-.. needflow:: SYSPILOT_REQ_CORE_SPHINX_NEEDS
+.. needtable::
+   :columns: id, title, type, status, links
+   :filter: type in ('req', 'spec') and id.startswith('SYSPILOT_')
+   :sort: id
 
 
 Coverage Matrix

@@ -1,5 +1,41 @@
 # syspilot Release Notes
 
+## v0.4.0 - 2026-04-07
+
+### Summary
+Two workflow improvements that make the development loop tighter and safer: the Change Agent now runs `@syspilot.mece` as an automatic subagent after each level write for advisory validation, and the Setup Agent now creates a git baseline commit after a successful fresh install or adoption.
+
+### ✨ New Features
+
+- **MECE Agent as Subagent in Change Agent** (SYSPILOT_SPEC_CHG_LIVE_RST_PER_LEVEL)
+  - After each level write `@syspilot.change` automatically invokes `@syspilot.mece` as a subagent
+  - MECE results are shown as advisory findings — non-blocking, but surfaced before moving on
+  - Requires the `agents:` frontmatter field in the agent file (SYSPILOT_SPEC_AGENT_FRAMEWORK)
+  - Replaces manual per-level write process; RST files are written immediately after approval
+
+- **Git Baseline Commit after Fresh Install / Adoption** (#11, SYSPILOT_SPEC_INST_INSTALL_COMMIT)
+  - `@syspilot.setup` now stages and commits all placed files after successful sphinx-build validation
+  - Commit message: `chore: install syspilot v{version}` (new project) or `chore: adopt syspilot v{version}` (existing project)
+  - Confirmation-gated: user approves commit before it is created
+  - Handles pre-existing uncommitted changes: offers to commit only syspilot files separately, or skip
+  - Graceful skip if git is not initialized or identity is not configured (informational message)
+  - Does not run in update mode (that is handled by the update branch workflow)
+
+### 🔧 Fixes & Improvements
+
+- `@syspilot.change` writes RST per level immediately after approval (`:status: draft`), enabling live link traversal via `get_need_links.py` during analysis
+- Change Document is always a lean decision log from the start, not a verbose RST dump
+
+### 📋 Specs
+
+- New: `SYSPILOT_REQ_INST_INSTALL_COMMIT`, `SYSPILOT_SPEC_INST_INSTALL_COMMIT`
+- Modified: `SYSPILOT_SPEC_INST_SETUP_AGENT` (Section 8: Git Baseline Commit)
+- Modified: `SYSPILOT_US_INST_NEW_PROJECT`, `SYSPILOT_US_INST_ADOPT_EXISTING` (AC-6 added)
+- Modified: `SYSPILOT_SPEC_CHG_LIVE_RST_PER_LEVEL` (MECE subagent step)
+- Modified: `SYSPILOT_SPEC_AGENT_FRAMEWORK` (`agents:` frontmatter field documented)
+
+---
+
 ## v0.3.1 - 2026-04-03
 
 ### Summary

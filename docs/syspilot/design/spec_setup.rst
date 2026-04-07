@@ -50,7 +50,7 @@ Installation
 .. spec:: Setup Agent Design
    :id: SYSPILOT_SPEC_INST_SETUP_AGENT
    :status: implemented
-   :links: SYSPILOT_REQ_INST_NEW_PROJECT, SYSPILOT_REQ_INST_ADOPT_EXISTING, SYSPILOT_REQ_INST_SPHINX_NEEDS_DEP, SYSPILOT_SPEC_INST_FILE_OWNERSHIP, SYSPILOT_SPEC_INST_UPDATE_PROCESS
+   :links: SYSPILOT_REQ_INST_NEW_PROJECT, SYSPILOT_REQ_INST_ADOPT_EXISTING, SYSPILOT_REQ_INST_SPHINX_NEEDS_DEP, SYSPILOT_REQ_INST_INSTALL_COMMIT, SYSPILOT_SPEC_INST_FILE_OWNERSHIP, SYSPILOT_SPEC_INST_UPDATE_PROCESS
    :tags: install, agent, setup
 
    **Design:**
@@ -176,6 +176,12 @@ Installation
 
    * Validate successful ``sphinx-build``
    * Confirm success
+
+   **Section 6: Git Baseline Commit (SYSPILOT_SPEC_INST_INSTALL_COMMIT)**
+
+   * Check git availability and stage/commit all placed files
+   * Confirmation-gated — user confirms before commit is created
+   * Graceful skip if git not available or user declines
 
    **Works for both new and existing projects.**
 
@@ -659,6 +665,107 @@ Post-Update Review
    * Leveraging ``git show HEAD:<path>`` avoids needing temporary backup files
    * The update branch (SYSPILOT_SPEC_INST_UPDATE_BRANCH) ensures the
      pre-update state is always available via git
+
+
+Post-Install Git Commit
+-----------------------
+
+.. spec:: Post-Install Git Commit
+   :id: SYSPILOT_SPEC_INST_INSTALL_COMMIT
+   :status: implemented
+   :links: SYSPILOT_REQ_INST_INSTALL_COMMIT, SYSPILOT_SPEC_INST_SETUP_AGENT, SYSPILOT_SPEC_INST_FILE_OWNERSHIP
+   :tags: install, git, baseline
+
+   **Design:**
+   Section 6 of the Setup Agent (SYSPILOT_SPEC_INST_SETUP_AGENT) runs after
+   successful sphinx-build validation. It stages and commits all syspilot-placed
+   files, giving the user a clean, reproducible git baseline.
+
+   **Step 1: Check git availability**
+
+   Run:
+
+   ::
+
+      git rev-parse --is-inside-work-tree
+
+   * If this fails → warn and skip gracefully:
+
+     ::
+
+        ⚠️ Git repository not detected. Skipping baseline commit.
+           Run 'git init' and commit manually if needed.
+
+   **Step 2: Detect pre-existing uncommitted changes**
+
+   Run:
+
+   ::
+
+      git status --porcelain
+
+   * If the output contains files **not** placed by the setup agent:
+
+     ::
+
+        ⚠️ Uncommitted changes detected in your repository.
+
+        A) Stage and commit only syspilot files (recommended)
+        B) Skip the baseline commit — I'll handle git manually
+
+     * **Option A**: Use explicit ``git add <file>`` for each placed file
+       (see Section 3 file list). Proceed to Step 3.
+     * **Option B**: Skip the commit. Inform user which files to commit:
+
+       ::
+
+          Skipped. Files placed by syspilot:
+          .github/agents/  .github/prompts/  .github/skills/
+          .syspilot/  docs/  (see setup log for full list)
+
+   * If no pre-existing changes → stage all with ``git add -A`` and proceed.
+
+   **Step 3: Confirmation prompt**
+
+   Determine commit message variant:
+
+   * If an existing ``docs/conf.py`` was detected during Section 3 → use ``adopt``
+   * Otherwise (new project) → use ``install``
+
+   ::
+
+      Ready to commit:
+        chore: install syspilot v{version}    ← new project (no prior docs/conf.py)
+        chore: adopt syspilot v{version}      ← existing project (docs/conf.py found)
+
+      [Y] Yes, commit   [N] Skip this step
+
+   * If user selects N → skip gracefully, print placed-files summary (same as Option B above).
+
+   **Step 4: Commit**
+
+   ::
+
+      git commit -m "chore: install syspilot v{version}"
+      # or
+      git commit -m "chore: adopt syspilot v{version}"
+
+   * **If commit fails due to missing git identity**:
+
+     ::
+
+        ⚠️ Git identity not configured. Run:
+             git config user.email "you@example.com"
+             git config user.name "Your Name"
+           Then commit manually:
+             git commit -m "chore: install syspilot v{version}"
+
+   **Step 5: Success**
+
+   ::
+
+      ✅ Committed: chore: install syspilot v{version}
+         (or: chore: adopt syspilot v{version})
 
 
 Update Branch

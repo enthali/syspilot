@@ -103,6 +103,10 @@ Stories covering the full change lifecycle: analyze, implement, verify, recover.
    5. Given all levels complete, When agent finishes, Then Change Document has full history
    6. Given Change is merged, When cleanup runs, Then Change Document and validation
       report are moved to archive (browsable without Git)
+   7. Given I approve a level, When the agent writes RST immediately, Then newly
+      introduced elements are queryable via sphinx-needs for the next level's link traversal
+   8. Given RST is written for a level, When the MECE Agent runs as subagent, Then
+      cross-level gaps and orphan links are detected before proceeding
 
 
 Traceability

@@ -138,10 +138,14 @@ syspilot uses itself for development. Three core workflows:
 ### Change Workflow (per change)
 
 1. **@syspilot.change** → Analyze request, create Change Document (US → REQ → SPEC)
+   - Works level by level; **writes RST files immediately after each level approval** (`:status: draft`)
+   - After each level write: runs sphinx-build + invokes MECE Agent as subagent (advisory)
+   - Change Document is always a decision log (IDs + rationale) — no verbose RST blocks
+   - After final consistency check: sets all touched elements to `:status: approved`
 2. **@syspilot.implement** → Execute approved changes from Change Document
 3. **@syspilot.verify** → Validate implementation against Change Document
 4. **@syspilot.memory** → Update copilot-instructions.md
-6. **Next** → Either start a new change (@change) or proceed to release (@release)
+5. **Next** → Either start a new change (@change) or proceed to release (@release)
 
 **Agent Handoff Chain:**
 
@@ -204,4 +208,4 @@ field — no manual references needed.
 
 ---
 
-*Last updated: 2026-04-03*
+*Last updated: 2026-04-07*
