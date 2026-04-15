@@ -1,0 +1,6 @@
+jobs:
+  - name: 'Jarvis: Rescan'
+    schedule: '*/30 * * * *'
+    steps:
+      - type: command
+        run: jarvis.rescan

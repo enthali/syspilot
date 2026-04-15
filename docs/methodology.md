@@ -16,7 +16,7 @@ a specific domain. Families are independent but can share common infrastructure.
 
 | Family | Domain | Agents |
 |--------|--------|--------|
-| `syspilot` | Spec-driven development (US → REQ → SPEC) | change, implement, verify, release, setup, mece, trace, memory |
+| `syspilot` | Spec-driven development (US → REQ → SPEC) | design, implement, uat, verify, release, setup, mece, trace, docu |
 | `sysmlv2` | Model-based systems engineering | *(planned)* |
 | `common` | Cross-family shared skills | *(as needed)* |
 
@@ -37,6 +37,10 @@ syspilot/                       # syspilot family product
 ├── agents/                     #   Agent templates → .github/agents/
 ├── prompts/                    #   Prompt configs → .github/prompts/
 ├── skills/                     #   Shared skills → .github/skills/
+│   ├── syspilot.ask-questions/ #     Folder-based, YAML frontmatter
+│   ├── syspilot.branching/
+│   ├── syspilot.impact-python/
+│   └── syspilot.orchestration/
 ├── scripts/python/             #   Utilities → .syspilot/scripts/
 ├── sphinx/                     #   Build scripts → docs/
 ├── templates/                  #   Document templates → .syspilot/templates/
@@ -97,7 +101,7 @@ All installed agents live flat in `.github/agents/`, regardless of family:
 
 ```
 .github/agents/
-├── syspilot.change.agent.md    # syspilot family
+├── syspilot.design.agent.md    # syspilot family
 ├── syspilot.release.agent.md
 ├── sysmlv2.model.agent.md      # SysMLv2 family (future)
 └── ...
@@ -110,10 +114,10 @@ The agent filename prefix (`syspilot.`, `sysmlv2.`) identifies the family.
 IDs follow the pattern `FAMILY_TYPE_THEME_SLUG`:
 
 ```
-SYSPILOT_US_CORE_SPEC_AS_CODE     # syspilot family, User Story
-SYSMLV2_REQ_MODEL_VALIDATION      # SysMLv2 family, Requirement
-INST_SYSPILOT_US_REL_RELEASE      # Instance, syspilot family
-COMMON_SPEC_TOOL_INTEGRATION      # Common, shared across families
+SYSP_US_CORE_SPEC_AS_CODE          # syspilot family, User Story
+SYSMLV2_REQ_MODEL_VALIDATION        # SysMLv2 family, Requirement
+INST_SYSP_US_REL_RELEASE            # Instance, syspilot family
+COMMON_SPEC_TOOL_INTEGRATION        # Common, shared across families
 ```
 
 See [namingconventions.md](namingconventions.md) for full rules.
@@ -124,26 +128,38 @@ Each agent has a defined scope of what it may write:
 
 | Agent | Writes to | Never writes to |
 |-------|-----------|-----------------|
-| Change Agent | Family specs OR Instance specs | — |
+| System Designer (`design`) | Family specs OR Instance specs | — |
 | Implement Agent | `<family>/` (product artifacts) | `.github/agents/` |
 | Setup Agent | `.github/` (installation) | `<family>/` |
 | Release Agent | `docs/`, version files | `.github/agents/` |
-| Verify Agent | Status updates in specs | — |
-| Memory Agent | `.github/copilot-instructions.md` | `<family>/` |
+| Test Engineer (`uat`) | Status updates in specs | — |
+| Documentation Engineer (`docu`) | `.github/copilot-instructions.md`, `docs/` | `<family>/` |
 
 The **Setup Agent** is the only agent that syncs `<family>/` → `.github/`.
 
-## Cross-Tree Linking
+## Agents and Skills
+
+**Agents are stable, universal processes** (WHAT to do). They define the workflow
+steps — analyze, implement, verify, document — independent of any specific tooling.
+
+**Skills are exchangeable tool bindings** (HOW to do it). They encapsulate domain
+knowledge and tool-specific behavior that agents invoke. Skills are folder-based
+(`.github/skills/<name>/SKILL.md`) with YAML frontmatter declaring `name` and
+`description`. Copilot discovers and invokes them automatically.
+
+**Customization principle:** Customers customize syspilot by swapping or adding
+Skills, not by modifying Agents. An agent’s process stays the same across projects;
+the skills it calls adapt to the project’s tools and domain.
 
 sphinx-needs resolves `:links:` directives across **all files** in the Sphinx project.
 Families and instances can link freely to each other:
 
 ```
 Instance                    Family Product            Family Product
-INST_SYSPILOT_US_RELEASE ──→ SYSPILOT_US_REL_AGENT ──→ SYSPILOT_REQ_REL_PROCESS_DOC
+INST_SYSP_US_RELEASE ──→ SYSP_US_REL_AGENT ──→ SYSP_REQ_REL_PROCESS_DOC
 ```
 
-The Change Agent follows these links to provide context from product specs when
+The System Designer follows these links to provide context from product specs when
 analyzing instance changes — the same mechanism used for any change analysis.
 
 ## Family Methodology Reference

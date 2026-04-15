@@ -1,0 +1,86 @@
+Change Manager Requirements
+============================
+
+
+.. req:: Change Manager Soul
+   :id: SYSP_REQ_CM_SOUL
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, manager, cm, soul
+   :links: SYSP_US_CM
+
+   **Description:**
+   The Change Manager agent (syspilot.cm) SHALL have a Soul that defines it as
+   process-oriented, systematic, and quality-conscious — the central orchestrator
+   of the change workflow.
+
+   **Acceptance Criteria:**
+
+   * AC-1: CM Soul defines a systematic, process-driven character
+   * AC-2: CM never executes engineering work directly
+   * AC-3: CM always thinks in workflows, quality gates, and completeness
+
+
+.. req:: Change Manager Duties
+   :id: SYSP_REQ_CM_DUTIES
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, manager, cm, duties
+   :links: SYSP_US_CM
+
+   **Description:**
+   The Change Manager agent SHALL have Duties covering the orchestration of
+   the engineer chain, quality gate enforcement, and exception handling.
+
+   **Acceptance Criteria:**
+
+   * AC-1: CM can receive Change Requests from PM or user
+   * AC-2: CM can invoke engineers in the correct sequence
+   * AC-3: CM can enforce quality gates between engineer steps
+   * AC-4: CM can handle exceptions and re-route when engineers report issues
+   * AC-5: When a CR specifies ``autonomous`` mode, CM SHALL proceed without user feedback (except UAT); when ``user-guided``, CM SHALL request user approval after each spec level
+
+
+.. req:: Change Manager Workflow
+   :id: SYSP_REQ_CM_WORKFLOW
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, manager, cm, workflow
+   :links: SYSP_US_CM
+
+   **Description:**
+   The Change Manager agent SHALL follow a workflow that drives the complete
+   change lifecycle through the engineer chain.
+
+   **Acceptance Criteria:**
+
+   * AC-1: CM workflow starts with a Change Request as input
+   * AC-2: CM invokes System Designer for analysis
+   * AC-3: CM invokes Test Engineer, Dev Engineer, Quality Engineers as needed
+   * AC-4: CM invokes Documentation Engineer at the end
+   * AC-5: CM reports completion with full traceability
+   * AC-6: Upon completion, CM SHALL notify PM and QM via Jarvis message queue
+
+
+.. req:: Change Manager Frontmatter Configuration
+   :id: SYSP_REQ_CM_FRONTMATTER
+   :status: approved
+   :priority: mandatory
+   :tags: agent-v2, manager, cm, frontmatter
+   :links: SYSP_US_CM; SYSP_REQ_AGENT_ARCH_FRONTMATTER
+
+   **Description:**
+   The Change Manager agent SHALL be configured with YAML frontmatter that
+   declares it as a user-invocable orchestrator with access to editing, agent
+   invocation, and Jarvis tools.
+
+   **Rationale:**
+   The CM is the central workflow hub. It needs the ``agent`` tool to invoke
+   all 7 engineer subagents, ``edit`` to manage change documents, and
+   ``syspilot_jarvis_tools`` for inter-manager communication.
+
+   **Acceptance Criteria:**
+
+   * AC-1: CM frontmatter declares ``user-invocable: true``
+   * AC-2: CM frontmatter lists all 7 engineer subagents in ``agents``
+   * AC-3: CM frontmatter includes ``agent`` and ``syspilot_jarvis_tools`` in tools

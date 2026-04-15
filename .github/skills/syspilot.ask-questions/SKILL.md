@@ -103,7 +103,7 @@ ask_questions({
 ask_questions({
   questions: [{
     header: "File Merge",
-    question: "syspilot.change.agent.md has been modified. How do you want to handle this?",
+    question: "syspilot.design.agent.md has been modified. How do you want to handle this?",
     options: [
       { label: "Overwrite", description: "Replace with new syspilot version (lose your changes)" },
       { label: "Keep", description: "Keep your version (may miss new features)" },

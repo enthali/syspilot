@@ -7,13 +7,27 @@ This section contains user stories that drive the requirements.
    :maxdepth: 2
    :caption: User Stories:
 
-   us_core
-   us_workflows
-   us_change_mgmt
-   us_traceability
-   us_installation
-   us_release
-   us_developer_experience
+   us_agent_arch
+
+   us_project_mgr
+   us_change_mgr
+   us_quality_mgr
+
+   us_system_designer
+   us_dev_engineer
+   us_test_engineer
+   us_docu_engineer
+   us_quality_mece
+   us_quality_trace
+   us_release_engineer
+   us_setup_engineer
+   us_verify_engineer
+
+   us_skill_ask_questions
+   us_skill_orchestration
+   us_skill_branching
+   us_skill_impact
+
    us_documentation
 
 

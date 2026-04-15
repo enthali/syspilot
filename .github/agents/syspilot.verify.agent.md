@@ -8,7 +8,7 @@ handoffs:
     agent: syspilot.implement
     prompt: Fix the issues found
   - label: New Change Request
-    agent: syspilot.change
+    agent: syspilot.design
     prompt: Create Change Proposal to fix issues
 ---
 

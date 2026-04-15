@@ -64,7 +64,7 @@ Nine agents, each with a clear job:
 
    * - Agent
      - What it does
-   * - ``@syspilot.change``
+   * - ``@syspilot.design``
      - Analyzes a change request, creates a Change Document listing all affected specs
    * - ``@syspilot.implement``
      - Executes approved changes with full traceability
@@ -120,14 +120,6 @@ Specification Reference
    syspilot/userstories/index
    syspilot/requirements/index
    syspilot/design/index
-
-.. toctree::
-   :maxdepth: 2
-   :caption: syspilot Instance (Dogfooding)
-
-   inst/syspilot/userstories/index
-   inst/syspilot/requirements/index
-   inst/syspilot/design/index
 
 
 Traceability

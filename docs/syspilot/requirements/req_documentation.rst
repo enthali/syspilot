@@ -1,234 +1,171 @@
 Documentation Requirements
-===========================
+==========================
 
-Requirements for project documentation maintenance, scope, and per-document content.
+Requirements for external and internal documentation artifacts.
 
-**Last Updated**: 2026-03-15
-
-
-Documentation Scope
--------------------
-
-.. req:: Documentation Scope
-   :id: SYSPILOT_REQ_DOC_SCOPE
-   :status: implemented
-   :priority: mandatory
-   :tags: documentation, scope
-   :links: SYSPILOT_US_DOC_MAINTAIN, SYSPILOT_REQ_CHG_IMPL_AGENT
-
-   **Description:**
-   syspilot SHALL define a documentation scope that identifies user-facing
-   project documentation to be maintained as part of implementation artifacts.
-
-   **Rationale:**
-   Documentation is an implementation artifact like code. Per-document
-   requirements and chapter-structure design specs enable any agent
-   (implement, setup) to maintain documentation with full traceability.
-
-   **Acceptance Criteria:**
-
-   * AC-1: Documentation scope covers user-facing documentation (README, guides,
-     changelog, release notes)
-   * AC-2: Documentation structure and content mapping SHALL be defined
-     in design specs with explicit requirement links
-   * AC-3: Each project MAY customize which documents are maintained
-   * AC-4: Setup agent SHALL configure documentation scope during initial setup
-
-
-Per-Document Requirements
--------------------------
 
 .. req:: README Documentation
-   :id: SYSPILOT_REQ_DOC_README
-   :status: implemented
+   :id: SYSP_REQ_DOC_README
+   :status: approved
    :priority: mandatory
-   :tags: documentation, readme
-   :links: SYSPILOT_US_DOC_MAINTAIN, SYSPILOT_REQ_INST_NEW_PROJECT, SYSPILOT_REQ_INST_ADOPT_EXISTING
+   :tags: agent-v2, documentation, external, readme
+   :links: SYSP_US_DOC_EXTERNAL
 
    **Description:**
-   The project README SHALL describe the project overview, installation
-   instructions, and quickstart guide.
+   The README.md SHALL provide installation instructions, project overview,
+   and quick-start guide.
 
    **Rationale:**
-   The README is the first document users encounter. It must accurately
-   reflect the current state of the project.
+   The README is the first file users encounter. It must convey what syspilot
+   is, how to install it, and how to get started within minutes.
 
    **Acceptance Criteria:**
 
-   * AC-1: README contains project overview
-   * AC-2: README contains installation instructions
-   * AC-3: README contains quickstart or usage guide
-   * AC-4: README is updated when installation process or project scope changes
+   * AC-1: README contains a project overview explaining the core value proposition
+   * AC-2: README contains platform-specific installation instructions (Linux/Mac, Windows)
+   * AC-3: README contains a quick-start section or link to getting started
+   * AC-4: README lists available agents with brief descriptions
 
 
 .. req:: Methodology Documentation
-   :id: SYSPILOT_REQ_DOC_METHODOLOGY
-   :status: implemented
+   :id: SYSP_REQ_DOC_METHODOLOGY
+   :status: approved
    :priority: mandatory
-   :tags: documentation, methodology
-   :links: SYSPILOT_US_DOC_MAINTAIN, SYSPILOT_REQ_CORE_DOMAIN_ORG, SYSPILOT_REQ_CORE_L1_MIRROR
+   :tags: agent-v2, documentation, external, methodology
+   :links: SYSP_US_DOC_EXTERNAL
 
    **Description:**
-   The methodology document SHALL describe the file organization approach
-   across specification levels.
+   The methodology.md SHALL describe the spec-driven development approach,
+   specification hierarchy, and agent roles.
 
    **Rationale:**
-   Developers and agents need to understand how files are organized
-   to navigate and contribute to the project correctly.
+   The methodology document explains the conceptual framework behind syspilot —
+   agent families, product/instance separation, and the three-level specification
+   hierarchy. Without it, users cannot understand why syspilot is structured
+   the way it is.
 
    **Acceptance Criteria:**
 
-   * AC-1: Document describes Level 0/1 organization by problem domain
-   * AC-2: Document describes Level 2 organization by solution domain
-   * AC-3: Document is updated when file organization conventions change
-
-
-.. req:: Naming Conventions Documentation
-   :id: SYSPILOT_REQ_DOC_NAMING
-   :status: implemented
-   :priority: mandatory
-   :tags: documentation, naming
-   :links: SYSPILOT_US_DOC_MAINTAIN, SYSPILOT_REQ_CORE_DOMAIN_ORG
-
-   **Description:**
-   The naming conventions document SHALL describe the ID format, theme
-   abbreviations, and slug guidelines used across all specification levels.
-
-   **Rationale:**
-   Consistent naming is critical for traceability. The document must
-   reflect all current themes and naming patterns.
-
-   **Acceptance Criteria:**
-
-   * AC-1: Document describes ID format (<TYPE>_<THEME>_<SLUG>)
-   * AC-2: Document lists all theme abbreviations with their levels
-   * AC-3: Document is updated when new themes are introduced
-
-
-.. req:: Release Notes Documentation
-   :id: SYSPILOT_REQ_DOC_RELEASE_NOTES
-   :status: implemented
-   :priority: mandatory
-   :tags: documentation, release
-   :links: SYSPILOT_US_DOC_MAINTAIN, SYSPILOT_REQ_WF_RELEASE_SEQUENCE, SYSPILOT_REQ_REL_NOTES
-
-   **Description:**
-   The release notes document SHALL define the structure and format
-   for recording release history.
-
-   **Rationale:**
-   A consistent document structure ensures release information is
-   navigable and predictable. Content generation is covered by
-   SYSPILOT_REQ_REL_NOTES.
-
-   **Acceptance Criteria:**
-
-   * AC-1: Release notes list changes per version (newest first)
-   * AC-2: Release notes are updated during the release workflow
-   * AC-3: Release notes are stored in ``docs/releasenotes.md``
-
-
-.. req:: Process Documentation
-   :id: SYSPILOT_REQ_DOC_PROCESS
-   :status: implemented
-   :priority: high
-   :tags: documentation, process
-   :links: SYSPILOT_US_DOC_MAINTAIN
-
-   **Description:**
-   The process documentation SHALL describe the development process
-   alignment (e.g., A-SPICE) and standards compliance.
-
-   **Rationale:**
-   Process documentation demonstrates compliance and helps new
-   contributors understand the development approach.
-
-   **Acceptance Criteria:**
-
-   * AC-1: Process alignment is documented with traceability to standards
-   * AC-2: Document is updated when workflow or process changes
-
-
-.. req:: Documentation Index
-   :id: SYSPILOT_REQ_DOC_INDEX
-   :status: implemented
-   :priority: mandatory
-   :tags: documentation, index
-   :links: SYSPILOT_US_DOC_MAINTAIN, SYSPILOT_REQ_DOC_SCOPE
-
-   **Description:**
-   The documentation index (docs/index.rst) SHALL serve as the entry
-   point to all project documentation with working navigation.
-
-   **Rationale:**
-   The index is the root of the Sphinx documentation tree. It must
-   include all sections and stay current as documentation structure evolves.
-
-   **Acceptance Criteria:**
-
-   * AC-1: Index includes toctree entries for all documentation sections
-   * AC-2: Index is updated when documentation structure changes
+   * AC-1: Describes spec-driven development as the core approach
+   * AC-2: Explains the agent family concept and directory structure
+   * AC-3: Defines the specification hierarchy (US → REQ → SPEC)
+   * AC-4: Covers ID naming conventions at the framework level
 
 
 .. req:: Architecture Documentation
-   :id: SYSPILOT_REQ_DOC_ARCHITECTURE
-   :status: implemented
-   :priority: high
-   :tags: documentation, architecture
-   :links: SYSPILOT_US_DOC_MAINTAIN, SYSPILOT_REQ_INST_TEMPLATE_SOURCE, SYSPILOT_REQ_INST_FILE_OWNERSHIP
+   :id: SYSP_REQ_DOC_ARCHITECTURE
+   :status: approved
+   :priority: mandatory
+   :tags: agent-v2, documentation, external, architecture
+   :links: SYSP_US_DOC_EXTERNAL
 
    **Description:**
-   The architecture document SHALL explain the Product/Instance separation
-   concept so that new users understand how syspilot is structured and
-   how to customize it safely.
+   The architecture.md SHALL describe the product architecture and
+   customization model.
 
    **Rationale:**
-   Product/Instance is a central concept but not explained in any single
-   document. New users must piece it together from methodology, naming
-   conventions, and changelog entries.
+   The architecture document explains the Product/Installation separation,
+   which is the central design decision of syspilot. Users need to understand
+   what is generic (Product) vs. what is project-specific (Installed copy)
+   to know what they can customize and what gets overwritten on update.
 
    **Acceptance Criteria:**
 
-   * AC-1: Document explains WHY the Product/Instance separation exists
-   * AC-2: Document defines WHAT Product and Instance are with concrete examples
-   * AC-3: Document explains HOW they relate (linking, setup agent, overrides)
-   * AC-4: Document includes a concrete example (e.g., Release Agent)
-   * AC-5: Document describes update safety (how to customize without breaking on updates)
-   * AC-6: Document is linked from methodology.md
+   * AC-1: Describes the Product/Installation separation
+   * AC-2: Explains the Setup Agent's role in installation
+   * AC-3: Documents file ownership (methodology vs. project)
+   * AC-4: Provides a concrete example (e.g., Release Agent)
 
 
 .. req:: Workflows Documentation
-   :id: SYSPILOT_REQ_DOC_WORKFLOWS
-   :status: implemented
-   :priority: high
-   :tags: documentation, workflows
-   :links: SYSPILOT_US_DOC_MAINTAIN, SYSPILOT_REQ_WF_CHANGE_SEQUENCE
+   :id: SYSP_REQ_DOC_WORKFLOWS
+   :status: approved
+   :priority: mandatory
+   :tags: agent-v2, documentation, external, workflows
+   :links: SYSP_US_DOC_EXTERNAL
 
    **Description:**
-   The workflows document SHALL provide a process overview that describes
-   the syspilot development process as the central workflow model, helping
-   new users understand the available workflows and when to use which agent.
+   The workflows.md SHALL describe the change, quality, and release workflows.
 
    **Rationale:**
-   The syspilot process is the core methodology. It should be documented
-   as a standalone, self-contained workflow description. External standard
-   mappings (A-SPICE, 26262, CMMI etc.) are separate mapping documents
-   that reference this central process.
+   Workflows define the development process. Without clear documentation of
+   agent sequencing and handoffs, users cannot follow the intended process
+   and will invoke agents in the wrong order.
 
    **Acceptance Criteria:**
 
-   * AC-1: Document describes the Change Workflow (change → implement → verify → memory)
-   * AC-2: Document describes the Quality Workflow (mece, trace)
-   * AC-3: Document describes the Release Workflow
-   * AC-4: Document includes a visual workflow diagram or clear step-by-step
-   * AC-5: Document explains when to use which agent
-   * AC-6: Document is linked from the documentation index
-   * AC-7: Document describes the branching strategy (feature branches, squash merge to main)
+   * AC-1: Describes the Change Workflow (design → implement → uat → verify → docu)
+   * AC-2: Describes the Quality Workflow (mece, trace)
+   * AC-3: Describes the Release Workflow
+   * AC-4: Each workflow section lists input, agent steps, and output
 
 
-Traceability
-------------
+.. req:: Naming Conventions Documentation
+   :id: SYSP_REQ_DOC_NAMINGCONVENTIONS
+   :status: approved
+   :priority: mandatory
+   :tags: agent-v2, documentation, external, naming
+   :links: SYSP_US_DOC_EXTERNAL
 
-.. needtable::
-   :columns: id, title, status, tags
-   :filter: id.startswith('SYSPILOT_REQ_DOC')
+   **Description:**
+   The namingconventions.md SHALL define ID prefixes, file naming patterns,
+   and theme abbreviations.
+
+   **Rationale:**
+   Consistent naming is critical for sphinx-needs to resolve links. The naming
+   conventions document is the single source of truth for how IDs are formed,
+   what themes exist, and how files are named.
+
+   **Acceptance Criteria:**
+
+   * AC-1: Defines the ID format (FAMILY_TYPE_THEME_SLUG)
+   * AC-2: Lists family prefixes and type abbreviations
+   * AC-3: Covers file and directory naming patterns
+   * AC-4: Defines slug guidelines
+
+
+.. req:: Release Notes Documentation
+   :id: SYSP_REQ_DOC_RELEASENOTES
+   :status: approved
+   :priority: mandatory
+   :tags: agent-v2, documentation, release-notes
+   :links: SYSP_US_DOC_RELEASE_NOTES
+
+   **Description:**
+   The releasenotes.md SHALL document each release with version, date, and
+   change summary in reverse chronological order.
+
+   **Rationale:**
+   Release notes are the definitive record of what shipped. They allow users
+   to assess upgrade impact and developers to trace changes back to specs.
+
+   **Acceptance Criteria:**
+
+   * AC-1: Each release entry has a version number and date
+   * AC-2: Each entry has a summary, new features, and fixes section
+   * AC-3: Entries reference affected spec IDs where applicable
+   * AC-4: Entries are ordered newest-first (reverse chronological)
+
+
+.. req:: Copilot Instructions Template Guidance
+   :id: SYSP_REQ_DOC_COPILOT_INSTRUCTIONS
+   :status: approved
+   :tags: agent-v2, documentation, internal
+   :links: SYSP_US_DOC_INTERNAL
+
+   The copilot-instructions.md is a **project-owned** file. syspilot does
+   not prescribe its content. The file SHALL be kept concise (always loaded
+   into context), and MAY contain: project identity, tech stack, dev commands,
+   safety rules, and pointers to syspilot skills and agents.
+
+   **Rationale:** copilot-instructions is the only context file loaded
+   automatically by VS Code Copilot. Its content is project-specific —
+   Jarvis setup, branching rules, and team conventions belong to the project,
+   not to the syspilot product. syspilot provides guidance on what it could
+   contain, not requirements on what it must contain.
+
+   **Acceptance Criteria:**
+
+   1. Given a syspilot installation, When I check .github/, Then copilot-instructions.md exists
+   2. Given copilot-instructions.md, When loaded by Copilot, Then it stays concise — no content that belongs in skills or agent files
+   3. Given a project using syspilot agents, When I read copilot-instructions.md, Then it references the relevant skills

@@ -28,6 +28,16 @@ syspilot/                            # Repository root (also the product dir)
 │   ├── prompts/                # Prompt configuration files (*.prompt.md)
 │   ├── skills/                 # Shared skill files (*/SKILL.md)
 │   └── copilot-instructions.md # This file
+├── projects/                        # Jarvis project folders (role-based)
+│   ├── project-manager/        # PM: planning, backlog, delegation
+│   │   ├── project.yaml
+│   │   └── context.md
+│   ├── change-manager/         # CM: E2E change orchestration
+│   │   ├── project.yaml
+│   │   └── context.md
+│   └── quality-manager/        # QM: independent quality checks
+│       ├── project.yaml
+│       └── context.md
 ├── scripts/
 │   └── python/
 │       └── get_need_links.py   # Link discovery utility (consumer copy)
@@ -53,10 +63,6 @@ syspilot/                            # Repository root (also the product dir)
 │   │   ├── process/            # A-SPICE process alignment
 │   │   ├── methodology.md      # Family-specific methodology
 │   │   └── namingconventions.md # Family-specific naming
-│   ├── inst/syspilot/          # Instance-level specs (project-specific)
-│   │   ├── userstories/        # Instance User Stories
-│   │   ├── requirements/       # Instance Requirements
-│   │   └── design/             # Instance Design Specs
 │   ├── traceability/           # Cross-family traceability matrices
 │   ├── changes/                # Change Documents
 │   │   └── archive/            # Archived by version after release
@@ -68,28 +74,51 @@ syspilot/                            # Repository root (also the product dir)
 ## Specification Hierarchy
 
 ```
-Level 0: User Stories (WHY)     docs/syspilot/userstories/    SYSPILOT_US_*
+Level 0: User Stories (WHY)     docs/syspilot/userstories/    SYSP_US_*
          │ :links:
          ▼
-Level 1: Requirements (WHAT)    docs/syspilot/requirements/   SYSPILOT_REQ_*
+Level 1: Requirements (WHAT)    docs/syspilot/requirements/   SYSP_REQ_*
          │ :links:
          ▼
-Level 2: Design Specs (HOW)     docs/syspilot/design/         SYSPILOT_SPEC_*
-
-Instance specs (project-specific)  docs/inst/syspilot/           INST_SYSPILOT_*
+Level 2: Design Specs (HOW)     docs/syspilot/design/         SYSP_SPEC_*
 ```
 
 ## Agent System
 
-| Agent | Purpose |
-|-------|---------|
-| `@syspilot.setup` | Install/update syspilot in a project |
-| `@syspilot.change` | Analyze change requests level-by-level |
-| `@syspilot.implement` | Execute approved changes with traceability |
-| `@syspilot.verify` | Verify implementation matches Change Document |
-| `@syspilot.mece` | Check one level for MECE properties |
-| `@syspilot.trace` | Trace one item through all levels |
-| `@syspilot.memory` | Keep copilot-instructions.md up-to-date |
+### Managers (user-invocable)
+
+| Agent | Persona | Purpose |
+|-------|---------|--------|
+| `@syspilot.pm` | Project Manager | Feature discussion, backlog, research, delegation |
+| `@syspilot.cm` | Change Manager | E2E change orchestration, quality gates |
+| `@syspilot.qm` | Quality Manager | Independent quality checks, MECE/Trace dispatch |
+
+### Engineers (subagents)
+
+| Agent | Persona | Purpose |
+|-------|---------|--------|
+| `@syspilot.design` | System Designer | Level-by-level change analysis, RST writing |
+| `@syspilot.implement` | Dev Engineer | Code implementation from specs |
+| `@syspilot.uat` | Test Engineer | UAT artifact generation |
+| `@syspilot.docu` | Documentation Engineer | Internal + external doc maintenance |
+| `@syspilot.mece` | Quality Engineer MECE | Horizontal consistency checks |
+| `@syspilot.trace` | Quality Engineer Trace | Vertical traceability checks |
+| `@syspilot.release` | Release Engineer | Version, tag, release notes |
+| `@syspilot.setup` | Setup Engineer | Installation and updates |
+
+## Role-Based Development (Jarvis)
+
+syspilot uses Jarvis as project management tool. Three manager roles, each with their own `projects/<role>/context.md`:
+
+| Role | Folder | Responsibility |
+|------|--------|---------------|
+| **Project Manager** | `projects/project-manager/` | Plans features, prioritizes backlog, delegates Change Requests |
+| **Change Manager** | `projects/change-manager/` | Orchestrates engineers through the change workflow |
+| **Quality Manager** | `projects/quality-manager/` | Independent quality checks, dispatches MECE/Trace engineers |
+
+**Communication**: Managers communicate via Jarvis message queue (`jarvis_sendToSession` tool → `.jarvis/messages.json`). Each manager owns its `context.md` and keeps it up-to-date.
+
+**Autonomy**: The Change Manager supports two modes: `autonomous` (proceeds without user feedback except UAT) and `user-guided` (requests user approval after each spec level).
 
 ## Sphinx-Needs Conventions
 
@@ -97,10 +126,9 @@ Instance specs (project-specific)  docs/inst/syspilot/           INST_SYSPILOT_*
 
 | Type | Prefix | Example | Level |
 |------|--------|---------|-------|
-| User Story | `US_` | `SYSPILOT_US_CORE_SPEC_AS_CODE` | 0 |
-| Requirement | `REQ_` | `SYSPILOT_REQ_CHG_ANALYSIS_AGENT` | 1 |
-| Design Spec | `SPEC_` | `SYSPILOT_SPEC_AGENT_WORKFLOW` | 2 |
-| Instance | `INST_` | `INST_SYSPILOT_SPEC_REL_AGENT_CONFIG` | 0–2 |
+| User Story | `US_` | `SYSP_US_CORE_SPEC_AS_CODE` | 0 |
+| Requirement | `REQ_` | `SYSP_REQ_CHG_ANALYSIS_AGENT` | 1 |
+| Design Spec | `SPEC_` | `SYSP_SPEC_AGENT_WORKFLOW` | 2 |
 
 ### Theme Abbreviations
 
@@ -135,31 +163,28 @@ python scripts/python/get_need_links.py <ID> --flat --depth 3
 
 syspilot uses itself for development. Three core workflows:
 
-### Change Workflow (per change)
-
-1. **@syspilot.change** → Analyze request, create Change Document (US → REQ → SPEC)
-   - Works level by level; **writes RST files immediately after each level approval** (`:status: draft`)
-   - After each level write: runs sphinx-build + invokes MECE Agent as subagent (advisory)
-   - Change Document is always a decision log (IDs + rationale) — no verbose RST blocks
-   - After final consistency check: sets all touched elements to `:status: approved`
-2. **@syspilot.implement** → Execute approved changes from Change Document
-3. **@syspilot.verify** → Validate implementation against Change Document
-4. **@syspilot.memory** → Update copilot-instructions.md
-5. **Next** → Either start a new change (@change) or proceed to release (@release)
-
-**Agent Handoff Chain:**
+### Change Workflow (orchestrated by Change Manager)
 
 ```
-change → implement → verify → memory → change / release
-    ↑                                │
-    └────────────────────────────────┘ (next change)
+CM receives Change Request
+  → System Designer (per-level: impact analysis, analyse, write RST)
+  |   → Quality Eng. MECE (advisory per level)
+  → Test Engineer (UAT artifacts)
+  → Dev Engineer (implementation)
+  → Quality Eng. MECE (final check)
+  → Release Engineer
+  → Documentation Engineer
 ```
 
-### Quality Workflow (independent, any time)
+### Quality Workflow (orchestrated by Quality Manager)
 
-- **@syspilot.mece** → Horizontal consistency check on one level
-- **@syspilot.trace** → Vertical traceability check for one element
-- Both are read-only; findings trigger a change workflow
+```
+QM triggered (periodic, on-demand, or PM request)
+  → Quality Eng. MECE (all levels)
+  → Quality Eng. Trace (sample items)
+  → Consolidated Report
+  → Change Requests → Change Manager
+```
 
 ### Release Workflow (bundles changes)
 
@@ -167,13 +192,17 @@ See `@syspilot.release` agent for full process. Key steps: merge to main → ver
 
 ### Branching Strategy
 
-Chained feature branches, main = releases only. See [docs/workflows.md](../docs/workflows.md) for details.
+Development branch with feature branches, main = releases only. See [docs/workflows.md](../docs/workflows.md) for details.
 
-- `@syspilot.change` creates `feature/<name>` from latest feature branch (not main)
+**HARD RULE: ONLY `@syspilot.release` may commit to, merge to, or push to `main`. No exceptions.**
+
+- If you are on `main` and need to make any change, create `feature/<name>` first
+- `@syspilot.design` creates `feature/<name>` from `development`
+- Feature branches are squash-merged back into `development`
 - `@syspilot.setup` (update mode) creates `update/v{version}` from current branch
 - All agents commit to the same feature branch
-- Squash merge to main only during `@syspilot.release`
-- Main always equals the latest release
+- `@syspilot.release` squash-merges `development` into `main`, bumps version, tags
+- Main always equals the latest release — any non-release commit on main is a violation
 
 ## Patterns & Conventions
 
@@ -206,6 +235,8 @@ Skill files use VS Code standard format (`.github/skills/<name>/SKILL.md` with Y
 frontmatter). Copilot discovers and invokes skills automatically based on the `description`
 field — no manual references needed.
 
+**Skill authoring principle:** Skills describe domain knowledge, not tool syntax. Don't explain what the agent already knows (how to call a script, what `--help` does). Focus on the rules the agent *cannot* derive from the tool itself.
+
 ---
 
-*Last updated: 2026-04-07*
+*Last updated: 2026-04-15*

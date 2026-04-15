@@ -12,7 +12,7 @@ each family's `namingconventions.md` (e.g., `docs/syspilot/namingconventions.md`
 
 ## Why Descriptive IDs?
 
-| Aspect | Sequential (`REQ_001`) | Descriptive (`SYSPILOT_REQ_CORE_SPHINX_NEEDS`) |
+| Aspect | Sequential (`REQ_001`) | Descriptive (`SYSP_REQ_CORE_SPHINX_NEEDS`) |
 |--------|------------------------|------------------------------------------------|
 | Self-documenting | No — must look it up | Yes — readable inline |
 | Insert new items | Renumber or use gaps | Just pick a name |
@@ -36,9 +36,9 @@ each family's `namingconventions.md` (e.g., `docs/syspilot/namingconventions.md`
 
 | Prefix | Scope | Description |
 |--------|-------|-------------|
-| `SYSPILOT_` | syspilot family | Spec-driven development agents (change, implement, verify, etc.) |
+| `SYSP_` | syspilot family | Spec-driven development agents (change, implement, verify, etc.) |
 | `SYSMLV2_` | SysMLv2 family | Model-based systems engineering agents *(planned)* |
-| `INST_<FAMILY>_` | Instance | Project-specific customization (e.g., `INST_SYSPILOT_`) |
+| `INST_<FAMILY>_` | Instance | Project-specific customization (e.g., `INST_SYSP_`) |
 | `COMMON_` | Shared | Cross-family shared specifications |
 
 ### Type Abbreviations
@@ -65,7 +65,7 @@ to be short (2–5 chars), uppercase, and consistent within the family.
 | `docs/<family>/` | Family specs | `docs/syspilot/userstories/` |
 | `docs/inst/<family>/` | Instance specs | `docs/inst/syspilot/userstories/` |
 | `docs/common/` | Shared specs | `docs/common/userstories/` |
-| `.github/agents/` | Installed agents (flat) | `syspilot.change.agent.md` |
+| `.github/agents/` | Installed agents (flat) | `syspilot.design.agent.md` |
 
 ## Cross-Family Linking
 
@@ -74,8 +74,8 @@ Families and instances can link freely:
 
 ```rst
 .. story:: Release This Project
-   :id: INST_SYSPILOT_US_REL_RELEASE
-   :links: SYSPILOT_US_REL_AGENT_TEMPLATE
+   :id: INST_SYSP_US_REL_RELEASE
+   :links: SYSP_US_REL_AGENT_TEMPLATE
 
    .. (instance links to family product for context)
 ```
@@ -83,7 +83,7 @@ Families and instances can link freely:
 ```rst
 .. req:: Model Validation
    :id: SYSMLV2_REQ_MODEL_VALIDATION
-   :links: SYSPILOT_REQ_CORE_TRACEABILITY
+   :links: SYSP_REQ_CORE_TRACEABILITY
 
    .. (SysMLv2 family links to syspilot core for shared traceability)
 ```
@@ -92,7 +92,7 @@ Families and instances can link freely:
 
 sphinx-needs enforces global uniqueness across all `.rst` files at build time.
 The family prefix guarantees no collisions between families:
-`SYSPILOT_US_CORE_*` can never clash with `SYSMLV2_US_CORE_*`.
+`SYSP_US_CORE_*` can never clash with `SYSMLV2_US_CORE_*`.
 
 ## Slug Guidelines
 
@@ -100,12 +100,12 @@ The family prefix guarantees no collisions between families:
 2. **Be specific**: `ANALYZE` not `DO_ANALYSIS_OF_CHANGES`
 3. **Use domain language**: terms stakeholders recognize
 4. **Avoid ambiguity**: `NEW_PROJECT` vs `ADOPT_EXISTING`, not `INSTALL_1`
-5. **ALL CAPS**: `SYSPILOT_US_CHG_ANALYZE` not `syspilot_us_chg_analyze`
+5. **ALL CAPS**: `SYSP_US_CHG_ANALYZE` not `sysp_us_chg_analyze`
 6. **Underscores only**: no hyphens, no dots
 
 ## Migration from Old IDs
 
-When renaming IDs (e.g., `US_CORE_*` → `SYSPILOT_US_CORE_*`):
+When renaming IDs (e.g., `US_CORE_*` → `SYSP_US_CORE_*`):
 
 1. Build a complete mapping table (old → new)
 2. Rename `:id:` directives in specification files

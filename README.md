@@ -10,6 +10,8 @@
 > Your project has 5000 requirements. A change affects 5 of them.
 > syspilot follows [sphinx-needs](https://sphinx-needs.readthedocs.io/) traceability links to find exactly those 5 — so your AI agent gets focused context, not the entire codebase.
 
+Cover 100% of your specs with 6x less tokens. Links are deterministic — search is probabilistic. syspilot gives your agents the map, not the flashlight. Built on [sphinx-needs](https://sphinx-needs.readthedocs.io/) by [useblocks](https://useblocks.com). Powered by [GitHub Copilot](https://github.com/features/copilot).
+
 ## Quick Start
 
 **Linux / Mac / GitHub Codespaces:**
@@ -33,18 +35,27 @@ That's it. The setup agent handles dependencies, configuration, and validation a
 
 ## What You Get
 
-Eight AI agents that work through your spec hierarchy:
+Three **managers** that orchestrate the work, and eight **engineers** that execute it:
 
-| Agent | What it does |
-|-------|-------------|
-| `@syspilot.change` | Analyzes a change request, creates a Change Document |
+| Managers | What they do |
+|----------|-------------|
+| `@syspilot.pm` | Plans features, manages backlog, delegates change requests |
+| `@syspilot.cm` | Orchestrates engineers through the change workflow |
+| `@syspilot.qm` | Runs independent quality checks |
+
+| Engineers | What they do |
+|-----------|-------------|
+| `@syspilot.design` | Analyzes a change request, creates a Change Document |
 | `@syspilot.implement` | Executes approved changes with traceability |
-| `@syspilot.verify` | Checks implementation against the Change Document |
-| `@syspilot.memory` | Keeps project memory (copilot-instructions.md) current |
+| `@syspilot.uat` | Generates user acceptance test artifacts |
+| `@syspilot.verify` | Validates implementation against the Change Document |
+| `@syspilot.docu` | Keeps project documentation current |
 | `@syspilot.mece` | Finds gaps and redundancies in your specs |
 | `@syspilot.trace` | Traces one item through all levels |
 | `@syspilot.release` | Manages versioning and release process |
 | `@syspilot.setup` | Installs/updates syspilot in your project |
+
+Agents are stable processes (WHAT to do). **Skills** are exchangeable tool bindings (HOW to do it) — customize syspilot by swapping skills, not agents.
 
 ## How It Works
 

@@ -39,29 +39,29 @@ Level 2 (Design Specs) uses **component-based** themes instead of domain themes:
 
 **Level 0 — User Stories:**
 ```
-SYSPILOT_US_CORE_SPEC_AS_CODE        # Core: manage specs as code
-SYSPILOT_US_CHG_ANALYZE              # Change Mgmt: analyze changes
-SYSPILOT_US_INST_BOOTSTRAP           # Installation: environment bootstrap
-SYSPILOT_US_REL_CREATE               # Release: create a release
-SYSPILOT_US_DX_PROJECT_MEMORY        # Dev Experience: maintain project memory
-SYSPILOT_US_DOC_MAINTAIN             # Documentation: maintain project docs
+SYSP_US_CORE_SPEC_AS_CODE        # Core: manage specs as code
+SYSP_US_CHG_ANALYZE              # Change Mgmt: analyze changes
+SYSP_US_INST_BOOTSTRAP           # Installation: environment bootstrap
+SYSP_US_REL_CREATE               # Release: create a release
+SYSP_US_DX_PROJECT_MEMORY        # Dev Experience: maintain project memory
+SYSP_US_DOC_MAINTAIN             # Documentation: maintain project docs
 ```
 
 **Level 1 — Requirements:**
 ```
-SYSPILOT_REQ_CORE_SPHINX_NEEDS       # Core: requirements management
-SYSPILOT_REQ_CHG_ANALYSIS_AGENT      # Change Mgmt: change analysis agent
-SYSPILOT_REQ_INST_AUTO_SETUP         # Installation: automatic env setup
-SYSPILOT_REQ_REL_SEMVER              # Release: semantic versioning
-SYSPILOT_REQ_TRACE_MECE              # Traceability: MECE review
+SYSP_REQ_CORE_SPHINX_NEEDS       # Core: requirements management
+SYSP_REQ_CHG_ANALYSIS_AGENT      # Change Mgmt: change analysis agent
+SYSP_REQ_INST_AUTO_SETUP         # Installation: automatic env setup
+SYSP_REQ_REL_SEMVER              # Release: semantic versioning
+SYSP_REQ_TRACE_MECE              # Traceability: MECE review
 ```
 
 **Level 2 — Design Specs:**
 ```
-SYSPILOT_SPEC_AGENT_WORKFLOW         # Agent component: four-agent workflow
-SYSPILOT_SPEC_DOC_STRUCTURE          # Documentation component: structure
-SYSPILOT_SPEC_INST_CURL_BOOTSTRAP    # Installation component: curl bootstrap
-SYSPILOT_SPEC_REL_VERSION_FORMAT     # Release component: version format
+SYSP_SPEC_AGENT_WORKFLOW         # Agent component: four-agent workflow
+SYSP_SPEC_DOC_STRUCTURE          # Documentation component: structure
+SYSP_SPEC_INST_CURL_BOOTSTRAP    # Installation component: curl bootstrap
+SYSP_SPEC_REL_VERSION_FORMAT     # Release component: version format
 ```
 
 ## Cross-Level Consistency
@@ -76,8 +76,8 @@ and healthy:
 
 ```rst
 .. spec:: Setup Agent Design
-   :id: SYSPILOT_SPEC_INST_SETUP_AGENT
-   :links: SYSPILOT_REQ_INST_NEW_PROJECT, SYSPILOT_REQ_INST_ADOPT_EXISTING
+   :id: SYSP_SPEC_INST_SETUP_AGENT
+   :links: SYSP_REQ_INST_NEW_PROJECT, SYSP_REQ_INST_ADOPT_EXISTING
 
    .. (SPEC theme is INST because it's an installation component,
        even though REQs come from multiple domains)

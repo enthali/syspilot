@@ -18,9 +18,9 @@ Level 2: Design Specs  (HOW)   → Technical solution
 
 | Level | Question | Audience | ID Prefix | Directory |
 |-------|----------|----------|-----------|-----------|
-| 0 | **Why** does this matter? | Stakeholders, Product Owner | `SYSPILOT_US_` | `docs/syspilot/userstories/` |
-| 1 | **What** must the system do? | Architects, Reviewers | `SYSPILOT_REQ_` | `docs/syspilot/requirements/` |
-| 2 | **How** is it realized? | Developers, AI Agents | `SYSPILOT_SPEC_` | `docs/syspilot/design/` |
+| 0 | **Why** does this matter? | Stakeholders, Product Owner | `SYSP_US_` | `docs/syspilot/userstories/` |
+| 1 | **What** must the system do? | Architects, Reviewers | `SYSP_REQ_` | `docs/syspilot/requirements/` |
+| 2 | **How** is it realized? | Developers, AI Agents | `SYSP_SPEC_` | `docs/syspilot/design/` |
 
 ## File Organization
 

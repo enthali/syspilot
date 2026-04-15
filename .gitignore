@@ -5,6 +5,7 @@
 # .syspilot/ is created by setup agent
 # ======================================
 .syspilot/
+.jarvis/
 .vscode/
 
 # Python

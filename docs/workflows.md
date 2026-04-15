@@ -7,9 +7,23 @@ workflows that cover the full lifecycle of specifications and code:
 
 | Workflow | Purpose | Agents | When to use |
 |----------|---------|--------|-------------|
-| **Change** | Evolve specs and code | change → implement → verify → memory | Every feature, fix, or refactor |
+| **Change** | Evolve specs and code | design → implement → uat → verify → docu | Every feature, fix, or refactor |
 | **Quality** | Check specification health | mece, trace | Any time, independently |
 | **Release** | Bundle and publish | release | After changes are merged |
+
+### Manager Orchestration
+
+Three managers orchestrate the engineers:
+
+| Manager | Role | Responsibility |
+|---------|------|---------------|
+| `@syspilot.pm` | Project Manager | Plans features, prioritizes backlog, delegates Change Requests to CM |
+| `@syspilot.cm` | Change Manager | Orchestrates engineers through the Change Workflow (autonomous or user-guided) |
+| `@syspilot.qm` | Quality Manager | Dispatches `@syspilot.mece` and `@syspilot.trace`, consolidates findings |
+
+**Change Modes:** The Change Manager supports two modes:
+- **autonomous** — proceeds without user feedback except for UAT
+- **user-guided** — requests user approval after each spec level
 
 Each workflow is a defined sequence of agent invocations. You always know which
 agent to call next.
@@ -22,18 +36,20 @@ feature to a bug fix — follows this sequence:
 
 ```{mermaid}
 flowchart LR
-    change --> implement --> verify --> memory
-    memory --> next["Next change or<br/>release workflow"]
-    change -.-> next
+    design --> implement --> uat --> verify --> docu
+    docu --> next["Next change or<br/>release workflow"]
+    design -.-> next
 ```
 
-### @syspilot.change — Analyze
+### @syspilot.design — Analyze
 
 **Input:** A change request (GitHub issue, verbal description, or idea)
 
 **What it does:**
 1. Creates a **Change Document** in `docs/changes/`
-2. Analyzes impact **level by level**:
+2. Analyzes impact **level by level** — at each level, runs **impact analysis**
+   (via `syspilot.impact-python` skill) to discover affected elements through
+   sphinx-needs traceability links before identifying changes:
    - **Level 0 (User Stories):** Which user goals are affected? New scenarios?
    - **Level 1 (Requirements):** Which requirements change? New acceptance criteria?
    - **Level 2 (Design Specs):** Which technical specs need updating?
@@ -42,7 +58,7 @@ flowchart LR
 
 **Output:** An approved Change Document with all affected IDs listed
 
-**Key principle:** The Change Agent never modifies code — it only analyzes and
+**Key principle:** The Design Agent never modifies code — it only analyzes and
 documents. This separation ensures thorough analysis before implementation.
 
 ### @syspilot.implement — Execute
@@ -63,9 +79,20 @@ documents. This separation ensures thorough analysis before implementation.
 **Key principle:** The Implement Agent follows the Change Document exactly.
 It doesn't make design decisions — those were made during analysis.
 
-### @syspilot.verify — Validate
+### @syspilot.uat — User Acceptance Test
 
 **Input:** The same Change Document, after implementation
+
+**What it does:**
+1. Generates user acceptance test artifacts from the Change Document
+2. Checks acceptance criteria coverage
+3. Produces test stories and scenarios
+
+**Output:** UAT artifacts for user review
+
+### @syspilot.verify — Validate
+
+**Input:** The same Change Document, after UAT
 
 **What it does:**
 1. Reads the Change Document and checks every requirement against the implementation
@@ -77,19 +104,18 @@ It doesn't make design decisions — those were made during analysis.
 
 **Output:** A validation report confirming (or flagging issues with) the implementation
 
-### @syspilot.memory — Update Context
+### @syspilot.docu — Update Documentation
 
 **Input:** Completed and verified changes
 
 **What it does:**
 1. Reviews what changed in the codebase
-2. Determines if `copilot-instructions.md` needs updating
-3. Updates project structure, conventions, or workflow descriptions as needed
-4. Keeps the file concise — removes outdated info, adds new patterns
+2. Updates `copilot-instructions.md`, manager context files, and external docs as needed
+3. Keeps documentation concise — removes outdated info, adds new patterns
 
-**Output:** Updated `copilot-instructions.md` (or confirmation that no update is needed)
+**Output:** Updated documentation (or confirmation that no update is needed)
 
-**Key principle:** Memory is the last step because it captures the *result*
+**Key principle:** Documentation is the last step because it captures the *result*
 of the full change cycle, not intermediate states.
 
 
@@ -131,7 +157,7 @@ requirements define conflicting behavior for the same feature.
 - To understand the full context of a spec element
 - To find "orphan" specs that aren't linked to anything
 
-**Example:** `@syspilot.trace SYSPILOT_REQ_INST_LOCAL_SOURCE` shows the User
+**Example:** `@syspilot.trace SYSP_REQ_INST_LOCAL_SOURCE` shows the User
 Stories above, the Design Specs below, and the code that implements it.
 
 
@@ -158,53 +184,62 @@ flowchart LR
 
 ## Branching Strategy
 
-syspilot uses chained feature branches with a release-only main:
+syspilot uses a permanent `development` integration branch with short-lived feature branches:
 
 ```{mermaid}
 gitGraph
-    commit id: "v0.2.3"
-    branch feature/local-install
-    commit id: "change + specs"
-    commit id: "implement"
-    commit id: "verify"
-    branch feature/concept-docs
-    commit id: "change + specs "
-    commit id: "implement "
-    commit id: "verify "
+    commit id: "v0.2.3" tag: "v0.2.3"
+    branch development
+    checkout development
+    commit id: "dev-start"
+    branch feature/CR7
+    checkout feature/CR7
+    commit id: "CR7: specs"
+    commit id: "CR7: implement"
+    commit id: "CR7: verify"
+    checkout development
+    merge feature/CR7 id: "squash CR7"
+    branch feature/CR8
+    checkout feature/CR8
+    commit id: "CR8: specs"
+    commit id: "CR8: implement"
+    commit id: "CR8: verify"
+    checkout development
+    merge feature/CR8 id: "squash CR8"
     checkout main
-    merge feature/concept-docs id: "squash merge (release)" type: HIGHLIGHT tag: "v0.2.4"
+    merge development id: "v0.2.4" tag: "v0.2.4"
 ```
 
 **Rules:**
 
 | Rule | What | Why |
 |------|------|-----|
-| **One branch per change** | `@syspilot.change` creates `feature/<name>` | Isolates each change for independent review |
-| **Chain from previous** | New branch starts from the latest feature branch, not main | Builds on previous work without merging first |
-| **All work on branch** | Specs, code, tests, docs — everything commits to the feature branch | Clean history, easy to revert |
+| **One branch per change** | `@syspilot.design` creates `feature/<name>` from `development` | Isolates each change for independent review |
+| **Development as integration** | All feature branches squash-merge into `development` | Permanent integration branch for all work |
+| **Squash-merge everywhere** | Feature→development and development→main use squash-merge | Clean history on both branches |
 | **Main = releases only** | Squash merge to main happens only during `@syspilot.release` | Main always equals the latest release |
 | **Tag on main** | Release creates `v{version}` tag on the squash merge commit | Tags mark published releases |
 
 **Workflow:**
 
-1. `@syspilot.change` → creates `feature/<name>` branch (from latest feature branch or main)
+1. `@syspilot.design` → creates `feature/<name>` branch from `development`
 2. `@syspilot.implement` → commits code on the same branch
-3. `@syspilot.verify` → commits validation report on the same branch
-4. `@syspilot.memory` → commits copilot-instructions updates on the same branch
-5. **Next change?** → branch again from the current feature branch
-6. `@syspilot.release` → squash merge to main, bump version, tag
+3. `@syspilot.uat` → generates UAT artifacts on the same branch
+4. `@syspilot.verify` → commits validation report on the same branch
+5. `@syspilot.docu` → commits documentation updates on the same branch
+6. **Complete** → squash-merge feature branch into ``development``
+6. `@syspilot.release` → squash-merge `development` into main, bump version, tag
 
 
 ## When to Use Which Agent
 
 | Situation | Agent | Notes |
 |-----------|-------|-------|
-| New feature request | `@syspilot.change` | Always start here |
-| Bug fix | `@syspilot.change` | Even bugs go through the analysis |
-| Refactoring | `@syspilot.change` | Ensures specs stay aligned |
-| Change Document is approved | `@syspilot.implement` | Follows the change agent |
-| Implementation is done | `@syspilot.verify` | Follows the implement agent |
-| Verification passed | `@syspilot.memory` | Follows the verify agent |
+| New feature request | `@syspilot.design` | Always start here |
+| Bug fix | `@syspilot.design` | Even bugs go through the analysis |
+| Refactoring | `@syspilot.design` | Ensures specs stay aligned |
+| Change Document is approved | `@syspilot.implement` | Follows the design agent |
+| Implementation is done | `@syspilot.uat` | Follows the implement agent |
 | "Are my specs consistent?" | `@syspilot.mece` | Independent, any time |
 | "Is this requirement fully covered?" | `@syspilot.trace` | Independent, any time |
 | All changes merged, ready to ship | `@syspilot.release` | After change workflows |
@@ -220,12 +255,12 @@ flowchart LR
     A["Issue / Idea"] --> change
 
     subgraph CW ["Change Workflow (loop)"]
-        change --> implement --> verify
-        verify -- "fix & retry" --> change
+        change --> implement --> uat
+        uat -- "fix & retry" --> change
     end
 
-    verify --> memory
-    memory --> decision{"Another change?"}
+    uat --> docu
+    docu --> decision{"Another change?"}
     decision -- yes --> change
     decision -- no --> release["Release workflow"]
 

@@ -1,5 +1,72 @@
 # syspilot Release Notes
 
+## v0.5.0 - 2026-04-16
+
+### Summary
+Major architecture overhaul: complete green-field Agent Architecture v2 with new `SYSP_` prefix, Git-Flow branching model, impact analysis skill, and full spec coverage for all 11 agents plus the Verify Engineer. Includes 14 Change Requests (CR1–CR14).
+
+### ⚠️ Breaking Changes
+
+- **Agent Architecture v2** (CR1–CR7) — All specifications migrated from `SYSPILOT_` to `SYSP_` prefix. Old RST files removed. New traceability chain covers all 11 agents with Soul/Duties/Workflow/Frontmatter structure.
+- **Instance Layer Removed** (CR5) — `docs/inst/syspilot/` eliminated; single product layer architecture.
+
+### ✨ New Features
+
+- **Agent Architecture v2** (CR1–CR7, `agent-architecture-v2`)
+  - Full specification set (US → REQ → SPEC) for all 11 agents: PM, CM, QM, Design, Implement, UAT, Docu, MECE, Trace, Release, Setup
+  - Meta-level architecture spec (`SYSP_US_AGENT_ARCH`, `SYSP_REQ_AGENT_ARCH_*`, `SYSP_SPEC_AGENT_ARCH_*`)
+  - Agent structure: Soul (immutable identity), Duties (customizable), Workflow (customizable)
+  - YAML frontmatter configuration specified per agent (CR5)
+  - Agents distributed as product artifacts in `syspilot/agents/` and `syspilot/prompts/`
+
+- **Skill Specifications** (CR2, `skill-specs-and-branching`)
+  - Full spec chain for `syspilot.ask-questions`, `syspilot.orchestration`, `syspilot.branching` skills
+  - Skills follow VS Code folder format: `.github/skills/<name>/SKILL.md`
+
+- **Git-Flow Branching Model** (CR8, `git-flow-and-modes`)
+  - Permanent `development` integration branch replaces chained branching
+  - Feature branches created from and squash-merged back to `development`
+  - Change Manager modes: `autonomous` and `user-guided`
+  - CM-completion notification triggers QM targeted checks
+
+- **Impact Analysis Skill** (CR9, `impact-analysis-skill`)
+  - New `syspilot.impact-python` skill wrapping `get_need_links.py`
+  - System Designer queries full dependency tree before analysis
+  - Spec chain: `SYSP_US_SKILL_IMPACT` → `SYSP_REQ_SKILL_IMPACT_*` → `SYSP_SPEC_SKILL_IMPACT_*`
+
+- **Verify Engineer Specs** (CR14, `verify-agent-specs`)
+  - Full spec set (US → REQ → SPEC) for the Verify Engineer agent
+  - `SYSP_US_VERIFY` → `SYSP_REQ_VERIFY_*` → `SYSP_SPEC_VERIFY_*`
+
+- **Main Branch Protection** (CR4, `main-branch-protection`)
+  - Only `@syspilot.release` may commit to, merge to, or push to `main`
+  - All agents receive guardrail preventing direct `main` commits
+
+### 🔧 Fixes & Improvements
+
+- **ID Rename** (CR10) — `CHANGE` role slug renamed to `DESIGN` across all specs
+- **Documentation Update** (CR12+CR13) — `docs/architecture.md`, `docs/workflows.md`, `docs/methodology.md`, `docs/namingconventions.md` updated for v2 architecture and skills-authoring principle
+- **Branching & Completion Reporting** (CR3) — CM workflow Step 0 branch creation; orchestration skill completion reporting rule
+- **Phase 2 Cleanup** (CR6) — Removed 27 superseded `SYSPILOT_` RST files, updated toctree indexes, cleaned dangling references
+
+### 📋 Change Requests
+
+| CR | Change Document | Scope |
+|----|----------------|-------|
+| CR1–CR7 | `agent-architecture-v2` | Agent Architecture v2 green-field |
+| CR2 | `skill-specs-and-branching` | Skill specs + branching skill |
+| CR3 | `branching-and-reporting` | CM branch step + completion reporting |
+| CR4 | `main-branch-protection` | Main branch guardrail |
+| CR5 | `frontmatter-and-instance-cleanup` | Frontmatter specs + instance removal |
+| CR6 | `phase2-cleanup` | Old SYSPILOT_ file removal |
+| CR8 | `git-flow-and-modes` | Git-Flow model + change modes |
+| CR9 | `impact-analysis-skill` | Impact analysis skill |
+| CR10 | (within CR9) | ID rename CHANGE→DESIGN |
+| CR12+CR13 | (within docs) | Documentation updates |
+| CR14 | `verify-agent-specs` | Verify Engineer specs |
+
+---
+
 ## v0.4.0 - 2026-04-07
 
 ### Summary

@@ -1,19 +1,19 @@
-# Architecture: Product & Instance
+# Architecture: Product & Installation
 
 ## Overview
 
 syspilot separates **what it delivers** from **how each project uses it**.
-This two-layer model keeps the toolkit reusable and updatable while giving
-every project full control over its own configuration.
+The Product is the distribution package; each project installs a copy and
+customizes it via the agent architecture (Soul, Duties, Workflow, Frontmatter).
 
 | Layer | What it is | Where it lives |
 |-------|-----------|----------------|
 | **Product** | The generic agent toolkit — agents, skills, scripts, templates | `syspilot/` |
-| **Instance** | Project-specific configuration — customized agents, specs, decisions | `docs/inst/syspilot/` |
+| **Installed Copy** | Running agents that VS Code Copilot invokes | `.github/agents/` |
 
-Think of it like an operating system: the Product is the OS distribution,
-the Instance is your personal configuration. Updates replace the OS,
-your configuration stays untouched.
+The Setup Agent copies Product files into a project. Project teams then
+customize project-owned agents directly. Specifications live in
+`docs/syspilot/` and cover all agents at the product level.
 
 
 ## Why the Separation?
@@ -25,12 +25,11 @@ Three problems drove this design:
    Product, they can be installed in any project without modification.
 
 2. **Update safety** — When syspilot releases a new version, methodology agents
-   (change, verify, mece, trace, memory) are replaced automatically. If your
-   project-specific configuration lived in those files, it would be overwritten.
-   The separation ensures updates never touch your customizations.
+   (design, uat, mece, trace, docu) are replaced automatically. Project-owned
+   agents (release, implement) are never overwritten.
 
-3. **Clear ownership** — Every file has an explicit owner (methodology, project,
-   or user). This eliminates guesswork about what's safe to edit and what will
+3. **Clear ownership** — Every file has an explicit owner (methodology or project).
+   This eliminates guesswork about what's safe to edit and what will
    be overwritten on the next update.
 
 
@@ -43,12 +42,16 @@ It's the distribution package — what gets installed into target projects.
 syspilot/                          # The Product
 ├── version.json                   # Release version (e.g., "0.2.3")
 ├── agents/                        # Generic agent templates
-│   ├── syspilot.change.agent.md
-│   ├── syspilot.verify.agent.md
+│   ├── syspilot.design.agent.md
+│   ├── syspilot.uat.agent.md
 │   ├── syspilot.implement.agent.md  # ← Generic skeleton
 │   └── ...
 ├── prompts/                       # Prompt configurations
-├── skills/                        # Shared skills
+├── skills/                        # Shared skills (folder-based)
+│   ├── syspilot.ask-questions/    #   Each skill has SKILL.md with YAML frontmatter
+│   ├── syspilot.branching/
+│   ├── syspilot.impact-python/
+│   └── syspilot.orchestration/
 ├── scripts/python/                # Utility scripts
 ├── sphinx/                        # Build scripts (build.ps1, build.sh)
 └── templates/
@@ -64,114 +67,70 @@ syspilot/                          # The Product
   exclusively from `syspilot/`, never from `.github/` or project config
 
 
-## What is Instance?
-
-The **Instance** is the project-specific layer that customizes the Product
-for a particular project. It lives in `docs/inst/syspilot/`.
-
-```
-docs/inst/syspilot/                # The Instance
-├── userstories/
-│   ├── us_release.rst             # Project-specific release stories
-│   └── us_implement.rst           # Project-specific implement stories
-├── requirements/
-│   ├── req_release.rst            # Project-specific release requirements
-│   └── req_implement.rst          # Project-specific implement requirements
-└── design/
-    ├── spec_release.rst           # Release Agent configuration
-    └── spec_implement.rst         # Implement Agent configuration
-```
-
-**Key properties:**
-
-- **Project-specific** — Contains decisions, configurations, and customizations
-  that are unique to this project
-- **Links to Product** — Instance specs reference Product specs via sphinx-needs
-  `:links:` directives, creating traceable connections
-- **Survives updates** — The Setup Agent never touches `docs/inst/`
-- **Follows the same hierarchy** — User Stories → Requirements → Design,
-  just scoped to this project
-
-The Instance is where you answer questions like:
-- *Where is our version file?* → `syspilot/version.json`
-- *What tag format do we use?* → `v{version}`
-- *What pre-release checks do we run?* → Sphinx build + link check
-
-
-## How They Relate
+## How Installation Works
 
 ```{mermaid}
 flowchart TD
-    P["<b>Product</b> (syspilot/)<br/>Generic agents, skills, templates<br/>syspilot.release.agent.md — generic skeleton<br/>syspilot.implement.agent.md — generic skeleton"]
+    P["<b>Product</b> (syspilot/)<br/>Generic agents, skills, templates"]
     G["<b>.github/agents/</b> (Installed copy)<br/>Running agents that Copilot invokes"]
-    I["<b>Instance</b> (docs/inst/syspilot/)<br/>Project-specific specs with :links: to Product specs<br/>INST_SYSPILOT_SPEC_REL_AGENT_CONFIG<br/>→ links to SYSPILOT_REQ_REL_*, SYSPILOT_SPEC_REL_*"]
+    S["<b>docs/syspilot/</b><br/>Product-level specifications<br/>(US → REQ → SPEC)"]
 
     P -- "Setup Agent installs<br/>Product → .github/" --> G
-    G -- "Instance specs configure<br/>how installed agents behave" --> I
+    S -- "Specifications describe<br/>agent architecture" --> G
 ```
 
 The flow:
 
 1. **Setup Agent** reads from `syspilot/` (Product) and copies files to `.github/`
-2. **Project team** customizes project-owned agents (release, implement) via
-   `@syspilot.change`
-3. **Instance specs** in `docs/inst/syspilot/` document those customizations
-   with full traceability back to Product specs
-4. **sphinx-needs** resolves `:links:` across both trees, enabling impact analysis
+2. **Project team** customizes project-owned agents (release, implement) directly
+3. **Specifications** in `docs/syspilot/` document the agent architecture
+   with full traceability (US → REQ → SPEC)
+4. **sphinx-needs** resolves `:links:` across the spec hierarchy, enabling impact analysis
 
 
 ## Concrete Example: The Release Agent
 
-The Release Agent demonstrates the Product/Instance pattern clearly:
+The Release Agent demonstrates the Product/Installation pattern:
 
 **Product** (`syspilot/agents/syspilot.release.agent.md`):
 - Generic release workflow: version bump → validate → release notes → tag → publish
 - No hardcoded paths, tag formats, or validation commands
 - Contains `TODO` placeholders where project configuration is needed
 
-**Instance** (`docs/inst/syspilot/design/spec_release.rst`):
-- Defines `INST_SYSPILOT_SPEC_REL_AGENT_CONFIG` with a configuration table:
-
-| Decision | Value |
-|----------|-------|
-| Version file | `syspilot/version.json` |
-| Tag format | `v{version}` |
-| Release notes | `docs/releasenotes.md` |
-| Pre-release validation | Sphinx build, link check |
+**Specifications** (`docs/syspilot/design/spec_release_engineer.rst`):
+- `SYSP_SPEC_RELEASE_FRONTMATTER` documents the exact frontmatter configuration
+- `SYSP_SPEC_RELEASE_*` specs define Soul, Duties, and Workflow
 
 **Installed copy** (`.github/agents/syspilot.release.agent.md`):
 - The Product template, customized by the project team
-- Contains the actual configuration values from the Instance spec
+- Contains the actual configuration values
 - Never overwritten by updates (project-owned)
-
-When `@syspilot.change` analyzes a change that affects the release process, it
-follows the links from `INST_SYSPILOT_SPEC_REL_AGENT_CONFIG` back to the Product
-specs to understand the full impact.
 
 
 ## Update Safety
+
+syspilot separates **Agents** (stable processes — WHAT to do) from **Skills**
+(exchangeable tool bindings — HOW to do it). Agents define workflow steps;
+skills encapsulate domain knowledge that agents invoke. Customize syspilot
+by swapping skills, not agents.
 
 syspilot defines three ownership categories that determine what happens on update:
 
 | Category | What | On Update |
 |----------|------|-----------|
-| **Methodology-owned** | change, verify, mece, trace, memory agents; skills; scripts; build files | **Replaced** — always get the latest version |
+| **Methodology-owned** | design, uat, verify, mece, trace, docu agents; skills; scripts; build files | **Replaced** — always get the latest version |
 | **Project-owned** | release, implement agents and prompts | **Never touched** — copied once on install, then yours |
 | **User-owned** | Your specs, change docs, copilot-instructions.md | **Never touched** — Setup Agent ignores these entirely |
 
 **How to customize safely:**
 
 1. **Don't edit methodology agents directly** — Your changes will be overwritten on
-   the next update. Instead, file a change request upstream or use Instance specs.
+   the next update. Instead, file a change request upstream.
 
-2. **Customize project-owned agents via `@syspilot.change`** — This creates proper
-   Instance specs with traceability. The next update won't touch these files.
+2. **Customize project-owned agents via `@syspilot.design`** — This creates proper
+   specs with traceability. The next update won't touch these files.
 
-3. **Use Instance specs for project decisions** — Put your configuration in
-   `docs/inst/syspilot/` with `:links:` to the Product specs. When the Product
-   changes, impact analysis will flag your Instance specs for review.
-
-4. **Git is your backup** — No special rollback mechanism needed. If an update
+3. **Git is your backup** — No special rollback mechanism needed. If an update
    breaks something, `git diff` shows exactly what changed.
 
 ---

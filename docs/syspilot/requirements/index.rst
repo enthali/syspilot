@@ -7,13 +7,27 @@ This section contains system requirements following Sphinx-Needs methodology.
    :maxdepth: 2
    :caption: Requirements:
 
-   req_core
-   req_workflows
-   req_change_mgmt
-   req_traceability
-   req_installation
-   req_release
-   req_developer_experience
+   req_agent_arch
+
+   req_project_mgr
+   req_change_mgr
+   req_quality_mgr
+
+   req_system_designer
+   req_dev_engineer
+   req_test_engineer
+   req_docu_engineer
+   req_quality_mece
+   req_quality_trace
+   req_release_engineer
+   req_setup_engineer
+   req_verify_engineer
+
+   req_skill_ask_questions
+   req_skill_orchestration
+   req_skill_branching
+   req_skill_impact
+
    req_documentation
 
 
@@ -30,11 +44,11 @@ Requirements define **what** the system shall do.
 
 ::
 
-   User Story (SYSPILOT_US_*)     ← See userstories/
+   User Story (SYSP_US_*)     ← See userstories/
         ↓ :links:
-   Requirement (SYSPILOT_REQ_*)   ← This section
+   Requirement (SYSP_REQ_*)   ← This section
         ↓ :links:
-   Design Spec (SYSPILOT_SPEC_*)  ← See design/
+   Design Spec (SYSP_SPEC_*)  ← See design/
 
 
 All Requirements

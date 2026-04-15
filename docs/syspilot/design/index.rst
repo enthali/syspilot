@@ -7,17 +7,28 @@ This section contains design specifications following Sphinx-Needs methodology.
    :maxdepth: 2
    :caption: Design:
 
-   spec_agent_framework
-   spec_change
-   spec_implement
-   spec_verify
-   spec_traceability
-   spec_memory
-   spec_setup
-   spec_doc_structure
-   spec_doc_scope_template
+   spec_agent_arch
+
+   spec_project_mgr
+   spec_change_mgr
+   spec_quality_mgr
+
+   spec_system_designer
+   spec_dev_engineer
+   spec_test_engineer
+   spec_docu_engineer
+   spec_quality_mece
+   spec_quality_trace
+   spec_release_engineer
+   spec_setup_engineer
+   spec_verify_engineer
+
+   spec_skill_ask_questions
+   spec_skill_orchestration
+   spec_skill_branching
+   spec_skill_impact
+
    spec_doc_scope
-   spec_release
 
 
 Overview
