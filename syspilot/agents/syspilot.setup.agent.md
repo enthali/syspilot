@@ -1,7 +1,7 @@
 ---
 description: "Subagent that installs and updates syspilot in a project. Detects environment, manages dependencies, copies files, validates with sphinx-build."
 tools: [read, edit, search, execute]
-user-invocable: false
+user-invocable: true
 agents: []
 ---
 
