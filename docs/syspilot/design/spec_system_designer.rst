@@ -68,6 +68,10 @@ System Designer
    **Input:** Change Request (from CM, PM, or user)
    **Output:** Change Document + RST files at all three levels
 
+   **Constraint:** Impact Analysis is mandatory at every level. File lists
+   provided in a Change Request are input hints, not the complete scope. The
+   Impact Skill result defines the actual scope of affected elements.
+
    **Per-Level Protocol:**
 
    ::

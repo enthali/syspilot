@@ -1,7 +1,0 @@
-name: "Project Manager"
-summary: >-
-  Plans features, prioritizes backlog, discusses changes with the user,
-  and delegates Change Requests to the Developer via message queue.
-externalStatus: ''
-internalStatus: ''
-lastUpdated: '2026-04-10'

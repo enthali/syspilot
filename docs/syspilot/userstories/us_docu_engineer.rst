@@ -10,7 +10,7 @@ Documentation Engineer Agent
    :links: SYSP_US_AGENT_ARCH
 
    **As a** syspilot user,
-   **I want to** have a Documentation Engineer agent (syspilot.docu) that keeps
+   **I want** my agentic managers to have a Documentation Engineer agent (syspilot.docu) that keeps
    both internal and external documentation in sync with the codebase,
    **so that** copilot-instructions.md, README, methodology docs, and other
    project documentation always reflect the current state of the project.

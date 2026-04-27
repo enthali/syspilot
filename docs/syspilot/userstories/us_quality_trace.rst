@@ -10,7 +10,7 @@ Quality Engineer Trace Agent
    :links: SYSP_US_AGENT_ARCH
 
    **As a** syspilot user,
-   **I want to** have a Quality Engineer Trace agent (syspilot.trace) that traces
+   **I want** my agentic managers to have a Quality Engineer Trace agent (syspilot.trace) that traces
    one item vertically through all specification levels,
    **so that** I can verify that a User Story flows correctly through Requirements
    to Design Specs to Code to Tests with semantic consistency.

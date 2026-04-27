@@ -1,7 +1,0 @@
-name: "Change Manager"
-summary: >-
-  Central orchestrator of the change workflow. Receives Change Requests,
-  invokes engineers in sequence, enforces quality gates, and reports completion.
-externalStatus: ''
-internalStatus: ''
-lastUpdated: '2026-04-11'

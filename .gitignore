@@ -7,6 +7,14 @@
 .syspilot/
 .jarvis/
 .vscode/
+managers/
+projects/
+
+# Installed by setup agent (product copies — source of truth is syspilot/)
+.github/agents/
+.github/prompts/
+.github/skills/
+scripts/
 
 # Python
 __pycache__/

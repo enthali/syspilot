@@ -1,5 +1,46 @@
 # syspilot Release Notes
 
+## v0.5.1 - 2026-04-27
+
+### Summary
+Three workflow improvements and housekeeping: Setup Manager added as a 4th manager role with prompt specification, Release workflow fixed for correct development-first prep and back-merge, Impact Analysis mandated as a required step in the CM and Design workflows.
+
+### ✨ New Features
+
+- **Setup Manager as 4th Manager** (CR15, `agent-prompts-perspective`)
+  - Setup Manager (`@syspilot.setup`) formally added as a 4th user-invocable manager role alongside PM, CM, QM
+  - Prompt specification added: only user-invocable agents (managers) SHALL have prompt files
+  - Agent Frontmatter and Prompt Frontmatter established as qualified terms in the spec hierarchy
+  - Engineer User Story perspective corrected from "As a syspilot user, I want to have a [Agent]..." to "...I want my agentic managers to have a [Agent] that..."
+
+### 🔧 Fixes & Improvements
+
+- **Release Workflow Fix** (CR16)
+  - Prep steps (archive, version bump, release notes, sphinx validation) now run on `development` first — not on `main`
+  - Back-merge (`development ← main`) added as explicit step after tagging to sync the squash commit
+  - Conflict guidance: `-X theirs` strategy documented for squash-merge conflicts (development wins)
+
+- **Mandatory Impact Analysis** (CR17)
+  - Impact Analysis is now a required step (SHALL) in the CM workflow before dispatching to System Designer
+  - Impact Analysis is now a required step (SHALL) in the System Designer workflow before analysis
+  - Acceptance Criterion AC-5 language corrected from MUST to SHALL for consistency
+
+### 🏠 Housekeeping
+
+- `.gitignore` updated: installed product copies (agents, prompts, skills, scripts) are now gitignored in consumer workspaces
+- `docs/changes/` structure flattened: archives live directly at `docs/changes/vX.Y.Z/` (no `archive/` subfolder)
+- v0.5.0 release notes backfilled on `development` branch
+
+### 📋 Change Requests
+
+| CR | Change Document | Scope |
+|----|----------------|-------|
+| CR15 | `agent-prompts-perspective` | Setup Manager, Prompt Specification, Engineer US perspective |
+| CR16 | (workflow fix) | Release workflow prep + back-merge + conflict guidance |
+| CR17 | (workflow fix) | Mandatory Impact Analysis in CM and Design workflows |
+
+---
+
 ## v0.5.0 - 2026-04-16
 
 ### Summary

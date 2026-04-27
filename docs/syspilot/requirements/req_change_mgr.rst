@@ -60,6 +60,7 @@ Change Manager Requirements
    * AC-4: CM invokes Documentation Engineer at the end
    * AC-5: CM reports completion with full traceability
    * AC-6: Upon completion, CM SHALL notify PM and QM via Jarvis message queue
+   * AC-7: CM SHALL ensure Impact Analysis is executed before any spec changes — CR file lists are hints, not the complete scope
 
 
 .. req:: Change Manager Frontmatter Configuration
@@ -84,3 +85,21 @@ Change Manager Requirements
    * AC-1: CM frontmatter declares ``user-invocable: true``
    * AC-2: CM frontmatter lists all 7 engineer subagents in ``agents``
    * AC-3: CM frontmatter includes ``agent`` and ``syspilot_jarvis_tools`` in tools
+
+
+.. req:: Change Manager Prompt File
+   :id: SYSP_REQ_CM_PROMPT
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, manager, cm, prompt
+   :links: SYSP_US_CM; SYSP_REQ_AGENT_ARCH_PROMPT
+
+   **Description:**
+   The Change Manager SHALL have a prompt file ``syspilot.cm.prompt.md`` that
+   enables direct user invocation via VS Code Copilot.
+
+   **Acceptance Criteria:**
+
+   * AC-1: File ``syspilot.cm.prompt.md`` exists in the prompts directory
+   * AC-2: Prompt file references agent ``syspilot.cm``
+   * AC-3: User can invoke the CM via the prompt mechanism

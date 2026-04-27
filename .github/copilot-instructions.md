@@ -92,6 +92,7 @@ Level 2: Design Specs (HOW)     docs/syspilot/design/         SYSP_SPEC_*
 | `@syspilot.pm` | Project Manager | Feature discussion, backlog, research, delegation |
 | `@syspilot.cm` | Change Manager | E2E change orchestration, quality gates |
 | `@syspilot.qm` | Quality Manager | Independent quality checks, MECE/Trace dispatch |
+| `@syspilot.setup` | Setup Manager | Installation and updates |
 
 ### Engineers (subagents)
 
@@ -104,17 +105,17 @@ Level 2: Design Specs (HOW)     docs/syspilot/design/         SYSP_SPEC_*
 | `@syspilot.mece` | Quality Engineer MECE | Horizontal consistency checks |
 | `@syspilot.trace` | Quality Engineer Trace | Vertical traceability checks |
 | `@syspilot.release` | Release Engineer | Version, tag, release notes |
-| `@syspilot.setup` | Setup Engineer | Installation and updates |
 
 ## Role-Based Development (Jarvis)
 
-syspilot uses Jarvis as project management tool. Three manager roles, each with their own `projects/<role>/context.md`:
+syspilot uses Jarvis as project management tool. Four manager roles, each with their own `projects/<role>/context.md`:
 
 | Role | Folder | Responsibility |
 |------|--------|---------------|
 | **Project Manager** | `projects/project-manager/` | Plans features, prioritizes backlog, delegates Change Requests |
 | **Change Manager** | `projects/change-manager/` | Orchestrates engineers through the change workflow |
 | **Quality Manager** | `projects/quality-manager/` | Independent quality checks, dispatches MECE/Trace engineers |
+| **Setup Manager** | `projects/setup-manager/` | Installation and updates, environment detection |
 
 **Communication**: Managers communicate via Jarvis message queue (`jarvis_sendToSession` tool → `.jarvis/messages.json`). Each manager owns its `context.md` and keeps it up-to-date.
 

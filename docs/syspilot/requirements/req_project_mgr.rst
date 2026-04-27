@@ -82,3 +82,21 @@ Project Manager Requirements
    * AC-1: PM frontmatter declares ``user-invocable: true``
    * AC-2: PM frontmatter lists an empty ``agents`` array
    * AC-3: PM frontmatter includes ``web``, ``github``, ``context7`` in tools
+
+
+.. req:: Project Manager Prompt File
+   :id: SYSP_REQ_PM_PROMPT
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, manager, pm, prompt
+   :links: SYSP_US_PM; SYSP_REQ_AGENT_ARCH_PROMPT
+
+   **Description:**
+   The Project Manager SHALL have a prompt file ``syspilot.pm.prompt.md`` that
+   enables direct user invocation via VS Code Copilot.
+
+   **Acceptance Criteria:**
+
+   * AC-1: File ``syspilot.pm.prompt.md`` exists in the prompts directory
+   * AC-2: Prompt file references agent ``syspilot.pm``
+   * AC-3: User can invoke the PM via the prompt mechanism

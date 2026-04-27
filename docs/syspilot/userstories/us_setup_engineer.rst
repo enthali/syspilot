@@ -1,27 +1,26 @@
-Setup Engineer Agent
-====================
+Setup Manager Agent
+===================
 
 
-.. story:: Setup Engineer Agent
+.. story:: Setup Manager Agent
    :id: SYSP_US_SETUP
    :status: draft
    :priority: mandatory
-   :tags: agent-v2, engineer, setup, setup-engineer
+   :tags: agent-v2, manager, setup
    :links: SYSP_US_AGENT_ARCH
 
    **As a** syspilot user,
-   **I want to** have a Setup Engineer agent (syspilot.setup) that installs
+   **I want** a Setup Manager agent (syspilot.setup) that installs
    and updates syspilot in my project,
    **so that** I can bootstrap a new syspilot project or update an existing
    one with minimal manual effort.
 
    **Context:**
 
-   The Setup Engineer is unique among engineers: it interacts directly with
-   the user (exception to the "engineers are subagents" rule). It detects
-   the install source (local or GitHub), determines the mode (fresh install
-   or update), copies files, configures the project, validates the setup
-   with sphinx-build, and creates a baseline commit.
+   The Setup Manager is user-invocable and manages installation infrastructure.
+   It detects the install source (local or GitHub), determines the mode
+   (fresh install or update), copies files, configures the project, validates
+   the setup with sphinx-build, and creates a baseline commit.
 
    **Acceptance Criteria:**
 

@@ -38,7 +38,9 @@ Release Engineer Requirements
    * AC-2: Release Engineer can run validation (sphinx-build) before releasing
    * AC-3: Release Engineer can generate and update release notes
    * AC-4: Release Engineer can archive change documents
-   * AC-5: Release Engineer can create Git tags and GitHub Releases
+   * AC-5: Release Engineer can squash-merge ``development`` to ``main``
+   * AC-6: Release Engineer can back-merge ``main`` into ``development`` after tagging
+   * AC-7: Release Engineer can create Git tags and GitHub Releases
 
 
 .. req:: Release Engineer Workflow
@@ -49,15 +51,18 @@ Release Engineer Requirements
    :links: SYSP_US_RELEASE
 
    **Description:**
-   The Release Engineer agent SHALL follow a workflow from squash merge through
-   version bump and validation to tagging and release.
+   The Release Engineer agent SHALL follow a workflow that prepares the release
+   on ``development`` (archive, version bump, release notes, validation) before
+   squash-merging to ``main``, tagging, and back-merging.
 
    **Acceptance Criteria:**
 
-   * AC-1: Workflow starts with squash merge to main (if on feature branch)
+   * AC-1: Workflow starts with release preparation on ``development`` (archive, version, release notes, validate)
    * AC-2: Release Engineer reads project-specific release decisions
-   * AC-3: Release Engineer bumps version, validates, generates release notes
-   * AC-4: Release Engineer archives change documents, tags, and publishes
+   * AC-3: Release Engineer squash-merges ``development`` to ``main`` after all prep steps pass
+   * AC-4: Release Engineer tags ``main``, pushes, and creates GitHub Release
+   * AC-5: Release Engineer back-merges ``main`` into ``development`` after tagging
+   * AC-6: If squash-merge produces conflicts, resolve with ``-X theirs`` (development wins)
 
 
 .. req:: Release Engineer Frontmatter Configuration

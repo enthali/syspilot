@@ -10,7 +10,7 @@ Test Engineer Agent
    :links: SYSP_US_AGENT_ARCH
 
    **As a** syspilot user,
-   **I want to** have a Test Engineer agent (syspilot.uat) that generates
+   **I want** my agentic managers to have a Test Engineer agent (syspilot.uat) that generates
    User Acceptance Test artifacts from approved changes,
    **so that** every feature has concrete, manually executable test scenarios
    with full traceability from test story to test data to expected outcomes.

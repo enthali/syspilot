@@ -10,7 +10,7 @@ Dev Engineer Agent
    :links: SYSP_US_AGENT_ARCH
 
    **As a** syspilot user,
-   **I want to** have a Dev Engineer agent (syspilot.implement) that implements
+   **I want** my agentic managers to have a Dev Engineer agent (syspilot.implement) that implements
    code and configuration changes based on approved specifications,
    **so that** approved Design Specs are turned into working code with tests
    and documentation updates.

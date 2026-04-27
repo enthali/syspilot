@@ -59,6 +59,7 @@ System Designer Requirements
    * AC-2: Each level includes: identify (via impact analysis) → propose → discuss → write RST → MECE advisory
    * AC-3: User can navigate back to previous levels at any time
    * AC-4: Final consistency check across all levels before setting status to approved
+   * AC-5: Impact Analysis SHALL be executed before spec changes at each level — CR file lists are hints, not the complete scope
 
 
 .. req:: System Designer Frontmatter Configuration

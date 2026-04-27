@@ -105,7 +105,7 @@ Meta-level definitions of Soul, Duties, and Workflow concepts.
 
    **Definition:**
 
-   The agent frontmatter is a YAML block at the top of each ``.agent.md`` file,
+   The **Agent Frontmatter** is a YAML block at the top of each ``.agent.md`` file,
    delimited by ``---``. It defines the following fields:
 
    * **description** (string, required) — One-sentence summary of the agent's
@@ -130,3 +130,46 @@ Meta-level definitions of Soul, Duties, and Workflow concepts.
       user-invocable: false
       agents: []
       ---
+
+   **Constraint:** When ``agents:`` contains one or more entries, the ``agent``
+   tool MUST be included in ``tools:``.
+
+
+.. spec:: Prompt File Definition
+   :id: SYSP_SPEC_AGENT_ARCH_PROMPT
+   :status: draft
+   :tags: agent-v2, meta, architecture, prompt
+   :links: SYSP_REQ_AGENT_ARCH_PROMPT; SYSP_REQ_PM_PROMPT; SYSP_REQ_CM_PROMPT; SYSP_REQ_QM_PROMPT; SYSP_REQ_SETUP_PROMPT
+
+   **Definition:**
+
+   A **Prompt file** is the user-facing entry point for invoking an agent directly
+   via VS Code Copilot's chat panel.
+
+   **File format:**
+
+   * File name: ``syspilot.<name>.prompt.md``
+   * Location: ``syspilot/prompts/`` (product) or ``.github/prompts/`` (instance)
+   * Minimal **Prompt Frontmatter**: ``agent: syspilot.<name>``
+
+   **Scope:**
+
+   * Only user-invocable agents (managers) have prompt files
+   * Engineers are invoked via ``runSubagent()`` and do NOT need prompt files
+   * The prompt file references the agent it belongs to via the ``agent`` field
+
+   **Example:**
+
+   ::
+
+      ---
+      agent: "syspilot.pm"
+      ---
+      [Prompt content for the Project Manager]
+
+   **Current prompt files:**
+
+   * ``syspilot.pm.prompt.md`` — Project Manager
+   * ``syspilot.cm.prompt.md`` — Change Manager
+   * ``syspilot.qm.prompt.md`` — Quality Manager
+   * ``syspilot.setup.prompt.md`` — Setup Manager

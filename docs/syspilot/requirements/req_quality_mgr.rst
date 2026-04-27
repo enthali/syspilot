@@ -82,3 +82,21 @@ Quality Manager Requirements
    * AC-1: QM frontmatter declares ``user-invocable: true``
    * AC-2: QM frontmatter lists ``syspilot.mece`` and ``syspilot.trace`` in ``agents``
    * AC-3: QM frontmatter includes ``agent`` and ``syspilot_jarvis_tools`` in tools
+
+
+.. req:: Quality Manager Prompt File
+   :id: SYSP_REQ_QM_PROMPT
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, manager, qm, prompt
+   :links: SYSP_US_QM; SYSP_REQ_AGENT_ARCH_PROMPT
+
+   **Description:**
+   The Quality Manager SHALL have a prompt file ``syspilot.qm.prompt.md`` that
+   enables direct user invocation via VS Code Copilot.
+
+   **Acceptance Criteria:**
+
+   * AC-1: File ``syspilot.qm.prompt.md`` exists in the prompts directory
+   * AC-2: Prompt file references agent ``syspilot.qm``
+   * AC-3: User can invoke the QM via the prompt mechanism

@@ -35,13 +35,14 @@ That's it. The setup agent handles dependencies, configuration, and validation a
 
 ## What You Get
 
-Three **managers** that orchestrate the work, and eight **engineers** that execute it:
+Four **managers** that orchestrate the work, and seven **engineers** that execute it:
 
 | Managers | What they do |
 |----------|-------------|
 | `@syspilot.pm` | Plans features, manages backlog, delegates change requests |
 | `@syspilot.cm` | Orchestrates engineers through the change workflow |
 | `@syspilot.qm` | Runs independent quality checks |
+| `@syspilot.setup` | Installs/updates syspilot in your project |
 
 | Engineers | What they do |
 |-----------|-------------|
@@ -53,7 +54,8 @@ Three **managers** that orchestrate the work, and eight **engineers** that execu
 | `@syspilot.mece` | Finds gaps and redundancies in your specs |
 | `@syspilot.trace` | Traces one item through all levels |
 | `@syspilot.release` | Manages versioning and release process |
-| `@syspilot.setup` | Installs/updates syspilot in your project |
+
+Agents are stable processes (WHAT to do). **Skills** are exchangeable tool bindings (HOW to do it) — customize syspilot by swapping skills, not agents.
 
 Agents are stable processes (WHAT to do). **Skills** are exchangeable tool bindings (HOW to do it) — customize syspilot by swapping skills, not agents.
 
@@ -73,8 +75,10 @@ Includes methodology, naming conventions, and traceability matrices.
 
 ## Requirements
 
-- VS Code + GitHub Copilot
-- Python 3.10+
+- **VS Code** + **GitHub Copilot** (license required)
+- Permission to install **Python 3.10+** and Python packages (sphinx, sphinx-needs)
+
+> `@syspilot.setup` handles all installation — your IT just needs to allow it.
 
 ## License
 

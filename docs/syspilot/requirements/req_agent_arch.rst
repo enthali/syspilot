@@ -84,7 +84,7 @@ Meta-level requirements defining the Soul/Duties/Workflow structure.
    :links: SYSP_US_AGENT_ARCH
 
    **Description:**
-   Every agent SHALL have YAML frontmatter defining its technical configuration.
+   Every agent SHALL have YAML **Agent Frontmatter** defining its technical configuration.
    The frontmatter specifies how VS Code Copilot discovers, categorizes, and
    constrains the agent.
 
@@ -102,3 +102,28 @@ Meta-level requirements defining the Soul/Duties/Workflow structure.
    * AC-4: Frontmatter includes a ``user-invocable`` field (boolean)
    * AC-5: Frontmatter includes an ``agents`` field (list of callable subagents)
    * AC-6: Frontmatter may include a ``handover`` field (string, optional)
+
+
+.. req:: Agent Prompt File
+   :id: SYSP_REQ_AGENT_ARCH_PROMPT
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, meta, architecture, prompt
+   :links: SYSP_US_AGENT_ARCH
+
+   **Description:**
+   Every user-invocable agent SHALL have a prompt file that enables direct user
+   invocation via VS Code Copilot's prompt mechanism.
+
+   **Rationale:**
+   Prompt files (``*.prompt.md``) are the user-facing entry points for agents.
+   They allow users to invoke agents directly via the VS Code chat panel. Only
+   user-invocable agents (managers) need prompt files — engineers are invoked
+   via ``runSubagent()`` and do not have prompts.
+
+   **Acceptance Criteria:**
+
+   * AC-1: Every agent with ``user-invocable: true`` has a corresponding prompt file
+   * AC-2: Engineers (``user-invocable: false``) do NOT have prompt files
+   * AC-3: The prompt file name follows the pattern ``syspilot.<name>.prompt.md``
+   * AC-4: The prompt file references the agent it belongs to

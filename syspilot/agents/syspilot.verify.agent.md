@@ -1,6 +1,6 @@
 ---
 description: "Verify implementation matches Change Document and traceability is complete."
-tools: [read, search, execute, todo]
+tools: [read, search, execute, todo, agent]
 user-invocable: false
 agents: [syspilot.trace]
 ---

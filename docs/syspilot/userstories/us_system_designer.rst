@@ -10,7 +10,7 @@ System Designer Agent
    :links: SYSP_US_AGENT_ARCH
 
    **As a** syspilot user,
-   **I want to** have a System Designer agent (syspilot.design) that analyzes
+   **I want** my agentic managers to have a System Designer agent (syspilot.design) that analyzes
    change requests level-by-level through the specification hierarchy,
    **so that** every change is systematically analyzed from User Stories through
    Requirements to Design Specs with full traceability.

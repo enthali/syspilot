@@ -10,7 +10,7 @@ Quality Engineer MECE Agent
    :links: SYSP_US_AGENT_ARCH
 
    **As a** syspilot user,
-   **I want to** have a Quality Engineer MECE agent (syspilot.mece) that checks
+   **I want** my agentic managers to have a Quality Engineer MECE agent (syspilot.mece) that checks
    one specification level for horizontal consistency,
    **so that** redundancies, contradictions, gaps, and overlaps are detected
    within User Stories, Requirements, or Design Specs.

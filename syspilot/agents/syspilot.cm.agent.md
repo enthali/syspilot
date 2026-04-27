@@ -47,3 +47,8 @@ When a CR specifies `autonomous` mode, CM proceeds without user feedback (except
 
 **Input:** Change Request (from PM, user, or QM findings)
 **Output:** Completed change with full traceability chain
+
+**Constraint:** Impact Analysis is mandatory for every change. File lists
+provided in a Change Request are input hints, not the complete scope. The
+Impact Skill MUST be executed before any spec changes are made — the result
+defines the actual scope.

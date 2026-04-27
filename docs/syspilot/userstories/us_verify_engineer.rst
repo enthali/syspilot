@@ -10,7 +10,7 @@ Verify Engineer Agent
    :links: SYSP_US_AGENT_ARCH
 
    **As a** syspilot user,
-   **I want to** have a Verify Engineer agent (syspilot.verify) that validates
+   **I want** my agentic managers to have a Verify Engineer agent (syspilot.verify) that validates
    implementation against the Change Document and checks traceability completeness,
    **so that** I can be confident that what was specified is what was actually built,
    with full spec-to-code and spec-to-file comparison.
