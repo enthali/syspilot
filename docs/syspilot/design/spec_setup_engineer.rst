@@ -31,7 +31,8 @@ Setup Manager Design
 
    1. **Source Detection** — Check for local ``syspilot/`` directory with
       ``version.json``. Offer choice: local install (fast) or GitHub (current release)
-   2. **Mode Detection** — Check if ``.syspilot/version.json`` exists to determine
+   2. **Mode Detection** — Read own ``version:`` frontmatter field and compare with
+      ``syspilot/version.json`` in the source to determine
       fresh install vs. update mode
    3. **Dependency Check** — Verify Python, Sphinx, sphinx-needs are available
    4. **File Installation** — Copy all syspilot files to the target project,
@@ -51,7 +52,7 @@ Setup Manager Design
 
    1. **Detect Source** — Check for local ``syspilot/`` directory, offer install
       source choice if found
-   2. **Detect Mode** — Fresh install or update (based on existing version.json)
+   2. **Detect Mode** — Fresh install or update (compare own frontmatter ``version:`` with source ``syspilot/version.json``)
    3. **Check Dependencies** — Verify Python, Sphinx, sphinx-needs
    4. **Install/Update** — Copy files, create directories, merge config
    5. **Configure** — Set up Sphinx, create initial structure
@@ -74,5 +75,6 @@ Setup Manager Design
    * **tools:** ``[read, edit, search, execute, todo]``
    * **user-invocable:** ``true``
    * **agents:** ``[]``
+   * **version:** ``0.5.1``
 
    **File:** ``syspilot.setup.agent.md``

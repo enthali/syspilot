@@ -119,6 +119,9 @@ Meta-level definitions of Soul, Duties, and Workflow concepts.
      via ``runSubagent()``. Empty list ``[]`` if the agent has no subagents.
    * **handover** (string, optional) — Target agent for handover delegation.
      Currently unused by all agents.
+   * **version** (string, optional, default: absent) — The installed syspilot
+     version string (e.g. ``0.5.1``). Only ``syspilot.setup.agent.md`` uses
+     this field; all other agents omit it.
 
    **Example:**
 

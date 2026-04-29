@@ -76,6 +76,7 @@ Setup Manager Requirements
    * AC-1: Setup Manager frontmatter declares ``user-invocable: true``
    * AC-2: Setup Manager frontmatter lists an empty ``agents`` array
    * AC-3: Setup Manager frontmatter includes ``read``, ``edit``, ``search``, ``execute``, ``todo`` in tools
+   * AC-4: The setup agent frontmatter SHALL include a ``version:`` field reflecting the installed syspilot version
 
 
 .. req:: Setup Manager Prompt File
