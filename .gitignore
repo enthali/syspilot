@@ -10,10 +10,6 @@
 managers/
 projects/
 
-# Installed by setup agent (product copies — source of truth is syspilot/)
-.github/agents/
-.github/prompts/
-.github/skills/
 scripts/
 
 # Python
