@@ -8,9 +8,9 @@ Reads from _build/html/needs_id/*.json after sphinx-build.
 For commercial/fast solution with live parsing, see ubiTrace from Useblocks.
 
 Usage:
-    python .syspilot/scripts/python/get_need_links.py <NEED_ID> [--depth N] [--direction in|out|both]
-    python .syspilot/scripts/python/get_need_links.py SYSPILOT_US_CORE_SPEC_AS_CODE --depth 2
-    python .syspilot/scripts/python/get_need_links.py SYSPILOT_REQ_CHG_ANALYSIS_AGENT --direction out
+    python syspilot/skills/syspilot.impact-python/get_need_links.py <NEED_ID> [--depth N] [--direction in|out|both]
+    python syspilot/skills/syspilot.impact-python/get_need_links.py SYSPILOT_US_CORE_SPEC_AS_CODE --depth 2
+    python syspilot/skills/syspilot.impact-python/get_need_links.py SYSPILOT_REQ_CHG_ANALYSIS_AGENT --direction out
 
 Links: SYSPILOT_SPEC_INST_FILE_OWNERSHIP
 """
@@ -22,10 +22,10 @@ import sys
 from pathlib import Path
 
 # Find docs directory relative to script location
-# Script is at: scripts/python/get_need_links.py
-# Project root is 2 levels up
+# Script is at: syspilot/skills/syspilot.impact-python/get_need_links.py
+# Project root is 3 levels up
 SCRIPT_DIR = Path(__file__).parent
-PROJECT_ROOT = SCRIPT_DIR.parent.parent
+PROJECT_ROOT = SCRIPT_DIR.parent.parent.parent
 DOCS_DIR = PROJECT_ROOT / "docs"
 NEEDS_ID_DIR = DOCS_DIR / "_build" / "html" / "needs_id"
 

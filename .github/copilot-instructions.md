@@ -38,15 +38,11 @@ syspilot/                            # Repository root (also the product dir)
 │   └── quality-manager/        # QM: independent quality checks
 │       ├── project.yaml
 │       └── context.md
-├── scripts/
-│   └── python/
-│       └── get_need_links.py   # Link discovery utility (consumer copy)
 ├── syspilot/                    # syspilot family product artifacts
 │   ├── version.json            # Release version
 │   ├── agents/                 # Distributable agents (product)
 │   ├── prompts/                # Distributable prompts
-│   ├── skills/                 # Distributable skills
-│   ├── scripts/python/         # Distributable scripts
+│   ├── skills/                 # Distributable skills (includes scripts)
 │   ├── sphinx/                 # Sphinx build script templates
 │   └── templates/              # Document templates
 │       └── change-document.md  # Change Document template
@@ -156,8 +152,8 @@ cd docs
 uv run sphinx-build -b html . _build/html
 
 # Query sphinx-needs links
-python scripts/python/get_need_links.py <ID> --simple
-python scripts/python/get_need_links.py <ID> --flat --depth 3
+python syspilot/skills/syspilot.impact-python/get_need_links.py <ID> --simple
+python syspilot/skills/syspilot.impact-python/get_need_links.py <ID> --flat --depth 3
 ```
 
 ## Development Workflow (Dogfooding)

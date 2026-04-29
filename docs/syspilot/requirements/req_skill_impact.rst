@@ -50,4 +50,6 @@ Requirements for the impact analysis skill.
 
    * AC-1: The skill interface (input: Need ID + options, output: dependency tree) is stable
    * AC-2: Agent workflow documents reference "impact analysis skill" generically, not a specific tool
-   * AC-3: Swapping the skill requires only replacing the SKILL.md file, not modifying agent definitions
+   * AC-3: Swapping the skill requires only replacing the skill folder, not modifying agent definitions
+   * AC-4: A skill SHALL be self-contained — all its artifacts (SKILL.md and associated scripts)
+     SHALL reside in the skill folder, so that replacing the folder is the complete swap operation

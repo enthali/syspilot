@@ -10,8 +10,6 @@
 managers/
 projects/
 
-scripts/
-
 # Python
 __pycache__/
 *.py[cod]

@@ -16,7 +16,7 @@ Design specifications for the impact analysis skill.
    affected specification elements before writing changes. It traverses
    traceability links by ID, configurable depth and direction.
 
-   **Tool:** ``scripts/python/get_need_links.py``
+   **Tool:** ``syspilot/skills/syspilot.impact-python/get_need_links.py``
 
    **Data Source:** ``docs/_build/html/needs.json`` (requires prior ``sphinx-build``)
 
@@ -54,7 +54,11 @@ Design specifications for the impact analysis skill.
    ::
 
       .github/skills/syspilot.impact-python/
-      └── SKILL.md          # YAML frontmatter + instructions
+      ├── SKILL.md               # YAML frontmatter + instructions
+      └── get_need_links.py      # Python implementation (skill-owned artifact)
+
+   A skill is self-contained: all its artifacts (SKILL.md and associated scripts)
+   reside in the skill folder. Replacing the folder is the complete swap operation.
 
    **Frontmatter:**
 
@@ -73,7 +77,8 @@ Design specifications for the impact analysis skill.
 
    To replace the Python implementation with a different backend:
 
-   1. Create a new skill folder (e.g. ``syspilot.impact-graphql/``)
+   1. Create a new skill folder (e.g. ``syspilot.impact-graphql/``) containing
+      ``SKILL.md`` and any scripts or assets the new implementation requires
    2. Provide the same capability: query by ID, depth, direction
    3. Return structured output (JSON or equivalent)
    4. Update the skill ``description`` so Copilot discovers it
