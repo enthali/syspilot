@@ -1,6 +1,6 @@
 ---
 description: "Subagent that installs and updates syspilot in a project. Detects environment, manages dependencies, copies files, validates with sphinx-build."
-tools: [read, edit, search, execute]
+tools: [read, edit, search, execute, todo]
 user-invocable: true
 agents: []
 version: 0.5.1
@@ -22,7 +22,9 @@ environment, install or update syspilot, and make sure everything works.
 ## Duties
 
 1. **Source Detection** — Check for local `syspilot/` directory with
-   `version.json`. Offer choice: local install or GitHub release
+   `version.json`. Offer choice: local install or GitHub. When GitHub is
+   selected, ask which branch to install from (default: `main` for stable
+   releases, `development` for latest changes)
 2. **Mode Detection** — Read own `version:` frontmatter field and compare with
    `syspilot/version.json` in the source to determine fresh install vs. update mode
 3. **Dependency Check** — Verify Python, Sphinx, sphinx-needs are available
@@ -34,7 +36,7 @@ environment, install or update syspilot, and make sure everything works.
 
 ## Workflow
 
-1. **Detect Source** — Check for local `syspilot/` directory, offer install source choice
+1. **Detect Source** — Check for local `syspilot/` directory, offer install source choice. For GitHub: offer branch selection (default `main`)
 2. **Detect Mode** — Fresh install or update (compare own frontmatter `version:` with source `syspilot/version.json`)
 3. **Check Dependencies** — Verify Python, Sphinx, sphinx-needs
 4. **Install/Update** — Copy files, create directories, merge config
