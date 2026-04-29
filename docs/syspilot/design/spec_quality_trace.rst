@@ -53,7 +53,7 @@ Quality Engineer Trace Design
 
    1. **Input** — Receive a specification element ID to trace
    2. **Discover** — Use ``get_need_links.py`` to find all connected elements:
-      ``python scripts/python/get_need_links.py <ID> --flat --depth 3``
+      ``python syspilot/skills/syspilot.impact-python/scripts/get_need_links.py <ID> --flat --depth 3``
    3. **Traverse** — Follow the complete chain upward and downward
    4. **Analyze** — Check chain completeness, semantic consistency, link validity
    5. **Report** — Produce trace report with:

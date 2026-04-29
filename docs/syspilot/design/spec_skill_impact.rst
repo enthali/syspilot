@@ -16,7 +16,7 @@ Design specifications for the impact analysis skill.
    affected specification elements before writing changes. It traverses
    traceability links by ID, configurable depth and direction.
 
-   **Tool:** ``syspilot/skills/syspilot.impact-python/get_need_links.py``
+   **Tool:** ``syspilot/skills/syspilot.impact-python/scripts/get_need_links.py``
 
    **Data Source:** ``docs/_build/html/needs.json`` (requires prior ``sphinx-build``)
 
@@ -53,12 +53,29 @@ Design specifications for the impact analysis skill.
 
    ::
 
-      .github/skills/syspilot.impact-python/
+      syspilot/skills/syspilot.impact-python/   ← product artifact (change process)
       ├── SKILL.md               # YAML frontmatter + instructions
-      └── get_need_links.py      # Python implementation (skill-owned artifact)
+      └── scripts/               # Named subdirectory for implementation scripts
+          └── get_need_links.py  # Python implementation (skill-owned artifact)
 
    A skill is self-contained: all its artifacts (SKILL.md and associated scripts)
-   reside in the skill folder. Replacing the folder is the complete swap operation.
+   reside in the skill folder. Scripts SHALL be placed in a named subdirectory
+   (e.g. ``scripts/``), not directly at the skill root. Replacing the folder is
+   the complete swap operation.
+
+   **Change Process Scope:**
+
+   The change process (Design Agent, Implement Agent) operates exclusively on
+   ``syspilot/`` and ``docs/``. The ``.github/`` directory holds the **installed
+   instance** of syspilot and is exclusively maintained by the Setup Agent.
+   Change agents SHALL NOT modify any files under ``.github/``.
+
+   The installed instance mirrors the product structure::
+
+      .github/skills/syspilot.impact-python/    ← installed instance (Setup Agent only)
+      ├── SKILL.md
+      └── scripts/
+          └── get_need_links.py
 
    **Frontmatter:**
 
@@ -77,16 +94,12 @@ Design specifications for the impact analysis skill.
 
    To replace the Python implementation with a different backend:
 
-   1. Create a new skill folder (e.g. ``syspilot.impact-graphql/``) containing
-      ``SKILL.md`` and any scripts or assets the new implementation requires
+   1. Create a new skill folder (e.g. ``syspilot.impact-graphql/``) under
+      ``syspilot/skills/``, with ``SKILL.md`` in the root and scripts in a
+      named subdirectory (e.g. ``scripts/``)
    2. Provide the same capability: query by ID, depth, direction
    3. Return structured output (JSON or equivalent)
    4. Update the skill ``description`` so Copilot discovers it
 
    No agent code changes required — agents discover skills by description,
    not by hardcoded script paths.
-
-   **Product Copy:**
-
-   The skill is also distributed as a product artifact at
-   ``syspilot/skills/syspilot.impact-python/SKILL.md``.

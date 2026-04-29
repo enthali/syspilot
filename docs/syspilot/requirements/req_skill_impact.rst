@@ -52,4 +52,9 @@ Requirements for the impact analysis skill.
    * AC-2: Agent workflow documents reference "impact analysis skill" generically, not a specific tool
    * AC-3: Swapping the skill requires only replacing the skill folder, not modifying agent definitions
    * AC-4: A skill SHALL be self-contained — all its artifacts (SKILL.md and associated scripts)
-     SHALL reside in the skill folder, so that replacing the folder is the complete swap operation
+     SHALL reside in the skill folder, so that replacing the folder is the complete swap operation.
+     Scripts SHALL be placed in a named subdirectory (e.g. ``scripts/``), not directly at the
+     skill root
+   * AC-5: The change process (Design Agent, Implement Agent) SHALL operate exclusively on the
+     ``syspilot/`` and ``docs/`` directories. The ``.github/`` directory is the installed instance
+     of syspilot and SHALL be maintained exclusively by the Setup Agent

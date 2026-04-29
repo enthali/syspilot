@@ -14,7 +14,7 @@ description: >
 
 ## Tool
 
-`scripts/python/get_need_links.py` — run with `--help` for parameter details.
+`syspilot/skills/syspilot.impact-python/scripts/get_need_links.py` — run with `--help` for parameter details.
 
 Requires `docs/_build/html/needs.json` — run `sphinx-build` first if stale.
 
