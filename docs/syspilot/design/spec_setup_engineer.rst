@@ -42,6 +42,10 @@ Setup Manager Design
    5. **Configuration** — Set up Sphinx conf.py, create initial RST structure
    6. **Validation** — Run sphinx-build to verify the setup works
    7. **Baseline Commit** — Create a Git commit with all placed files
+   8. **Customization Guard** — Before overwriting files in update mode, use the
+      ask-questions skill to check whether the user has made local customizations.
+      If yes, record the list of customized files, proceed with the update, then
+      display the list and instruct the user to review and re-apply their changes.
 
 
 .. spec:: Setup Manager Workflow
@@ -54,9 +58,18 @@ Setup Manager Design
 
    1. **Detect Source** — Check for local ``syspilot/`` directory, offer install
       source choice if found
-   2. **Detect Mode** — Fresh install or update (compare own frontmatter ``version:`` with source ``syspilot/version.json``)
+   2. **Detect Mode** — Fresh install or update (compare own frontmatter ``version:``
+      with source ``syspilot/version.json``). If versions are equal, use the
+      ask-questions skill to ask the user whether to reinstall anyway. If the user
+      declines, print a confirmation message ("Already up to date — nothing to do.")
+      and stop gracefully. If the user confirms, continue with the update.
    3. **Check Dependencies** — Verify Python, Sphinx, sphinx-needs
-   4. **Install/Update** — Copy files, create directories, merge config
+   4. **Install/Update** — Before overwriting any files, use the ask-questions skill
+      to ask the user whether they have made local customizations to installed files.
+      If yes: ask the user to list the customized files, save the list, then proceed
+      with normal file copy and config merge. After the update completes, display the
+      saved list and instruct the user to review and re-apply their customizations.
+      If no: proceed with normal file overwrite.
    5. **Configure** — Set up Sphinx, create initial structure
    6. **Validate** — Run sphinx-build, resolve any issues
    7. **Commit** — Create baseline Git commit

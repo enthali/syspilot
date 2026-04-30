@@ -39,6 +39,7 @@ Setup Manager Requirements
    * AC-3: Setup Manager can install/copy all syspilot files
    * AC-4: Setup Manager can validate setup with sphinx-build
    * AC-5: Setup Manager can create a baseline Git commit
+   * AC-6: Setup Manager can query the user about file customizations before overwriting and guide the user to re-apply them after the update
 
 
 .. req:: Setup Manager Workflow
@@ -58,6 +59,8 @@ Setup Manager Requirements
    * AC-2: Setup Manager checks dependencies (Python, Sphinx, sphinx-needs)
    * AC-3: Setup Manager installs/updates files and configures the project
    * AC-4: Setup Manager validates with sphinx-build and creates baseline commit
+   * AC-5: When installed version equals source version, Setup asks user for reinstall confirmation; if declined, aborts gracefully
+   * AC-6: Before overwriting files in update mode, Setup asks user whether customizations exist; if yes, records the list and reminds user to re-apply them after the update completes
 
 
 .. req:: Setup Manager Frontmatter Configuration

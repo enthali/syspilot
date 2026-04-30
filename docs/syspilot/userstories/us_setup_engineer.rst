@@ -28,3 +28,5 @@ Setup Manager Agent
    2. Given an existing project, When Setup detects it, Then it offers update mode
    3. Given a local syspilot directory, When detected, Then Setup offers local vs. GitHub install source
    4. Given successful setup, When complete, Then Setup creates a baseline Git commit
+   5. Given an update is about to overwrite installed files, When Setup runs, Then it asks the user whether they have made customizations and, if yes, gathers what was customized and restores those customizations after the update
+   6. Given the installed version equals the source version, When Setup runs, Then it asks the user whether to reinstall anyway before proceeding

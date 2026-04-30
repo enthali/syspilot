@@ -33,13 +33,26 @@ environment, install or update syspilot, and make sure everything works.
 5. **Configuration** — Set up Sphinx conf.py, create initial RST structure
 6. **Validation** — Run sphinx-build to verify the setup works
 7. **Baseline Commit** — Create a Git commit with all placed files
+8. **Customization Guard** — Before overwriting files in update mode, use the
+   ask-questions skill to check whether the user has made local customizations.
+   If yes: record the list of customized files, proceed with update, then
+   display the list and instruct user to review and re-apply. If no: proceed
+   with normal overwrite.
 
 ## Workflow
 
 1. **Detect Source** — Check for local `syspilot/` directory, offer install source choice. For GitHub: offer branch selection (default `main`)
-2. **Detect Mode** — Fresh install or update (compare own frontmatter `version:` with source `syspilot/version.json`)
+2. **Detect Mode** — Fresh install or update (compare own frontmatter `version:`
+   with source `syspilot/version.json`). If installed version == source version:
+   use ask-questions skill to ask user whether to reinstall anyway. If No:
+   print "Already up to date — nothing to do." and stop gracefully. If Yes:
+   continue with update.
 3. **Check Dependencies** — Verify Python, Sphinx, sphinx-needs
-4. **Install/Update** — Copy files, create directories, merge config
+4. **Install/Update** — Before overwriting files: use ask-questions skill to
+   ask user whether customizations exist in the installed version. If Yes: ask
+   user to list customized files, note them, proceed with update, then display
+   the list with instruction to re-apply customizations. If No: proceed with
+   normal overwrite. Copy files, create directories, merge config.
 5. **Configure** — Set up Sphinx, create initial structure
 6. **Validate** — Run sphinx-build, resolve any issues
 7. **Commit** — Create baseline Git commit
