@@ -16,7 +16,7 @@ Design specifications for the impact analysis skill.
    affected specification elements before writing changes. It traverses
    traceability links by ID, configurable depth and direction.
 
-   **Tool:** ``syspilot/skills/syspilot.impact-python/scripts/get_need_links.py``
+   **Tool:** ``.github/skills/syspilot.impact-python/scripts/get_need_links.py``
 
    **Data Source:** ``docs/_build/html/needs.json`` (requires prior ``sphinx-build``)
 
@@ -51,12 +51,24 @@ Design specifications for the impact analysis skill.
 
    **Skill File Structure:**
 
+   Two locations exist — product source and installed runtime:
+
    ::
 
-      syspilot/skills/syspilot.impact-python/   ← product artifact (change process)
+      syspilot/skills/syspilot.impact-python/   ← product source (distributed, versioned)
       ├── SKILL.md               # YAML frontmatter + instructions
       └── scripts/               # Named subdirectory for implementation scripts
           └── get_need_links.py  # Python implementation (skill-owned artifact)
+
+      .github/skills/syspilot.impact-python/    ← installed runtime (what agents use)
+      ├── SKILL.md
+      └── scripts/
+          └── get_need_links.py
+
+   ``syspilot/skills/`` is the product source for distribution and versioning.
+   ``.github/skills/`` is the installed instance — the only path visible to
+   Copilot agents at runtime. Agents SHALL reference ``.github/skills/`` paths;
+   the product source path is invisible to them.
 
    A skill is self-contained: all its artifacts (SKILL.md and associated scripts)
    reside in the skill folder. Scripts SHALL be placed in a named subdirectory
@@ -70,9 +82,10 @@ Design specifications for the impact analysis skill.
    instance** of syspilot and is exclusively maintained by the Setup Agent.
    Change agents SHALL NOT modify any files under ``.github/``.
 
-   The installed instance mirrors the product structure::
+   The installed instance (maintained by Setup Agent only) is what agents
+   read at runtime::
 
-      .github/skills/syspilot.impact-python/    ← installed instance (Setup Agent only)
+      .github/skills/syspilot.impact-python/    ← installed runtime (agents read this)
       ├── SKILL.md
       └── scripts/
           └── get_need_links.py
@@ -100,6 +113,10 @@ Design specifications for the impact analysis skill.
    2. Provide the same capability: query by ID, depth, direction
    3. Return structured output (JSON or equivalent)
    4. Update the skill ``description`` so Copilot discovers it
+   5. Run Setup Agent to install the new skill to
+      ``.github/skills/syspilot.impact-graphql/scripts/`` — that is the path
+      agents will invoke at runtime
 
-   No agent code changes required — agents discover skills by description,
-   not by hardcoded script paths.
+   No agent code changes required — agents discover skills by description.
+   The installed path (``.github/skills/<name>/scripts/``) is the runtime
+   entry point; the product source (``syspilot/skills/``) is invisible to agents.
