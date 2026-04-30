@@ -25,7 +25,7 @@ Setup Manager Design
    :id: SYSP_SPEC_SETUP_DUTIES
    :status: draft
    :tags: agent-v2, manager, setup, duties
-   :links: SYSP_REQ_SETUP_DUTIES
+   :links: SYSP_REQ_SETUP_DUTIES, SYSP_SPEC_SKILL_ASK_QUESTIONS_API
 
    **Duties:**
 
@@ -52,7 +52,7 @@ Setup Manager Design
    :id: SYSP_SPEC_SETUP_WORKFLOW
    :status: draft
    :tags: agent-v2, manager, setup, workflow
-   :links: SYSP_REQ_SETUP_WORKFLOW
+   :links: SYSP_REQ_SETUP_WORKFLOW, SYSP_SPEC_SKILL_ASK_QUESTIONS_API
 
    **Workflow:**
 
