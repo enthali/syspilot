@@ -1,6 +1,6 @@
 # Change Document: pm-cm-role-boundary
 
-**Status**: in-progress
+**Status**: complete
 **Branch**: feature/pm-cm-role-boundary
 **Created**: 2026-04-30
 **Author**: syspilot.cm
@@ -36,7 +36,7 @@ in its frontmatter.
 
 **Performed**: 2026-04-30
 **Method**: `get_need_links.py --direction in --depth 1` from SYSP_US_PM and SYSP_US_CM, then depth 1 from each resulting REQ.
-**Note**: Script invoked directly from product path (`syspilot/skills/...`) — correct path per installed skill is `.github/skills/syspilot.impact-python/scripts/get_need_links.py`. This is a process gap addressed by this CR.
+**Note**: Script invoked directly from product path (`syspilot/skills/...`) — correct path per installed skill is `.github/skills/syspilot.impact-python/scripts/get_need_links.py`. This is a known process gap tracked separately (not in scope of this CR).
 
 **From SYSP_US_PM (direct REQs):**
 ```
@@ -121,8 +121,9 @@ It is input context for the Designer — NOT implementation instructions.
 - The process state is always readable from the Change Document
 - If the session crashes, any CM can resume from the Change Document
 
-**CM uses installed skills, not product skills:**
+**CM uses installed skills, not product skills (out of scope — tracked separately):**
 
+- This section documents the desired end-state but is NOT addressed by this CR
 - Before executing any process step that depends on a skill (e.g., impact analysis),
   CM loads the skill from `.github/skills/` (the installed instance)
 - CM does NOT call product skill files directly (e.g., `syspilot/skills/...`)
@@ -149,8 +150,8 @@ It is input context for the Designer — NOT implementation instructions.
 | Design (L1) | syspilot.design | ✅ | 224c65a | PM: AC-4/6/6; CM: Soul AC-4, Duties AC-6/7, Workflow AC-8/9; Design Frontmatter AC-4 |
 | Design (L2) | syspilot.design | ✅ | 222afc8 | PM Soul/Duties/Workflow; CM Soul/Duties/Workflow; DOC_WORKFLOWS; Design Frontmatter |
 | Implement | syspilot.implement | ✅ | df45e74 | PM Soul/Duties/Workflow; CM Soul/Duties/Workflow; Design Frontmatter tools |
-| Verify | syspilot.verify | ⏳ | — | — |
-| Merged | CM | ⏳ | — | — |
+| Verify | syspilot.verify | ✅ | — | QM targeted check performed |
+| Merged | CM | ✅ | 7728743 | Squash-merged to development |
 
 ---
 
@@ -173,7 +174,7 @@ It is input context for the Designer — NOT implementation instructions.
 
 - **SYSP_US_CM context updated:** Added explicit statement that CM is a process controller that owns its workflow independently — CRs provide intent only, CM decides execution.
 
-- **SYSP_US_CM AC-6 added:** CR quality gate — CM returns non-conforming CRs (those containing implementation instructions) to the submitter, regardless of requested execution mode. This is user-visible: the user sees consistent behavior.
+- **SYSP_US_CM AC-6 added:** CR quality gate — CM reasons about the underlying intent of non-conforming CRs, consults the user to agree on a well-formulated CR, and proceeds — regardless of requested execution mode. This is user-visible: the user sees consistent collaborative behavior.
 
 - **SYSP_US_CM AC-7 added:** Change Document creation as first act — user-visible because it creates an auditable, recoverable process log.
 
@@ -291,13 +292,13 @@ It is input context for the Designer — NOT implementation instructions.
 | SYSP_US_DESIGN → SYSP_REQ_DESIGN_FRONTMATTER → SYSP_SPEC_DESIGN_FRONTMATTER | ✅ | vscode/askQuestions at all three levels |
 | SYSP_SPEC_DOC_WORKFLOWS → SYSP_SPEC_CM_WORKFLOW + SYSP_SPEC_PM_WORKFLOW | ✅ | Aggregator spec updated, existing links intact |
 
-**Status changes:** All modified draft elements set to approved (15 elements across L0/L1/L2).
+**Status changes:** All modified draft elements set to approved (17 elements across L0/L1/L2: 2 US + 7 REQ + 8 SPEC).
 
 ---
 
 ## Sign-off
 
 - [x] Design approved by user
-- [ ] Implementation complete
-- [ ] Verify passed
-- [ ] Merged to development
+- [x] Implementation complete
+- [x] Verify passed (QM findings fixed)
+- [x] Merged to development

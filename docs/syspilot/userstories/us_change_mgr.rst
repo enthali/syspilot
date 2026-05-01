@@ -41,5 +41,5 @@ Change Manager Agent
    3. Given a quality gate failure, When an engineer reports issues, Then CM handles the exception
    4. Given all engineers complete, When the change is done, Then CM reports completion with full traceability
    5. Given a completed change, When CM finishes, Then it notifies PM and QM via Jarvis
-   6. Given a CR that contains implementation instructions (file paths, code, or step-by-step details), When CM receives it, Then CM returns it to the submitter as non-conforming — regardless of requested execution mode
+   6. Given a CR that contains implementation instructions (file paths, code, or step-by-step details), When CM receives it, Then CM reasons about the underlying intent, consults the user to agree on a well-formulated CR, and proceeds — regardless of requested execution mode
    7. Given a conforming CR is accepted, When CM starts processing, Then CM creates a Change Document as its first act, serving as a process log and recovery point for the change

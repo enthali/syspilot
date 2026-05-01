@@ -70,7 +70,10 @@ Change Manager Design
       consult the user to agree on a well-formulated CR, then proceed — regardless of
       operation mode
    1a. **Change Document** — Create ``docs/changes/<name>.md`` before invoking any
-       engineer; this is the process log and recovery point for the change
+       engineer; this is the process log and recovery point for the change.
+       Required sections: Summary, Change Request, Impact Analysis, Process Log,
+       Level 0/1/2 (each with Designer Section), Final Consistency Check, Sign-off.
+       Each agent fills its own section; CM owns the document lifecycle.
    2. **Analyze** — Invoke System Designer for level-by-level analysis
    3. **Test** — Invoke Test Engineer for UAT artifact generation
    4. **Implement** — Invoke Dev Engineer for code/config changes
