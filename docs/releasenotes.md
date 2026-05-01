@@ -31,6 +31,22 @@ Patch release with internal process fixes: PM/CM role boundaries clarified, merg
   - After merging to development, CM sends confirmation to PM with commit hash and branch name
   - Existing pre-merge notification remains unchanged
 
+- **Skill Installed Path** (`skill-installed-path`)
+  - SKILL.md references installed path (`.github/skills/`) instead of product path
+
+- **Skill Owns Scripts** (`skill-owns-scripts`)
+  - Scripts moved into skill folder for self-contained skills
+
+- **Skill Script Convention** (`skill-script-convention`)
+  - `scripts/` subdirectory convention + `.github/` scope rule for skill scripts
+
+- **Setup User Changes Check** (`setup-user-changes-check`)
+  - Customization guard: Setup Agent checks for user changes before overwriting
+  - Same-version check to avoid unnecessary updates
+
+- **Setup Version in Agent** (`setup-version-in-agent`)
+  - Version tracking moved into `syspilot.setup.agent.md` frontmatter (`version:` field)
+
 ### 📋 Change Requests
 
 | Change Document | Scope |
@@ -40,6 +56,11 @@ Patch release with internal process fixes: PM/CM role boundaries clarified, merg
 | `qm-auditor-only` | QM is pure auditor (Findings Reports only) |
 | `setup-preserve-tools` | Setup Agent preserves instance tools: frontmatter |
 | `cm-merge-confirmation` | CM post-merge confirmation to PM |
+| `skill-installed-path` | SKILL.md references installed path |
+| `skill-owns-scripts` | Self-contained skill folders with scripts |
+| `skill-script-convention` | scripts/ subdir + .github/ scope rule |
+| `setup-user-changes-check` | Customization guard + same-version check |
+| `setup-version-in-agent` | Version tracking in agent frontmatter |
 
 ---
 
