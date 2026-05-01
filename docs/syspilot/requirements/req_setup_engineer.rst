@@ -40,6 +40,16 @@ Setup Manager Requirements
    * AC-4: Setup Manager can validate setup with sphinx-build
    * AC-5: Setup Manager can create a baseline Git commit
    * AC-6: Setup Manager can query the user about file customizations before overwriting and guide the user to re-apply them after the update
+   * AC-7: During an update, Setup Manager SHALL perform a selective merge on
+     agent files: preserve the existing ``tools:`` frontmatter field from the
+     instance, and take all other frontmatter fields and body content from the
+     product source
+   * AC-8: During a fresh install, or when the product introduces an agent that
+     does not yet exist in the instance, Setup Manager SHALL copy the agent file
+     completely from the product source (including ``tools:``)
+   * AC-9: After updating agent files, Setup Manager SHALL inform the user
+     which agents were updated and confirm that their ``tools:`` fields were
+     preserved
 
 
 .. req:: Setup Manager Workflow
@@ -61,6 +71,9 @@ Setup Manager Requirements
    * AC-4: Setup Manager validates with sphinx-build and creates baseline commit
    * AC-5: When installed version equals source version, Setup asks user for reinstall confirmation; if declined, aborts gracefully
    * AC-6: Before overwriting files in update mode, Setup asks user whether customizations exist; if yes, records the list and reminds user to re-apply them after the update completes
+   * AC-7: During update, Setup Agent SHALL detect the existing ``tools:``
+     value in each installed agent file before overwriting it, and re-inject
+     the saved value after copying from product source
 
 
 .. req:: Setup Manager Frontmatter Configuration

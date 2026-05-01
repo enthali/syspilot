@@ -30,3 +30,4 @@ Setup Manager Agent
    4. Given successful setup, When complete, Then Setup creates a baseline Git commit
    5. Given an update is about to overwrite installed files, When Setup runs, Then it asks the user whether they have made customizations and, if yes, gathers what was customized and reminds the user to re-apply their customizations after the update
    6. Given the installed version equals the source version, When Setup runs, Then it asks the user whether to reinstall anyway before proceeding, and aborts gracefully if the user declines
+   7. Given an update overwrites agent files, When Setup completes, Then it SHALL automatically preserve the existing ``tools:`` frontmatter in each updated agent, copy new agents completely (including ``tools:``), and inform the user which agents were updated and that their ``tools:`` were preserved
