@@ -70,7 +70,8 @@ Project Manager Design
    **Input:** User request (feature idea, research question, backlog review)
    **Output:** Change Request for CM, Research Document, or updated Backlog
 
-   **QM Findings Review Workflow** (triggered by QM findings notification):
+   **QM Findings Review Workflow** (event-driven, asynchronous to main workflow;
+   triggered by QM findings notification — may interrupt any main workflow step):
 
    1. **Receive Findings** — QM routes a targeted-check findings report to PM
    2. **Evaluate** — PM reviews each finding: severity, affected elements, QM recommendation

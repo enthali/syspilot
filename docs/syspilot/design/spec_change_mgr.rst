@@ -84,7 +84,14 @@ Change Manager Design
    6. **Document** — Invoke Documentation Engineer for doc updates
    7. **Report** — Complete the change with traceability summary
    8. **Notify** — Send completion notification to PM and QM via Jarvis message queue, including the Change Document path (e.g. ``docs/changes/<name>.md``) so QM can scope targeted checks
-   9. **Await PM Merge Approval** — After notifying PM and QM, CM waits for PM's merge decision; CM SHALL NOT merge to development until PM explicitly approves (or specifies fix/defer action based on QM findings)
+   9. **Await PM Merge Approval** — After notifying PM and QM, CM waits for PM's
+      merge decision. CM SHALL NOT merge to development until PM responds.
+
+      **PM Decision → CM Action mapping:**
+
+      * PM says "Fix now" → CM holds merge, awaits fix CR, applies fix, then re-notifies QM
+      * PM says "Defer" → CM merges to development; PM creates follow-up CR separately
+      * PM says "Accept as-is" → CM merges to development
 
    **Input:** Change Request (from PM, user, or QM findings)
    **Output:** Completed change with full traceability chain
