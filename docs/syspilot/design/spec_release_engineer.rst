@@ -23,7 +23,7 @@ Release Engineer Design
 
 .. spec:: Release Engineer Duties
    :id: SYSP_SPEC_RELEASE_DUTIES
-   :status: draft
+   :status: approved
    :tags: agent-v2, engineer, release, duties
    :links: SYSP_REQ_RELEASE_DUTIES
 
@@ -31,7 +31,8 @@ Release Engineer Design
 
    1. **Change Document Archival** — Move completed change documents to
       ``docs/changes/<version>/``
-   2. **Version Bump** — Bump version in ``version.json`` following semantic
+   2. **Version Bump** — Bump the ``version:`` field in
+      ``syspilot/agents/syspilot.setup.agent.md`` following semantic
       versioning (MAJOR.MINOR.PATCH)
    3. **Release Notes** — Generate or update release notes in
       ``docs/releasenotes.md`` (newest first)
@@ -46,17 +47,19 @@ Release Engineer Design
 
 .. spec:: Release Engineer Workflow
    :id: SYSP_SPEC_RELEASE_WORKFLOW
-   :status: draft
+   :status: approved
    :tags: agent-v2, engineer, release, workflow
    :links: SYSP_REQ_RELEASE_WORKFLOW
 
    **Workflow:**
 
    1. **Pre-Release** — Confirm all engineers have completed. Stay on ``development``.
-   2. **Read Decisions** — Read project-specific release decisions (version file,
-      tag format, release notes location, validation commands)
+   2. **Read Current Version** — Read the ``version:`` field from
+      ``syspilot/agents/syspilot.setup.agent.md`` to determine the current
+      version; derive the next version following semantic versioning rules
    3. **Archive** — Move change documents to ``docs/changes/<version>/``
-   4. **Version** — Bump version following semantic versioning rules
+   4. **Version** — Bump the ``version:`` field in
+      ``syspilot/agents/syspilot.setup.agent.md`` to the new version
    5. **Document** — Generate release notes (newest first)
    6. **Validate** — Run sphinx-build with ``-W``, ensure all pass. Commit + push
       ``development``.

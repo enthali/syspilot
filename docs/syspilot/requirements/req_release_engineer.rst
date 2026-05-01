@@ -23,7 +23,7 @@ Release Engineer Requirements
 
 .. req:: Release Engineer Duties
    :id: SYSP_REQ_RELEASE_DUTIES
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, engineer, release, duties
    :links: SYSP_US_RELEASE
@@ -34,7 +34,7 @@ Release Engineer Requirements
 
    **Acceptance Criteria:**
 
-   * AC-1: Release Engineer can bump versions following semantic versioning
+   * AC-1: Release Engineer SHALL bump the ``version:`` field in ``syspilot/agents/syspilot.setup.agent.md`` following semantic versioning (MAJOR.MINOR.PATCH)
    * AC-2: Release Engineer can run validation (sphinx-build) before releasing
    * AC-3: Release Engineer can generate and update release notes
    * AC-4: Release Engineer can archive change documents
@@ -45,7 +45,7 @@ Release Engineer Requirements
 
 .. req:: Release Engineer Workflow
    :id: SYSP_REQ_RELEASE_WORKFLOW
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, engineer, release, workflow
    :links: SYSP_US_RELEASE
@@ -58,7 +58,7 @@ Release Engineer Requirements
    **Acceptance Criteria:**
 
    * AC-1: Workflow starts with release preparation on ``development`` (archive, version, release notes, validate)
-   * AC-2: Release Engineer reads project-specific release decisions
+   * AC-2: Release Engineer reads the current version from the ``version:`` field in ``syspilot/agents/syspilot.setup.agent.md`` and bumps it there
    * AC-3: Release Engineer squash-merges ``development`` to ``main`` after all prep steps pass
    * AC-4: Release Engineer tags ``main``, pushes, and creates GitHub Release
    * AC-5: Release Engineer back-merges ``main`` into ``development`` after tagging

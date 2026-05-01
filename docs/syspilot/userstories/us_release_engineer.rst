@@ -4,7 +4,7 @@ Release Engineer Agent
 
 .. story:: Release Engineer Agent
    :id: SYSP_US_RELEASE
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, engineer, release, release-engineer
    :links: SYSP_US_AGENT_ARCH
@@ -19,8 +19,9 @@ Release Engineer Agent
 
    The Release Engineer handles the end-to-end release process: squash merge
    to main, version bump, validation (sphinx-build), release notes generation,
-   change document archival, and Git tagging. It reads project-specific release
-   decisions (version file location, tag format, etc.) from its configuration.
+   change document archival, and Git tagging. The version is maintained in the
+   ``version:`` frontmatter field of ``syspilot/agents/syspilot.setup.agent.md``
+   (single source of truth); the Release Engineer bumps that field directly.
 
    **Acceptance Criteria:**
 
