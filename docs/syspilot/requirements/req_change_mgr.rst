@@ -24,7 +24,7 @@ Change Manager Requirements
 
 .. req:: Change Manager Duties
    :id: SYSP_REQ_CM_DUTIES
-   :status: approved
+   :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, cm, duties
    :links: SYSP_US_CM
@@ -42,11 +42,12 @@ Change Manager Requirements
    * AC-5: When a CR specifies ``autonomous`` mode, CM SHALL proceed without user feedback (except UAT); when ``user-guided``, CM SHALL request user approval after each spec level
    * AC-6: When a CR contains implementation instructions, CM SHALL reason about the underlying intent and consult the user to clarify it before proceeding — regardless of operation mode
    * AC-7: CM SHALL create a Change Document as the first act after a CR is accepted, before invoking any engineer
+   * AC-8: CM SHALL NOT merge to development without explicit PM approval
 
 
 .. req:: Change Manager Workflow
    :id: SYSP_REQ_CM_WORKFLOW
-   :status: approved
+   :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, cm, workflow
    :links: SYSP_US_CM
@@ -66,6 +67,7 @@ Change Manager Requirements
    * AC-7: CM SHALL ensure Impact Analysis is executed before any spec changes — CR file lists are hints, not the complete scope
    * AC-8: Upon receiving a CR, CM SHALL assess its conformance; if it contains implementation instructions, CM SHALL reason about the underlying intent, consult the user to agree on a well-formulated CR, then proceed — regardless of operation mode
    * AC-9: CM SHALL create the Change Document before invoking any engineer
+   * AC-10: Before merging to development, CM SHALL request PM's merge approval; CM SHALL only proceed with the merge after PM explicitly approves
 
 
 .. req:: Change Manager Frontmatter Configuration

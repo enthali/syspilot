@@ -23,7 +23,7 @@ Project Manager Requirements
 
 .. req:: Project Manager Duties
    :id: SYSP_REQ_PM_DUTIES
-   :status: approved
+   :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, pm, duties
    :links: SYSP_US_PM
@@ -40,11 +40,14 @@ Project Manager Requirements
    * AC-4: PM can create Change Requests and delegate to CM
    * AC-5: PM MAY use the impact analysis skill to assess change scope during research or planning
    * AC-6: When authoring a Change Request, PM SHALL restrict content to user intent (WHAT), motivation (WHY), and user-visible acceptance criteria — no file paths, code snippets, agent instructions, or process steps
+   * AC-7: PM SHALL receive QM findings from targeted checks on completed changes
+   * AC-8: PM SHALL decide between three options: fix findings now, defer to a later release, or accept as-is
+   * AC-9: PM SHALL communicate the merge approval (or hold) decision to CM
 
 
 .. req:: Project Manager Workflow
    :id: SYSP_REQ_PM_WORKFLOW
-   :status: approved
+   :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, pm, workflow
    :links: SYSP_US_PM
@@ -61,6 +64,7 @@ Project Manager Requirements
    * AC-4: PM produces a structured plan or Change Request as output
    * AC-5: PM delegates execution to Change Manager
    * AC-6: Before delegating to CM, PM SHALL self-check the CR for implementation details and revise if needed
+   * AC-7: Before CM merges to development, PM SHALL receive QM findings for the change, decide fix/defer/accept, and communicate the merge approval (or hold) decision to CM
 
 
 .. req:: Project Manager Frontmatter Configuration

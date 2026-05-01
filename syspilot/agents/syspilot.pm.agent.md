@@ -34,6 +34,10 @@ You never execute technical work directly.
    current priorities, decisions, and roadmap items
 6. **Impact Scoping** (optional) — May use the impact analysis skill to assess
    change blast radius before creating a Change Request
+7. **QM Findings Review & Merge Decision** — Receive QM findings report from
+   targeted checks on completed changes; evaluate findings (severity, affected
+   elements, recommendation); decide fix now / defer to a later release /
+   accept as-is; communicate the merge approval (or hold) decision to CM
 
 ## Workflow
 
@@ -49,3 +53,15 @@ You never execute technical work directly.
 
 **Input:** User request (feature idea, research question, backlog review)
 **Output:** Change Request for CM, Research Document, or updated Backlog
+
+**QM Findings Review Workflow** (triggered by QM findings notification):
+
+1. **Receive Findings** — QM routes a targeted-check findings report to PM
+2. **Evaluate** — PM reviews each finding: severity, affected elements, QM recommendation
+3. **Decide** — Choose one of three options per finding:
+
+   * **Fix now**: instruct CM to hold the merge and create a new CR before proceeding
+   * **Defer**: approve the merge; create a follow-up CR for the next release
+   * **Accept as-is**: approve the merge; document the accepted finding in the Change Document
+
+4. **Communicate** — Notify CM of the merge decision (approve / hold)

@@ -41,6 +41,10 @@ Quality Manager Design
       across all specification levels
    6. **Targeted Check** — When triggered by a CM-completion notification,
       perform focused quality checks on the specific elements changed by the CR
+   7. **Merge Findings Report** — For CM-completion targeted checks, produce a
+      findings report addressed to PM (not a Change Request to CM); include
+      severity, affected elements, and recommendation; PM makes the
+      fix/defer/accept-as-is decision based on this report
 
 
 .. spec:: Quality Manager Workflow
@@ -58,7 +62,13 @@ Quality Manager Design
    3. **Dispatch** — Invoke Quality Engineers (MECE for levels, Trace for items)
    4. **Collect** — Gather findings from all dispatched engineers
    5. **Report** — Produce consolidated quality report
-   6. **Act** — Create Change Requests for issues that need fixing
+   6. **Act** — Depending on trigger type:
+
+      * **Periodic / on-demand checks**: create Change Requests for findings
+        and submit to the Change Manager
+      * **CM-completion targeted checks**: route findings report to PM;
+        PM makes the fix/defer/accept decision; QM does NOT create CRs
+        autonomously for these checks
 
    **Input:** Trigger (periodic, on-demand, or PM request)
    **Output:** Quality Report + Change Requests for findings
@@ -71,7 +81,8 @@ Quality Manager Design
         → Quality Eng. MECE (all levels)
         → Quality Eng. Trace (sample items)
         → Consolidated Report
-        → Change Requests → Change Manager
+        → [if periodic / on-demand]  Change Requests → Change Manager
+        → [if CM-completion trigger] Findings Report → PM (fix / defer / accept)
 
 
 .. spec:: Quality Manager Frontmatter

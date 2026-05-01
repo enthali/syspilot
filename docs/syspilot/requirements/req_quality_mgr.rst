@@ -39,6 +39,7 @@ Quality Manager Requirements
    * AC-3: QM can produce consolidated quality reports
    * AC-4: QM can create Change Requests when findings require fixes
    * AC-5: QM can perform targeted checks on specific elements identified by a CM-completion notification
+   * AC-6: For CM-completion triggered checks, QM SHALL route findings to PM for a merge decision — QM SHALL NOT create a CR directly for these targeted checks
 
 
 .. req:: Quality Manager Workflow
@@ -59,6 +60,7 @@ Quality Manager Requirements
    * AC-3: QM collects and consolidates findings
    * AC-4: QM creates Change Requests for the Change Manager when fixes are needed
    * AC-5: QM workflow can be triggered by a CM-completion notification for targeted checks on changed elements
+   * AC-6: For targeted checks (CM-completion trigger), QM SHALL report findings to PM; PM makes the fix/defer/accept decision; QM SHALL NOT create CRs autonomously for targeted checks (distinguished from periodic checks where AC-4 applies)
 
 
 .. req:: Quality Manager Frontmatter Configuration

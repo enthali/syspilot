@@ -29,3 +29,4 @@ Quality Manager Agent
    3. Given no issues, When all checks pass, Then QM reports a clean bill of health
    4. Given I ask for a quality report, When QM produces it, Then it covers all specification levels
    5. Given a CM-completion notification, When QM receives it, Then it performs a targeted check on the changed elements
+   6. Given a targeted check triggered by a CM-completion notification, When QM has results (findings or clean), Then QM routes its findings to PM for a merge decision — not directly to CM

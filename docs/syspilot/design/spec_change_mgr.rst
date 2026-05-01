@@ -29,7 +29,7 @@ Change Manager Design
 
 .. spec:: Change Manager Duties
    :id: SYSP_SPEC_CM_DUTIES
-   :status: approved
+   :status: draft
    :tags: agent-v2, manager, cm, duties
    :links: SYSP_REQ_CM_DUTIES
 
@@ -51,6 +51,9 @@ Change Manager Design
    6. **Change Document Creation** — Create ``docs/changes/<name>.md`` as the first act
       after a CR is accepted; this document is the process log and recovery point
       for the change
+   7. **Merge Approval Gate** — After QM review results are delivered to PM, wait for
+      PM's explicit merge approval before merging to development; do not merge until
+      PM communicates an approve, defer, or accept decision
 
    When a CR specifies ``autonomous`` mode, CM proceeds without user feedback
    (except UAT); when ``user-guided``, CM requests user approval after each spec level.
@@ -58,7 +61,7 @@ Change Manager Design
 
 .. spec:: Change Manager Workflow
    :id: SYSP_SPEC_CM_WORKFLOW
-   :status: approved
+   :status: draft
    :tags: agent-v2, manager, cm, workflow
    :links: SYSP_REQ_CM_WORKFLOW
 
@@ -81,6 +84,7 @@ Change Manager Design
    6. **Document** — Invoke Documentation Engineer for doc updates
    7. **Report** — Complete the change with traceability summary
    8. **Notify** — Send completion notification to PM and QM via Jarvis message queue, including the Change Document path (e.g. ``docs/changes/<name>.md``) so QM can scope targeted checks
+   9. **Await PM Merge Approval** — After notifying PM and QM, CM waits for PM's merge decision; CM SHALL NOT merge to development until PM explicitly approves (or specifies fix/defer action based on QM findings)
 
    **Input:** Change Request (from PM, user, or QM findings)
    **Output:** Completed change with full traceability chain
@@ -110,6 +114,8 @@ Change Manager Design
         → Quality Eng. MECE (final check)
         → Documentation Engineer
         → Notify PM + QM via Jarvis (with Change Document path)
+        → Await PM Merge Approval (PM evaluates QM findings: fix / defer / accept)
+        → Merge to development (only after PM explicitly approves)
 
 
 .. spec:: Change Manager Frontmatter
