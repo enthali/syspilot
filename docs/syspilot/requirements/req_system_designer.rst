@@ -83,3 +83,4 @@ System Designer Requirements
    * AC-1: System Designer frontmatter declares ``user-invocable: false``
    * AC-2: System Designer frontmatter lists ``syspilot.mece`` in ``agents``
    * AC-3: System Designer frontmatter includes ``read``, ``edit``, ``search``, ``execute`` in tools
+   * AC-4: System Designer frontmatter includes ``vscode/askQuestions`` in tools to enable user-guided level approval

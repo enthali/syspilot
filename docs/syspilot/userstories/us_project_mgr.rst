@@ -4,7 +4,7 @@ Project Manager Agent
 
 .. story:: Project Manager Agent
    :id: SYSP_US_PM
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, manager, pm
    :links: SYSP_US_AGENT_ARCH
@@ -28,3 +28,4 @@ Project Manager Agent
    2. Given multiple pending features, When I ask PM to prioritize, Then PM produces a ranked backlog
    3. Given a research question, When PM investigates, Then PM produces a research document with findings
    4. Given an approved feature, When PM delegates, Then it creates a Change Request for the Change Manager
+   5. Given a feature is ready to delegate, When PM creates the Change Request, Then the CR contains only user intent (WHAT), motivation (WHY), and user-visible acceptance criteria — no implementation details, file paths, code snippets, or agent-level instructions

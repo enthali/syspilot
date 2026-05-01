@@ -4,7 +4,7 @@ Change Manager Agent
 
 .. story:: Change Manager Agent
    :id: SYSP_US_CM
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, manager, cm
    :links: SYSP_US_AGENT_ARCH
@@ -26,6 +26,10 @@ Change Manager Agent
    Manager decides sequencing, handles exceptions, and ensures quality gates
    are met before proceeding.
 
+   CM is a process controller — it owns its workflow independently and does not
+   follow implementation instructions embedded in a CR. CRs provide intent only;
+   CM decides how to execute.
+
    Change Requests may be processed in ``autonomous`` mode (CM works without
    user feedback, except UAT) or ``user-guided`` mode (user approves each spec
    level before CM proceeds).
@@ -37,3 +41,5 @@ Change Manager Agent
    3. Given a quality gate failure, When an engineer reports issues, Then CM handles the exception
    4. Given all engineers complete, When the change is done, Then CM reports completion with full traceability
    5. Given a completed change, When CM finishes, Then it notifies PM and QM via Jarvis
+   6. Given a CR that contains implementation instructions (file paths, code, or step-by-step details), When CM receives it, Then CM returns it to the submitter as non-conforming — regardless of requested execution mode
+   7. Given a conforming CR is accepted, When CM starts processing, Then CM creates a Change Document as its first act, serving as a process log and recovery point for the change

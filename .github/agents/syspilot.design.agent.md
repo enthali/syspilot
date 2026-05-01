@@ -1,6 +1,6 @@
 ---
 description: "Subagent that analyzes change requests level-by-level (US → REQ → SPEC) with a persistent Change Document. Writes RST files with full traceability."
-tools: [read, edit, search, todo, execute, agent]
+tools: [read, edit, search, todo, execute, agent, vscode/askQuestions]
 user-invocable: false
 agents: ["syspilot.mece"]
 ---

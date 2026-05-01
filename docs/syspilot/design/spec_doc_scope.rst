@@ -103,7 +103,7 @@ Design specifications defining the structure and content of each documentation f
 
 .. spec:: Workflows Structure
    :id: SYSP_SPEC_DOC_WORKFLOWS
-   :status: draft
+   :status: approved
    :tags: agent-v2, documentation, external, workflows
    :links: SYSP_REQ_DOC_WORKFLOWS, SYSP_SPEC_PM_WORKFLOW, SYSP_SPEC_CM_WORKFLOW, SYSP_SPEC_QM_WORKFLOW, SYSP_SPEC_DESIGN_WORKFLOW, SYSP_SPEC_IMPLEMENT_WORKFLOW, SYSP_SPEC_UAT_WORKFLOW, SYSP_SPEC_DOCU_WORKFLOW, SYSP_SPEC_MECE_WORKFLOW, SYSP_SPEC_TRACE_WORKFLOW, SYSP_SPEC_RELEASE_WORKFLOW, SYSP_SPEC_SETUP_WORKFLOW, SYSP_SPEC_SKILL_BRANCHING_STRATEGY, SYSP_SPEC_SKILL_ORCHESTRATION_PATTERN
 
@@ -129,6 +129,10 @@ Design specifications defining the structure and content of each documentation f
    that the v2 agent names match. The Design Workflow and PM Workflow
    now include impact analysis steps (CR9) — ``docs/workflows.md`` must
    be updated to reflect the impact analysis skill usage in both workflows.
+   The CM workflow now includes an Intent Gate step (reason about underlying
+   intent and consult user when a CR contains implementation instructions)
+   and a Change Document creation step (first act after CR acceptance).
+   The PM workflow now includes a CR Content Check step before delegation.
 
 
 .. spec:: Naming Conventions Structure

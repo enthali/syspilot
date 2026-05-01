@@ -21,6 +21,10 @@ Level 2: Design Specs (HOW)     docs/syspilot/design/         SYSP_SPEC_*
 
 Changes go into `syspilot/`. The Setup Agent installs them into `.github/`.
 
+## Language
+
+All documents, specs, commit messages, and code comments shall be in English.
+
 ## Dogfooding
 
 This project develops itself using its own agents and skills.

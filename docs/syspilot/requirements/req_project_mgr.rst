@@ -4,7 +4,7 @@ Project Manager Requirements
 
 .. req:: Project Manager Soul
    :id: SYSP_REQ_PM_SOUL
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, manager, pm, soul
    :links: SYSP_US_PM
@@ -18,11 +18,12 @@ Project Manager Requirements
    * AC-1: PM Soul defines a strategic, communicative character
    * AC-2: PM never executes technical work directly
    * AC-3: PM always thinks in features, priorities, and roadmaps
+   * AC-4: PM Soul encodes a content guardrail: PM always frames outputs in terms of user value and intent; thinking in terms of file paths, code structures, or agent instructions is out of character
 
 
 .. req:: Project Manager Duties
    :id: SYSP_REQ_PM_DUTIES
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, manager, pm, duties
    :links: SYSP_US_PM
@@ -38,11 +39,12 @@ Project Manager Requirements
    * AC-3: PM can conduct research sessions and produce findings
    * AC-4: PM can create Change Requests and delegate to CM
    * AC-5: PM MAY use the impact analysis skill to assess change scope during research or planning
+   * AC-6: When authoring a Change Request, PM SHALL restrict content to user intent (WHAT), motivation (WHY), and user-visible acceptance criteria — no file paths, code snippets, agent instructions, or process steps
 
 
 .. req:: Project Manager Workflow
    :id: SYSP_REQ_PM_WORKFLOW
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, manager, pm, workflow
    :links: SYSP_US_PM
@@ -58,6 +60,7 @@ Project Manager Requirements
    * AC-3: PM MAY run impact analysis to understand blast radius before creating a Change Request
    * AC-4: PM produces a structured plan or Change Request as output
    * AC-5: PM delegates execution to Change Manager
+   * AC-6: Before delegating to CM, PM SHALL self-check the CR for implementation details and revise if needed
 
 
 .. req:: Project Manager Frontmatter Configuration
