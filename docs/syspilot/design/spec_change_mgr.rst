@@ -54,6 +54,9 @@ Change Manager Design
    7. **Merge Approval Gate** — After QM review results are delivered to PM, wait for
       PM's explicit merge approval before merging to development; do not merge until
       PM communicates an approve, defer, or accept decision
+   8. **Post-Merge Confirmation** — After a successful merge to development, send a
+      post-merge confirmation message to PM via Jarvis containing the merge commit
+      hash and branch name
 
    When a CR specifies ``autonomous`` mode, CM proceeds without user feedback
    (except UAT); when ``user-guided``, CM requests user approval after each spec level.
@@ -93,6 +96,9 @@ Change Manager Design
       * PM says "Defer" → CM merges to development; PM creates follow-up CR separately
       * PM says "Accept as-is" → CM merges to development
 
+   10. **Post-Merge Confirmation** — After merging to development, send a confirmation
+       message to PM via Jarvis containing the merge commit hash and branch name.
+
    **Input:** Change Request (from PM, user, or QM findings)
    **Output:** Completed change with full traceability chain
 
@@ -123,6 +129,7 @@ Change Manager Design
         → Notify PM + QM via Jarvis (with Change Document path)
         → Await PM Merge Approval (PM evaluates QM findings: fix / defer / accept)
         → Merge to development (only after PM explicitly approves)
+        → Post-Merge Confirmation (Jarvis to PM: commit hash + branch name)
 
 
 .. spec:: Change Manager Frontmatter

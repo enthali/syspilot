@@ -44,3 +44,4 @@ Change Manager Agent
    6. Given a CR that contains implementation instructions (file paths, code, or step-by-step details), When CM receives it, Then CM reasons about the underlying intent, consults the user to agree on a well-formulated CR, and proceeds — regardless of requested execution mode
    7. Given a conforming CR is accepted, When CM starts processing, Then CM creates a Change Document as its first act, serving as a process log and recovery point for the change
    8. Given all engineering work is complete, When CM is ready to merge to development, Then CM requests PM's merge approval and only merges after PM explicitly approves
+   9. Given a successful merge to development, When the merge completes, Then CM SHALL send a post-merge confirmation message to PM via Jarvis containing the merge commit hash and branch name

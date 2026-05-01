@@ -43,6 +43,7 @@ Change Manager Requirements
    * AC-6: When a CR contains implementation instructions, CM SHALL reason about the underlying intent and consult the user to clarify it before proceeding — regardless of operation mode
    * AC-7: CM SHALL create a Change Document as the first act after a CR is accepted, before invoking any engineer
    * AC-8: CM SHALL NOT merge to development without explicit PM approval
+   * AC-9: After a successful merge, CM SHALL send a post-merge confirmation message to PM via Jarvis containing the merge commit hash and branch name
 
 
 .. req:: Change Manager Workflow
@@ -68,6 +69,7 @@ Change Manager Requirements
    * AC-8: Upon receiving a CR, CM SHALL assess its conformance; if it contains implementation instructions, CM SHALL reason about the underlying intent, consult the user to agree on a well-formulated CR, then proceed — regardless of operation mode
    * AC-9: CM SHALL create the Change Document before invoking any engineer
    * AC-10: Before merging to development, CM SHALL request PM's merge approval; CM SHALL only proceed with the merge after PM explicitly approves
+   * AC-11: After merging to development, CM SHALL send a post-merge confirmation message to PM via Jarvis containing the merge commit hash and branch name
 
 
 .. req:: Change Manager Frontmatter Configuration
