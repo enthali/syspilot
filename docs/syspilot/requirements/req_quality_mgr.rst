@@ -18,7 +18,7 @@ Quality Manager Requirements
 
    * AC-1: QM Soul defines an independent, quality-focused character
    * AC-2: QM never modifies specifications directly
-   * AC-3: QM always produces findings that lead to Change Requests
+   * AC-3: QM always produces findings as a Findings Report addressed to PM
 
 
 .. req:: Quality Manager Duties
@@ -37,9 +37,8 @@ Quality Manager Requirements
    * AC-1: QM can dispatch MECE Engineer to check specification levels
    * AC-2: QM can dispatch Trace Engineer for sample traceability checks
    * AC-3: QM can produce consolidated quality reports
-   * AC-4: QM can create Change Requests when findings require fixes
-   * AC-5: QM can perform targeted checks on specific elements identified by a CM-completion notification
-   * AC-6: For CM-completion triggered checks, QM SHALL route findings to PM for a merge decision — QM SHALL NOT create a CR directly for these targeted checks
+   * AC-4: QM can perform targeted checks on specific elements identified by a CM-completion notification
+   * AC-5: QM SHALL route ALL findings to PM as a Findings Report — regardless of trigger type; QM SHALL NEVER create CRs directly
 
 
 .. req:: Quality Manager Workflow
@@ -55,12 +54,11 @@ Quality Manager Requirements
 
    **Acceptance Criteria:**
 
-   * AC-1: QM workflow can be triggered periodically or on-demand
+   * AC-1: QM workflow can be triggered periodically, on-demand, or by a CM-completion notification
    * AC-2: QM dispatches Quality Engineers to perform checks
    * AC-3: QM collects and consolidates findings
-   * AC-4: QM creates Change Requests for the Change Manager when fixes are needed
-   * AC-5: QM workflow can be triggered by a CM-completion notification for targeted checks on changed elements
-   * AC-6: For targeted checks (CM-completion trigger), QM SHALL report findings to PM; PM makes the fix/defer/accept decision; QM SHALL NOT create CRs autonomously for targeted checks (distinguished from periodic checks where AC-4 applies)
+   * AC-4: QM workflow supports targeted checks on changed elements when triggered by a CM-completion notification
+   * AC-5: QM SHALL report findings to PM as a Findings Report for all trigger types; PM makes the fix/defer/accept decision; QM SHALL NOT create CRs autonomously
 
 
 .. req:: Quality Manager Frontmatter Configuration
