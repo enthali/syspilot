@@ -58,7 +58,7 @@ Quality Manager Requirements
    * AC-2: QM dispatches Quality Engineers to perform checks
    * AC-3: QM collects and consolidates findings
    * AC-4: QM workflow supports targeted checks on changed elements when triggered by a CM-completion notification
-   * AC-5: QM SHALL report findings to PM as a Findings Report for all trigger types; PM makes the fix/defer/accept decision; QM SHALL NOT create CRs autonomously
+   * AC-5: QM SHALL report findings to PM as a Findings Report for all trigger types; PM makes the fix/defer/accept decision; QM SHALL NEVER create CRs
 
 
 .. req:: Quality Manager Frontmatter Configuration
@@ -75,7 +75,7 @@ Quality Manager Requirements
 
    **Rationale:**
    The QM needs the ``agent`` tool to dispatch MECE and Trace engineers, and
-   ``syspilot_jarvis_tools`` for creating Change Requests via Jarvis.
+   ``syspilot_jarvis_tools`` for sending Findings Reports to PM via Jarvis.
 
    **Acceptance Criteria:**
 

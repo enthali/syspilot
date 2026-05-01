@@ -1,5 +1,5 @@
 ---
-description: "Independent quality guardian that dispatches MECE and Trace engineers, consolidates findings, and creates Change Requests for quality issues."
+description: "Independent quality guardian that dispatches MECE and Trace engineers, consolidates findings, and produces Findings Reports addressed to PM."
 tools: [read, edit, search, agent, todo, execute, syspilot_jarvis_tools]
 user-invocable: true
 agents: ["syspilot.mece", "syspilot.trace"]
