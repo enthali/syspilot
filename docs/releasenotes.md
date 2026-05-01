@@ -1,5 +1,48 @@
 # syspilot Release Notes
 
+## v0.5.2 - 2026-05-01
+
+### Summary
+Patch release with internal process fixes: PM/CM role boundaries clarified, merge gate process formalized, QM reduced to pure auditor role, Setup Agent preserves instance-specific tools on update, and CM sends post-merge confirmation to PM.
+
+### 🔧 Fixes & Improvements
+
+- **PM/CM Role Boundary** (`pm-cm-role-boundary`)
+  - PM writes CRs from user perspective only (intent + user-visible ACs, no implementation details)
+  - CM always follows the complete change process independently
+  - Design Agent gets `vscode/askQuestions` in frontmatter for user-guided mode
+
+- **Merge Gate Process** (`qm-merge-gate`)
+  - CM does not merge to development without PM approval
+  - QM results are always routed to PM who decides: fix now / defer / accept as-is
+  - Formal merge gate between QM review and development merge
+
+- **QM Auditor Only** (`qm-auditor-only`)
+  - QM always produces Findings Reports addressed to PM — never creates CRs directly
+  - Simplified QM model: one output format (Findings Report → PM)
+  - Aligns with the Merge Gate pattern
+
+- **Setup Preserve Tools** (`setup-preserve-tools`)
+  - Setup Agent preserves instance-specific `tools:` frontmatter field during updates
+  - Fresh installs copy `tools:` from product as-is
+  - New agents are always copied completely
+
+- **CM Merge Confirmation** (`cm-merge-confirmation`)
+  - After merging to development, CM sends confirmation to PM with commit hash and branch name
+  - Existing pre-merge notification remains unchanged
+
+### 📋 Change Requests
+
+| Change Document | Scope |
+|----------------|-------|
+| `pm-cm-role-boundary` | PM/CM guardrails, CR intent stays high-level |
+| `qm-merge-gate` | Merge Gate process (CM waits for PM approval) |
+| `qm-auditor-only` | QM is pure auditor (Findings Reports only) |
+| `setup-preserve-tools` | Setup Agent preserves instance tools: frontmatter |
+| `cm-merge-confirmation` | CM post-merge confirmation to PM |
+
+---
+
 ## v0.5.1 - 2026-04-27
 
 ### Summary

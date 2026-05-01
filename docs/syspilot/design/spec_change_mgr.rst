@@ -75,28 +75,30 @@ Change Manager Design
       if the CR contains implementation instructions, reason about the underlying intent,
       consult the user to agree on a well-formulated CR, then proceed — regardless of
       operation mode
-   1a. **Change Document** — Create ``docs/changes/<name>.md`` before invoking any
-       engineer; this is the process log and recovery point for the change.
-       Required sections: Summary, Change Request, Impact Analysis, Process Log,
-       Level 0/1/2 (each with Designer Section), Final Consistency Check, Sign-off.
-       Each agent fills its own section; CM owns the document lifecycle.
-   2. **Analyze** — Invoke System Designer for level-by-level analysis
-   3. **Test** — Invoke Test Engineer for UAT artifact generation
-   4. **Implement** — Invoke Dev Engineer for code/config changes
-   5. **Verify** — Invoke Quality Engineers (MECE, Trace) for final checks
-   6. **Document** — Invoke Documentation Engineer for doc updates
-   7. **Report** — Complete the change with traceability summary
-   8. **Notify** — Send completion notification to PM and QM via Jarvis message queue, including the Change Document path (e.g. ``docs/changes/<name>.md``) so QM can scope targeted checks
-   9. **Await PM Merge Approval** — After notifying PM and QM, CM waits for PM's
-      merge decision. CM SHALL NOT merge to development until PM responds.
 
-      **PM Decision → CM Action mapping:**
+   2. **Change Document** — Create ``docs/changes/<name>.md`` before invoking any
+      engineer; this is the process log and recovery point for the change.
+      Required sections: Summary, Change Request, Impact Analysis, Process Log,
+      Level 0/1/2 (each with Designer Section), Final Consistency Check, Sign-off.
+      Each agent fills its own section; CM owns the document lifecycle.
 
-      * PM says "Fix now" → CM holds merge, awaits fix CR, applies fix, then re-notifies QM
-      * PM says "Defer" → CM merges to development; PM creates follow-up CR separately
-      * PM says "Accept as-is" → CM merges to development
+   3. **Analyze** — Invoke System Designer for level-by-level analysis
+   4. **Test** — Invoke Test Engineer for UAT artifact generation
+   5. **Implement** — Invoke Dev Engineer for code/config changes
+   6. **Verify** — Invoke Quality Engineers (MECE, Trace) for final checks
+   7. **Document** — Invoke Documentation Engineer for doc updates
+   8. **Report** — Complete the change with traceability summary
+   9. **Notify** — Send completion notification to PM and QM via Jarvis message queue, including the Change Document path (e.g. ``docs/changes/<name>.md``) so QM can scope targeted checks
+   10. **Await PM Merge Approval** — After notifying PM and QM, CM waits for PM's
+       merge decision. CM SHALL NOT merge to development until PM responds.
 
-   10. **Post-Merge Confirmation** — After merging to development, send a confirmation
+       **PM Decision → CM Action mapping:**
+
+       * PM says "Fix now" → CM holds merge, awaits fix CR, applies fix, then re-notifies QM
+       * PM says "Defer" → CM merges to development; PM creates follow-up CR separately
+       * PM says "Accept as-is" → CM merges to development
+
+   11. **Post-Merge Confirmation** — After merging to development, send a confirmation
        message to PM via Jarvis containing the merge commit hash and branch name.
 
    **Input:** Change Request (from PM, user, or QM findings)
