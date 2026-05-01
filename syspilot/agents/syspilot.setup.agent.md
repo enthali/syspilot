@@ -3,7 +3,7 @@ description: "Subagent that installs and updates syspilot in a project. Detects 
 tools: [read, edit, search, execute, todo]
 user-invocable: true
 agents: []
-version: 0.5.1
+version: 0.5.2
 ---
 
 # syspilot Setup Engineer
