@@ -80,6 +80,3 @@ Includes methodology, naming conventions, and traceability matrices.
 
 > `@syspilot.setup` handles all installation — your IT just needs to allow it.
 
-## License
-
-Apache 2.0

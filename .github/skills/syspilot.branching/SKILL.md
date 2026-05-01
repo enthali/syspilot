@@ -50,7 +50,7 @@ gitGraph
 3. `@syspilot.verify` commits validation report on the same branch
 4. `@syspilot.docu` commits documentation updates on the same branch
 5. Completed feature branch is squash-merged into `development`
-6. `@syspilot.release` squash-merges `development` into `main`, bumps version, tags
+6. `@syspilot.release` prepares on `development` (archive, version bump, release notes, validate, commit+push), then squash-merges `development` into `main`, tags, and back-merges `main` into `development`
 
 **Key Properties:**
 
@@ -59,12 +59,14 @@ gitGraph
 - Squash-merge everywhere — clean history on `development` and `main`
 - Main = releases only — main always equals the latest release
 - Tag on main — `v{version}` tags mark published releases
+- Back-merge after release — `git checkout development && git merge main` prevents conflicts on next release
+- Conflict guidance — squash-merge conflicts resolve with `-X theirs` (development wins)
 
 ## Branch Permissions
 
 | Agent | May create | May commit to |
 |-------|-----------|--------------|
-| `@syspilot.release` | (none) | `main` (squash merge from `development` + tag) |
+| `@syspilot.release` | (none) | `main` (squash merge from `development` + tag); `development` (prep + back-merge) |
 | `@syspilot.design` | `feature/<name>` | `feature/<name>` (the branch it created) |
 | `@syspilot.setup` | `update/v{version}` | `update/v{version}` (the branch it created) |
 | `@syspilot.implement` | (none) | current feature branch |

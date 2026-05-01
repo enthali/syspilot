@@ -14,11 +14,17 @@ description: >
 
 ## Tool
 
-`scripts/python/get_need_links.py` — run with `--help` for parameter details.
+`.github/skills/syspilot.impact-python/scripts/get_need_links.py` — run with `--help` for parameter details.
 
 Requires `docs/_build/html/needs.json` — run `sphinx-build` first if stale.
 
 ## Domain Rules
+
+### Mandatory Execution
+
+Impact Analysis is mandatory for every change. File lists provided in a Change
+Request are input hints, not the complete scope. This skill MUST be executed
+before any spec changes are made — the result defines the actual scope.
 
 ### 1. Search from consumer elements, not from new elements
 
