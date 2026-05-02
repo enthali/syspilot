@@ -28,4 +28,5 @@ Release Engineer Agent
    1. Given completed changes on development, When releasing, Then the Release Engineer prepares on development and squash-merges to main
    2. Given a version bump, When applying, Then it follows semantic versioning (MAJOR.MINOR.PATCH)
    3. Given validation, When sphinx-build runs, Then no errors or warnings
-   4. Given a release, When complete, Then change documents are archived and release notes updated
+   4. Given a release, When archiving change documents, Then ALL ``*.md`` files in ``docs/changes/`` (root level only, excluding subdirectories) are moved — no document is missed
+   5. Given a release, When generating release notes, Then the release notes are generated from the archived change documents in ``docs/changes/<version>/`` and list every archived document completely
