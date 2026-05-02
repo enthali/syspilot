@@ -23,7 +23,7 @@ Project Manager Requirements
 
 .. req:: Project Manager Duties
    :id: SYSP_REQ_PM_DUTIES
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, manager, pm, duties
    :links: SYSP_US_PM
@@ -43,11 +43,13 @@ Project Manager Requirements
    * AC-7: PM SHALL receive QM findings from targeted checks on completed changes
    * AC-8: PM SHALL decide between three options: fix findings now, defer to a later release, or accept as-is
    * AC-9: PM SHALL communicate the merge approval (or hold) decision to CM
+   * AC-10: PM SHALL decide when a feature set meets release criteria and invoke the Release Agent to execute the release process
+   * AC-11: PM SHALL invoke the Setup Agent to trigger a post-release instance update after a successful release
 
 
 .. req:: Project Manager Workflow
    :id: SYSP_REQ_PM_WORKFLOW
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, manager, pm, workflow
    :links: SYSP_US_PM
@@ -65,6 +67,8 @@ Project Manager Requirements
    * AC-5: PM delegates execution to Change Manager
    * AC-6: Before delegating to CM, PM SHALL self-check the CR for implementation details and revise if needed
    * AC-7: Before CM merges to development, PM SHALL receive QM findings for the change, decide fix/defer/accept, and communicate the merge approval (or hold) decision to CM
+   * AC-8: PM workflow SHALL include a Release-Trigger step: PM evaluates readiness, decides release criteria are met, and invokes the Release Agent
+   * AC-9: PM workflow SHALL include a Setup-Trigger step: after a successful release, PM invokes the Setup Agent to update the installed instance
 
 
 .. req:: Project Manager Frontmatter Configuration
@@ -87,7 +91,7 @@ Project Manager Requirements
    **Acceptance Criteria:**
 
    * AC-1: PM frontmatter declares ``user-invocable: true``
-   * AC-2: PM frontmatter lists an empty ``agents`` array
+   * AC-2: PM frontmatter lists ``agents: ["syspilot.release", "syspilot.setup"]``
    * AC-3: PM frontmatter includes ``web``, ``github``, ``context7`` in tools
 
 

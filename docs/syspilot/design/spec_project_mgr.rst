@@ -23,7 +23,7 @@ Project Manager Design
 
 .. spec:: Project Manager Duties
    :id: SYSP_SPEC_PM_DUTIES
-   :status: draft
+   :status: approved
    :tags: agent-v2, manager, pm, duties
    :links: SYSP_REQ_PM_DUTIES
 
@@ -47,11 +47,18 @@ Project Manager Design
       targeted checks on completed changes; evaluate findings (severity, affected
       elements, recommendation); decide fix now / defer to a later release /
       accept as-is; communicate the merge approval (or hold) decision to CM
+   8. **Release-Trigger** — Evaluate whether the current development state meets
+      release criteria (all targeted changes merged, QM sign-off received); when
+      criteria are met, decide to release and invoke the Release Agent to execute
+      the release process
+   9. **Setup-Trigger** — After a successful release, invoke the Setup Agent to
+      trigger a post-release instance update so that the installed instance reflects
+      the new release
 
 
 .. spec:: Project Manager Workflow
    :id: SYSP_SPEC_PM_WORKFLOW
-   :status: draft
+   :status: approved
    :tags: agent-v2, manager, pm, workflow
    :links: SYSP_REQ_PM_WORKFLOW
 
@@ -83,6 +90,19 @@ Project Manager Design
 
    4. **Communicate** — Notify CM of the merge decision (approve / hold)
 
+   **Release Workflow** (event-driven; triggered when PM judges all targeted changes
+   for a release are merged and QM-signed-off):
+
+   1. **Evaluate Release Readiness** — PM reviews the current development state: all
+      planned changes merged, QM findings resolved (fixed / deferred / accepted)
+   2. **Release Decision** — PM decides the release criteria are met and chooses to
+      trigger the release
+   3. **Invoke Release Agent** — PM invokes the Release Agent to execute the release
+      process (version bump, changelog, tag, publish)
+   4. **Confirm Release** — PM confirms the release completed successfully
+   5. **Invoke Setup Agent** — PM invokes the Setup Agent to update the installed
+      instance with the newly published release
+
 
 .. spec:: Project Manager Frontmatter
    :id: SYSP_SPEC_PM_FRONTMATTER
@@ -95,6 +115,6 @@ Project Manager Design
    * **description:** ``"Strategic project manager that discusses features, prioritizes backlogs, conducts research, and delegates Change Requests to the Change Manager."``
    * **tools:** ``[read, search, web, agent, todo, vscode, execute, github, context7, syspilot_jarvis_tools]``
    * **user-invocable:** ``true``
-   * **agents:** ``[]``
+   * **agents:** ``["syspilot.release", "syspilot.setup"]``
 
    **File:** ``syspilot.pm.agent.md``

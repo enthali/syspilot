@@ -4,7 +4,7 @@ System Designer Agent
 
 .. story:: System Designer Agent
    :id: SYSP_US_DESIGN
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, engineer, change, system-designer
    :links: SYSP_US_AGENT_ARCH
@@ -25,7 +25,7 @@ System Designer Agent
 
    **Acceptance Criteria:**
 
-   1. Given a change request, When the System Designer starts, Then it creates a Change Document
+   1. Given a change request, When the System Designer starts, Then it reads the Change Document created by CM
    2. Given a level to process, When analyzing, Then it identifies all impacted elements via link discovery
    3. Given user approval of a level, When writing RST, Then all elements have ``:status: draft``
    4. Given all levels complete, When final check passes, Then all elements are set to ``:status: approved``

@@ -4,7 +4,7 @@ Project Manager Agent
 
 .. story:: Project Manager Agent
    :id: SYSP_US_PM
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, manager, pm
    :links: SYSP_US_AGENT_ARCH
@@ -31,3 +31,5 @@ Project Manager Agent
    5. Given a feature is ready to delegate, When PM creates the Change Request, Then the CR contains only user intent (WHAT), motivation (WHY), and user-visible acceptance criteria — no implementation details, file paths, code snippets, or agent-level instructions
    6. Given QM has reviewed a completed change, When QM routes findings to PM, Then PM decides whether findings are fixed immediately, deferred to a later release, or accepted as-is
    7. Given PM has made the fix/defer/accept decision, When PM approves the merge, Then PM communicates the approval to CM to proceed with merging to development
+   8. Given a feature set is ready to release, When PM decides the release criteria are met, Then PM invokes the Release Agent to execute the release process
+   9. Given a release has completed successfully, When PM reviews the release outcome, Then PM invokes the Setup Agent to trigger a post-release instance update
