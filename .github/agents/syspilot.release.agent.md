@@ -3,6 +3,7 @@ description: "Subagent that guides the release process: squash merge, version bu
 tools: [read, edit, search, execute]
 user-invocable: false
 agents: []
+model: Claude Sonnet 4.6 (copilot)
 ---
 
 # syspilot Release Engineer

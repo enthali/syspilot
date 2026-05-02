@@ -3,6 +3,7 @@ description: "Subagent that traces one specification element vertically through 
 tools: [read, search, execute]
 user-invocable: false
 agents: []
+model: Claude Haiku 4.5 (copilot)
 ---
 
 # syspilot Quality Engineer Trace

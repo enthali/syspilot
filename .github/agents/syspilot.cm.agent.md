@@ -3,6 +3,7 @@ description: "Central orchestrator of the change workflow. Receives Change Reque
 tools: [vscode/askQuestions, execute/runNotebookCell, execute/getTerminalOutput, execute/killTerminal, execute/sendToTerminal, execute/createAndRunTask, execute/runInTerminal, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, read/terminalSelection, read/terminalLastCommand, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/changes, search/codebase, search/fileSearch, search/listDirectory, search/searchResults, search/textSearch, search/usages, jarvis-syspilot-llm-tools/jarvis_category, jarvis-syspilot-llm-tools/jarvis_listProjects, jarvis-syspilot-llm-tools/jarvis_listSessions, jarvis-syspilot-llm-tools/jarvis_readMessage, jarvis-syspilot-llm-tools/jarvis_registerJob, jarvis-syspilot-llm-tools/jarvis_sendToSession, jarvis-syspilot-llm-tools/jarvis_task, jarvis-syspilot-llm-tools/jarvis_unregisterJob, todo]
 user-invocable: true
 agents: ["syspilot.design", "syspilot.uat", "syspilot.implement", "syspilot.mece", "syspilot.trace", "syspilot.release", "syspilot.docu"]
+model: Claude Sonnet 4.6 (copilot)
 ---
 
 # syspilot Change Manager

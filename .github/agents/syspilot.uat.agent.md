@@ -3,6 +3,7 @@ description: "Subagent that generates User Acceptance Test artifacts (stories, r
 tools: [read, edit, search, todo, execute]
 user-invocable: false
 agents: []
+model: Claude Sonnet 4.6 (copilot)
 ---
 
 # syspilot Test Engineer
