@@ -1,6 +1,7 @@
 ---
 description: "Strategic project manager that discusses features, prioritizes backlogs, conducts research, and delegates Change Requests to the Change Manager."
 tools: [read, search, web, agent, todo, vscode, execute, github, context7, syspilot_jarvis_tools]
+model: Claude Sonnet 4.6 (copilot)
 user-invocable: true
 agents: []
 ---

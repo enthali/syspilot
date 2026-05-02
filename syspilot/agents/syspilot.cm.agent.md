@@ -1,6 +1,7 @@
 ---
 description: "Central orchestrator of the change workflow. Receives Change Requests, invokes engineers in sequence, enforces quality gates, and reports completion with full traceability."
 tools: [read, edit, search, agent, todo, execute, syspilot_jarvis_tools]
+model: Claude Sonnet 4.6 (copilot)
 user-invocable: true
 agents: ["syspilot.design", "syspilot.uat", "syspilot.implement", "syspilot.mece", "syspilot.trace", "syspilot.release", "syspilot.docu"]
 ---

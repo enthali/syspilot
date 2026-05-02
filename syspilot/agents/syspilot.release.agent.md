@@ -1,6 +1,7 @@
 ---
 description: "Subagent that guides the release process: squash merge, version bump, validation, release notes, change doc archival, git tagging."
 tools: [read, edit, search, execute]
+model: Claude Sonnet 4.6 (copilot)
 user-invocable: false
 agents: []
 ---
