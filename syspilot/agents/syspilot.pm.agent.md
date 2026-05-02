@@ -3,7 +3,7 @@ description: "Strategic project manager that discusses features, prioritizes bac
 tools: [read, search, web, agent, todo, vscode, execute, github, context7, syspilot_jarvis_tools]
 model: Claude Sonnet 4.6 (copilot)
 user-invocable: true
-agents: []
+agents: ["syspilot.release"]
 ---
 
 # syspilot Project Manager
