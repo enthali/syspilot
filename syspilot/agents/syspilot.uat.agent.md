@@ -1,6 +1,7 @@
 ---
 description: "Subagent that generates User Acceptance Test artifacts (stories, requirements, design specs) for a Change Document."
 tools: [read, edit, search, todo, execute]
+model: Claude Sonnet 4.6 (copilot)
 user-invocable: false
 agents: []
 ---

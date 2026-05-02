@@ -1,6 +1,7 @@
 ---
 description: "Subagent that analyzes one specification level for MECE properties — finds redundancies, gaps, contradictions, and overlaps."
 tools: [read, search, todo]
+model: Claude Haiku 4.5 (copilot)
 user-invocable: false
 agents: []
 ---

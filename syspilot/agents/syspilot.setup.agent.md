@@ -1,9 +1,10 @@
 ---
 description: "Subagent that installs and updates syspilot in a project. Detects environment, manages dependencies, copies files, validates with sphinx-build."
 tools: [read, edit, search, execute, todo]
+model: Claude Sonnet 4.6 (copilot)
 user-invocable: true
 agents: []
-version: 0.5.1
+version: 0.5.3
 ---
 
 # syspilot Setup Engineer

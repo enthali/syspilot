@@ -1,6 +1,7 @@
 ---
 description: "Subagent that implements code changes from approved Change Documents. Reads specs, writes code, writes tests, commits with traceability."
 tools: [read, edit, search, todo, execute]
+model: Claude Opus 4.6 (copilot)
 user-invocable: false
 agents: []
 ---

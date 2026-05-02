@@ -1,5 +1,44 @@
 # syspilot Release Notes
 
+## v0.5.3 - 2026-05-02
+
+### Summary
+Patch release with three process and tooling fixes: QM now dispatches separate MECE checks per specification level, the Release Agent uses deterministic file scanning for archival and release notes generation, and version tracking is consolidated in the Setup Agent frontmatter (removing the redundant `version.json`). Includes model assignment sync (Opus 4.6 / Sonnet 4.6 / Haiku 4.5).
+
+### 🔧 Fixes & Improvements
+
+- **QM MECE Per Level** (`qm-mece-per-level`)
+  - QM dispatches separate MECE checks for each specification level (L0 User Stories, L1 Requirements, L2 Design Specs)
+  - Each MECE invocation receives exactly one level as input — no combined cross-level runs
+  - Findings Report clearly indicates per-level pass/fail results
+
+- **Release Explicit Sources** (`release-explicit-sources`)
+  - Archive step explicitly scans all `*.md` files in `docs/changes/` (excluding subdirectories) — no session-context dependency
+  - Document step generates release notes from the archived `docs/changes/<version>/` folder as the authoritative source
+  - Prevents incomplete archival and missing release notes entries due to context drift
+
+- **Release Version Source** (`release-version-source`)
+  - Release Agent bumps the `version:` field in `syspilot/agents/syspilot.setup.agent.md` (product source of truth)
+  - Redundant `syspilot/version.json` deleted
+  - Setup Agent propagates the version to the installed instance on next setup run
+
+### 🏠 Housekeeping
+
+- Agent model assignments synced from tested instance to product files:
+  - Claude Opus 4.6: design, implement (complex engineering tasks)
+  - Claude Sonnet 4.6: cm, pm, qm, setup, release, uat, docu (orchestration and documentation)
+  - Claude Haiku 4.5: mece, trace, verify (fast quality checks)
+
+### 📋 Change Requests
+
+| Change Document | Scope |
+|----------------|-------|
+| `qm-mece-per-level` | QM per-level MECE dispatch |
+| `release-explicit-sources` | Release Agent deterministic file scan |
+| `release-version-source` | Version in Setup Agent frontmatter, remove version.json |
+
+---
+
 ## v0.5.2 - 2026-05-01
 
 ### Summary
@@ -31,6 +70,22 @@ Patch release with internal process fixes: PM/CM role boundaries clarified, merg
   - After merging to development, CM sends confirmation to PM with commit hash and branch name
   - Existing pre-merge notification remains unchanged
 
+- **Skill Installed Path** (`skill-installed-path`)
+  - SKILL.md references installed path (`.github/skills/`) instead of product path
+
+- **Skill Owns Scripts** (`skill-owns-scripts`)
+  - Scripts moved into skill folder for self-contained skills
+
+- **Skill Script Convention** (`skill-script-convention`)
+  - `scripts/` subdirectory convention + `.github/` scope rule for skill scripts
+
+- **Setup User Changes Check** (`setup-user-changes-check`)
+  - Customization guard: Setup Agent checks for user changes before overwriting
+  - Same-version check to avoid unnecessary updates
+
+- **Setup Version in Agent** (`setup-version-in-agent`)
+  - Version tracking moved into `syspilot.setup.agent.md` frontmatter (`version:` field)
+
 ### 📋 Change Requests
 
 | Change Document | Scope |
@@ -40,6 +95,11 @@ Patch release with internal process fixes: PM/CM role boundaries clarified, merg
 | `qm-auditor-only` | QM is pure auditor (Findings Reports only) |
 | `setup-preserve-tools` | Setup Agent preserves instance tools: frontmatter |
 | `cm-merge-confirmation` | CM post-merge confirmation to PM |
+| `skill-installed-path` | SKILL.md references installed path |
+| `skill-owns-scripts` | Self-contained skill folders with scripts |
+| `skill-script-convention` | scripts/ subdir + .github/ scope rule |
+| `setup-user-changes-check` | Customization guard + same-version check |
+| `setup-version-in-agent` | Version tracking in agent frontmatter |
 
 ---
 

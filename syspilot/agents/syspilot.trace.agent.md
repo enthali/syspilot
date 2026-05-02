@@ -1,6 +1,7 @@
 ---
 description: "Subagent that traces one specification element vertically through all levels (US → REQ → SPEC) and checks traceability completeness."
 tools: [read, search, execute]
+model: Claude Haiku 4.5 (copilot)
 user-invocable: false
 agents: []
 ---

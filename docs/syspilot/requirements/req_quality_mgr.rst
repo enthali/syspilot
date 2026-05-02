@@ -34,11 +34,12 @@ Quality Manager Requirements
 
    **Acceptance Criteria:**
 
-   * AC-1: QM can dispatch MECE Engineer to check specification levels
+   * AC-1: QM SHALL dispatch the MECE Engineer separately for each specification level in scope (L0, L1, L2) — one invocation per level
    * AC-2: QM can dispatch Trace Engineer for sample traceability checks
    * AC-3: QM can produce consolidated quality reports
    * AC-4: QM can perform targeted checks on specific elements identified by a CM-completion notification
    * AC-5: QM SHALL route ALL findings to PM as a Findings Report — regardless of trigger type; QM SHALL NEVER create CRs directly
+   * AC-6: Each MECE Engineer invocation SHALL receive exactly one specification level as input — never combined levels
 
 
 .. req:: Quality Manager Workflow
@@ -55,8 +56,8 @@ Quality Manager Requirements
    **Acceptance Criteria:**
 
    * AC-1: QM workflow can be triggered periodically, on-demand, or by a CM-completion notification
-   * AC-2: QM dispatches Quality Engineers to perform checks
-   * AC-3: QM collects and consolidates findings
+   * AC-2: QM dispatches the MECE Engineer in separate invocations — one per specification level (L0, L1, L2) in the current scope
+   * AC-3: QM collects per-level findings and the Findings Report clearly indicates pass/fail status for each specification level
    * AC-4: QM workflow supports targeted checks on changed elements when triggered by a CM-completion notification
    * AC-5: QM SHALL report findings to PM as a Findings Report for all trigger types; PM makes the fix/defer/accept decision; QM SHALL NEVER create CRs
 

@@ -30,8 +30,9 @@ Quality Manager Design
 
    **Duties:**
 
-   1. **MECE Audit Dispatch** — Send the MECE Engineer to check one or all
-      specification levels for horizontal consistency
+   1. **MECE Audit Dispatch** — Dispatch the MECE Engineer separately for each
+      specification level in scope (L0, L1, L2); each invocation receives exactly
+      one level as input — never combined levels
    2. **Trace Check Dispatch** — Send the Trace Engineer to verify vertical
       traceability for sample items
    3. **Findings Consolidation** — Collect findings from all quality engineers
@@ -57,9 +58,13 @@ Quality Manager Design
    2. **Plan** — Determine which checks to run (all levels, specific level, specific items);
       for CM-completion triggers, read the Change Document to scope MECE and Trace checks
       to the impacted IDs listed therein
-   3. **Dispatch** — Invoke Quality Engineers (MECE for levels, Trace for items)
-   4. **Collect** — Gather findings from all dispatched engineers
-   5. **Report** — Produce consolidated quality report
+   3. **Dispatch** — Invoke Quality Engineers: the MECE Engineer is called once per
+      specification level (L0, L1, L2) as separate invocations, each receiving
+      exactly one level as input; Trace Engineer handles item-level traceability
+   4. **Collect** — Gather per-level findings from all dispatched MECE invocations
+      and findings from the Trace Engineer
+   5. **Report** — Produce consolidated quality report with clearly separated
+      per-level results indicating pass/fail status for each specification level
    6. **Act** — Route Findings Report to PM; PM makes the fix/defer/accept
       decision for each finding; QM does NOT create CRs
 
@@ -71,9 +76,11 @@ Quality Manager Design
    ::
 
       Trigger (periodic, on-demand, PM request, or CM-completion)
-        → Quality Eng. MECE (all levels)
+        → Quality Eng. MECE (L0: User Stories)
+        → Quality Eng. MECE (L1: Requirements)
+        → Quality Eng. MECE (L2: Design Specs)
         → Quality Eng. Trace (sample items)
-        → Consolidated Findings Report → PM (fix / defer / accept)
+        → Consolidated Findings Report (per-level pass/fail) → PM (fix / defer / accept)
 
 
 .. spec:: Quality Manager Frontmatter

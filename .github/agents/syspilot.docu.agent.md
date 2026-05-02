@@ -3,6 +3,7 @@ description: "Subagent that keeps internal and external documentation in sync wi
 tools: [read, edit, search, todo, execute]
 user-invocable: false
 agents: []
+model: Claude Sonnet 4.6 (copilot)
 ---
 
 # syspilot Documentation Engineer

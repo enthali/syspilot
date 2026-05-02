@@ -1,6 +1,7 @@
 ---
 description: "Verify implementation matches Change Document and traceability is complete."
 tools: [read, search, execute, todo, agent]
+model: Claude Haiku 4.5 (copilot)
 user-invocable: false
 agents: [syspilot.trace]
 ---

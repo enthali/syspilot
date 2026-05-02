@@ -3,6 +3,7 @@ description: "Subagent that guides the release process: squash merge, version bu
 tools: [read, edit, search, execute]
 user-invocable: false
 agents: []
+model: Claude Sonnet 4.6 (copilot)
 ---
 
 # syspilot Release Engineer
@@ -23,7 +24,7 @@ never rewrite history. When in doubt, you stop and ask.
 
 1. **Change Document Archival** — Move completed change documents to
    `docs/changes/<version>/`
-2. **Version Bump** — Bump version in `version.json` following semantic versioning
+2. **Version Bump** — Bump the `version:` field in `syspilot/agents/syspilot.setup.agent.md` following semantic versioning (MAJOR.MINOR.PATCH)
 3. **Release Notes** — Generate or update release notes in `docs/releasenotes.md`
 4. **Validation** — Run sphinx-build with `-W` flag to catch warnings
 5. **Squash Merge** — Squash-merge `development` → `main`
@@ -34,10 +35,12 @@ never rewrite history. When in doubt, you stop and ask.
 ## Workflow
 
 1. **Pre-Release** — Confirm all engineers have completed. Stay on `development`.
-2. **Read Decisions** — Read project-specific release decisions (version file,
-   tag format, release notes location, validation commands)
+2. **Read Current Version** — Read the `version:` field from
+   `syspilot/agents/syspilot.setup.agent.md` to determine the current
+   version; derive the next version following semantic versioning rules
 3. **Archive** — Move change documents to `docs/changes/<version>/`
-4. **Version** — Bump version following semantic versioning rules
+4. **Version** — Bump the `version:` field in
+   `syspilot/agents/syspilot.setup.agent.md` to the new version
 5. **Document** — Generate release notes (newest first)
 6. **Validate** — Run sphinx-build with `-W`, ensure all pass. Commit + push `development`.
 7. **Squash Merge** — `git checkout main && git merge --squash development && git commit`

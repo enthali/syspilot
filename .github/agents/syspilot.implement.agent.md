@@ -3,6 +3,7 @@ description: "Subagent that implements code changes from approved Change Documen
 tools: [read, edit, search, todo, execute]
 user-invocable: false
 agents: []
+model: Claude Opus 4.6 (copilot)
 ---
 
 # syspilot Dev Engineer

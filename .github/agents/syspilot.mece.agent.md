@@ -3,6 +3,7 @@ description: "Subagent that analyzes one specification level for MECE properties
 tools: [read, search, todo]
 user-invocable: false
 agents: []
+model: Claude Haiku 4.5 (copilot)
 ---
 
 # syspilot Quality Engineer MECE
