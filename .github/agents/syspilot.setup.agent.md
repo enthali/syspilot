@@ -1,10 +1,10 @@
----
+﻿---
 description: "Subagent that installs and updates syspilot in a project. Detects environment, manages dependencies, copies files, validates with sphinx-build."
 tools: [vscode/askQuestions, execute/runNotebookCell, execute/getTerminalOutput, execute/killTerminal, execute/sendToTerminal, execute/createAndRunTask, execute/runInTerminal, execute/runTests, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, read/terminalSelection, read/terminalLastCommand, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/changes, search/codebase, search/fileSearch, search/listDirectory, search/searchResults, search/textSearch, search/usages]
+model: Claude Sonnet 4.6 (copilot)
 user-invocable: true
 agents: []
-model: Claude Sonnet 4.6 (copilot)
-version: 0.5.2
+version: 0.5.3
 ---
 
 # syspilot Setup Engineer

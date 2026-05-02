@@ -1,9 +1,9 @@
----
+﻿---
 description: "Subagent that analyzes change requests level-by-level (US → REQ → SPEC) with a persistent Change Document. Writes RST files with full traceability."
 tools: [read, edit, search, todo, execute, agent, vscode/askQuestions]
+model: Claude Opus 4.6 (copilot)
 user-invocable: false
 agents: ["syspilot.mece"]
-model: Claude Opus 4.6 (copilot)
 ---
 
 # syspilot System Designer
