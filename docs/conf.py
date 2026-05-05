@@ -69,106 +69,14 @@ html_sidebars = {
 
 # -- Sphinx-Needs Configuration ----------------------------------------------
 # https://sphinx-needs.readthedocs.io/
+#
+# The syspilot ontology (types, statuses, extra links, etc.) lives in
+# ubproject.toml — the single source of truth for both Sphinx and ubCode.
 
-needs_types = [
-    # User Stories - WHY (Stakeholder perspective)
-    dict(
-        directive="story",
-        title="User Story",
-        prefix="US_",
-        color="#E8D5B7",
-        style="node"
-    ),
-    # Requirements - WHAT (System behavior)
-    dict(
-        directive="req",
-        title="Requirement",
-        prefix="REQ_",
-        color="#BFD8D2",
-        style="node"
-    ),
-    # Design Specifications - HOW (Technical approach)
-    dict(
-        directive="spec",
-        title="Design Specification",
-        prefix="SPEC_",
-        color="#FEDCD2",
-        style="node"
-    ),
-    # Skill DEFINITIONS - shared vocabulary between Agents and Skills
-    dict(
-        directive="def",
-        title="DEFINITION",
-        prefix="DEF_",
-        color="#C8A4D4",
-        style="node"
-    ),
-    # Implementation - WHERE (Code location)
-    dict(
-        directive="impl",
-        title="Implementation",
-        prefix="IMPL_",
-        color="#DF744A",
-        style="node"
-    ),
-    # Test Cases - VERIFY (Validation)
-    dict(
-        directive="test",
-        title="Test Case",
-        prefix="TEST_",
-        color="#DCB239",
-        style="node"
-    ),
-]
+needs_from_toml = "ubproject.toml"
 
-# Suppress known deprecation warnings from sphinx-needs v5 config migration
+# Suppress known deprecation warnings from sphinx-needs config migration
 suppress_warnings = ["needs.deprecated"]
-
-# Extra options for needs
-needs_extra_options = [
-    "priority",
-    "rationale",
-    "acceptance_criteria",
-]
-
-# Extra link types
-# - "defines" : a Group Contract Spec defines (lists) the DEFINITIONS of its group.
-#   Used on Group Contract Specs to point at the def-needs in the global registry.
-needs_extra_links = [
-    {
-        "option": "defines",
-        "incoming": "is defined by",
-        "outgoing": "defines",
-    },
-]
-
-# Status options
-needs_statuses = [
-    dict(name="draft", description="Draft - Work in progress"),
-    dict(name="open", description="Open - Identified but not yet started"),
-    dict(name="approved", description="Approved - Ready for implementation"),
-    dict(name="implemented", description="Implemented - Code exists"),
-    dict(name="verified", description="Verified - Tested and validated"),
-    dict(name="deprecated", description="Deprecated - No longer used"),
-]
-
-# Priority options  
-needs_priority = [
-    dict(name="mandatory", description="Must have - Critical requirement"),
-    dict(name="high", description="Should have - Important requirement"),
-    dict(name="medium", description="Could have - Nice to have"),
-    dict(name="low", description="Won't have this time - Future consideration"),
-]
-
-# Require explicit IDs
-needs_id_required = True
-
-# Configure needs file output
-needs_build_json = True
-needs_build_json_per_id = True
-
-# Use Graphviz for needflow diagrams (no needflow directives currently used)
-needs_flow_engine = "graphviz"
 
 
 # -- MyST Parser Configuration -----------------------------------------------

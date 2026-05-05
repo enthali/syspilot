@@ -2,6 +2,12 @@
 
 Reference for implementers creating or customizing Agents and Skills.
 
+> **sphinx-needs Ontology:** The canonical definition of all need types
+> (`story`, `req`, `spec`, `def`, `impl`, `test`), statuses, extra options,
+> and extra link types lives in **`docs/ubproject.toml`** — the single source
+> of truth for both Sphinx (via `needs_from_toml`) and ubCode. Edit that file
+> to add or change types, statuses, or link types.
+
 ---
 
 ## Agent Conventions
