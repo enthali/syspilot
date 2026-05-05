@@ -9,6 +9,7 @@ User interaction via selection menus.
    :status: approved
    :priority: mandatory
    :tags: agent-v2, skill, ask-questions, dx
+   :links: SYSP_US_SKILL_ARCH
 
    **As a** syspilot user,
    **I want** agents to present choices via selection menus (quick-pick UI),

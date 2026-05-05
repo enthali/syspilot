@@ -153,11 +153,11 @@ elements (Frontmatter, Instructions, Rules) are laid out.
    Contract Spec. The Group Contract Spec is the interface that Agents
    and Skills share:
 
-   * **Agent** — links to the Group Contract Spec (`:links:`). The Agent
+   * **Agent** — links to the Group Contract Spec (``:links:``). The Agent
      never references a concrete Skill. It only reads DEFINITIONS by name.
    * **Group Contract Spec** — declares all DEFINITIONS of the group via
      ``:defines:``. This is the interface boundary.
-   * **Skill** — links to the Group Contract Spec (`:links:`) and
+   * **Skill** — links to the Group Contract Spec (``:links:``) and
      implements every DEFINITION listed there. Different Skills may
      implement the same DEFINITION differently (e.g. ``MERGE`` as
      squash-merge vs. regular merge).
@@ -167,7 +167,7 @@ elements (Frontmatter, Instructions, Rules) are laid out.
    When Skill A is uninstalled and Skill B of the same group is installed:
 
    1. The Group Contract Spec is unchanged — same DEFINITIONS, same IDs.
-   2. The Agent spec is unchanged — its `:links:` still points to the
+   2. The Agent spec is unchanged — its ``:links:`` still points to the
       Group Contract Spec.
    3. The LLM reads the newly installed Skill B's implementation of each
       DEFINITION instead of Skill A's — different behaviour, same interface.

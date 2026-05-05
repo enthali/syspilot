@@ -126,8 +126,9 @@ Instructions, Rules) and the optional Group / DEFINITIONS extension.
 
    * AC-1: An Agent linked to a Group Contract Spec requires no
      modification when one group-member Skill is replaced by another
-   * AC-2: A Skill is considered a valid group member when it implements
-     every DEFINITION listed in the Group Contract Spec
+   * AC-2: A Skill is a valid group member when it satisfies
+     ``SYSP_REQ_SKILL_DEFINITIONS`` AC-6 (the DEFINITIONS completeness rule
+     lives there, not here — single source of truth)
    * AC-3: Two Skills of the same group are interchangeable from the
      perspective of every Agent that uses that group
 
