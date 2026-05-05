@@ -124,6 +124,40 @@ Requirements for external and internal documentation artifacts.
    * AC-4: Defines slug guidelines
 
 
+.. req:: Agent and Skill Conventions Documentation
+   :id: SYSP_REQ_DOC_CONVENTIONS
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, documentation, conventions, skills
+   :links: SYSP_US_DOC_CONVENTIONS
+
+   **Description:**
+   The ``docs/syspilot/conventions.md`` SHALL document Agent Conventions and
+   Skill Conventions as a single implementer reference, including the
+   DEFINITIONS Dictionary pattern, Mutual Exclusion per group, and generic
+   verb semantics.
+
+   **Rationale:**
+   Agents and Skills form a tightly coupled system. Implementers creating new
+   Agents or Skills need one authoritative reference for all conventions.
+   Without it, rules are scattered across spec files and inconsistencies arise.
+
+   **Acceptance Criteria:**
+
+   * AC-1: File at ``docs/syspilot/conventions.md`` exists
+   * AC-2: Contains an Agent Conventions section covering roles, frontmatter fields, and generic verbs
+   * AC-3: Contains a Skill Conventions section covering frontmatter (name/group), DEFINITIONS Dictionary, Mutual Exclusion, and Skill variants
+   * AC-4: Explains the DEFINITIONS Registry mechanism: each DEFINITION is
+     a sphinx-needs ``def`` need with ID ``SYSP_DEF_<NAME>``; Group Contract
+     Specs reference DEFINITIONS via the ``:defines:`` link type; operational
+     detail lives in the Skill (not in the ``def`` need); points to
+     ``SYSP_SPEC_SKILL_DEFINITIONS`` for the authoritative list
+   * AC-5: Points to ``SYSP_SPEC_SKILL_DEFINITIONS`` as the authoritative Registry
+   * AC-6: Implementation status per group is covered by pointing to the
+     Group Status table in ``SYSP_SPEC_SKILL_DEFINITIONS``; the conventions
+     doc need not duplicate it but SHALL reference it explicitly
+
+
 .. req:: Release Notes Documentation
    :id: SYSP_REQ_DOC_RELEASENOTES
    :status: approved

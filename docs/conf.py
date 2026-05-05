@@ -35,6 +35,7 @@ exclude_patterns = [
     '.venv',
     'venv',
     'changes/*',
+    'syspilot/conventions.md',
 ]
 
 # -- Options for HTML output -------------------------------------------------
@@ -94,6 +95,14 @@ needs_types = [
         color="#FEDCD2",
         style="node"
     ),
+    # Skill DEFINITIONS - shared vocabulary between Agents and Skills
+    dict(
+        directive="def",
+        title="DEFINITION",
+        prefix="DEF_",
+        color="#C8A4D4",
+        style="node"
+    ),
     # Implementation - WHERE (Code location)
     dict(
         directive="impl",
@@ -120,6 +129,17 @@ needs_extra_options = [
     "priority",
     "rationale",
     "acceptance_criteria",
+]
+
+# Extra link types
+# - "defines" : a Group Contract Spec defines (lists) the DEFINITIONS of its group.
+#   Used on Group Contract Specs to point at the def-needs in the global registry.
+needs_extra_links = [
+    {
+        "option": "defines",
+        "incoming": "is defined by",
+        "outgoing": "defines",
+    },
 ]
 
 # Status options

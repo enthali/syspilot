@@ -8,6 +8,7 @@ This section contains user stories that drive the requirements.
    :caption: User Stories:
 
    us_agent_arch
+   us_skill_arch
 
    us_project_mgr
    us_change_mgr

@@ -22,6 +22,10 @@ Meta-level definition of the Soul/Duties/Workflow agent structure.
    * **Managers** (user-invocable) — orchestrate workflows, delegate to engineers
    * **Engineers** (subagents) — execute specialized tasks, decoupled from each other
 
+   Agents can be specialized by **Skills** — exchangeable implementations that
+   bind generic Agent verbs to concrete tools. Swapping a Skill changes the tool
+   without changing the Agent's workflow.
+
    Every agent — manager or engineer — follows the same three-section structure:
 
    * **Soul** — immutable identity, character, and perspective

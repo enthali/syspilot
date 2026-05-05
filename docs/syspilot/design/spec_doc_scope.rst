@@ -221,3 +221,52 @@ Design specifications defining the structure and content of each documentation f
    4. Safety rules — e.g. branch protection HARD RULEs
    5. Jarvis / role structure — if the project uses manager agents
    6. Pointers to skills — brief hints so agents know which skills exist
+
+
+.. spec:: Agent and Skill Conventions Reference Structure
+   :id: SYSP_SPEC_DOC_CONVENTIONS
+   :status: draft
+   :tags: agent-v2, documentation, conventions, skills
+   :links: SYSP_REQ_DOC_CONVENTIONS, SYSP_SPEC_AGENT_ARCH_FRONTMATTER, SYSP_SPEC_SKILL_DEFINITIONS
+
+   **File:** ``docs/syspilot/conventions.md``
+
+   **Purpose:** Single implementer reference for creating and extending Agents and
+   Skills correctly. Not part of the Sphinx-generated spec output — it is a
+   plain Markdown reference document.
+
+   **Required Sections:**
+
+   1. **Agent Conventions**
+
+      * Roles — Manager vs. Engineer distinction
+      * Frontmatter fields — ``description``, ``tools``, ``user-invocable``, ``agents``
+      * Three-section structure — Soul / Duties / Workflow
+      * Generic verbs — ``invoke`` (user-visible capability) vs. ``delegate to``
+        (internal subagent handoff); never name the implementation tool in Duties/Workflow
+
+   2. **Skill Conventions**
+
+      * File structure — ``SKILL.md`` as entry point
+      * Frontmatter fields — ``name`` (dotted), ``group``
+      * Mutual Exclusion — only one Skill per group may be active at a time
+      * Skill variants — same group, different implementations
+      * Pointer to the global DEFINITIONS Registry
+
+   3. **DEFINITIONS Registry Reference**
+
+      * Explains the ``def`` need mechanism: each DEFINITION is a
+        ``.. def::`` need on the Registry page with ID ``SYSP_DEF_<NAME>``
+      * Describes the ``:defines:`` extra link type used by Group Contract
+        Specs to reference their DEFINITIONS
+      * Notes that operational detail (commands, LLM guidance, edge cases)
+        lives in the Skill, not the ``def`` need
+      * Explains the traceability pattern:
+        Registry ← Group Contract ← Skills / Agents
+      * Points to ``SYSP_SPEC_SKILL_DEFINITIONS`` for the authoritative
+        list and Group Status table
+
+   **Status Notes:**
+   ``conventions.md`` was created as part of the skill-architecture-foundation CR.
+   The Registry is initially empty; first entries will be added by the
+   Release Skill CR.
