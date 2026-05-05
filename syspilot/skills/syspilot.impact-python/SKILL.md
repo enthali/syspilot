@@ -12,13 +12,21 @@ description: >
 > **Implements**: SYSP_SPEC_SKILL_IMPACT_QUERY, SYSP_SPEC_SKILL_IMPACT_EXCHANGE
 > **Requirements**: SYSP_REQ_SKILL_IMPACT_QUERY, SYSP_REQ_SKILL_IMPACT_EXCHANGE
 
+## Instructions
+
 ## Tool
 
 `.github/skills/syspilot.impact-python/scripts/get_need_links.py` — run with `--help` for parameter details.
 
 Requires `docs/_build/html/needs.json` — run `sphinx-build` first if stale.
 
-## Domain Rules
+## Exchange Contract
+
+To replace this implementation: create a new skill folder, provide the same
+query-by-ID capability, update the `description` for Copilot discovery.
+No agent changes required.
+
+## Rules
 
 ### Mandatory Execution
 
@@ -53,9 +61,3 @@ REQs link upward to USes, SPECs link upward to REQs. So querying a US with
 
 At Level 0 present candidates to the user **without verdicts**. Assessment
 (affected / not affected) happens when writing the next level.
-
-## Exchange Contract
-
-To replace this implementation: create a new skill folder, provide the same
-query-by-ID capability, update the `description` for Copilot discovery.
-No agent changes required.
