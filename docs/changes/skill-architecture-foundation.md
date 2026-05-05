@@ -373,5 +373,14 @@ decisions.
 - [x] Design reviewed and approved by user (interactive session 2026-05-03..05)
 - [x] MECE verify passed (F-01..F-05 fixed)
 - [x] Trace verify passed
-- [ ] PM approval received
-- [ ] Merged to development
+- [x] PM approval received (retroactive — see PF-1 below)
+- [x] Merged to development (squash, commit 4696685)
+
+---
+
+## Process Violations
+
+**PF-1:** CM merged `feature/skill-architecture-foundation` to development before
+receiving PM merge approval. PM accepted retroactively.
+**Lesson learned:** Future CRs SHALL wait for PM's explicit merge approval before
+merging to development. CM must not proceed to merge on its own initiative.

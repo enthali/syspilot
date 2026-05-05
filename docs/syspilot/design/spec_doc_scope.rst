@@ -249,7 +249,7 @@ Design specifications defining the structure and content of each documentation f
 
       * File structure — ``SKILL.md`` as entry point
       * Frontmatter fields — ``name`` (dotted), ``group``
-      * Mutual Exclusion — only one Skill per group may be active at a time
+      * Mutual Exclusion — → see ``SYSP_SPEC_SKILL_ARCH_SUBSTITUTABILITY``
       * Skill variants — same group, different implementations
       * Pointer to the global DEFINITIONS Registry
 
@@ -261,10 +261,8 @@ Design specifications defining the structure and content of each documentation f
         Specs to reference their DEFINITIONS
       * Notes that operational detail (commands, LLM guidance, edge cases)
         lives in the Skill, not the ``def`` need
-      * Explains the traceability pattern:
-        Registry ← Group Contract ← Skills / Agents
-      * Points to ``SYSP_SPEC_SKILL_DEFINITIONS`` for the authoritative
-        list and Group Status table
+      * Traceability pattern — → see ``SYSP_SPEC_SKILL_DEFINITIONS`` Rule 4
+      * Authoritative Registry — → see ``SYSP_SPEC_SKILL_DEFINITIONS``
 
    **Status Notes:**
    ``conventions.md`` was created as part of the skill-architecture-foundation CR.

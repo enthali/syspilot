@@ -31,6 +31,10 @@ Single source of truth for all Skill DEFINITIONS.
       Group Contract — never directly to a ``def`` need.
    5. Adding, renaming, or removing a DEFINITION requires updating this
       page and the relevant Group Contract Spec in the same Change Request.
+   6. Every Skill of a group SHALL implement every DEFINITION listed in the
+      Group Contract Spec.
+   7. Only one Skill per group SHALL be installed at a time. Setup Agent
+      enforces by rejecting duplicate group installations.
 
    **Why a single page:**
 
