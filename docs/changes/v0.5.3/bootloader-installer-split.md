@@ -128,6 +128,14 @@ Proceeding in non-interactive mode as requested by PM.
 
 ---
 
+## Open Follow-ups
+
+| ID | CR | Description |
+|----|----|-------------|
+| L1-CE-GAP-1 / Trace-D2 | `setup-skill-mutex-spec` | `SYSP_US_SETUP` AC-8 (Skill Mutex) has no L1 REQ and no L2 SPEC coverage — pre-existing gap from `cleanup-skill-arch-followups`, to be addressed in a dedicated CR |
+
+---
+
 ## Engineer Log
 
 | Timestamp | Engineer | Action | Result |
