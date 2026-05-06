@@ -8,7 +8,8 @@
         "GitHub.copilot",
         "GitHub.copilot-chat",
         "ms-python.python",
-        "trond-snekvik.simple-rst"
+        "trond-snekvik.simple-rst",
+        "enthali.jarvis"
       ]
     }
   }
