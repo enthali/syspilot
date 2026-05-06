@@ -200,3 +200,22 @@ Setup Manager Requirements
 
    * AC-1: Installer frontmatter declares ``user-invocable: false``
    * AC-2: Installer agent documentation states it is invoked by Bootloader only
+
+
+.. req:: Setup Agent Skill Mutual Exclusion
+   :id: SYSP_REQ_SETUP_SKILL_MUTEX
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, manager, setup, skill, mutex
+   :links: SYSP_US_SETUP
+
+   **Description:**
+   The Setup Agent SHALL reject installation of a Skill that declares a ``group:``
+   field when a Skill belonging to the same group is already installed, and SHALL
+   report the conflict to the user.
+
+   **Acceptance Criteria:**
+
+   * AC-1: Before installing a Skill with a ``group:`` field, Setup Agent checks whether any installed Skill declares the same ``group:`` value
+   * AC-2: If a conflicting Skill is found, Setup Agent aborts the installation and reports the conflict, naming the conflicting Skill
+   * AC-3: If no conflicting Skill is found, installation proceeds normally

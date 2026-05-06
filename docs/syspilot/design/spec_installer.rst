@@ -62,6 +62,9 @@ Installer Design
       - *Fresh install or new agent (not yet in instance):* copy completely
         from product source, including ``tools:``
 
+      Before installing a Skill, apply the mutual exclusion check defined in
+      ``SYSP_SPEC_INSTALLER_SKILL_MUTEX``.
+
       After all agent files are written, report which agents were updated
       and confirm that ``tools:`` fields were preserved.
    5. **Configuration** — Set up Sphinx conf.py, create initial RST structure
@@ -72,6 +75,37 @@ Installer Design
       If yes: record the list of customized files, proceed with update, then
       display the list and instruct user to review and re-apply. If no: proceed
       with normal overwrite.
+
+
+.. spec:: Installer Skill Mutual Exclusion
+   :id: SYSP_SPEC_INSTALLER_SKILL_MUTEX
+   :status: draft
+   :tags: agent-v2, installer, skill, mutex
+   :links: SYSP_REQ_SETUP_SKILL_MUTEX
+
+   **Behavior:**
+
+   Before proceeding with Skill installation, the Installer SHALL:
+
+   1. **Detect group** — Read the ``group:`` field from the incoming Skill's
+      YAML frontmatter. If no ``group:`` field is present, skip Mutual Exclusion
+      check and proceed.
+   2. **Scan installed Skills** — Enumerate all ``SKILL.md`` files in the
+      ``.github/skills/`` directory (or the configured skills directory) and
+      read their ``group:`` frontmatter field.
+   3. **Check for conflict** — If any installed Skill declares the same ``group:``
+      value as the Skill being installed, abort installation and display:
+
+      .. code-block:: text
+
+         Installation rejected: Skill '<incoming-skill-name>' belongs to group '<group>',
+         which is already served by '<installed-skill-name>'.
+         Uninstall '<installed-skill-name>' first if you want to switch Skills.
+
+   4. **Proceed** — If no conflict is found, continue with normal installation.
+
+   **Input:** Skill to be installed (path to ``SKILL.md``)
+   **Output:** Installation proceeds or aborts with conflict message
 
 
 .. spec:: Installer Workflow
