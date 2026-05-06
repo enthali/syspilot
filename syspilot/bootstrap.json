@@ -1,0 +1,4 @@
+{
+  "bootstrap_version": 1,
+  "entry_point": "syspilot/agents/syspilot.installer.agent.md"
+}

@@ -23,6 +23,7 @@ This section contains design specifications following Sphinx-Needs methodology.
    spec_quality_trace
    spec_release_engineer
    spec_setup_engineer
+   spec_installer
    spec_verify_engineer
 
    spec_skill_ask_questions

@@ -17,10 +17,10 @@ Setup Manager Agent
 
    **Context:**
 
-   The Setup Manager is user-invocable and manages installation infrastructure.
-   It detects the install source (local or GitHub), determines the mode
-   (fresh install or update), copies files, configures the project, validates
-   the setup with sphinx-build, and creates a baseline commit.
+   ``syspilot.setup`` is the user-invocable entry point (Bootloader) that always
+   fetches the current Installer from upstream and delegates all installation work
+   to it. The Installer performs environment detection, file copy, configuration,
+   sphinx-build validation, and baseline commit.
 
    **Acceptance Criteria:**
 
@@ -32,3 +32,29 @@ Setup Manager Agent
    6. Given the installed version equals the source version, When Setup runs, Then it asks the user whether to reinstall anyway before proceeding, and aborts gracefully if the user declines
    7. Given an update overwrites agent files, When Setup completes, Then it SHALL automatically preserve the existing ``tools:`` frontmatter in each updated agent, copy new agents completely (including ``tools:``), and inform the user which agents were updated and that their ``tools:`` were preserved
    8. Given a Skill with a ``group:`` field is being installed, When a Skill of the same group is already installed, Then the Setup Agent SHALL reject the installation and report the conflict (Mutual Exclusion enforcement)
+
+
+.. story:: Bootstrap Always-Current Installer
+   :id: SYSP_US_INST_BOOTSTRAP
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, manager, setup, bootstrap
+   :links: SYSP_US_SETUP
+
+   **As a** syspilot developer,
+   **I want** the Setup Agent to always use the current Installer from upstream,
+   **so that** every installation run benefits from the latest installer version
+   regardless of which version was previously installed locally.
+
+   **Context:**
+
+   Today the old version installs the new version of itself — every improvement
+   inherits the risk and bugs of the predecessor version. The Bootloader breaks
+   this cycle by always fetching the latest Installer from the upstream repository
+   before executing it.
+
+   **Acceptance Criteria:**
+
+   1. Given any installed version, When Setup runs, Then Bootloader fetches the Installer from the upstream main branch
+   2. Given a fetched Installer, When bootstrap_version in manifest exceeds supported version, Then Bootloader stops with a user-visible error
+   3. Given a valid Installer, When fetched, Then Bootloader invokes it as a subagent

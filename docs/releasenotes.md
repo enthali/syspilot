@@ -7,6 +7,11 @@ Patch release with three process and tooling fixes: QM now dispatches separate M
 
 ### 🔧 Fixes & Improvements
 
+- **Bootloader + Installer Split** (`bootloader-installer-split`)
+  - Split Setup Agent into Bootloader + Installer: Bootloader always fetches current Installer from upstream, breaking the self-hosting bootstrap cycle
+  - `syspilot.setup.agent.md` is now the lightweight Bootloader; `syspilot.installer.agent.md` is the full installation engine (not user-invocable)
+  - `syspilot/bootstrap.json` is a new server-side manifest; never stored on the customer system
+
 - **QM MECE Per Level** (`qm-mece-per-level`)
   - QM dispatches separate MECE checks for each specification level (L0 User Stories, L1 Requirements, L2 Design Specs)
   - Each MECE invocation receives exactly one level as input — no combined cross-level runs
