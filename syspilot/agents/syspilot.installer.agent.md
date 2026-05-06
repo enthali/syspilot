@@ -34,9 +34,13 @@ installation, update, configuration, and validation work.
 4. **File Installation** — Copy all syspilot files to the target project,
    create directory structure. For agent files:
 
-   - *Update mode, file already exists in instance:* read and save the
-     existing `tools:` frontmatter value; copy the file from product
-     source; re-inject the saved `tools:` value (selective merge)
+   - *Update mode, file already exists in instance, and file is NOT
+     `syspilot.setup.agent.md`:* read and save the existing `tools:`
+     frontmatter value; copy the file from product source; re-inject
+     the saved `tools:` value (selective merge)
+   - *Update mode and file is `syspilot.setup.agent.md` (Bootloader):*
+     always copy completely from product source, including `tools:`
+     (Bootloader tools are managed by the product, not preserved)
    - *Fresh install or new agent (not yet in instance):* copy completely
      from product source, including `tools:`
 
@@ -62,9 +66,11 @@ installation, update, configuration, and validation work.
 3. **Check Dependencies** — Verify Python, Sphinx, sphinx-needs
 4. **Install/Update** — For each agent file in the product source:
 
-   - If update mode and file already exists in instance: read existing
-     `tools:` frontmatter value, copy file from product source,
-     re-inject the saved `tools:` value
+   - If update mode and file already exists in instance and file is NOT
+     `syspilot.setup.agent.md`: read existing `tools:` frontmatter
+     value, copy file from product source, re-inject the saved `tools:` value
+   - If update mode and file is `syspilot.setup.agent.md` (Bootloader):
+     copy completely from product source (Bootloader `tools:` is not preserved)
    - Otherwise (fresh install or new agent not yet in instance): copy
      completely from product source (including `tools:`)
 

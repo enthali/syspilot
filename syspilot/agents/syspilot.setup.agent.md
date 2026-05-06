@@ -1,9 +1,9 @@
 ---
 description: "Setup Bootloader for syspilot. Fetches the current Installer from upstream and invokes it. User-invocable entry point for syspilot installation."
-tools: [read, edit, search, execute, todo]
+tools: [read, edit, search, execute, todo, agent, vscode/askQuestions]
 model: Claude Sonnet 4.6 (copilot)
 user-invocable: true
-agents: []
+agents: ["syspilot.installer"]
 version: 0.5.3
 ---
 
@@ -55,6 +55,12 @@ You do not perform any installation yourself.
 
 4. **Invoke Installer** — Invoke the fetched Installer content as a subagent using
    `runSubagent()`, passing through the user's original request context.
+
+   If `runSubagent` is unavailable (i.e., the `agent` tool is not enabled in this
+   session), display:
+   > "The Setup Bootloader requires the **agent** tool to invoke the Installer.
+   > Please enable the `agent` tool for this chat session and retry."
+   Then stop.
 
 **Input:** User request to install or update syspilot
 **Output:** Delegated to Installer subagent — all installation output comes from the Installer
