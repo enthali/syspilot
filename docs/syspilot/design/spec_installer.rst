@@ -45,36 +45,20 @@ Installer Design
 
    **Duties:**
 
-   1. **Source Detection** — Check for local ``syspilot/`` directory with
-      ``version.json``. Offer choice: local install (fast) or GitHub. When
-      GitHub is selected, ask which branch to install from (default: ``main``
-      for stable releases, ``development`` for latest changes)
-   2. **Mode Detection** — Read own ``version:`` frontmatter field and compare with
-      ``syspilot/version.json`` in the source to determine
-      fresh install vs. update mode
-   3. **Dependency Check** — Verify Python, Sphinx, sphinx-needs are available
-   4. **File Installation** — Copy all syspilot files to the target project,
-      create directory structure. For agent files:
-
-      - *Update mode, file already exists in instance:* read and save the
-        existing ``tools:`` frontmatter value; copy the file from product
-        source; re-inject the saved ``tools:`` value (selective merge)
-      - *Fresh install or new agent (not yet in instance):* copy completely
-        from product source, including ``tools:``
-
-      Before installing a Skill, apply the mutual exclusion check defined in
-      ``SYSP_SPEC_INSTALLER_SKILL_MUTEX``.
-
-      After all agent files are written, report which agents were updated
-      and confirm that ``tools:`` fields were preserved.
-   5. **Configuration** — Set up Sphinx conf.py, create initial RST structure
-   6. **Validation** — Run sphinx-build to verify the setup works
-   7. **Baseline Commit** — Create a Git commit with all placed files
-   8. **Customization Guard** — Before overwriting files in update mode, use the
-      ask-questions skill to check whether the user has made local customizations.
-      If yes: record the list of customized files, proceed with update, then
-      display the list and instruct user to review and re-apply. If no: proceed
-      with normal overwrite.
+   * **Vollständigkeit und Korrektheit** — After every successful run, all
+     syspilot product components are complete and correctly placed in the
+     target project
+   * **Erhaltung lokaler Anpassungen** — After an update, user customizations
+     (``tools:`` fields and other local changes) are either preserved
+     automatically or the user is explicitly informed what needs re-applying
+   * **Funktionsfähigkeit** — No run ends in a half-installed or unvalidated
+     state; the result always passes sphinx-build before being reported
+     as successful
+   * **Nachvollziehbarkeit** — Every successful installation leaves a
+     traceable Git commit documenting exactly what was changed
+   * **Skill-Konfliktfreiheit** — If a Skill belonging to an exclusive group
+     is being installed and a Skill of the same group already exists, the
+     installation is rejected with a conflict report
 
 
 .. spec:: Installer Skill Mutual Exclusion

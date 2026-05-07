@@ -26,30 +26,24 @@ Setup Manager Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, installer, duties
-   :links: SYSP_US_INST_BOOTSTRAP
+   :links: SYSP_US_INSTALLER
 
    **Description:**
-   The Installer agent SHALL have Duties covering environment detection,
-   installation, updates, configuration, and validation.
+   The Installer SHALL guarantee the following outcomes through its Duties.
 
    **Acceptance Criteria:**
 
-   * AC-1: Installer can detect install source (local directory or GitHub)
-   * AC-2: Installer can detect mode (fresh install or update)
-   * AC-3: Installer can install/copy all syspilot files
-   * AC-4: Installer can validate setup with sphinx-build
-   * AC-5: Installer can create a baseline Git commit
-   * AC-6: Installer can query the user about file customizations before overwriting and guide the user to re-apply them after the update
-   * AC-7: During an update, Installer SHALL perform a selective merge on
-     agent files: preserve the existing ``tools:`` frontmatter field from the
-     instance, and take all other frontmatter fields and body content from the
-     product source
-   * AC-8: During a fresh install, or when the product introduces an agent that
-     does not yet exist in the instance, Installer SHALL copy the agent file
-     completely from the product source (including ``tools:``)
-   * AC-9: After updating agent files, Installer SHALL inform the user
-     which agents were updated and confirm that their ``tools:`` fields were
-     preserved
+   * AC-1: After every successful run, all syspilot product components are
+     complete and correctly placed in the target project
+   * AC-2: After an update, all local user-anpassungen (``tools:`` and other
+     customizations) are either preserved automatically or the user is
+     explicitly informed what needs re-applying
+   * AC-3: No installation run ends in a half-installed or unvalidated state —
+     the result always passes sphinx-build before being reported as successful
+   * AC-4: Every successful installation leaves a traceable Git commit
+   * AC-5: If a Skill belonging to an exclusive group is being installed and
+     a Skill of the same group already exists, the installation is rejected
+     with a conflict report
 
 
 .. req:: Installer Workflow
@@ -57,7 +51,7 @@ Setup Manager Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, installer, workflow
-   :links: SYSP_US_INST_BOOTSTRAP
+   :links: SYSP_US_INSTALLER
 
    **Description:**
    The Installer agent SHALL follow a workflow from source detection
@@ -80,20 +74,20 @@ Setup Manager Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, setup, bootloader, duties
-   :links: SYSP_US_INST_BOOTSTRAP
+   :links: SYSP_US_SETUP
 
    **Description:**
-   The Setup Bootloader agent (syspilot.setup) SHALL have Duties limited to
-   fetching, validating, and invoking the Installer. It SHALL NOT perform
-   installation tasks directly.
+   The Setup Bootloader SHALL guarantee the following outcomes through its Duties.
 
    **Acceptance Criteria:**
 
-   * AC-1: Bootloader fetches the upstream manifest (bootstrap.json) on every run
-   * AC-2: Bootloader validates the manifest version before proceeding
-   * AC-3: Bootloader fetches the Installer agent from upstream on every run
-   * AC-4: Bootloader invokes the Installer as a subagent
-   * AC-5: Bootloader never copies files, validates with sphinx-build, or creates Git commits directly
+   * AC-1: The user always has exactly one, stable entry point into syspilot —
+     regardless of internal evolution
+   * AC-2: Every invocation executes the upstream-current Installer logic —
+     the locally installed version is never authoritative
+   * AC-3: If the Bootloader detects version incompatibility with upstream,
+     the user is protected from a faulty run (invocation is blocked with
+     user-visible error)
 
 
 .. req:: Setup Manager Frontmatter Configuration
@@ -136,7 +130,7 @@ Setup Manager Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, setup, bootloader
-   :links: SYSP_US_INST_BOOTSTRAP
+   :links: SYSP_US_SETUP
 
    **Description:**
    The Setup Bootloader SHALL fetch the Installer agent file from the upstream
@@ -154,7 +148,7 @@ Setup Manager Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, setup, bootloader
-   :links: SYSP_US_INST_BOOTSTRAP
+   :links: SYSP_US_SETUP
 
    **Description:**
    The Setup Bootloader SHALL invoke the fetched Installer as a subagent,
@@ -171,7 +165,7 @@ Setup Manager Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, setup, bootloader
-   :links: SYSP_US_INST_BOOTSTRAP
+   :links: SYSP_US_SETUP
 
    **Description:**
    The Setup Bootloader SHALL validate the ``bootstrap_version`` field in the
@@ -190,7 +184,7 @@ Setup Manager Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, setup, installer
-   :links: SYSP_US_INST_BOOTSTRAP
+   :links: SYSP_US_INSTALLER
 
    **Description:**
    The Installer agent SHALL NOT be directly user-invocable. It is an internal
@@ -207,7 +201,7 @@ Setup Manager Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, setup, skill, mutex
-   :links: SYSP_US_SETUP
+   :links: SYSP_US_INSTALLER
 
    **Description:**
    The Setup Agent SHALL reject installation of a Skill that declares a ``group:``

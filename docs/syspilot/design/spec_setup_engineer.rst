@@ -25,18 +25,16 @@ Setup Manager Design
    :id: SYSP_SPEC_SETUP_DUTIES
    :status: draft
    :tags: agent-v2, manager, setup, duties, bootloader
-   :links: SYSP_REQ_SETUP_BOOTLOADER_FETCH, SYSP_REQ_SETUP_BOOTLOADER_INVOKE, SYSP_REQ_SETUP_BOOTLOADER_VERSION
+   :links: SYSP_REQ_SETUP_BOOTLOADER_DUTIES
 
    **Duties:**
 
-   1. **Fetch Manifest** — Retrieve ``syspilot/bootstrap.json`` from the upstream
-      repository (GitHub raw URL, ``main`` branch)
-   2. **Validate Version** — Read ``bootstrap_version`` from manifest; stop with
-      user-visible error if version exceeds supported (currently 1)
-   3. **Fetch Installer** — Retrieve the Installer agent file from the URL resolved
-      via the manifest ``entry_point`` field
-   4. **Invoke Installer** — Invoke the fetched Installer as a subagent via
-      ``runSubagent()``, passing through the user's original request context
+   * **Stable Entry Point** — The user always has exactly one, stable,
+     discoverable entry point into syspilot; internal evolution is invisible
+   * **Upstream Actuality** — Every invocation executes the upstream-current
+     Installer logic; the locally installed version is never authoritative
+   * **Version Protection** — If a version incompatibility exists between
+     Bootloader and upstream, the user is protected from a faulty run
 
 
 .. spec:: Setup Bootloader Workflow

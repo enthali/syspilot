@@ -23,10 +23,9 @@ You do not perform any installation yourself.
 
 ## Duties
 
-1. **Fetch Manifest** — Fetch `syspilot/bootstrap.json` from the upstream repository
-2. **Validate Version** — Check `bootstrap_version` against supported version (1)
-3. **Fetch Installer** — Retrieve the Installer agent content from upstream
-4. **Invoke Installer** — Hand off to Installer as subagent with user context
+- **Stable Entry Point** — The user always has exactly one, stable, discoverable entry point into syspilot; internal evolution is invisible
+- **Upstream Actuality** — Every invocation executes the upstream-current Installer logic; the locally installed version is never authoritative
+- **Version Protection** — If a version incompatibility exists between Bootloader and upstream, the user is protected from a faulty run
 
 ## Workflow
 
