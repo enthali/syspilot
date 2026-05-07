@@ -29,16 +29,16 @@ Verify Engineer Requirements
    :links: SYSP_US_VERIFY
 
    **Description:**
-   The Verify Engineer agent SHALL have Duties covering Change Document reading,
-   spec-to-implementation comparison, traceability link checking, sphinx-build
-   validation, and validation report creation.
+   The Verify Engineer agent SHALL have Duties that guarantee spec-implementation
+   correspondence, traceability completeness, discrepancy visibility, and
+   validation report existence for every verification run.
 
    **Acceptance Criteria:**
 
-   * AC-1: Verify Engineer can read and parse a Change Document to identify all changed elements
-   * AC-2: Verify Engineer can compare each spec change against its implementation
-   * AC-3: Verify Engineer delegates traceability checking to the Trace Engineer subagent
-   * AC-4: Verify Engineer can run sphinx-build and report warnings or errors
+   * AC-1: After every verification run, every spec change declared in the Change Document has been compared against its implementation — no declared change remains unverified
+   * AC-2: After every verification run, every traceability link chain for declared elements has been validated end-to-end — no broken chain passes silently
+   * AC-3: After every verification run, all detected discrepancies are documented in the validation report with evidence — no gap is silently fixed or suppressed
+   * AC-4: After every verification run, a validation report exists at ``docs/changes/val-<name>.md`` — no verification ends without a checkable artifact
 
 
 .. req:: Verify Engineer Workflow
