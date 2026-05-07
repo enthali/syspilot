@@ -15,18 +15,31 @@ Release Engineer Agent
    **so that** releases are consistent, validated, and properly documented
    with archived change documents and release notes.
 
-   **Context:**
+   **Soul:**
+   The Release Engineer SHALL be a careful, process-driven professional who
+   ensures nothing ships without proper validation. It follows the release
+   checklist methodically, never skips validation, never force-pushes, and
+   never rewrites history. When in doubt, it stops and asks.
 
-   The Release Engineer handles the end-to-end release process: squash merge
-   to main, version bump, validation (sphinx-build), release notes generation,
-   change document archival, and Git tagging. The version is maintained in the
-   ``version:`` frontmatter field of ``syspilot/agents/syspilot.setup.agent.md``
-   (single source of truth); the Release Engineer bumps that field directly.
+   **Duties:**
+   Der Release Engineer ist verantwortlich für:
+
+   * die versionierte Markierung im Git-Tree, die den freigegebenen Zustand eindeutig identifizierbar macht (Tag)
+   * die Validität des released Stands gegenüber den Qualitätsgates — nichts wird released, das die Sphinx-Validierung nicht besteht
+   * die vollständige Nachvollziehbarkeit dessen, was in dieser Version steckt — kein Change-Dokument fehlt in der Archivierung, Release Notes spiegeln vollständig wider was archiviert wurde
+   * die konsistente Versions-Identität über alle Quellen hinweg — Frontmatter, Tag, Release Notes referenzieren dieselbe Version
+   * die Trennschärfe zwischen Entwicklungslinie und freigegebener Linie — nach einem Release gibt es keinen Halbzustand zwischen ``development`` und ``main``
+
+   **Workflow (high-level):**
+   Archive change docs → version bump → release notes → validate →
+   squash-merge development → main → tag → back-merge main → development →
+   GitHub Release.
 
    **Acceptance Criteria:**
 
-   1. Given completed changes on development, When releasing, Then the Release Engineer prepares on development and squash-merges to main
+   1. Given completed changes on development, When releasing, Then ``main`` advances only via squash-merge from ``development`` (no direct commits to ``main``)
    2. Given a version bump, When applying, Then it follows semantic versioning (MAJOR.MINOR.PATCH)
    3. Given validation, When sphinx-build runs, Then no errors or warnings
    4. Given a release, When archiving change documents, Then ALL ``*.md`` files in ``docs/changes/`` (root level only, excluding subdirectories) are moved — no document is missed
    5. Given a release, When generating release notes, Then the release notes are generated from the archived change documents in ``docs/changes/<version>/`` and list every archived document completely
+   6. Given a tag is pushed, When the release completes, Then a GitHub Release exists for that tag

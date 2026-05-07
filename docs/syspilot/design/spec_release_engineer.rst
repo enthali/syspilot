@@ -29,25 +29,21 @@ Release Engineer Design
 
    **Duties:**
 
-   1. **Change Document Archival** — Scan ALL ``*.md`` files in ``docs/changes/``
-      (root only — do not recurse into subdirectories) and move every found file
-      to ``docs/changes/<version>/``. The scan is the definitive input set;
-      session context is not used to determine which files to archive.
-   2. **Version Bump** — Bump the ``version:`` field in
-      ``syspilot/agents/syspilot.setup.agent.md`` following semantic
-      versioning (MAJOR.MINOR.PATCH)
-   3. **Release Notes** — Generate or update release notes in
-      ``docs/releasenotes.md`` (newest first) using ALL change documents
-      found in ``docs/changes/<version>/`` as the explicit source; every
-      archived document MUST have an entry — no document may be omitted
-      due to session context drift.
-   4. **Validation** — Run sphinx-build with ``-W`` flag to catch warnings,
-      ensure all checks pass
-   5. **Squash Merge** — Squash-merge ``development`` → ``main``
-   6. **Git Tagging** — Create version tag (``v{version}``) on ``main`` and push
-   7. **Back-Merge** — Merge ``main`` back into ``development`` to sync the
-      squash commit
-   8. **GitHub Release** — Create GitHub Release from the tag
+   * **Versionierte Markierung** — After every release, ``main`` carries a
+     uniquely identifying tag (``v{version}``) — there is never an untagged
+     release state.
+   * **Validität** — Nothing reaches ``main`` that has not passed
+     ``sphinx-build -W`` validation — a failed build always blocks release.
+   * **Vollständige Nachvollziehbarkeit** — Every change document from the
+     release cycle is archived in ``docs/changes/<version>/`` and every
+     archived document has a corresponding release notes entry — no document
+     is missing or omitted.
+   * **Konsistente Versions-Identität** — The version string is identical in
+     the setup agent frontmatter ``version:`` field, the Git tag, and the
+     release notes header — there is no version drift.
+   * **Trennschärfe** — After every release, ``development`` and ``main``
+     are synchronized via back-merge — there is no half-state between the
+     two branches.
 
 
 .. spec:: Release Engineer Workflow
