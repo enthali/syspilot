@@ -50,8 +50,12 @@ Every agent definition — Manager or Engineer — has exactly three sections:
 | Section | Customizable? | Purpose |
 |---------|---------------|---------|
 | **Soul** | No | Immutable identity, character, perspective |
-| **Duties** | Yes | List of discrete tasks the agent performs |
-| **Workflow** | Yes | Step-by-step process the agent follows |
+| **Duties** | Yes | Outcomes and responsibilities the agent is accountable for (WHAT) |
+| **Workflow** | Yes | Ordered execution steps the agent follows (HOW) |
+
+**Mutual Exclusion:** A behavioural item belongs in exactly one section —
+Duties if it describes an outcome or accountability; Workflow if it describes
+an execution step. Never both.
 
 Customers may modify Duties and Workflow to adapt agents to their project.
 The Soul must not be modified — it is the stable behavioral anchor.

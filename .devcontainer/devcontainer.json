@@ -1,7 +1,7 @@
 {
   "name": "syspilot",
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
-  "postCreateCommand": "pip install -r docs/requirements.txt",
+  "postCreateCommand": "pip install -r docs/requirements.txt && curl -sL https://github.com/enthali/jarvis/releases/latest/download/jarvis.vsix -o /tmp/jarvis.vsix && CODE=$(find /home/vscode/.vscode-server/bin -name code -path '*/remote-cli/*' | head -1) && $CODE --install-extension /tmp/jarvis.vsix",
   "customizations": {
     "vscode": {
       "extensions": [

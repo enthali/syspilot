@@ -24,7 +24,7 @@ Meta-level definitions of Soul, Duties, and Workflow concepts.
    * Immutable across customizations — changing the Soul is a breaking change
    * Written in second person ("You are...")
    * Short (3–5 sentences maximum)
-   * Defines identity, not tasks (tasks belong in Duties)
+   * Defines identity, not responsibilities or execution steps (accountability belongs in Duties; execution steps belong in Workflow)
 
    **Example Pattern:**
 
@@ -44,18 +44,24 @@ Meta-level definitions of Soul, Duties, and Workflow concepts.
 
    **Definition:**
 
-   **Duties** are the enumerated tasks an agent can perform. They define:
+   **Duties** answer the question *What is this agent accountable for?*
+   They enumerate the agent's responsibilities and expected outcomes. They define:
 
-   * **Task list** — discrete, independently addressable responsibilities
+   * **Accountability** — what the agent owns and is responsible for delivering
    * **Scope** — what falls within this agent's responsibility
    * **Boundaries** — what is explicitly NOT this agent's job
 
    **Properties:**
 
+   * Every agent definition SHALL contain a Duties section
    * Customer-customizable — duties can be added, removed, or modified
    * Each duty is independently enableable/disableable
-   * Duties do not define sequence (that's the Workflow)
-   * Written as imperative descriptions
+   * Adding or removing a duty does not affect the Soul
+   * Written as short, unordered responsibility statements
+   * **Mutual Exclusion** — A single behavioural item SHALL appear in exactly
+     one of Duties or Workflow — never both. If an item describes an outcome
+     or accountability, it belongs in Duties. If it describes a step in the
+     execution sequence, it belongs in Workflow.
 
    **Customization Examples:**
 
@@ -74,19 +80,24 @@ Meta-level definitions of Soul, Duties, and Workflow concepts.
 
    **Definition:**
 
-   The **Workflow** defines the ordered process steps an agent follows. It defines:
+   The **Workflow** answers the question *How does this agent execute its work?*
+   It defines the ordered sequence of execution steps the agent follows. It defines:
 
-   * **Steps** — numbered, sequential actions
+   * **Steps** — numbered, sequential execution actions
    * **Inputs** — what the agent needs to start
    * **Outputs** — what the agent produces
    * **Decision points** — where the flow can branch
 
    **Properties:**
 
+   * Every agent definition SHALL contain a Workflow section
    * Customer-customizable — steps can be reordered, added, or skipped
-   * Steps reference Duties (what to do) but add sequence (when to do it)
    * Written as numbered steps with clear inputs/outputs
    * Modifying the Workflow does not affect the Soul
+   * **Mutual Exclusion** — A single behavioural item SHALL appear in exactly
+     one of Workflow or Duties — never both. If an item describes a step in
+     the execution sequence, it belongs in Workflow. If it describes an outcome
+     or accountability, it belongs in Duties.
 
    **Customization Examples:**
 
