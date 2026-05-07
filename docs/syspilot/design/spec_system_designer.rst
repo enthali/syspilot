@@ -29,21 +29,20 @@ System Designer
 
    **Duties:**
 
-   1. **Change Request Analysis** — Understand user intent and scope
-   2. **Change Document Management** — Read and maintain the persistent Change
-      Document as a decision log (``docs/changes/<name>.md``)
-   3. **Level Processing** — For each level: identify impacted elements, propose
-      new/modified specs, discuss with user, write RST files
-   4. **RST Writing** — Write sphinx-needs RST files with proper directives
-      (``:id:``, ``:status: draft``, ``:links:``, ``:tags:``)
-   5. **MECE Advisory** — Invoke the MECE agent as subagent after each level
-      write to check horizontal consistency
-   6. **Horizontal Check** — Perform own horizontal MECE checks scoped to the
-      affected subset (not the entire level)
-   7. **Impact Analysis** — Use the impact analysis skill to discover affected
-      elements before each level (raw output at Level 0, assessment at Level 1/2)
-   8. **Bidirectional Navigation** — Support user navigating back to previous
-      levels when changes at a lower level necessitate updates
+   * **Vertikale Integrität** — After every completed design pass, every new or
+     changed spec element at every level is linked to its parent and children —
+     no element exists without traceability context.
+   * **MECE-Konformität** — Before moving to the next level, the current level
+     has no overlaps and no gaps — MECE violations are never inherited downward.
+   * **Status-Disziplin** — Every new element starts as ``:status: draft`` and is
+     only set to ``:status: approved`` after successful validation — premature
+     approval never occurs.
+   * **Auditierbarkeit** — At every point during and after the design process,
+     the Change Document reflects the decisions made and open points — including
+     after interruption.
+   * **User-Approval-Disziplin** — In user-guided mode, no level transition
+     occurs without explicit user confirmation — the designer never proceeds
+     silently.
 
 
 .. spec:: System Designer Design Workflow

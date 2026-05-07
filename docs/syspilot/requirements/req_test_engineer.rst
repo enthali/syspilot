@@ -29,15 +29,16 @@ Test Engineer Requirements
    :links: SYSP_US_UAT
 
    **Description:**
-   The Test Engineer agent SHALL have Duties covering UAT chain generation,
-   testability validation, and sphinx-build verification.
+   The Test Engineer agent SHALL have Duties that guarantee test coverage,
+   manual executability, untestability visibility, and full traceability
+   for every feature.
 
    **Acceptance Criteria:**
 
-   * AC-1: Test Engineer can generate UAT user stories from feature acceptance criteria
-   * AC-2: Test Engineer can generate UAT requirements (test data specifications)
-   * AC-3: Test Engineer can generate UAT design specs (expected outcomes tables)
-   * AC-4: Test Engineer can validate testability and report untestable criteria
+   * AC-1: After every completed UAT run, every feature User Story has a corresponding UAT chain — no feature remains untested
+   * AC-2: Every generated test scenario can be executed by a human without additional assumptions or implicit knowledge — the scenario is self-contained
+   * AC-3: If an acceptance criterion cannot be meaningfully tested, this is explicitly stated in the output — untestability is never silently ignored
+   * AC-4: Every test scenario traces back to a feature AC, and every test data item and expected outcome traces to the test scenario — there are no orphaned test artifacts
 
 
 .. req:: Test Engineer Workflow
