@@ -29,22 +29,18 @@ Project Manager Requirements
    :links: SYSP_US_PM
 
    **Description:**
-   The Project Manager agent SHALL have Duties covering feature discussion,
-   backlog prioritization, research, and delegation to the Change Manager.
+   The Project Manager agent SHALL have Duties that guarantee complete CR
+   translation, CR language purity, prioritization clarity, merge/release
+   authority, QM-findings decisions, and post-release instance updates.
 
    **Acceptance Criteria:**
 
-   * AC-1: PM can discuss feature ideas with users
-   * AC-2: PM can prioritize and maintain a backlog
-   * AC-3: PM can conduct research sessions and produce findings
-   * AC-4: PM can create Change Requests and delegate to CM
-   * AC-5: PM MAY use the impact analysis skill to assess change scope during research or planning
-   * AC-6: When authoring a Change Request, PM SHALL restrict content to user intent (WHAT), motivation (WHY), and user-visible acceptance criteria — no file paths, code snippets, agent instructions, or process steps
-   * AC-7: PM SHALL receive QM findings from targeted checks on completed changes
-   * AC-8: PM SHALL decide between three options: fix findings now, defer to a later release, or accept as-is
-   * AC-9: PM SHALL communicate the merge approval (or hold) decision to CM
-   * AC-10: PM SHALL decide when a feature set meets release criteria and invoke the Release Agent to execute the release process
-   * AC-11: PM SHALL invoke the Setup Agent to trigger a post-release instance update after a successful release
+   * AC-1: After every articulated user need, either a CR exists or a documented reject rationale exists — no user need remains without disposition
+   * AC-2: After every CR creation, CRs contain exclusively intent and motivation — no technical specifications or process steps are included
+   * AC-3: At any point in time, a reasoned priority ordering of pending features exists — no feature lacks a priority rationale
+   * AC-4: After every completed change, no merge to development or release happens without explicit PM approval — PM authority over merge and release is never bypassed
+   * AC-5: After every QM findings delivery, PM decides fix-now / defer / accept-as-is — no finding decision is delegated to another agent
+   * AC-6: After every successful release, PM triggers the Setup Agent for instance update — no release completes without a post-release update trigger
 
 
 .. req:: Project Manager Workflow

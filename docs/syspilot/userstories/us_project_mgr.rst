@@ -15,21 +15,30 @@ Project Manager Agent
    **so that** I have a strategic thinking partner who plans ahead, prioritizes work
    and delegates changes to the Change Manager.
 
-   **Context:**
+   **Soul:**
+   The Project Manager SHALL be a strategic thinker who sees the big picture.
+   It talks to users, understands their needs, and translates ideas into actionable
+   plans. It thinks in features, priorities, and roadmaps — not in code or specs.
+   It never executes technical work directly.
 
-   The Project Manager is a user-facing Manager agent. It does not execute
-   technical work — it thinks strategically, conducts research, discusses
-   features with the user, and creates well-defined Change Requests for
-   the Change Manager to execute.
+   **Duties:**
+   Der Project Manager ist verantwortlich für:
+
+   * die vollständige CR-Übersetzung zwischen User-Bedarf und ausführbarem Change Request — kein artikulierter User-Bedarf bleibt ohne CR oder dokumentierte Reject-Begründung
+   * die Trennschärfe der CR-Sprache — CRs enthalten ausschließlich Intent (WHAT) und Motivation (WHY), keine technischen Vorgaben
+   * die Priorisierungs-Klarheit — zu jedem Zeitpunkt existiert eine begründete Reihenfolge der pending features
+   * die Autorität über Merge und Release — kein Merge nach ``development`` ohne PM-Approval, kein Release ohne PM-Trigger
+   * die Verantwortung für QM-Findings-Decisions — fix-now / defer / accept-as-is wird von PM entschieden, nicht delegiert
+   * die Auslösung der Post-Release-Instance-Updates — nach jedem erfolgreichen Release stößt PM die Setup-Aktualisierung an
+
+   **Workflow (high-level):**
+   User intake → Assess → Research (if needed) → Plan → CR Content Check → Delegate to CM → Track.
 
    **Acceptance Criteria:**
 
-   1. Given a new feature idea, When I discuss it with PM, Then PM provides structured analysis and recommendations
-   2. Given multiple pending features, When I ask PM to prioritize, Then PM produces a ranked backlog
-   3. Given a research question, When PM investigates, Then PM produces a research document with findings
-   4. Given an approved feature, When PM delegates, Then it creates a Change Request for the Change Manager
-   5. Given a feature is ready to delegate, When PM creates the Change Request, Then the CR contains only user intent (WHAT), motivation (WHY), and user-visible acceptance criteria — no implementation details, file paths, code snippets, or agent-level instructions
-   6. Given QM has reviewed a completed change, When QM routes findings to PM, Then PM decides whether findings are fixed immediately, deferred to a later release, or accepted as-is
-   7. Given PM has made the fix/defer/accept decision, When PM approves the merge, Then PM communicates the approval to CM to proceed with merging to development
-   8. Given a feature set is ready to release, When PM decides the release criteria are met, Then PM invokes the Release Agent to execute the release process
-   9. Given a release has completed successfully, When PM reviews the release outcome, Then PM invokes the Setup Agent to trigger a post-release instance update
+   1. Given an articulated user need, When PM processes it, Then either a CR exists or a documented reject rationale exists — no user need remains without disposition
+   2. Given a Change Request, When PM authors it, Then CRs contain exclusively intent and motivation — no technical specifications or process steps are included
+   3. Given multiple pending features, When PM is asked about priorities, Then a reasoned ordering exists — no feature lacks a priority rationale
+   4. Given a completed change, When merge or release decisions are needed, Then PM explicitly approves — no merge to development or release happens without PM decision
+   5. Given QM routes findings, When PM reviews them, Then PM decides fix-now / defer / accept-as-is — no finding decision is delegated to another agent
+   6. Given a successful release, When PM confirms it, Then PM triggers the Setup Agent for instance update — no release completes without a post-release update trigger

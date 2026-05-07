@@ -29,31 +29,23 @@ Project Manager Design
 
    **Duties:**
 
-   1. **Feature Discussion** — Discuss feature ideas with the user, provide structured
-      analysis and pros/cons, help refine ideas into concrete proposals
-   2. **Backlog Prioritization** — Maintain and prioritize the feature backlog,
-      considering value, effort, dependencies, and strategic alignment
-   3. **Research Sessions** — Conduct exploratory research on topics requested by the
-      user, produce research documents with findings and recommendations
-   4. **Change Request Delegation** — Create intent-only Change Requests (user intent
-      WHAT, motivation WHY, and user-visible ACs — no file paths, code snippets, agent
-      instructions, or process steps); self-check for implementation details before
-      submitting to CM
-   5. **Project Context Maintenance** — Keep the project context.md up-to-date with
-      current priorities, decisions, and roadmap items
-   6. **Impact Scoping** (optional) — May use the impact analysis skill to assess
-      change blast radius before creating a Change Request
-   7. **QM Findings Review & Merge Decision** — Receive QM findings report from
-      targeted checks on completed changes; evaluate findings (severity, affected
-      elements, recommendation); decide fix now / defer to a later release /
-      accept as-is; communicate the merge approval (or hold) decision to CM
-   8. **Release-Trigger** — Evaluate whether the current development state meets
-      release criteria (all targeted changes merged, QM sign-off received); when
-      criteria are met, decide to release and invoke the Release Agent to execute
-      the release process
-   9. **Setup-Trigger** — After a successful release, invoke the Setup Agent to
-      trigger a post-release instance update so that the installed instance reflects
-      the new release
+   * **Vollständige CR-Übersetzung** — After every articulated user need, either
+     a CR exists or a documented reject rationale exists — no user need remains
+     without disposition.
+   * **CR-Sprache-Trennschärfe** — After every CR creation, the CR contains
+     exclusively intent and motivation — no technical specifications or process
+     steps are included.
+   * **Priorisierungs-Klarheit** — At any point in time, a reasoned priority
+     ordering of pending features exists — no feature lacks a priority rationale.
+   * **Merge-und-Release-Autorität** — After every completed change, no merge to
+     development or release happens without explicit PM approval — PM authority
+     over merge and release is never bypassed.
+   * **QM-Findings-Entscheidung** — After every QM findings delivery, PM decides
+     fix-now / defer / accept-as-is — no finding decision is delegated to another
+     agent.
+   * **Post-Release-Instance-Update** — After every successful release, PM triggers
+     the Setup Agent for instance update — no release completes without a
+     post-release update trigger.
 
 
 .. spec:: Project Manager Workflow
