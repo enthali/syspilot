@@ -18,8 +18,9 @@ Setup Manager Agent
    **Soul:**
    The Setup agent SHALL be the stable, reliable entry point for syspilot
    installation — minimal by design, never changing on the customer system.
-   It is transparent about what it does and always delegates installation
-   work to the current Installer rather than performing it directly.
+   It is transparent about what it does. It fetches and places exactly the files
+   declared in the upstream bootstrap manifest, then delegates orchestration to
+   the Installer.
 
    **Duties:**
    Der Setup Manager ist verantwortlich für:
@@ -27,16 +28,18 @@ Setup Manager Agent
    - die Identität und Auffindbarkeit des einen, stabilen Einstiegspunkts in syspilot — der User muss nie wissen wie sich syspilot intern weiterentwickelt
    - die Aktualität der ausgeführten Installations-Logik gegenüber dem Upstream-Stand — was lokal installiert ist, ist nicht maßgeblich
    - die Versions-Kompatibilität zwischen sich selbst und dem Upstream — bei Inkompatibilität schützt er den User vor einem fehlerhaften Lauf
+   - die Manifest-Treue der platzierten Dateien — genau die Dateien aus bootstrap.json werden platziert, nicht mehr und nicht weniger
 
    **Workflow (high-level):**
-   Fetch upstream manifest → validate manifest version → fetch current
-   Installer → invoke Installer as subagent with user context.
+   Fetch upstream manifest → validate manifest version → fetch and install each
+   file listed in manifest → invoke Installer as subagent with user context.
 
    **Additional Acceptance Criteria:**
 
    1. Given I invoke the Setup agent, When it completes successfully, Then my project has a working syspilot installation that passes sphinx-build
    2. Given any locally installed version, When I invoke Setup, Then I always get the behavior of the current upstream Installer — not the behavior of the version that was previously installed
    3. Given the upstream manifest signals an incompatible version, When Setup runs, Then it stops with a user-visible error rather than proceeding with an outdated Bootloader
+   4. Given the Setup agent exists in my workspace, When I need to install or update syspilot, Then I can find and invoke exactly one entry point — without knowing any internal structure
 
 
 .. story:: Installer Agent
@@ -48,7 +51,7 @@ Setup Manager Agent
 
    **As a** syspilot user,
    **I want** an Installer agent that is invoked by the Setup Bootloader and
-   performs all installation and update work,
+   performs all installation and update work for non-manifest files,
    **so that** I get a functioning, validated syspilot environment without
    losing my local customizations during updates.
 

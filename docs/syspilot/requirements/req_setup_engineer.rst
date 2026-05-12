@@ -12,13 +12,12 @@ Setup Manager Requirements
    **Description:**
    The Setup Bootloader agent (syspilot.setup) SHALL have a Soul that defines it as
    minimal, reliable, and transparent. It is the stable entry point — user-invocable —
-   that delegates all installation work to the Installer subagent.
+   that fetches and places manifest files, then delegates orchestration to the Installer.
 
    **Acceptance Criteria:**
 
    * AC-1: Setup Bootloader Soul defines a minimal, reliable, transparent character
    * AC-2: Setup Bootloader is user-invocable
-   * AC-3: Setup Bootloader never installs files directly — always delegates to Installer
 
 
 .. req:: Installer Duties
@@ -30,6 +29,8 @@ Setup Manager Requirements
 
    **Description:**
    The Installer SHALL guarantee the following outcomes through its Duties.
+   The Installer's scope covers all syspilot product files NOT already placed
+   by the Bootloader via the bootstrap manifest.
 
    **Acceptance Criteria:**
 
@@ -88,6 +89,8 @@ Setup Manager Requirements
    * AC-3: If the Bootloader detects version incompatibility with upstream,
      the user is protected from a faulty run (invocation is blocked with
      user-visible error)
+   * AC-4: After every Bootloader run, exactly the files declared in
+     bootstrap.json have been placed — no more, no less (Manifest Fidelity)
 
 
 .. req:: Setup Manager Frontmatter Configuration
@@ -104,8 +107,8 @@ Setup Manager Requirements
    **Acceptance Criteria:**
 
    * AC-1: Setup Manager frontmatter declares ``user-invocable: true``
-   * AC-2: Setup Manager frontmatter lists an empty ``agents`` array
-   * AC-3: Setup Manager frontmatter includes ``read``, ``edit``, ``search``, ``execute``, ``todo`` in tools
+   * AC-2: Setup Manager frontmatter lists ``agents: ["syspilot.installer"]``
+   * AC-3: Setup Manager frontmatter includes ``read``, ``edit``, ``search``, ``execute``, ``todo``, ``agent``, ``vscode/askQuestions`` in tools
    * AC-4: The setup agent frontmatter SHALL include a ``version:`` field reflecting the installed syspilot version
 
 
@@ -125,7 +128,7 @@ Setup Manager Requirements
    * AC-1: File ``syspilot.setup.prompt.md`` exists in the prompts directory
 
 
-.. req:: Bootloader Fetch Installer
+.. req:: Bootloader Fetch and Place Manifest Files
    :id: SYSP_REQ_SETUP_BOOTLOADER_FETCH
    :status: draft
    :priority: mandatory
@@ -133,13 +136,14 @@ Setup Manager Requirements
    :links: SYSP_US_SETUP
 
    **Description:**
-   The Setup Bootloader SHALL fetch the Installer agent file from the upstream
-   repository (GitHub raw URL, ``main`` branch) on every run before invoking it.
+   The Setup Bootloader SHALL fetch and place the files declared in the upstream
+   bootstrap manifest (GitHub raw URL, ``main`` branch) on every run before
+   invoking the Installer.
 
    **Acceptance Criteria:**
 
-   * AC-1: Bootloader reads ``syspilot/bootstrap.json`` from upstream to resolve entry point
-   * AC-2: Bootloader fetches Installer agent file from the URL resolved via bootstrap.json
+   * AC-1: Bootloader reads ``syspilot/bootstrap.json`` from upstream to resolve file list
+   * AC-2: Bootloader fetches each file listed in the manifest ``files[]`` array and writes it to the specified destination
    * AC-3: Fetch happens on every Bootloader run (no local caching)
 
 

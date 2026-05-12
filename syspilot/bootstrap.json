@@ -1,4 +1,9 @@
 {
   "bootstrap_version": 1,
-  "entry_point": "syspilot/agents/syspilot.installer.agent.md"
+  "files": [
+    {
+      "source": "syspilot/agents/syspilot.installer.agent.md",
+      "destination": ".github/agents"
+    }
+  ]
 }
