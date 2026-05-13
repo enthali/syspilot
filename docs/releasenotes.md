@@ -1,5 +1,71 @@
 # syspilot Release Notes
 
+## v0.5.4 - 2026-05-13
+
+### Summary
+Minor release completing the Duties/Workflow conformance sweep across all agents, establishing Skill Architecture as a first-class architectural component, and introducing Bootloader Schema v2 (`files[]` array + Soul/Guardrail alignment). Includes housekeeping cleanup of deferred skill-architecture findings and PM Duties completeness extensions.
+
+### 🏗️ Architecture
+
+- **Skill Architecture Foundation** (`skill-architecture-foundation`)
+  - Skill Architecture anchored alongside Agent Architecture in the spec hierarchy
+  - New `SYSP_US_SKILL_ARCH` User Story and `SYSP_REQ_SKILL_DEFINITIONS` Requirement created
+  - `docs/syspilot/conventions.md` documents Agent and Skill conventions including DEFINITIONS Dictionary pattern and Mutual Exclusion per group
+
+- **Agent Architecture: Duties/Workflow Definition** (`agent-arch-duties-workflow-definition`)
+  - `SYSP_REQ_AGENT_ARCH_DUTIES` and `SYSP_REQ_AGENT_ARCH_WORKFLOW` now establish a clear conceptual separation: Duties = outcome guarantees (WHAT), Workflow = ordered execution steps (HOW)
+  - Removes structural ambiguity that forced content duplication across both sections
+  - Outside-loop Analyst repair; behavioural enforcement remains an open item
+
+### 🔧 Fixes & Improvements
+
+- **Bootloader Schema v2** (`bootloader-schema-v2`)
+  - `bootstrap.json` uses a `files[]` array with `source`/`destination` per entry; `entry_point` field removed — manifest is now extensible without Bootloader changes
+  - Bootloader Soul and Guardrail corrected: accurately reflects that it installs exactly the files in `bootstrap.json`, resolving the Soul/Guardrail contradiction
+  - New Duty: **Manifest Fidelity** — after every run, exactly the declared files have been placed
+  - All affected specs (US, REQ, SPEC for setup/bootloader) updated
+
+- **PM Duties Completeness** (`pm-duties-completeness`)
+  - PM Duties extended with Release-Trigger (PM decides when to release + invokes Release Agent) and Setup-Trigger (PM triggers instance update via Setup Agent after release)
+  - `SYSP_US_DESIGN` AC1 clarified: Designer reads the Change Document created by CM — not creates it
+
+- **Duties Conformance — Implement, MECE, PM** (`agent-files-conformance-implement-mece-pm`)
+  - Top-to-bottom Duties conformance refactor for Dev Engineer, MECE Engine, and Project Manager
+  - Outcome-based Duties (4 / 4 / 6 respectively); numbered lists replaced with outcome bullets; ACs as end-state guarantees
+
+- **Duties Conformance — CM, UAT, Design** (`agent-files-conformance-cm-uat-design`)
+  - Duties conformance refactor for Change Manager, UAT Engineer, and Design Engineer
+  - Outcome guarantees; bullets instead of numbered lists; REQ ACs as end-state guarantees
+
+- **Duties Conformance — Release** (`agent-files-conformance-release`)
+  - Release Engineer Duties rewritten as outcome guarantees; numbered lists replaced with bullets; REQ ACs as end-state guarantees
+
+- **Duties Conformance — Verify, QM** (`agent-files-conformance-verify-qm`)
+  - Duties conformance refactor for Verify Engineer and Quality Manager
+  - Each Duty has at least one corresponding AC (CE-gap pattern fix)
+
+### 🏠 Housekeeping
+
+- **Cleanup: Skill Architecture Followups** (`cleanup-skill-arch-followups`)
+  - RST-lint: replaced single-backtick inline roles/literals with double backticks in `docs/syspilot/**` to eliminate `inline.role_no_name` diagnostics
+  - `SYSP_US_SETUP` extended with Mutual Exclusion AC
+
+### 📋 Change Requests
+
+| Change Document | Scope |
+|----------------|-------|
+| `skill-architecture-foundation` | Skill Architecture as spec-level component |
+| `agent-arch-duties-workflow-definition` | Duties vs. Workflow conceptual separation |
+| `bootloader-schema-v2` | Bootloader `files[]` schema + Soul/Guardrail fix |
+| `pm-duties-completeness` | PM Release-Trigger + Setup-Trigger Duties |
+| `agent-files-conformance-implement-mece-pm` | Implement + MECE + PM Duties conformance |
+| `agent-files-conformance-cm-uat-design` | CM + UAT + Design Duties conformance |
+| `agent-files-conformance-release` | Release Engineer Duties conformance |
+| `agent-files-conformance-verify-qm` | Verify + QM Duties conformance |
+| `cleanup-skill-arch-followups` | RST-lint fixes + SYSP_US_SETUP MECE AC |
+
+---
+
 ## v0.5.3 - 2026-05-02
 
 ### Summary
