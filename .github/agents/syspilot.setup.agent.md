@@ -1,10 +1,10 @@
-﻿---
+---
 description: "Setup Bootloader for syspilot. Fetches the current Installer from upstream and invokes it. User-invocable entry point for syspilot installation."
-tools: [vscode/askQuestions, execute/runNotebookCell, execute/getTerminalOutput, execute/killTerminal, execute/sendToTerminal, execute/createAndRunTask, execute/runInTerminal, execute/runTests, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, read/terminalSelection, read/terminalLastCommand, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/changes, search/codebase, search/fileSearch, search/listDirectory, search/searchResults, search/textSearch, search/usages]
+tools: [read, edit, search, execute, todo, agent, vscode/askQuestions]
 model: Claude Sonnet 4.6 (copilot)
 user-invocable: true
 agents: ["syspilot.installer"]
-version: 0.5.3
+version: 0.5.5
 ---
 
 # syspilot Setup Bootloader

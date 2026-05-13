@@ -1,4 +1,4 @@
-﻿---
+---
 name: syspilot.ask-questions
 description: 'Presenting choices to users via VS Code selection menus (quick-pick UI) during syspilot agent sessions. USE FOR: workflow transitions, decisions with 2-6 options, confirmations with alternatives. DO NOT USE FOR: free-form questions, single yes/no confirmations.'
 ---

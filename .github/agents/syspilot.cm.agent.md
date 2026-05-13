@@ -1,4 +1,4 @@
-﻿---
+---
 description: "Central orchestrator of the change workflow. Receives Change Requests, invokes engineers in sequence, enforces quality gates, and reports completion with full traceability."
 tools: [vscode/askQuestions, execute/runNotebookCell, execute/getTerminalOutput, execute/killTerminal, execute/sendToTerminal, execute/createAndRunTask, execute/runInTerminal, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, read/terminalSelection, read/terminalLastCommand, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/changes, search/codebase, search/fileSearch, search/listDirectory, search/searchResults, search/textSearch, search/usages, jarvis-syspilot-llm-tools/jarvis_category, jarvis-syspilot-llm-tools/jarvis_listProjects, jarvis-syspilot-llm-tools/jarvis_listSessions, jarvis-syspilot-llm-tools/jarvis_readMessage, jarvis-syspilot-llm-tools/jarvis_registerJob, jarvis-syspilot-llm-tools/jarvis_sendToSession, jarvis-syspilot-llm-tools/jarvis_task, jarvis-syspilot-llm-tools/jarvis_unregisterJob, todo]
 model: Claude Sonnet 4.6 (copilot)
@@ -62,6 +62,17 @@ When a CR specifies `autonomous` mode, CM proceeds without user feedback (except
 
 11. **Post-Merge Confirmation** — After merging to development, send a confirmation
     message to PM via Jarvis containing the merge commit hash and branch name.
+
+**Artefakt-Removal Rule:** When a CR removes an artefact (file, field, configuration key, REQ-ID),
+CM MUST perform a project-wide grep on all plausible name variants before closing the CR and
+sort all matches into three classes:
+
+- **(a) Active code/workflow references** (agents, scripts, CI) → fix in the same CR
+- **(b) Active documentation references** (docs/, README, architecture.md, workflows.md) → fix in the same CR
+- **(c) Historical Change Documents** (`docs/changes/`) → acceptable historic stranding; disclose in Change Document
+
+Classes (a) and (b) MUST be fixed before merge. Class (c) is explicitly disclosed in the
+Change Document Artefakt-Removal-Check section as "acceptable historic stranding".
 
 **Input:** Change Request (from PM, user, or QM findings)
 **Output:** Completed change with full traceability chain

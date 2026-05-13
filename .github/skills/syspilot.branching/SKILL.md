@@ -1,4 +1,4 @@
-﻿---
+---
 name: syspilot.branching
 description: "Git branching strategy and commit conventions for syspilot. Development branch with feature branches, main = releases only. Who may create/commit to which branches. USE FOR: any git operation, branch creation, committing, pushing, merging."
 ---

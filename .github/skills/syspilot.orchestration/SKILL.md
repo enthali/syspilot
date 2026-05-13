@@ -1,4 +1,4 @@
-﻿---
+---
 name: syspilot.orchestration
 description: "How managers invoke engineers as subagents. 'Invoke' in any syspilot agent doc means runSubagent(). The agents: list in YAML frontmatter declares which agents can be called. Managers orchestrate — engineers execute and return structured results. USE FOR: understanding agent communication, runSubagent() calls, agents: frontmatter semantics."
 ---

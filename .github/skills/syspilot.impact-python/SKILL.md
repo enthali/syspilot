@@ -1,4 +1,4 @@
-﻿---
+---
 name: syspilot.impact-python
 description: >
   Impact analysis using sphinx-needs dependency trees.

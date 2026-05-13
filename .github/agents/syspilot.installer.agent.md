@@ -1,4 +1,4 @@
-﻿---
+---
 description: "Internal installation engine for syspilot. Invoked by Bootloader only — not user-invocable."
 tools: [read, edit, search, execute, todo]
 model: Claude Sonnet 4.6 (copilot)
