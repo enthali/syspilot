@@ -173,7 +173,7 @@ flowchart LR
 
 **`@syspilot.release`** handles the full process:
 
-1. **Version bump** — Update `syspilot/version.json` with the new version and update the `version:` field in `syspilot/agents/syspilot.setup.agent.md` frontmatter
+1. **Version bump** — Update the `version:` field in `syspilot/agents/syspilot.setup.agent.md` frontmatter with the new version
 2. **Validate** — Run Sphinx build, check for broken links and schema violations
 3. **Release notes** — Generate `docs/releasenotes.md` from Change Documents
 4. **Archive** — Move Change Documents to `docs/changes/archive/<version>/`
