@@ -2,24 +2,27 @@
 
 ## Overview
 
-syspilot is a **process framework** for spec-driven development. It defines three
+syspilot is a **process framework** for spec-driven development. It defines five
 workflows that cover the full lifecycle of specifications and code:
 
 | Workflow | Purpose | Agents | When to use |
 |----------|---------|--------|-------------|
+| **Tailoring** | Define project scope, standards, criticality, gates | tailoring | Project bootstrap and on scope change |
 | **Change** | Evolve specs and code | design → implement → uat → verify → docu | Every feature, fix, or refactor |
-| **Quality** | Check specification health | mece, trace | Any time, independently |
+| **Quality** | Check specification health | mece, trace, (security if profile flag set) | Any time, independently |
+| **Security** | Maintain Security Plan; review security-relevant changes | security | When tailoring flags `security_required: true` |
 | **Release** | Bundle and publish | release | After changes are merged |
 
 ### Manager Orchestration
 
-Three managers orchestrate the engineers:
+Four managers orchestrate the engineers:
 
 | Manager | Role | Responsibility |
 |---------|------|---------------|
-| `@syspilot.pm` | Project Manager | Plans features, prioritizes backlog, delegates Change Requests to CM |
-| `@syspilot.cm` | Change Manager | Orchestrates engineers through the Change Workflow (autonomous or user-guided) |
-| `@syspilot.qm` | Quality Manager | Dispatches `@syspilot.mece` and `@syspilot.trace`, consolidates findings |
+| `@syspilot.pm` | Project Manager | Plans features, prioritizes backlog, delegates Change Requests to CM; invokes tailoring on scope changes |
+| `@syspilot.cm` | Change Manager | Orchestrates engineers through the Change Workflow (autonomous or user-guided); reads Tailoring Profile to apply review gates |
+| `@syspilot.qm` | Quality Manager | Dispatches `@syspilot.mece` and `@syspilot.trace`; also dispatches `@syspilot.security` when the Tailoring Profile flags it |
+| `@syspilot.tailoring` | Tailoring Agent | Defines and maintains the project Tailoring Profile that the other managers read |
 
 **Change Modes:** The Change Manager supports two modes:
 - **autonomous** — proceeds without user feedback except for UAT
@@ -40,6 +43,14 @@ flowchart LR
     docu --> next["Next change or<br/>release workflow"]
     design -.-> next
 ```
+
+**Tailoring-driven gates:** Before invoking `design`, CM reads the active
+Tailoring Profile at `docs/inst/syspilot/tailoring/profile.rst`. Each entry in
+`review_gates[]` of the form `{from: <agent>, to: <agent>, required_at:
+<criticality threshold>}` causes CM to pause for explicit user approval at that
+handover when the profile's `criticality_level` meets or exceeds the threshold.
+With `criticality_level: none` (or no profile present), no extra gates are
+inserted and the workflow runs as shown above.
 
 ### @syspilot.design — Analyze
 
@@ -161,6 +172,93 @@ requirements define conflicting behavior for the same feature.
 Stories above, the Design Specs below, and the code that implements it.
 
 
+## The Tailoring Workflow
+
+The Tailoring Workflow shapes syspilot to a specific project. It runs at
+project bootstrap and any time the project's scope shifts (a new standard is
+adopted, the criticality level changes, security becomes in or out of scope).
+
+```{mermaid}
+flowchart LR
+    invoke["User invokes<br/>@syspilot.tailoring"] --> detect{"Profile<br/>exists?"}
+    detect -- no --> bootstrap["Bootstrap<br/>interview"]
+    detect -- yes --> maintain["Maintenance<br/>interview"]
+    bootstrap --> write["Write profile RST<br/>under docs/inst/syspilot/tailoring/"]
+    maintain --> write
+    write --> mece["MECE advisory"] --> notify["Notify PM/CM/QM<br/>via Jarvis"]
+```
+
+### @syspilot.tailoring — Define Project Scope
+
+**What it does:**
+
+1. Detects whether a Tailoring Profile already exists at
+   `docs/inst/syspilot/tailoring/profile.rst`
+2. Interviews the user (and consults PM via Jarvis if available) using the
+   `syspilot.ask-questions` skill for: project type, applicable standards,
+   criticality level (values depend on the chosen standard — e.g. `ASIL-A`…`D`
+   for ISO 26262, `SIL-1`…`4` for IEC 61508, `DAL-A`…`E` for DO-178C, or
+   `none`), ISO 25010 quality goals, required artifacts, review-gate matrix,
+   and companion-agent activations (e.g. `security_required`)
+3. Writes the profile as `INST_SYSP_SPEC_TAIL_*` sphinx-needs items so every
+   tailoring decision is traceable
+4. Invokes `syspilot.mece` against the tailoring spec set
+5. Notifies PM (and CM/QM if companion activations changed) via Jarvis
+
+**Output:** A Tailoring Profile under `docs/inst/syspilot/tailoring/` that the
+other managers read to drive review gates and companion-agent activation.
+
+**Per-CR validation mode:** When CM, PM or QM call `@syspilot.tailoring` with
+a Change Document path, it returns a structured report indicating whether the
+CR's scope is consistent with the active profile.
+
+
+## The Security Workflow
+
+The Security Workflow is activated by the Tailoring Profile flag
+`companion_agents.security_required: true`. It runs at project bootstrap (to
+create the Security Plan) and per change (when QM dispatches it).
+
+```{mermaid}
+flowchart LR
+    bootstrap["Bootstrap mode:<br/>plan missing"] --> interview["Interview — 6 elements"]
+    interview --> plan["Write Security Plan<br/>under docs/inst/syspilot/security/"]
+    qm["QM dispatches<br/>per change"] --> review["Per-CR review:<br/>identify security-relevant changes"]
+    review --> findings["Write docs/changes/sec-&lt;name&gt;.md"]
+    findings --> back["Return to QM"]
+```
+
+### @syspilot.security — Maintain the Security Plan
+
+**Six plan elements** (hybrid storage — RST for the structured items, Markdown
+for narrative chapters):
+
+1. **Security Goals** — system-wide and per-subsystem
+   (`INST_SYSP_SPEC_SEC_GOAL_*`)
+2. **Threat Scenarios / Vulnerable Features**
+   (`INST_SYSP_SPEC_SEC_THREAT_*`)
+3. **Failure Criticality** — each threat carries severity
+   `critical | high | medium | low`, prioritised by user + Security Agent
+4. **Countermeasures** (`INST_SYSP_SPEC_SEC_CM_*`) — each linked to its
+   threat(s) and to at least one requirement; SHOULD reference a tracked test
+5. **Update Strategy** — narrative `update-strategy.md`: how new CVEs in
+   dependencies are observed; how patches reach the field (cloud / on-prem /
+   embedded / OTA); rollback
+6. **Monitoring & Operations** — narrative `monitoring-and-ops.md`: runtime
+   detection, logging, incident response, ops controls
+
+**Per-CR mode** (dispatched by QM):
+
+* Reads the Change Document and identifies security-relevant changes
+* Re-evaluates affected threats and countermeasures
+* Writes `docs/changes/sec-<name>.md` with severity-ranked findings
+* Returns the report so QM folds it into the consolidated Findings Report to PM
+
+**Activation contract:** The Security Agent is auto-dispatched by QM only when
+the Tailoring Profile sets `companion_agents.security_required: true`. The
+user may always invoke `@syspilot.security` directly regardless of the flag.
+
+
 ## The Release Workflow
 
 The Release Workflow bundles completed changes into a versioned release.
@@ -235,6 +333,7 @@ gitGraph
 
 | Situation | Agent | Notes |
 |-----------|-------|-------|
+| Project bootstrap or scope change | `@syspilot.tailoring` | Define / update the Tailoring Profile first |
 | New feature request | `@syspilot.design` | Always start here |
 | Bug fix | `@syspilot.design` | Even bugs go through the analysis |
 | Refactoring | `@syspilot.design` | Ensures specs stay aligned |
@@ -242,6 +341,7 @@ gitGraph
 | Implementation is done | `@syspilot.uat` | Follows the implement agent |
 | "Are my specs consistent?" | `@syspilot.mece` | Independent, any time |
 | "Is this requirement fully covered?" | `@syspilot.trace` | Independent, any time |
+| Threat model / Security Plan / CVE response | `@syspilot.security` | Active when tailoring flags `security_required` |
 | All changes merged, ready to ship | `@syspilot.release` | After change workflows |
 | Setting up syspilot in a project | `@syspilot.setup` | One-time or update |
 

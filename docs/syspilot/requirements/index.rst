@@ -24,6 +24,8 @@ This section contains system requirements following Sphinx-Needs methodology.
    req_release_engineer
    req_setup_engineer
    req_verify_engineer
+   req_tailoring
+   req_security
 
    req_skill_ask_questions
    req_skill_orchestration

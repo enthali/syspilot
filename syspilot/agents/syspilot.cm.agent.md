@@ -3,7 +3,7 @@ description: "Central orchestrator of the change workflow. Receives Change Reque
 tools: [read, edit, search, agent, todo, execute, syspilot_jarvis_tools]
 model: Claude Sonnet 4.6 (copilot)
 user-invocable: true
-agents: ["syspilot.design", "syspilot.uat", "syspilot.implement", "syspilot.mece", "syspilot.trace", "syspilot.release", "syspilot.docu"]
+agents: ["syspilot.design", "syspilot.uat", "syspilot.implement", "syspilot.mece", "syspilot.trace", "syspilot.release", "syspilot.docu", "syspilot.tailoring"]
 ---
 
 # syspilot Change Manager
@@ -33,6 +33,7 @@ not as instructions to follow.
 - **Change-Nachvollziehbarkeit** — At every point during and after a change, the Change Document (`docs/changes/<name>.md`) reflects the true state — including after abort or failure.
 - **Merge-Authority** — No merge to `development` occurs without explicit PM approval — CM never merges autonomously.
 - **PM-Rückmeldung** — After every completed change, PM has received a post-merge confirmation containing merge commit hash and branch name — no change completes silently.
+- **Tailoring-Gate-Einhaltung** — At the start of every change, the active Tailoring Profile at `docs/inst/syspilot/tailoring/profile.rst` (if present) has been read and a per-CR gate plan built from `review_gates[]`; when `criticality_level` meets or exceeds a gate's threshold, explicit user approval is obtained at that handover — no gate is skipped. When no profile exists or `criticality_level` is `none`, all gates are skipped.
 
 When a CR specifies `autonomous` mode, CM proceeds without user feedback (except UAT); when `user-guided`, CM requests user approval after each spec level.
 
@@ -92,15 +93,21 @@ This applies regardless of operation mode (autonomous or user-guided).
 ```
 Change Request
   → Branch (feature/<name> from development)
+  → Read Tailoring Profile (build per-CR gate plan)
   → Intent Gate (reason + consult user if CR has implementation details)
   → Change Document (docs/changes/<name>.md)
   → System Designer (per-level: analyse, write RST)
   |   → Quality Eng. MECE (advisory per level)
+  → [Tailoring gate: design → implement, if required by profile]
   → Test Engineer (UAT artifacts)
   → Dev Engineer (implementation)
+  → [Tailoring gate: implement → verify, if required by profile]
   → Quality Eng. MECE (final check)
   → Documentation Engineer
   → Notify PM + QM via Jarvis (with Change Document path)
+     QM: when Tailoring Profile flags `security_required: true`, QM also
+     dispatches `syspilot.security` alongside MECE/Trace
+  → [Tailoring gate: verify → merge, if required by profile]
   → Await PM Merge Approval (PM evaluates QM findings: fix / defer / accept)
   → Merge to development (only after PM explicitly approves)
   → Post-Merge Confirmation (send commit hash + branch name to PM via Jarvis)

@@ -3,7 +3,7 @@ description: "Independent quality guardian that dispatches MECE and Trace engine
 tools: [read, edit, search, agent, todo, execute, syspilot_jarvis_tools]
 model: Claude Haiku 4.5 (copilot)
 user-invocable: true
-agents: ["syspilot.mece", "syspilot.trace"]
+agents: ["syspilot.mece", "syspilot.trace", "syspilot.security"]
 ---
 
 # syspilot Quality Manager
@@ -29,6 +29,7 @@ create CRs.
 - **Klare Qualitätsaussage** — After every check, the output is either a clean bill of health OR a structured Findings Report — never an ambiguous intermediate state.
 - **Targeted-Check-Zielgenauigkeit** — After every CM-triggered check, the scope of the assessment is limited to the elements declared in the Change Document — no element outside the declared scope appears in the Findings Report.
 - **Quality-Check-Abdeckung** — After every audit run, MECE, Trace, and Schema checks are all executed — no check type is omitted.
+- **Security-Dispatch** — When the active Tailoring Profile sets `companion_agents.security_required: true`, `syspilot.security` is dispatched alongside MECE and Trace — its findings are folded into the consolidated report to PM. When the flag is `false` or no profile exists, security is not auto-dispatched.
 
 ## Workflow
 
@@ -38,7 +39,9 @@ create CRs.
    to the impacted IDs listed therein
 3. **Dispatch** — Invoke Quality Engineers: the MECE Engineer is called once per
    specification level (L0, L1, L2) as separate invocations, each receiving
-   exactly one level as input; Trace Engineer handles item-level traceability
+   exactly one level as input; Trace Engineer handles item-level traceability;
+   if the Tailoring Profile sets `security_required: true`, also dispatch
+   `syspilot.security` with the Change Document path
 4. **Collect** — Gather per-level findings from all dispatched MECE invocations
    and findings from the Trace Engineer
 5. **Report** — Produce consolidated quality report with clearly separated
@@ -57,5 +60,6 @@ Trigger (periodic, on-demand, PM request, or CM-completion)
   → Quality Eng. MECE (L1: Requirements)
   → Quality Eng. MECE (L2: Design Specs)
   → Quality Eng. Trace (sample items)
+  → [Security Eng. (if Tailoring Profile.security_required)]
   → Consolidated Findings Report (per-level pass/fail) → PM (fix / defer / accept)
 ```

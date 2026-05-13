@@ -18,6 +18,8 @@ see [../namingconventions.md](../namingconventions.md).
 | `DX` | Developer Experience | US, REQ |
 | `REL` | Release | US, REQ |
 | `DOC` | Documentation | US, REQ |
+| `TAIL` | Tailoring & Project Standards | US, REQ |
+| `SEC` | Security Engineering | US, REQ |
 
 ### Level 2 — Component Themes
 
@@ -34,6 +36,8 @@ Level 2 (Design Specs) uses **component-based** themes instead of domain themes:
 | `DOC` | Documentation (Structure, Agent, Scope) | SPEC |
 | `INST` | Installation & Setup | SPEC |
 | `REL` | Release Process | SPEC |
+| `TAIL` | Tailoring Agent | SPEC |
+| `SEC` | Security Agent | SPEC |
 
 ## Examples by Level
 

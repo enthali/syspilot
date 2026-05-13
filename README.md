@@ -42,6 +42,7 @@ Four **managers** that orchestrate the work, and seven **engineers** that execut
 | `@syspilot.pm` | Plans features, manages backlog, delegates change requests |
 | `@syspilot.cm` | Orchestrates engineers through the change workflow |
 | `@syspilot.qm` | Runs independent quality checks |
+| `@syspilot.tailoring` | Defines the project's Tailoring Profile (type, standards, criticality, gates) |
 | `@syspilot.setup` | Installs/updates syspilot in your project |
 
 | Engineers | What they do |
@@ -53,6 +54,7 @@ Four **managers** that orchestrate the work, and seven **engineers** that execut
 | `@syspilot.docu` | Keeps project documentation current |
 | `@syspilot.mece` | Finds gaps and redundancies in your specs |
 | `@syspilot.trace` | Traces one item through all levels |
+| `@syspilot.security` | Owns the project Security Plan; reviews security-relevant changes |
 | `@syspilot.release` | Manages versioning and release process |
 
 Agents are stable processes (WHAT to do). **Skills** are exchangeable tool bindings (HOW to do it) — customize syspilot by swapping skills, not agents.

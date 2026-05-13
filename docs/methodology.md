@@ -16,7 +16,7 @@ a specific domain. Families are independent but can share common infrastructure.
 
 | Family | Domain | Agents |
 |--------|--------|--------|
-| `syspilot` | Spec-driven development (US → REQ → SPEC) | design, implement, uat, verify, release, setup, mece, trace, docu |
+| `syspilot` | Spec-driven development (US → REQ → SPEC) | design, implement, uat, verify, release, setup, mece, trace, docu, tailoring, security |
 | `sysmlv2` | Model-based systems engineering | *(planned)* |
 | `common` | Cross-family shared skills | *(as needed)* |
 
@@ -132,6 +132,8 @@ Each agent has a defined scope of what it may write:
 | Release Agent | `docs/`, version files | `.github/agents/` |
 | Test Engineer (`uat`) | Status updates in specs | — |
 | Documentation Engineer (`docu`) | `.github/copilot-instructions.md`, `docs/` | `<family>/` |
+| Tailoring Agent (`tailoring`) | `docs/inst/<family>/tailoring/` | `.github/agents/`, `<family>/`, other agents' specs |
+| Security Agent (`security`) | `docs/inst/<family>/security/`, `docs/changes/sec-*.md` | `.github/agents/`, `<family>/`, production code |
 
 The **Setup Agent** is the only agent that syncs `<family>/` → `.github/`.
 

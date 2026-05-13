@@ -25,6 +25,8 @@ This section contains design specifications following Sphinx-Needs methodology.
    spec_setup_engineer
    spec_installer
    spec_verify_engineer
+   spec_tailoring
+   spec_security
 
    spec_skill_ask_questions
    spec_skill_orchestration

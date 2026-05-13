@@ -23,6 +23,8 @@ This section contains user stories that drive the requirements.
    us_release_engineer
    us_setup_engineer
    us_verify_engineer
+   us_tailoring
+   us_security
 
    us_skill_ask_questions
    us_skill_orchestration

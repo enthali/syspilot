@@ -117,8 +117,8 @@ syspilot defines three ownership categories that determine what happens on updat
 
 | Category | What | On Update |
 |----------|------|-----------|
-| **Methodology-owned** | design, uat, verify, mece, trace, docu agents; skills; scripts; build files | **Replaced** — always get the latest version |
-| **Project-owned** | release, implement agents and prompts | **Never touched** — copied once on install, then yours |
+| **Methodology-owned** | design, uat, verify, mece, trace, docu, tailoring, security agents; skills; scripts; build files | **Replaced** — always get the latest version |
+| **Project-owned** | release, implement agents and prompts; data under `docs/inst/syspilot/tailoring/` and `docs/inst/syspilot/security/` | **Never touched** — copied (or created empty) once on install, then yours |
 | **User-owned** | Your specs, change docs, copilot-instructions.md | **Never touched** — Setup Agent ignores these entirely |
 
 **How to customize safely:**
