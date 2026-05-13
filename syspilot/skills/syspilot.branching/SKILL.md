@@ -8,6 +8,8 @@ description: "Git branching strategy and commit conventions for syspilot. Develo
 > **Implements**: SYSP_SPEC_SKILL_BRANCHING_STRATEGY, SYSP_SPEC_SKILL_BRANCHING_PERMISSIONS, SYSP_SPEC_SKILL_BRANCHING_COMMIT_CONVENTIONS
 > **Requirements**: SYSP_REQ_SKILL_BRANCHING_CHAINED, SYSP_REQ_SKILL_BRANCHING_MAIN_PROTECTION, SYSP_REQ_SKILL_BRANCHING_NAMING
 
+## Instructions
+
 ## HARD RULE
 
 **ONLY `@syspilot.release` may commit to, merge to, or push to `main`. No exceptions.**
@@ -103,3 +105,11 @@ Format: `<type>: <short description>`
 - Description is lowercase, no period at end
 - Keep description under 72 characters
 - Reference spec IDs in description when relevant
+
+## Rules
+
+* MUST NOT commit to, merge to, or push to `main` — only `@syspilot.release` may. No exceptions.
+* Commit type MUST be lowercase.
+* Commit description MUST be lowercase with no trailing period.
+* Commit description MUST be ≤ 72 characters.
+* Reference spec IDs in description when relevant.

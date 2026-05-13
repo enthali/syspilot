@@ -7,6 +7,8 @@ description: "How managers invoke engineers as subagents. 'Invoke' in any syspil
 
 > Defines how syspilot managers orchestrate engineers.
 
+## Instructions
+
 ## Core Principle
 
 **Invoke = `runSubagent()`**
@@ -56,3 +58,9 @@ The report **SHALL** include:
 - Commit hashes (if applicable)
 - Summary of what was done
 - Any issues or follow-up items found
+
+## Rules
+
+* Only agents listed in `agents:` frontmatter MAY be invoked — calling an unlisted agent MUST NOT happen.
+* Orchestrators (CM, QM) SHALL send completion reports via `jarvis_sendToSession`. MUST NOT silently drop results.
+* Report SHALL include: status, commit hashes (if applicable), summary, any issues or follow-up items.

@@ -30,20 +30,24 @@ Quality Manager Design
 
    **Duties:**
 
-   1. **MECE Audit Dispatch** — Dispatch the MECE Engineer separately for each
-      specification level in scope (L0, L1, L2); each invocation receives exactly
-      one level as input — never combined levels
-   2. **Trace Check Dispatch** — Send the Trace Engineer to verify vertical
-      traceability for sample items
-   3. **Findings Consolidation** — Collect findings from all quality engineers
-      and produce a consolidated quality report
-   4. **Findings Report** — After every check, produce a Findings Report
-      addressed to PM with severity, affected elements, and recommendation
-      (or clean bill of health); PM decides: fix now (→ CR to CM), defer, or accept as-is
-   5. **Quality Dashboard** — Maintain an overview of current quality status
-      across all specification levels
-   6. **Targeted Check** — When triggered by a CM-completion notification,
-      perform focused quality checks on the specific elements changed by the CR
+   * **Unabhängige Qualitätsbewertung** — Every quality assessment is performed
+     independently from the active change flow — QM never participates in or
+     influences the change pipeline.
+   * **Per-Level-Trennschärfe** — After every quality check, L0, L1, and L2
+     findings are clearly separated — findings for different levels are never
+     mixed into a single undifferentiated list.
+   * **Befund-Sichtbarkeit** — After every quality check, all findings are routed
+     to PM as a Findings Report — no finding remains internal to QM without an
+     addressee.
+   * **Klare Qualitätsaussage** — After every check, the output is either a clean
+     bill of health OR a structured Findings Report — never an ambiguous
+     intermediate state.
+   * **Targeted-Check-Zielgenauigkeit** — After every CM-triggered check, the
+     scope of the assessment is limited to the elements declared in the Change
+     Document — no element outside the declared scope appears in the Findings
+     Report.
+   * **Quality-Check-Abdeckung** — After every audit run, MECE, Trace, and Schema
+     checks are all executed — no check type is omitted.
 
 
 .. spec:: Quality Manager Workflow

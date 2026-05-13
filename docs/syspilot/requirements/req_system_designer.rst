@@ -4,7 +4,7 @@ System Designer Requirements
 
 .. req:: System Designer Soul
    :id: SYSP_REQ_DESIGN_SOUL
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, engineer, change, soul
    :links: SYSP_US_DESIGN
@@ -19,6 +19,7 @@ System Designer Requirements
    * AC-1: System Designer Soul defines an analytical, methodical character
    * AC-2: System Designer always processes levels in order (US → REQ → SPEC)
    * AC-3: System Designer never skips a level even when the answer seems obvious
+   * AC-4: System Designer reads the Change Document created by CM — it does not create it
 
 
 .. req:: System Designer Duties
@@ -29,17 +30,17 @@ System Designer Requirements
    :links: SYSP_US_DESIGN
 
    **Description:**
-   The System Designer agent SHALL have Duties covering change request analysis,
-   Change Document management, RST writing, and MECE advisory invocation.
+   The System Designer agent SHALL have Duties that guarantee vertical integrity,
+   MECE conformance, status discipline, design auditability, and user-approval
+   discipline for every specification change.
 
    **Acceptance Criteria:**
 
-   * AC-1: System Designer can analyze change requests and identify impacted elements
-   * AC-2: System Designer can create and maintain Change Documents
-   * AC-3: System Designer can write RST files with sphinx-needs directives
-   * AC-4: System Designer can invoke MECE agent as advisory subagent
-   * AC-5: System Designer can perform horizontal MECE checks per level
-   * AC-6: System Designer can use the impact analysis skill to discover affected elements before each level
+   * AC-1: After every completed design pass, every new or changed spec element at every level is linked to its parent and children — no element exists without traceability context
+   * AC-2: Before moving to the next level, the current level has no overlaps and no gaps — MECE violations are never inherited downward
+   * AC-3: Every new element starts as ``draft`` and is only set to ``approved`` after successful validation — premature approval never occurs
+   * AC-4: At every point during and after the design process, the Change Document reflects the decisions made and open points — including after interruption
+   * AC-5: In user-guided mode, no level transition occurs without explicit user confirmation — the designer never proceeds silently
 
 
 .. req:: System Designer Workflow

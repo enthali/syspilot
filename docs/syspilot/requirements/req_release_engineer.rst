@@ -29,18 +29,17 @@ Release Engineer Requirements
    :links: SYSP_US_RELEASE
 
    **Description:**
-   The Release Engineer agent SHALL have Duties covering version management,
-   validation, release notes, change document archival, and Git tagging.
+   The Release Engineer agent SHALL have Duties that guarantee versioned
+   identification, validation, traceability, version consistency, and clean
+   branch separation for every release.
 
    **Acceptance Criteria:**
 
-   * AC-1: Release Engineer SHALL bump the ``version:`` field in ``syspilot/agents/syspilot.setup.agent.md`` following semantic versioning (MAJOR.MINOR.PATCH)
-   * AC-2: Release Engineer can run validation (sphinx-build) before releasing
-   * AC-3: Release Engineer generates release notes using all archived change documents in ``docs/changes/<version>/`` as the sole source; every archived document MUST appear in the release notes
-   * AC-4: Release Engineer archives change documents by scanning ALL ``*.md`` files in ``docs/changes/`` root (excluding subdirectories) and moving them to ``docs/changes/<version>/``
-   * AC-5: Release Engineer can squash-merge ``development`` to ``main``
-   * AC-6: Release Engineer can back-merge ``main`` into ``development`` after tagging
-   * AC-7: Release Engineer can create Git tags and GitHub Releases
+   * AC-1: After every successful release, ``main`` carries a tag that uniquely identifies the released state — there is never an untagged release on ``main``
+   * AC-2: Nothing reaches ``main`` that has not passed sphinx-build validation with ``-W`` — a failed validation always blocks the release
+   * AC-3: After every successful release, all change documents from the release cycle are archived in ``docs/changes/<version>/`` and every archived document has a corresponding entry in release notes — no document is missing
+   * AC-4: After every successful release, the version string is identical in the setup agent frontmatter, the Git tag, and the release notes header — there is no version drift
+   * AC-5: After every successful release, ``development`` and ``main`` are synchronized — there is no half-state where one branch has content the other lacks
 
 
 .. req:: Release Engineer Workflow
@@ -63,7 +62,7 @@ Release Engineer Requirements
    * AC-4: Release Engineer tags ``main``, pushes, and creates GitHub Release
    * AC-5: Release Engineer back-merges ``main`` into ``development`` after tagging
    * AC-6: If squash-merge produces conflicts, resolve with ``-X theirs`` (development wins)
-   * AC-7: The Document step uses archived change documents in ``docs/changes/<version>/`` as the explicit source; the release notes list ALL archived documents, not only those known from session context
+   * AC-7: The Document step uses archived change documents in ``docs/changes/<version>/`` as the explicit source
 
 
 .. req:: Release Engineer Frontmatter Configuration

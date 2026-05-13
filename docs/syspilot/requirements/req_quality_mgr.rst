@@ -29,17 +29,18 @@ Quality Manager Requirements
    :links: SYSP_US_QM
 
    **Description:**
-   The Quality Manager agent SHALL have Duties covering periodic MECE audits,
-   trace checks, and quality reporting.
+   The Quality Manager agent SHALL have Duties that guarantee independent
+   assessment, per-level separation, findings visibility, clear quality
+   statements, targeted check precision, and complete check coverage.
 
    **Acceptance Criteria:**
 
-   * AC-1: QM SHALL dispatch the MECE Engineer separately for each specification level in scope (L0, L1, L2) — one invocation per level
-   * AC-2: QM can dispatch Trace Engineer for sample traceability checks
-   * AC-3: QM can produce consolidated quality reports
-   * AC-4: QM can perform targeted checks on specific elements identified by a CM-completion notification
-   * AC-5: QM SHALL route ALL findings to PM as a Findings Report — regardless of trigger type; QM SHALL NEVER create CRs directly
-   * AC-6: Each MECE Engineer invocation SHALL receive exactly one specification level as input — never combined levels
+   * AC-1: Every quality assessment is performed independently from the active change flow — QM never participates in or influences the change pipeline
+   * AC-2: After every quality check, L0, L1, and L2 findings are clearly separated — findings for different levels are never mixed into a single undifferentiated list
+   * AC-3: After every quality check, all findings are routed to PM as a Findings Report — no finding remains internal to QM without an addressee
+   * AC-4: After every quality check, the output is either a clean bill of health OR a structured Findings Report — never an ambiguous intermediate state
+   * AC-5: When triggered by a CM-completion notification, QM focuses exclusively on the elements declared in the Change Document — no scope creep beyond the declared change
+   * AC-6: During every audit run, MECE, Trace, and Schema checks are all executed — no check type is omitted
 
 
 .. req:: Quality Manager Workflow

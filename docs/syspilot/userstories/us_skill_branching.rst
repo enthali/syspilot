@@ -9,6 +9,7 @@ Git branching rules for syspilot agents.
    :status: approved
    :priority: mandatory
    :tags: agent-v2, skill, branching, workflow
+   :links: SYSP_US_SKILL_ARCH
 
    **As a** syspilot agent,
    **I want** clear branching rules,

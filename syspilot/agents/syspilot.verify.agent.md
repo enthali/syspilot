@@ -22,17 +22,10 @@ must be backed by a file path and line number.
 
 ## Duties
 
-1. **Read Change Document** — Parse the Change Document to identify all new
-   and modified elements (US, REQ, SPEC, agent files, skill files)
-2. **Spec-to-Implementation Comparison** — For each changed spec, locate the
-   corresponding implementation artifact and verify it matches the spec's
-   intent, acceptance criteria, and constraints
-3. **Traceability Link Checking** — Delegate to the Trace Engineer (subagent)
-   scoped to the Change Document's elements. Orchestrate, don't duplicate.
-4. **Sphinx Build Validation** — Run `uv run sphinx-build -b html . _build/html`
-   from `docs/` and check for warnings or errors related to changed elements
-5. **Validation Report Creation** — Write a validation report at
-   `docs/changes/val-<name>.md` summarizing findings with pass/fail per element
+- **Spec-Implementation-Übereinstimmung** — After every verification run, every spec change declared in the Change Document has been compared against its implementation — no declared change remains unverified, no implementation exists without a spec anchor.
+- **Traceability-Lückenlosigkeit** — After every verification run, every traceability link chain for declared elements has been validated end-to-end — no broken chain passes silently.
+- **Diskrepanz-Sichtbarkeit** — After every verification run, all detected discrepancies are documented in the validation report with file path and evidence — no gap is silently fixed or suppressed.
+- **Validierungsbericht-Existenz** — After every verification run, a validation report exists at `docs/changes/val-<name>.md` — no verification ends without a checkable artifact.
 
 The `todo` tool tracks per-element verification progress during long runs.
 

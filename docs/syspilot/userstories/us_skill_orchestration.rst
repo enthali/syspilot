@@ -9,6 +9,7 @@ Manager-to-engineer orchestration pattern.
    :status: approved
    :priority: mandatory
    :tags: agent-v2, skill, orchestration, architecture
+   :links: SYSP_US_SKILL_ARCH
 
    **As a** syspilot manager agent,
    **I want** a defined orchestration pattern,

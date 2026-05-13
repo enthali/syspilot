@@ -36,20 +36,27 @@ Meta-level requirements defining the Soul/Duties/Workflow structure.
    :links: SYSP_US_AGENT_ARCH
 
    **Description:**
-   Every syspilot agent SHALL have a **Duties** section listing its individual
-   tasks. Duties are customer-customizable.
+   Every syspilot agent SHALL have a **Duties** section that answers the
+   question: *What is this agent accountable for?* Duties enumerate the
+   agent's responsibilities and expected outcomes — not the steps taken to
+   achieve them. Duties are customer-customizable.
 
    **Rationale:**
-   Duties define what an agent does. Customers can add, remove, or modify
-   individual duties to adapt agents to their project needs (e.g., skip
-   safety checks if not required, add domain-specific validations).
+   Duties establish accountability: they define what an agent owns and is
+   responsible for delivering. This is a conceptually distinct question from
+   *how* the agent works. By restricting Duties to outcomes and
+   responsibilities, any given behavioural item has exactly one correct
+   home — either accountability (Duties) or execution sequence (Workflow) —
+   eliminating structural pressure to duplicate content across both sections.
 
    **Acceptance Criteria:**
 
    * AC-1: Every agent definition contains a Duties section
-   * AC-2: Duties are listed as discrete, independently addressable tasks
+   * AC-2: Duties are listed as discrete, independently addressable responsibilities or outcomes
    * AC-3: Customers can add, remove, or modify individual duties
    * AC-4: Adding or removing a duty does not affect the Soul
+   * AC-5: A single behavioural item SHALL appear in exactly one of Duties or
+     Workflow — never both
 
 
 .. req:: Agent Workflow Definition
@@ -60,20 +67,27 @@ Meta-level requirements defining the Soul/Duties/Workflow structure.
    :links: SYSP_US_AGENT_ARCH
 
    **Description:**
-   Every syspilot agent SHALL have a **Workflow** section defining its process
-   steps. Workflows are customer-customizable.
+   Every syspilot agent SHALL have a **Workflow** section that answers the
+   question: *How does this agent execute its work?* The Workflow defines the
+   ordered sequence of execution steps the agent follows — not what the agent
+   is accountable for. Workflows are customer-customizable.
 
    **Rationale:**
-   Workflows define the sequence of actions an agent takes. Customers can
-   reorder steps, add validations, or skip steps to match their process
-   (e.g., different build order, additional approval gates).
+   Workflow establishes execution sequence: it describes the concrete steps an
+   agent takes and in what order. This is a conceptually distinct question from
+   *what* the agent is responsible for. By restricting Workflow to execution
+   steps, any given behavioural item has exactly one correct home — either
+   execution sequence (Workflow) or accountability (Duties) — eliminating
+   structural pressure to duplicate content across both sections.
 
    **Acceptance Criteria:**
 
    * AC-1: Every agent definition contains a Workflow section
-   * AC-2: Workflow steps are ordered and numbered
+   * AC-2: Workflow steps are ordered, numbered, and describe execution actions
    * AC-3: Customers can reorder, add, or skip steps
    * AC-4: Modifying the workflow does not affect the Soul
+   * AC-5: A single behavioural item SHALL appear in exactly one of Workflow or
+     Duties — never both
 
 
 .. req:: Agent Frontmatter Definition

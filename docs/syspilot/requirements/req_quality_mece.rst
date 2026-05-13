@@ -29,15 +29,15 @@ Quality Engineer MECE Requirements
    :links: SYSP_US_MECE
 
    **Description:**
-   The Quality Engineer MECE agent SHALL have Duties covering reading all items
-   at one level, analyzing for MECE properties, and producing a findings report.
+   The Quality Engineer MECE agent SHALL have Duties that guarantee complete
+   item coverage, overlap visibility, gap visibility, and strict level isolation.
 
    **Acceptance Criteria:**
 
-   * AC-1: MECE agent can read all specification items at a given level
-   * AC-2: MECE agent can detect overlaps and redundancies (Mutually Exclusive)
-   * AC-3: MECE agent can detect gaps in coverage (Collectively Exhaustive)
-   * AC-4: MECE agent can suggest consolidation (merges, splits, deletions)
+   * AC-1: After every MECE run, every item at the checked level has been examined — no item remains unexamined
+   * AC-2: After every MECE run, all detected overlaps are reported with specific details — no overlap remains implicit
+   * AC-3: After every MECE run, all detected gaps in coverage are explicitly named — no gap is silently passed over
+   * AC-4: During every MECE run, exactly one level (L0, L1, or L2) is checked — levels are never mixed in a single run
 
 
 .. req:: Quality Engineer MECE Workflow

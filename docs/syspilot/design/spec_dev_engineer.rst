@@ -29,17 +29,16 @@ Dev Engineer Design
 
    **Duties:**
 
-   1. **Change Document Reading** — Read and understand the Change Document to
-      identify what needs to be implemented
-   2. **Spec Querying** — Use ``get_need_links.py`` and sphinx-needs data to find
-      all relevant SPEC elements and their acceptance criteria
-   3. **Code Implementation** — Write code that fulfills the Design Spec acceptance
-      criteria, following existing patterns and conventions
-   4. **Test Writing** — Create tests that verify Requirements are met, referencing
-      REQ IDs in test docstrings
-   5. **Documentation Updates** — Update user-facing docs (README, agent.md files)
-      when behavior changes
-   6. **Traceability Commits** — Commit with messages referencing the Change Document
+   * **Spec-Implementation-Übereinstimmung** — After every implementation run,
+     every SPEC element declared in the Change Document has a corresponding
+     code/test/doc change — no declared spec remains unimplemented, no code
+     exists without a spec anchor.
+   * **Funktionsfähigkeit** — After every implementation run, all tests pass and
+     the build is not broken — no defective state remains after completion.
+   * **Spec-Unverletzlichkeit** — During any implementation task, no spec content
+     or spec status is modified — specification integrity remains intact throughout.
+   * **Nachvollziehbarkeit** — After every commit, the commit message references
+     the Change Document — no implementation exists without traceability.
 
 
 .. spec:: Dev Engineer Workflow

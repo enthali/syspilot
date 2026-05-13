@@ -1,0 +1,107 @@
+# syspilot Ontology
+#
+# Single Source of Truth for sphinx-needs configuration.
+# Read by: sphinx-needs (via needs_from_toml in conf.py) and ubCode.
+#
+# To add a new need type, status, or extra link: edit this file.
+# Sphinx-needs picks up changes on the next build.
+
+[needs]
+
+# Require explicit IDs on every need directive
+id_required = true
+
+# Build needs.json and per-ID JSON files for tooling (ubCode, impact scripts)
+build_json = true
+build_json_per_id = true
+
+# Use Graphviz for needflow diagrams
+flow_engine = "graphviz"
+
+# Extra option fields available on all need directives
+extra_options = ["priority", "rationale", "acceptance_criteria"]
+
+# ---------------------------------------------------------------------------
+# Need Types
+# ---------------------------------------------------------------------------
+
+[[needs.types]]
+directive = "story"
+title = "User Story"
+prefix = "US_"
+color = "#E8D5B7"
+style = "node"
+
+[[needs.types]]
+directive = "req"
+title = "Requirement"
+prefix = "REQ_"
+color = "#BFD8D2"
+style = "node"
+
+[[needs.types]]
+directive = "spec"
+title = "Design Specification"
+prefix = "SPEC_"
+color = "#FEDCD2"
+style = "node"
+
+[[needs.types]]
+directive = "def"
+title = "DEFINITION"
+prefix = "DEF_"
+color = "#C8A4D4"
+style = "node"
+
+[[needs.types]]
+directive = "impl"
+title = "Implementation"
+prefix = "IMPL_"
+color = "#DF744A"
+style = "node"
+
+[[needs.types]]
+directive = "test"
+title = "Test Case"
+prefix = "TEST_"
+color = "#DCB239"
+style = "node"
+
+# ---------------------------------------------------------------------------
+# Statuses
+# ---------------------------------------------------------------------------
+
+[[needs.statuses]]
+name = "draft"
+description = "Draft - Work in progress"
+
+[[needs.statuses]]
+name = "open"
+description = "Open - Identified but not yet started"
+
+[[needs.statuses]]
+name = "approved"
+description = "Approved - Ready for implementation"
+
+[[needs.statuses]]
+name = "implemented"
+description = "Implemented - Code exists"
+
+[[needs.statuses]]
+name = "verified"
+description = "Verified - Tested and validated"
+
+[[needs.statuses]]
+name = "deprecated"
+description = "Deprecated - No longer used"
+
+# ---------------------------------------------------------------------------
+# Extra Link Types
+# ---------------------------------------------------------------------------
+
+# "defines": used on Group Contract Specs to list the DEFINITIONS of their group.
+# Agents and Skills link to the Group Contract Spec (not directly to def needs).
+[[needs.extra_links]]
+option = "defines"
+incoming = "is defined by"
+outgoing = "defines"

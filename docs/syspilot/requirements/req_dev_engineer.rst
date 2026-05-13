@@ -29,16 +29,16 @@ Dev Engineer Requirements
    :links: SYSP_US_IMPLEMENT
 
    **Description:**
-   The Dev Engineer agent SHALL have Duties covering Change Document reading,
-   spec querying, code implementation, testing, and documentation updates.
+   The Dev Engineer agent SHALL have Duties that guarantee spec-implementation
+   correspondence, build functionality, specification integrity, and commit
+   traceability.
 
    **Acceptance Criteria:**
 
-   * AC-1: Dev Engineer can read and understand Change Documents
-   * AC-2: Dev Engineer can query sphinx-needs to find relevant specifications
-   * AC-3: Dev Engineer can write code matching Design Spec acceptance criteria
-   * AC-4: Dev Engineer can write and run tests
-   * AC-5: Dev Engineer can update user documentation (README, agent.md files)
+   * AC-1: After every implementation run, every SPEC element declared in the Change Document has a corresponding code/test/doc change — no declared spec remains unimplemented, no code exists without a spec anchor
+   * AC-2: After every implementation run, all tests pass and the build is not broken — no defective state remains after completion
+   * AC-3: During any implementation task, no spec content or spec status is modified by the Dev Engineer — specification integrity remains intact throughout
+   * AC-4: After every commit, the commit message references the Change Document — no implementation exists without traceability
 
 
 .. req:: Dev Engineer Workflow

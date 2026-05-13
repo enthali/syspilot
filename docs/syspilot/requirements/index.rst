@@ -8,6 +8,8 @@ This section contains system requirements following Sphinx-Needs methodology.
    :caption: Requirements:
 
    req_agent_arch
+   req_skill_arch
+   req_skill_definitions
 
    req_project_mgr
    req_change_mgr

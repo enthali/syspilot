@@ -30,18 +30,14 @@ Quality Engineer MECE Design
 
    **Duties:**
 
-   1. **Level Reading** — Load all specification items at the target level
-      (US, REQ, or SPEC)
-   2. **Overlap Detection** — Identify items with overlapping scope or
-      duplicate functionality (Mutually Exclusive violation)
-   3. **Gap Detection** — Identify missing coverage areas where functionality
-      is not addressed (Collectively Exhaustive violation)
-   4. **Contradiction Detection** — Find items that contradict each other
-      in requirements or design decisions
-   5. **Consolidation Suggestions** — Propose merges, splits, or deletions
-      to improve MECE compliance
-   6. **Report Generation** — Produce a structured findings report with
-      categorized issues and recommendations
+   * **Vollständige Item-Abdeckung** — After every MECE run, every item at the
+     checked level has been examined — no item remains unexamined.
+   * **Überlappungs-Sichtbarkeit** — After every MECE run, all detected overlaps
+     are reported with specific details — no overlap remains implicit.
+   * **Lücken-Sichtbarkeit** — After every MECE run, all detected gaps in coverage
+     are explicitly named — no gap is silently passed over.
+   * **Strikte Level-Begrenzung** — During every MECE run, exactly one level
+     (L0, L1, or L2) is checked — levels are never mixed in a single run.
 
 
 .. spec:: Quality Engineer MECE Workflow

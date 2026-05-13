@@ -9,7 +9,7 @@ Impact analysis for specification elements.
    :status: draft
    :priority: mandatory
    :tags: agent-v2, skill, impact, traceability
-   :links: SYSP_US_DESIGN; SYSP_US_PM
+   :links: SYSP_US_DESIGN; SYSP_US_PM; SYSP_US_SKILL_ARCH
 
    **As a** System Designer,
    **I want** a skill that provides impact analysis for Need elements,
