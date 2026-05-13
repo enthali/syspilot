@@ -39,22 +39,24 @@ jobs:
           echo "version=$TAG" >> $GITHUB_OUTPUT
           echo "Tag version: $TAG"
       
-      - name: Validate version.json
+      - name: Validate Setup Agent version
         run: |
-          if [ ! -f syspilot/version.json ]; then
-            echo "ERROR: syspilot/version.json not found"
+          AGENT_FILE="syspilot/agents/syspilot.setup.agent.md"
+          
+          if [ ! -f "$AGENT_FILE" ]; then
+            echo "ERROR: $AGENT_FILE not found"
             exit 1
           fi
           
-          VERSION=$(jq -r .version syspilot/version.json)
+          VERSION=$(grep '^version:' "$AGENT_FILE" | head -1 | sed 's/version:[[:space:]]*//')
           TAG="${{ steps.tag_version.outputs.version }}"
           
-          echo "version.json: $VERSION"
+          echo "Setup Agent version: $VERSION"
           echo "Git tag: $TAG"
           
           if [ "$VERSION" != "$TAG" ]; then
             echo "ERROR: Version mismatch!"
-            echo "  version.json = $VERSION"
+            echo "  Setup Agent frontmatter version = $VERSION"
             echo "  tag = $TAG"
             exit 1
           fi
@@ -179,8 +181,6 @@ jobs:
           body_path: release-notes-current.md
           draft: false
           prerelease: ${{ contains(github.ref, '-alpha') || contains(github.ref, '-beta') || contains(github.ref, '-rc') }}
-          files: |
-            syspilot/version.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
