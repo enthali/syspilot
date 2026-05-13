@@ -45,18 +45,18 @@ Installer Design
 
    **Duties:**
 
-   * **Vollständigkeit und Korrektheit** — After every successful run, all
+   * **Completeness and Correctness** — After every successful run, all
      syspilot product components are complete and correctly placed in the
      target project
-   * **Erhaltung lokaler Anpassungen** — After an update, user customizations
+   * **Local Customization Preservation** — After an update, user customizations
      (``tools:`` fields and other local changes) are either preserved
      automatically or the user is explicitly informed what needs re-applying
-   * **Funktionsfähigkeit** — No run ends in a half-installed or unvalidated
+   * **Operability** — No run ends in a half-installed or unvalidated
      state; the result always passes sphinx-build before being reported
      as successful
-   * **Nachvollziehbarkeit** — Every successful installation leaves a
+   * **Traceability** — Every successful installation leaves a
      traceable Git commit documenting exactly what was changed
-   * **Skill-Konfliktfreiheit** — If a Skill belonging to an exclusive group
+   * **Skill Conflict Prevention** — If a Skill belonging to an exclusive group
      is being installed and a Skill of the same group already exists, the
      installation is rejected with a conflict report
 

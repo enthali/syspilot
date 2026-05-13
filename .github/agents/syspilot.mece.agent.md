@@ -22,10 +22,10 @@ specifications yourself.
 
 ## Duties
 
-- **Vollständige Item-Abdeckung** — After every MECE run, every item at the checked level has been examined — no item remains unexamined.
-- **Überlappungs-Sichtbarkeit** — After every MECE run, all detected overlaps are reported with specific details — no overlap remains implicit.
-- **Lücken-Sichtbarkeit** — After every MECE run, all detected gaps in coverage are explicitly named — no gap is silently passed over.
-- **Strikte Level-Begrenzung** — During every MECE run, exactly one level (L0, L1, or L2) is checked — levels are never mixed in a single run.
+- **Complete Item Coverage** — After every MECE run, every item at the checked level has been examined — no item remains unexamined.
+- **Overlap Visibility** — After every MECE run, all detected overlaps are reported with specific details — no overlap remains implicit.
+- **Gap Visibility** — After every MECE run, all detected gaps in coverage are explicitly named — no gap is silently passed over.
+- **Strict Level Scope** — During every MECE run, exactly one level (L0, L1, or L2) is checked — levels are never mixed in a single run.
 
 ## Workflow
 

@@ -31,10 +31,10 @@ Test Engineer Design
 
    * **Test-Coverage** — After every completed UAT run, every feature User Story
      has a corresponding UAT chain — no feature remains untested.
-   * **Manuelle Ausführbarkeit** — Every generated test scenario can be executed
+   * **Manual Executability** — Every generated test scenario can be executed
      by a human without additional assumptions — the scenario is self-contained
      with clear preconditions, actions, and expected results.
-   * **Sichtbarkeit von Untestbarkeit** — If an acceptance criterion cannot be
+   * **Untestability Visibility** — If an acceptance criterion cannot be
      meaningfully tested, this is explicitly stated in the output — untestability
      is never silently ignored.
    * **Traceability** — Every test scenario traces back to a feature AC, and every

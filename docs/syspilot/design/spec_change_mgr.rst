@@ -35,21 +35,21 @@ Change Manager Design
 
    **Duties:**
 
-   * **Intent-Übersetzung** — After every CR intake, engineers receive only
+   * **Intent Translation** — After every CR intake, engineers receive only
      well-formulated intent — no raw implementation detail leaks to them, and
      no engineer detail leaks back to the user.
-   * **Pipeline-Vollständigkeit** — No change reaches ``development`` without
+   * **Pipeline Completeness** — No change reaches ``development`` without
      having passed through specification, test artifacts, implementation, quality
      gates, and documentation — the pipeline is never short-circuited.
-   * **Engineer-Trennung** — No engineer session has knowledge of or dependency
+   * **Engineer Isolation** — No engineer session has knowledge of or dependency
      on another engineer session — each operates in isolation via the Change
      Document.
-   * **Change-Nachvollziehbarkeit** — At every point during and after a change,
+   * **Change Auditability** — At every point during and after a change,
      the Change Document (``docs/changes/<name>.md``) reflects the true state —
      including after abort or failure.
    * **Merge-Authority** — No merge to ``development`` occurs without explicit
      PM approval — CM never merges autonomously.
-   * **PM-Rückmeldung** — After every completed change, PM has received a
+   * **PM Notification** — After every completed change, PM has received a
      post-merge confirmation containing merge commit hash and branch name —
      no change completes silently.
 
@@ -138,7 +138,7 @@ Change Manager Design
    **Frontmatter Configuration:**
 
    * **description:** ``"Central orchestrator of the change workflow. Receives Change Requests, invokes engineers in sequence, enforces quality gates, and reports completion with full traceability."``
-   * **tools:** ``[read, edit, search, agent, todo, execute, syspilot_jarvis_tools]``
+   * **tools:** ``[read, edit, search, agent, agent/runSubagent, todo, execute, syspilot_jarvis_tools]``
    * **user-invocable:** ``true``
    * **agents:** ``["syspilot.design", "syspilot.uat", "syspilot.implement", "syspilot.mece", "syspilot.trace", "syspilot.release", "syspilot.docu"]``
 

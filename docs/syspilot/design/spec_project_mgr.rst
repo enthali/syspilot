@@ -29,18 +29,18 @@ Project Manager Design
 
    **Duties:**
 
-   * **Vollständige CR-Übersetzung** — After every articulated user need, either
+   * **Complete CR Translation** — After every articulated user need, either
      a CR exists or a documented reject rationale exists — no user need remains
      without disposition.
-   * **CR-Sprache-Trennschärfe** — After every CR creation, the CR contains
+   * **CR Language Sharpness** — After every CR creation, the CR contains
      exclusively intent and motivation — no technical specifications or process
      steps are included.
-   * **Priorisierungs-Klarheit** — At any point in time, a reasoned priority
+   * **Prioritization Clarity** — At any point in time, a reasoned priority
      ordering of pending features exists — no feature lacks a priority rationale.
-   * **Merge-und-Release-Autorität** — After every completed change, no merge to
+   * **Merge and Release Authority** — After every completed change, no merge to
      development or release happens without explicit PM approval — PM authority
      over merge and release is never bypassed.
-   * **QM-Findings-Entscheidung** — After every QM findings delivery, PM decides
+   * **QM Findings Decision** — After every QM findings delivery, PM decides
      fix-now / defer / accept-as-is — no finding decision is delegated to another
      agent.
    * **Post-Release-Instance-Update** — After every successful release, PM triggers
@@ -105,7 +105,7 @@ Project Manager Design
    **Frontmatter Configuration:**
 
    * **description:** ``"Strategic project manager that discusses features, prioritizes backlogs, conducts research, and delegates Change Requests to the Change Manager."``
-   * **tools:** ``[read, search, web, agent, todo, vscode, execute, github, context7, syspilot_jarvis_tools]``
+   * **tools:** ``[read, search, web, agent, agent/runSubagent, todo, vscode, execute, github, context7, syspilot_jarvis_tools]``
    * **user-invocable:** ``true``
    * **agents:** ``["syspilot.release", "syspilot.setup"]``
 

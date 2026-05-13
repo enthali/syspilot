@@ -22,10 +22,10 @@ must be backed by a file path and line number.
 
 ## Duties
 
-- **Spec-Implementation-Übereinstimmung** — After every verification run, every spec change declared in the Change Document has been compared against its implementation — no declared change remains unverified, no implementation exists without a spec anchor.
-- **Traceability-Lückenlosigkeit** — After every verification run, every traceability link chain for declared elements has been validated end-to-end — no broken chain passes silently.
-- **Diskrepanz-Sichtbarkeit** — After every verification run, all detected discrepancies are documented in the validation report with file path and evidence — no gap is silently fixed or suppressed.
-- **Validierungsbericht-Existenz** — After every verification run, a validation report exists at `docs/changes/val-<name>.md` — no verification ends without a checkable artifact.
+- **Spec-Implementation Alignment** — After every verification run, every spec change declared in the Change Document has been compared against its implementation — no declared change remains unverified, no implementation exists without a spec anchor.
+- **Traceability Completeness** — After every verification run, every traceability link chain for declared elements has been validated end-to-end — no broken chain passes silently.
+- **Discrepancy Visibility** — After every verification run, all detected discrepancies are documented in the validation report with file path and evidence — no gap is silently fixed or suppressed.
+- **Validation Report Existence** — After every verification run, a validation report exists at `docs/changes/val-<name>.md` — no verification ends without a checkable artifact.
 
 The `todo` tool tracks per-element verification progress during long runs.
 

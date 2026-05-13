@@ -29,18 +29,18 @@ System Designer
 
    **Duties:**
 
-   * **Vertikale Integrität** — After every completed design pass, every new or
+   * **Vertical Integrity** — After every completed design pass, every new or
      changed spec element at every level is linked to its parent and children —
      no element exists without traceability context.
-   * **MECE-Konformität** — Before moving to the next level, the current level
+   * **MECE Conformance** — Before moving to the next level, the current level
      has no overlaps and no gaps — MECE violations are never inherited downward.
-   * **Status-Disziplin** — Every new element starts as ``:status: draft`` and is
+   * **Status Discipline** — Every new element starts as ``:status: draft`` and is
      only set to ``:status: approved`` after successful validation — premature
      approval never occurs.
-   * **Auditierbarkeit** — At every point during and after the design process,
+   * **Auditability** — At every point during and after the design process,
      the Change Document reflects the decisions made and open points — including
      after interruption.
-   * **User-Approval-Disziplin** — In user-guided mode, no level transition
+   * **User Approval Discipline** — In user-guided mode, no level transition
      occurs without explicit user confirmation — the designer never proceeds
      silently.
 
