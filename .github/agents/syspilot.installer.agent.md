@@ -33,8 +33,10 @@ installation, update, configuration, and validation work.
 ## Workflow
 
 1. **Detect Source** — Check for local `syspilot/` directory, offer install source choice. For GitHub: offer branch selection (default `main`)
-2. **Detect Mode** — Fresh install or update (compare own frontmatter `version:`
-   with source `syspilot/version.json`). If installed version == source version:
+2. **Detect Mode** — Fresh install or update (compare the installed version from
+   `.github/agents/syspilot.setup.agent.md` frontmatter `version:` field with
+   the source version from `syspilot/agents/syspilot.setup.agent.md` frontmatter
+   `version:` field). If installed version == source version:
    use ask-questions skill to ask user whether to reinstall anyway. If No:
    print "Already up to date — nothing to do." and stop gracefully. If Yes:
    continue with update.
