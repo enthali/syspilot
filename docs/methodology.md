@@ -45,12 +45,10 @@ syspilot/                       # syspilot family product
 ├── sphinx/                     #   Build scripts → docs/
 ├── templates/                  #   Document templates → .syspilot/templates/
 │   └── change-document.md      #   Change doc template
-└── version.json                #   Release version
 
 sysmlv2/                        # SysMLv2 family product (future)
 ├── agents/
-├── skills/
-└── version.json
+└── skills/
 ```
 
 ### Documentation Structure (Specs)

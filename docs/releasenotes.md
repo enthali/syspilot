@@ -1,5 +1,26 @@
 # syspilot Release Notes
 
+## v0.5.5 - 2026-05-13
+
+### Summary
+Patch release fixing the CI version-validation workflow. The GitHub Actions `release.yml` was still reading from the removed `version.json` file; it now reads the `version:` field directly from the Setup Agent frontmatter, restoring CI validation for all future release tags. Also includes a process improvement establishing the 3-class Artefakt-Removal Rule in the CM Workflow and Change Document Template.
+
+### 🔧 Fixes & Improvements
+
+- **CI Version Source Fix** (`ci-version-source-fix`)
+  - GitHub Actions `release.yml` updated to read version from `syspilot/agents/syspilot.setup.agent.md` frontmatter instead of the removed `syspilot/version.json`
+  - CI now correctly validates that a pushed release tag matches the Setup Agent `version:` field
+  - All remaining `version.json` references removed from CI workflows and scripts
+  - All documentation references to `version.json` removed from `docs/architecture.md`, `docs/methodology.md`, and `docs/workflows.md`
+
+### 📋 Change Requests
+
+| Change Document | Scope |
+|----------------|-------|
+| `ci-version-source-fix` | CI workflow reads version from Setup Agent frontmatter |
+
+---
+
 ## v0.5.4 - 2026-05-13
 
 ### Summary

@@ -40,7 +40,6 @@ It's the distribution package — what gets installed into target projects.
 
 ```
 syspilot/                          # The Product
-├── version.json                   # Release version (e.g., "0.2.3")
 ├── agents/                        # Generic agent templates
 │   ├── syspilot.design.agent.md
 │   ├── syspilot.uat.agent.md
@@ -62,7 +61,7 @@ syspilot/                          # The Product
 
 - **Language-agnostic** — No project-specific code, build commands, or test runners
 - **Self-contained** — Everything needed for installation in one directory
-- **Versioned** — `version.json` tracks the release; main branch = current release
+- **Versioned** — The `version:` field in `syspilot/agents/syspilot.setup.agent.md` frontmatter tracks the release; main branch = current release
 - **Single source of truth** — The Setup Agent sources all distributable files
   exclusively from `syspilot/`, never from `.github/` or project config
 

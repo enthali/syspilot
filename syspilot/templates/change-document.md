@@ -122,6 +122,20 @@ Found via links from Requirements above.
 | US_xxx | REQ_xxx | SPEC_xxx | ✅ |
 | SYSPILOT_US_NEW_1 | SYSPILOT_REQ_NEW_1 | SYSPILOT_SPEC_NEW_1 | ✅ |
 
+### Artefakt-Removal-Check
+
+*Fill in only when this CR removes an artefact (file, field, configuration key, REQ-ID).*
+
+For each removed artefact, run a project-wide grep on all plausible name variants and classify results:
+
+| Removed Artefact | Class (a): Code/Workflow refs | Class (b): Doc refs | Class (c): Historic Change Docs |
+|------------------|-------------------------------|---------------------|---------------------------------|
+| `{artefact name}` | {files + lines fixed / none} | {files + lines fixed / none} | {count — acceptable historic stranding} |
+
+- [ ] All class (a) active code/workflow references fixed in this CR
+- [ ] All class (b) active documentation references fixed in this CR
+- [ ] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
+
 ### Issues Found
 
 - [ ] Issue 1: ...
