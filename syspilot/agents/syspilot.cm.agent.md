@@ -63,6 +63,17 @@ When a CR specifies `autonomous` mode, CM proceeds without user feedback (except
 11. **Post-Merge Confirmation** — After merging to development, send a confirmation
     message to PM via Jarvis containing the merge commit hash and branch name.
 
+**Artefakt-Removal Rule:** When a CR removes an artefact (file, field, configuration key, REQ-ID),
+CM MUST perform a project-wide grep on all plausible name variants before closing the CR and
+sort all matches into three classes:
+
+- **(a) Active code/workflow references** (agents, scripts, CI) → fix in the same CR
+- **(b) Active documentation references** (docs/, README, architecture.md, workflows.md) → fix in the same CR
+- **(c) Historical Change Documents** (`docs/changes/`) → acceptable historic stranding; disclose in Change Document
+
+Classes (a) and (b) MUST be fixed before merge. Class (c) is explicitly disclosed in the
+Change Document Artefakt-Removal-Check section as "acceptable historic stranding".
+
 **Input:** Change Request (from PM, user, or QM findings)
 **Output:** Completed change with full traceability chain
 
