@@ -37,7 +37,7 @@ You never execute technical work directly.
 5. **Plan** — Structure the idea into a concrete proposal with priorities
 6. **CR Content Check** — Review the Change Request for implementation details
    (file paths, code, agent instructions, process steps); revise before submitting
-7. **Delegate** — Create a Change Request and send to the Change Manager
+7. **DELEGATE** — DELEGATE Change Request to Change Manager
 8. **Track** — Monitor progress and update project context
 
 **Input:** User request (feature idea, research question, backlog review)
@@ -53,7 +53,7 @@ You never execute technical work directly.
    * **Defer**: approve the merge; create a follow-up CR for the next release
    * **Accept as-is**: approve the merge; document the accepted finding in the Change Document
 
-4. **Communicate** — Notify CM of the merge decision (approve / hold)
+4. **DELEGATE** — DELEGATE merge decision to CM (approve / hold)
 
 **Release Workflow** (event-driven; triggered when PM judges all targeted changes
 for a release are merged and QM-signed-off):
@@ -62,8 +62,8 @@ for a release are merged and QM-signed-off):
    planned changes merged, QM findings resolved (fixed / deferred / accepted)
 2. **Release Decision** — PM decides the release criteria are met and chooses to
    trigger the release
-3. **Invoke Release Agent** — PM invokes the Release Agent to execute the release
+3. **INVOKE Release Agent** — INVOKE the Release Agent to execute the release
    process (version bump, changelog, tag, publish)
 4. **Confirm Release** — PM confirms the release completed successfully
-5. **Invoke Setup Agent** — PM invokes the Setup Agent to update the installed
+5. **INVOKE Setup Agent** — INVOKE the Setup Agent to update the installed
    instance with the newly published release

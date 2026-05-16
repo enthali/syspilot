@@ -87,6 +87,10 @@ Requirements for agent orchestration patterns.
    The sender can verify completion and route follow-up work based on
    reported status and issues.
 
+   **Note:** AC-5 of this requirement still references ``jarvis_sendToSession`` directly.
+   Cleanup to align with ``SYSP_REQ_SKILL_ORCHESTRATION_AGENT_VOCAB`` is deferred
+   per the CR-Defer list of ``agent-vocabulary-migration``.
+
    **Acceptance Criteria:**
 
    * AC-1: Completion reports include status (completed / blocked / failed)
@@ -122,3 +126,50 @@ Requirements for agent orchestration patterns.
    * AC-3: ``syspilot.orchestration`` (sync variant) is the default when no alternative is configured
    * AC-4: The orchestration group does not require DEFINITIONS entries — verbs map
      directly to installed tools, not to project-specific configuration
+
+
+.. req:: Agent Workflow Vocabulary
+   :id: SYSP_REQ_SKILL_ORCHESTRATION_AGENT_VOCAB
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, skill, orchestration, architecture
+   :links: SYSP_US_SKILL_ORCHESTRATION
+
+   **Description:**
+   Agent workflow step descriptions SHALL use the orchestration verb
+   vocabulary (INVOKE, DELEGATE, REPLY) instead of referencing concrete
+   runtime tools or mechanisms.
+
+   * Manager agents SHALL use **INVOKE** in workflow step prose when
+     calling an engineer subagent (same-session synchronous call).
+   * Manager agents SHALL use **DELEGATE** in workflow step prose when
+     handing off work to another manager agent (cross-session).
+   * Every agent that is called by another agent
+     SHALL include **REPLY** as the terminal step in its workflow.
+   * No agent workflow step description SHALL contain a specific runtime
+     tool name (e.g. ``runSubagent()``, ``jarvis_sendToSession``) — tool
+     mapping is delegated to the installed orchestration skill.
+
+   **Routing rule:** Manager-to-Engineer = INVOKE;
+   Manager-to-Manager = DELEGATE.
+
+   **Rationale:**
+   While ``SYSP_REQ_SKILL_ORCHESTRATION_INVOKE`` defines the verb
+   semantics within the skill, this requirement governs how agent
+   documents USE those verbs. Consistent vocabulary in agent workflow
+   prose ensures that the orchestration skill can resolve verbs to
+   runtime calls without ambiguity.
+
+   **Acceptance Criteria:**
+
+   * AC-1: "INVOKE" appears in manager workflow steps whenever an
+     engineer subagent is called — no alternative verbs
+   * AC-2: "DELEGATE" appears in manager workflow steps whenever work
+     is handed off to another manager agent — no "send to" or "notify"
+     language with tool references
+   * AC-3: Every callee agent (called by another agent) has REPLY as
+     its terminal workflow step
+   * AC-4: No agent workflow step contains ``runSubagent()``,
+     ``jarvis_sendToSession``, or similar runtime tool names
+   * AC-5: The routing rule Manager-to-Engineer=INVOKE,
+     Manager-to-Manager=DELEGATE is respected across all agent documents

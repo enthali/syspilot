@@ -33,8 +33,7 @@ specifications yourself.
    Default to REQ if not specified.
 2. **Read** — Load all items at the specified level from RST files
 3. **Analyze** — Apply MECE checks: overlaps, gaps, contradictions
-4. **Report** — Produce structured findings with categories:
-   Redundancies, Contradictions, Gaps, Suggestions
+4. **REPLY** — Return structured findings to caller: Redundancies, Contradictions, Gaps, Suggestions
 
 **Input:** Specification level (US, REQ, or SPEC) + optional scope filter
 **Output:** MECE findings report

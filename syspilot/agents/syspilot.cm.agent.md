@@ -45,13 +45,13 @@ When a CR specifies `autonomous` mode, CM proceeds without user feedback (except
    operation mode
 2. **Change Document** — Create `docs/changes/<name>.md` before invoking any
    engineer; this is the process log and recovery point for the change
-3. **Analyze** — Invoke System Designer for level-by-level analysis
-4. **Test** — Invoke Test Engineer for UAT artifact generation
-5. **Implement** — Invoke Dev Engineer for code/config changes
-6. **Verify** — Invoke Quality Engineers (MECE, Trace) for final checks
-7. **Document** — Invoke Documentation Engineer for doc updates
+3. **Analyze** — INVOKE System Designer for level-by-level analysis
+4. **Test** — INVOKE Test Engineer for UAT artifact generation
+5. **Implement** — INVOKE Dev Engineer for code/config changes
+6. **Verify** — INVOKE Quality Engineers (MECE, Trace) for final checks
+7. **Document** — INVOKE Documentation Engineer for doc updates
 8. **Report** — Complete the change with traceability summary
-9. **Notify** — Send completion notification to PM and QM via Jarvis message queue, including the Change Document path (e.g. `docs/changes/<name>.md`) so QM can scope targeted checks
+9. **Notify** — DELEGATE completion notification to PM and QM, including the Change Document path (e.g. `docs/changes/<name>.md`) so QM can scope targeted checks
 10. **Await PM Merge Approval** — After notifying PM and QM, CM waits for PM's merge decision; CM SHALL NOT merge to development until PM explicitly approves (or specifies fix/defer action based on QM findings)
 
     **PM Decision → CM Action mapping:**
@@ -60,8 +60,7 @@ When a CR specifies `autonomous` mode, CM proceeds without user feedback (except
     * PM says "Defer" → CM merges to development; PM creates follow-up CR separately
     * PM says "Accept as-is" → CM merges to development
 
-11. **Post-Merge Confirmation** — After merging to development, send a confirmation
-    message to PM via Jarvis containing the merge commit hash and branch name.
+11. **Post-Merge Confirmation** — After merging to development, DELEGATE post-merge confirmation to PM containing the merge commit hash and branch name.
 
 **Artefakt-Removal Rule:** When a CR removes an artefact (file, field, configuration key, REQ-ID),
 CM MUST perform a project-wide grep on all plausible name variants before closing the CR and
@@ -100,8 +99,8 @@ Change Request
   → Dev Engineer (implementation)
   → Quality Eng. MECE (final check)
   → Documentation Engineer
-  → Notify PM + QM via Jarvis (with Change Document path)
+  → DELEGATE completion to PM + QM (with Change Document path)
   → Await PM Merge Approval (PM evaluates QM findings: fix / defer / accept)
   → Merge to development (only after PM explicitly approves)
-  → Post-Merge Confirmation (send commit hash + branch name to PM via Jarvis)
+  → Post-Merge Confirmation (DELEGATE commit hash + branch name to PM)
 ```

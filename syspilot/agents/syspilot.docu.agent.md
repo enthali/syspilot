@@ -50,6 +50,7 @@ file already says it, link don't copy.
 5. **Update External Docs** — README, methodology, architecture, release notes
 6. **Remove Stale Content** — Delete sections that became redundant
 7. **Verify** — Ensure consistency across all documentation
+8. **REPLY** — Return to CM: updated files, removed stale content, any documentation gaps found
 
 **Input:** Trigger from CM (after change completion) or direct invocation
 **Output:** Updated documentation files + commit

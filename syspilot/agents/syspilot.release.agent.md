@@ -51,6 +51,7 @@ never rewrite history. When in doubt, you stop and ask.
 8. **Tag** — Create Git tag `v{version}`, push `main` + tag to remote
 9. **Back-Merge** — `git checkout development && git merge main` to sync squash commit
 10. **Publish** — Create GitHub Release
+11. **REPLY** — Return to PM: release tag, git tag, GitHub Release URL, any issues
 
 **Input:** Trigger from CM (after all engineers complete)
 **Output:** Tagged release on main + GitHub Release + archived change docs

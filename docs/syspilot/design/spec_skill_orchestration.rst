@@ -179,3 +179,60 @@ Design specifications for the manager-engineer orchestration pattern.
    **DEFINITIONS:** The ``orchestration`` group does not use DEFINITIONS.
    Verbs (INVOKE/DELEGATE/REPLY) map directly to runtime tools via the installed
    skill variant. No project-specific configuration is required.
+
+
+.. spec:: Agent Workflow Vocabulary Rules
+   :id: SYSP_SPEC_SKILL_ORCHESTRATION_AGENT_VOCAB
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, skill, orchestration, architecture
+   :links: SYSP_REQ_SKILL_ORCHESTRATION_AGENT_VOCAB; SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL
+
+   **Definition:**
+
+   Agent workflow step prose SHALL use the following routing table to
+   determine which verb to use:
+
+   .. list-table:: Agent Vocabulary Routing
+      :header-rows: 1
+      :widths: 40 30 30
+
+      * - Caller → Callee
+        - Verb
+        - Semantics
+      * - Manager → Engineer subagent
+        - ``INVOKE``
+        - Same-session synchronous call
+      * - Manager → Manager (cross-session)
+        - ``DELEGATE``
+        - Cross-session handoff
+      * - Any callee returning result
+        - ``REPLY`` (terminal)
+        - Final workflow step
+
+   **Prohibited patterns in workflow step prose:**
+
+   * ``runSubagent()`` — platform-specific invocation mechanism
+   * ``jarvis_sendToSession`` — platform-specific messaging tool
+   * Any other concrete runtime tool name used as an invocation verb
+
+   These tool names belong to the orchestration skill implementation
+   (``SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL``), not to agent documents.
+
+   **Binding:** INVOKE and DELEGATE in agent workflow prose bind to the
+   installed orchestration skill for runtime resolution. The skill
+   translates these verbs to concrete tool calls at execution time.
+
+   **Scope:** All agent files in ``syspilot/agents/`` (product). Instance
+   files in ``.github/agents/`` are updated by the Setup Agent post-release.
+
+   **Acceptance Criteria:**
+
+   * AC-1: All 3 manager agents (CM, PM, QM) workflow steps use INVOKE
+     for engineer calls
+   * AC-2: All 3 manager agents use DELEGATE for Manager-to-Manager
+     handoffs
+   * AC-3: All engineer agents called by another agent have REPLY as
+     terminal step
+   * AC-4: No agent file in ``syspilot/agents/`` contains
+     ``runSubagent()`` or ``jarvis_sendToSession`` in workflow step prose

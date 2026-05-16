@@ -88,6 +88,7 @@ installation, update, configuration, and validation work.
    - If **already present**: leave it untouched.
 6. **Validate** — Run sphinx-build, resolve any issues
 7. **Commit** — Create baseline Git commit
+8. **REPLY** — Return to Setup Bootloader: installation result, updated files list, any errors
 
 **Input:** User request to install or update syspilot
 **Output:** Working syspilot installation + baseline commit

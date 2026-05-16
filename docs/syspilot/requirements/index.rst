@@ -30,6 +30,8 @@ This section contains system requirements following Sphinx-Needs methodology.
    req_skill_branching
    req_skill_impact
 
+   req_uat_skill_orchestration_vocab
+
    req_documentation
 
 

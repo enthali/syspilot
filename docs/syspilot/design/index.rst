@@ -31,6 +31,8 @@ This section contains design specifications following Sphinx-Needs methodology.
    spec_skill_branching
    spec_skill_impact
 
+   spec_uat_skill_orchestration_vocab
+
    spec_doc_scope
 
 

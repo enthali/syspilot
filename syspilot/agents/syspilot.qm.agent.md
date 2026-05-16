@@ -36,14 +36,14 @@ create CRs.
 2. **Plan** — Determine which checks to run (all levels, specific level, specific items);
    for CM-completion triggers, read the Change Document to scope MECE and Trace checks
    to the impacted IDs listed therein
-3. **Dispatch** — Invoke Quality Engineers: the MECE Engineer is called once per
+3. **Dispatch** — INVOKE Quality Engineers: INVOKE MECE Engineer once per
    specification level (L0, L1, L2) as separate invocations, each receiving
-   exactly one level as input; Trace Engineer handles item-level traceability
+   exactly one level as input; INVOKE Trace Engineer for item-level traceability
 4. **Collect** — Gather per-level findings from all dispatched MECE invocations
    and findings from the Trace Engineer
 5. **Report** — Produce consolidated quality report with clearly separated
    per-level results indicating pass/fail status for each specification level
-6. **Act** — Route Findings Report to PM; PM makes the fix/defer/accept
+6. **Act** — DELEGATE Findings Report to PM; PM makes the fix/defer/accept
    decision for each finding; QM does NOT create CRs
 
 **Input:** Trigger (periodic, on-demand, PM request, or CM-completion)
@@ -57,5 +57,5 @@ Trigger (periodic, on-demand, PM request, or CM-completion)
   → Quality Eng. MECE (L1: Requirements)
   → Quality Eng. MECE (L2: Design Specs)
   → Quality Eng. Trace (sample items)
-  → Consolidated Findings Report (per-level pass/fail) → PM (fix / defer / accept)
+  → DELEGATE Consolidated Findings Report → PM (fix / defer / accept)
 ```

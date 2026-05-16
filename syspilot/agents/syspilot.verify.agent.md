@@ -44,6 +44,7 @@ The `todo` tool tracks per-element verification progress during long runs.
    per-element pass/fail, evidence, and summary
 7. **Update Spec Statuses** — Set `:status: implemented` on elements that pass
    verification; flag elements that fail with evidence
+8. **REPLY** — Return to CM: validation report path, per-element pass/fail summary, any blocking issues
 
 **Input:** Change Document path (provided by CM)
 **Output:** Validation report + updated spec statuses

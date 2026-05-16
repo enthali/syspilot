@@ -68,6 +68,7 @@ Agent documents use generic verbs. Do **not** write tool names in agent docs.
 |------|---------|---------|
 | `invoke <agent>` | Call agent as subagent; need the result before continuing | Yes |
 | `delegate to <agent>` | Hand off to agent; continue without waiting | No (with Jarvis) |
+| `reply` | Terminal step for Engineer agents: return result to the calling Manager | — |
 
 The concrete implementation of these verbs is provided by the installed
 **Orchestration Skill** (see Skill Conventions below).
@@ -143,12 +144,18 @@ Install exactly one variant per group you need.
 |-------|------|---------|--------|
 | 1 | Skill Architecture Foundation | v0.5.4 | ✅ complete |
 | 2 | Skill Frontmatter Migration | v0.5.6 | ✅ complete |
+| 3 | Agent Vocabulary Migration | v0.5.6 | ✅ complete |
 
 **Phase 2 details** (feature/skill-frontmatter-migration):
 - `syspilot.orchestration` — `group: orchestration` added; INVOKE/DELEGATE/REPLY verb model implemented
 - `syspilot.impact-python` — `group: impact` added
 - `syspilot.ask-questions` — standalone skill; no `group` field (conformant)
 - `syspilot.branching` — standalone skill; no `group` field (conformant)
+
+**Phase 3 details** (feature/agent-vocabulary-migration):
+- All product agents use INVOKE/DELEGATE/REPLY; no concrete tool names in workflow steps
+- Manager agents (PM, CM, QM): INVOKE for subagent calls, DELEGATE for cross-session handoffs
+- Engineer agents: REPLY added as terminal workflow step
 
 ---
 

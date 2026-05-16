@@ -29,6 +29,8 @@ This section contains user stories that drive the requirements.
    us_skill_branching
    us_skill_impact
 
+   us_uat_skill_orchestration_vocab
+
    us_documentation
 
 
