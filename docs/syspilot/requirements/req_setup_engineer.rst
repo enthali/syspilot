@@ -29,13 +29,13 @@ Setup Manager Requirements
 
    **Description:**
    The Installer SHALL guarantee the following outcomes through its Duties.
-   The Installer's scope covers all syspilot product files NOT already placed
-   by the Bootloader via the bootstrap manifest.
+   The Installer's scope is defined by SYSP_REQ_INSTALLER_SCOPE.
 
    **Acceptance Criteria:**
 
-   * AC-1: After every successful run, all syspilot product components are
-     complete and correctly placed in the target project
+   * AC-1: After every successful run, all syspilot product components within
+     the defined installation scope are complete and correctly placed in the
+     target project
    * AC-2: After an update, all local user-anpassungen (``tools:`` and other
      customizations) are either preserved automatically or the user is
      explicitly informed what needs re-applying
@@ -56,19 +56,76 @@ Setup Manager Requirements
 
    **Description:**
    The Installer agent SHALL follow a workflow from source detection
-   through installation to validation and commit.
+   through installation to validation and commit. The installation scope
+   is governed by SYSP_REQ_INSTALLER_SCOPE. Doc bootstrapping is governed
+   by SYSP_REQ_INSTALLER_DOC_BOOTSTRAP.
 
    **Acceptance Criteria:**
 
    * AC-1: Workflow starts with detecting install source and mode
    * AC-2: Installer checks dependencies (Python, Sphinx, sphinx-needs)
-   * AC-3: Installer installs/updates files and configures the project
+   * AC-3: Installer installs/updates files within the defined scope and configures the project
    * AC-4: Installer validates with sphinx-build and creates baseline commit
    * AC-5: When installed version equals source version, Installer asks user for reinstall confirmation; if declined, aborts gracefully
    * AC-6: Before overwriting files in update mode, Installer asks user whether customizations exist; if yes, records the list and reminds user to re-apply them after the update completes
    * AC-7: During update, Installer SHALL detect the existing ``tools:``
      value in each installed agent file before overwriting it, and re-inject
      the saved value after copying from product source
+   * AC-8: During Configure step, Installer performs doc bootstrap per SYSP_REQ_INSTALLER_DOC_BOOTSTRAP
+
+.. req:: Installer Installation Scope
+   :id: SYSP_REQ_INSTALLER_SCOPE
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, installer, scope
+   :links: SYSP_US_INSTALLER
+
+   **Description:**
+   The Installer SHALL have a positively defined installation scope: only the
+   following product subdirectories from ``syspilot/`` are copied to the target
+   project. syspilot-internal sources SHALL never be copied to user projects.
+
+   **Installation scope (copied to target project):**
+
+   * ``syspilot/agents/`` → ``.github/agents/``
+   * ``syspilot/prompts/`` → ``.github/prompts/``
+   * ``syspilot/skills/`` → ``.github/skills/``
+   * ``syspilot/templates/`` → ``.syspilot/templates/``
+
+   **Explicitly excluded (NOT copied to user projects):**
+
+   * ``docs/syspilot/`` (syspilot-internal specification sources)
+   * ``docs/changes/`` (syspilot change documents)
+   * ``syspilot/sphinx/`` (syspilot build scripts for its own docs — not user product)
+   * ``syspilot/bootstrap.json`` (Bootloader manifest — consumed by Bootloader, not Installer)
+   * Any other file or directory not listed in the installation scope above
+
+   **Acceptance Criteria:**
+
+   * AC-1: Only directories listed in the installation scope are copied to the target project
+   * AC-2: ``docs/syspilot/`` is never copied to any user project
+   * AC-3: ``docs/changes/`` is never copied to any user project
+   * AC-4: No unlisted file or directory from the syspilot source is copied to the target project
+
+
+.. req:: Installer Doc Bootstrap
+   :id: SYSP_REQ_INSTALLER_DOC_BOOTSTRAP
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, installer, doc-bootstrap
+   :links: SYSP_US_INSTALLER
+
+   **Description:**
+   During the Configure step, the Installer SHALL check whether the target
+   project already has a ``docs/index.rst``. If not, it SHALL create a minimal
+   starter file. If yes, the existing file SHALL NOT be modified.
+
+   **Acceptance Criteria:**
+
+   * AC-1: If target project has no ``docs/index.rst``, Installer creates a minimal starter ``index.rst`` with a brief "documentation base" statement
+   * AC-2: If target project already has a ``docs/index.rst``, it is not overwritten or modified
+   * AC-3: The created starter ``index.rst`` is valid RST and does not cause sphinx-build warnings
+
 
 .. req:: Bootloader Duties
    :id: SYSP_REQ_SETUP_BOOTLOADER_DUTIES

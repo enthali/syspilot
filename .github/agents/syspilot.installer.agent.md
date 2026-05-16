@@ -41,17 +41,28 @@ installation, update, configuration, and validation work.
    print "Already up to date — nothing to do." and stop gracefully. If Yes:
    continue with update.
 3. **Check Dependencies** — Verify Python, Sphinx, sphinx-needs
-4. **Install/Update** — For each agent file in the product source:
+4. **Install/Update** — Copy only the following directories from the product source:
+
+   | Source (`syspilot/`) | Destination (target project) |
+   |----------------------|-----------------------------|
+   | `agents/`            | `.github/agents/`           |
+   | `prompts/`           | `.github/prompts/`          |
+   | `skills/`            | `.github/skills/`           |
+   | `templates/`         | `.syspilot/templates/`      |
+
+   **Never copy:** `docs/syspilot/`, `docs/changes/`, or any path not in the table above.
+
+   For each file within the scope:
 
    - If update mode and file already exists in instance and file is NOT
      `syspilot.setup.agent.md`: read existing `tools:` frontmatter
      value, copy file from product source, re-inject the saved `tools:` value
    - If update mode and file is `syspilot.setup.agent.md` (Bootloader):
      copy completely from product source (Bootloader `tools:` is not preserved)
-   - Otherwise (fresh install or new agent not yet in instance): copy
+   - Otherwise (fresh install or new file not yet in instance): copy
      completely from product source (including `tools:`)
 
-   After all agents are written, display the list of updated agents and
+   After all files are written, display the list of updated files and
    confirm that `tools:` fields were preserved.
 
    Then, use the ask-questions skill to ask the user whether they have made
@@ -61,7 +72,20 @@ installation, update, configuration, and validation work.
    display the saved list and instruct the user to review and re-apply their
    customizations.
    If no: proceed with normal file overwrite.
-5. **Configure** — Set up Sphinx, create initial structure
+5. **Configure** — Set up Sphinx. Doc bootstrap: check whether `docs/index.rst`
+   exists in the target project.
+   - If **not present**: create `docs/index.rst` with minimal content:
+     ```rst
+     Welcome to Project Documentation
+     =================================
+
+     This is the documentation base for this project.
+
+     .. toctree::
+        :maxdepth: 2
+        :caption: Contents:
+     ```
+   - If **already present**: leave it untouched.
 6. **Validate** — Run sphinx-build, resolve any issues
 7. **Commit** — Create baseline Git commit
 

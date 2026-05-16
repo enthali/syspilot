@@ -81,3 +81,5 @@ Setup Manager Agent
    2. Given an update, When the Installer runs, Then my ``tools:`` customizations in agent files survive the update
    3. Given any installation, When the Installer completes, Then a Git commit documents exactly what was changed
    4. Given a Skill that belongs to an exclusive group is being installed, When a Skill from the same exclusive group is already installed, Then the Installer SHALL reject the installation and report the conflict
+   5. Given any installation, When the Installer copies product files, Then only ``agents/``, ``prompts/``, ``skills/``, ``templates/`` from ``syspilot/`` are copied — syspilot-internal sources (``docs/syspilot/``, ``docs/changes/``) are never copied to user projects
+   6. Given a fresh project with no ``docs/index.rst``, When the Installer runs, Then a minimal starter ``index.rst`` is created; given a project that already has a ``docs/index.rst``, it is never overwritten

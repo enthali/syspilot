@@ -41,13 +41,13 @@ Installer Design
    :id: SYSP_SPEC_INSTALLER_DUTIES
    :status: draft
    :tags: agent-v2, installer, duties
-   :links: SYSP_REQ_INSTALLER_DUTIES, SYSP_SPEC_SKILL_ASK_QUESTIONS_API
+   :links: SYSP_REQ_INSTALLER_DUTIES, SYSP_SPEC_SKILL_ASK_QUESTIONS_API, SYSP_SPEC_INSTALLER_SCOPE
 
    **Duties:**
 
    * **Completeness and Correctness** — After every successful run, all
-     syspilot product components are complete and correctly placed in the
-     target project
+     syspilot product components within the defined installation scope
+     are complete and correctly placed in the target project
    * **Local Customization Preservation** — After an update, user customizations
      (``tools:`` fields and other local changes) are either preserved
      automatically or the user is explicitly informed what needs re-applying
@@ -59,6 +59,74 @@ Installer Design
    * **Skill Conflict Prevention** — If a Skill belonging to an exclusive group
      is being installed and a Skill of the same group already exists, the
      installation is rejected with a conflict report
+
+
+.. spec:: Installer Scope Definition
+   :id: SYSP_SPEC_INSTALLER_SCOPE
+   :status: draft
+   :tags: agent-v2, installer, scope
+   :links: SYSP_REQ_INSTALLER_SCOPE
+
+   **Installation Scope:**
+
+   The Installer copies exactly the following directories from the syspilot
+   product source to the target project:
+
+   .. list-table::
+      :header-rows: 1
+      :widths: 40 60
+
+      * - Source (``syspilot/``)
+        - Destination (target project)
+      * - ``agents/``
+        - ``.github/agents/``
+      * - ``prompts/``
+        - ``.github/prompts/``
+      * - ``skills/``
+        - ``.github/skills/``
+      * - ``templates/``
+        - ``.syspilot/templates/``
+
+   **Explicitly excluded (NEVER copied to user projects):**
+
+   * ``docs/syspilot/`` — syspilot-internal specification sources
+   * ``docs/changes/`` — syspilot change documents
+   * ``syspilot/sphinx/`` — syspilot build scripts for its own docs (not user product)
+   * ``syspilot/bootstrap.json`` — Bootloader manifest (consumed by Bootloader, not Installer)
+   * Any other path not listed above
+
+   The Installer SHALL NOT copy any file or directory not listed in this scope,
+   regardless of what exists in the product source.
+
+
+.. spec:: Installer Doc Bootstrap
+   :id: SYSP_SPEC_INSTALLER_DOC_BOOTSTRAP
+   :status: draft
+   :tags: agent-v2, installer, doc-bootstrap
+   :links: SYSP_REQ_INSTALLER_DOC_BOOTSTRAP
+
+   **Behavior:**
+
+   During the Configure step (Workflow Step 5), the Installer SHALL:
+
+   1. Check whether ``docs/index.rst`` exists in the target project.
+   2. If **not present**: create ``docs/index.rst`` with the following minimal content:
+
+      .. code-block:: rst
+
+         Welcome to Project Documentation
+         =================================
+
+         This is the documentation base for this project.
+
+         .. toctree::
+            :maxdepth: 2
+            :caption: Contents:
+
+   3. If **already present**: do nothing — the existing file is never modified.
+
+   **Input:** Target project directory
+   **Output:** ``docs/index.rst`` exists and is valid RST
 
 
 .. spec:: Installer Skill Mutual Exclusion
@@ -96,7 +164,7 @@ Installer Design
    :id: SYSP_SPEC_INSTALLER_WORKFLOW
    :status: draft
    :tags: agent-v2, installer, workflow
-   :links: SYSP_REQ_INSTALLER_WORKFLOW
+   :links: SYSP_REQ_INSTALLER_WORKFLOW, SYSP_SPEC_INSTALLER_SCOPE, SYSP_SPEC_INSTALLER_DOC_BOOTSTRAP
 
    **Workflow:**
 
@@ -105,21 +173,26 @@ Installer Design
 
    1. **Detect Source** — Check for local ``syspilot/`` directory, offer install
       source choice. For GitHub: offer branch selection (default ``main``)
-   2. **Detect Mode** — Fresh install or update (compare own frontmatter ``version:``
-      with source ``syspilot/version.json``). If versions are equal, use the
-      ask-questions skill to ask the user whether to reinstall anyway. If No:
+   2. **Detect Mode** — Fresh install or update (compare the installed version
+      from ``.github/agents/syspilot.setup.agent.md`` frontmatter ``version:``
+      field with the source version from ``syspilot/agents/syspilot.setup.agent.md``
+      frontmatter ``version:`` field). If installed version == source version:
+      use ask-questions skill to ask the user whether to reinstall anyway. If No:
       print "Already up to date — nothing to do." and stop gracefully. If Yes:
       continue with update.
    3. **Check Dependencies** — Verify Python, Sphinx, sphinx-needs
-   4. **Install/Update** — For each agent file in the product source:
+   4. **Install/Update** — Copy only the directories defined in
+      SYSP_SPEC_INSTALLER_SCOPE. For each file within the scope:
 
-      - If update mode and file already exists in instance: read existing
-        ``tools:`` frontmatter value, copy file from product source,
-        re-inject the saved ``tools:`` value
-      - Otherwise (fresh install or new agent not yet in instance): copy
+      - If update mode and file already exists in instance and file is NOT
+        ``syspilot.setup.agent.md``: read existing ``tools:`` frontmatter
+        value, copy file from product source, re-inject the saved ``tools:`` value
+      - If update mode and file is ``syspilot.setup.agent.md`` (Bootloader):
+        copy completely from product source (Bootloader ``tools:`` is not preserved)
+      - Otherwise (fresh install or new file not yet in instance): copy
         completely from product source (including ``tools:``)
 
-      After all agents are written, display the list of updated agents and
+      After all files are written, display the list of updated files and
       confirm that ``tools:`` fields were preserved.
 
       Then, use the ask-questions skill to ask the user whether they have made
@@ -129,7 +202,10 @@ Installer Design
       display the saved list and instruct the user to review and re-apply their
       customizations.
       If no: proceed with normal file overwrite.
-   5. **Configure** — Set up Sphinx, create initial structure
+   5. **Configure** — Set up Sphinx. Perform doc bootstrap per
+      SYSP_SPEC_INSTALLER_DOC_BOOTSTRAP: if ``docs/index.rst`` does not exist,
+      create a minimal starter ``index.rst``; if it already exists, leave it
+      untouched.
    6. **Validate** — Run sphinx-build, resolve any issues
    7. **Commit** — Create baseline Git commit
 
