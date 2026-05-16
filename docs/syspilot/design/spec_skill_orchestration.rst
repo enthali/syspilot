@@ -8,23 +8,30 @@ Design specifications for the manager-engineer orchestration pattern.
    :id: SYSP_SPEC_SKILL_ORCHESTRATION_PATTERN
    :status: approved
    :tags: agent-v2, skill, orchestration, architecture
-   :links: SYSP_REQ_SKILL_ORCHESTRATION_INVOKE; SYSP_REQ_SKILL_ORCHESTRATION_FRONTMATTER
+   :links: SYSP_REQ_SKILL_ORCHESTRATION_INVOKE; SYSP_REQ_SKILL_ORCHESTRATION_FRONTMATTER; SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL
 
    **Definition:**
 
-   Agent orchestration follows a strict three-phase communication pattern:
+   Agent orchestration follows a strict three-phase communication pattern
+   expressed through the generic verb model:
 
-   **1. Manager → Engineer (Assignment):**
+   **1. Manager → Engineer (INVOKE / DELEGATE):**
 
-   The manager provides a clear assignment with:
+   The manager uses INVOKE or DELEGATE to assign work to an engineer:
 
    * Input paths (Change Document, file paths, scope description)
    * Instruction to work autonomously without asking questions
    * Expected output format
 
-   **2. Engineer → Manager (Result):**
+   The choice of verb determines the calling semantics:
 
-   The engineer returns a structured result report with:
+   * **INVOKE** — synchronous, caller blocks until result
+   * **DELEGATE** — hand-off (async variants add Reply Contract;
+     sync variant collapses to INVOKE)
+
+   **2. Engineer → Manager (REPLY):**
+
+   The engineer executes REPLY to return a structured result:
 
    * Created / modified files
    * Specification IDs (new or changed)
@@ -37,13 +44,13 @@ Design specifications for the manager-engineer orchestration pattern.
    * Only the manager knows the full sequence
    * Engineers receive all needed context from the manager, not from sibling engineers
 
-   **Invocation:**
+   **Invocation (abstract):**
 
    ::
 
-      runSubagent("syspilot.<name>", {
-        // assignment with input paths and instructions
-      })
+      INVOKE <agent>        → installed skill maps to runtime call
+      DELEGATE <task> to <agent> → installed skill maps to delegation
+      REPLY                 → installed skill delivers result to caller
 
 
 .. spec:: Orchestration Matrix
@@ -107,3 +114,68 @@ Design specifications for the manager-engineer orchestration pattern.
 
    **Delivery mechanism:** ``jarvis_sendToSession`` for inter-manager communication.
    Direct return value for engineer → manager within the same workflow.
+
+
+.. spec:: Orchestration Verb Model Implementation (Sync Variant)
+   :id: SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL
+   :status: draft
+   :tags: agent-v2, skill, orchestration, architecture
+   :links: SYSP_REQ_SKILL_ORCHESTRATION_INVOKE; SYSP_SPEC_SKILL_ORCHESTRATION_PATTERN
+
+   **Definition:**
+
+   The default sync variant (``syspilot.orchestration``) maps the three
+   generic verbs to concrete runtime mechanisms:
+
+   .. list-table:: Verb Mapping — Sync Variant
+      :header-rows: 1
+      :widths: 25 35 40
+
+      * - Verb
+        - Syntax
+        - Mapping
+      * - ``INVOKE``
+        - ``INVOKE <agent>``
+        - ``runSubagent("syspilot.<agent>", "<prompt>")``
+      * - ``DELEGATE``
+        - ``DELEGATE <task> to <agent>``
+        - Collapses to INVOKE (no async in sync variant)
+      * - ``REPLY``
+        - ``REPLY``
+        - Prompt-Reminder: "Summarize findings as your final message"
+
+   **REPLY is runtime-conditional:** The callee checks how it was called.
+   In the sync variant, REPLY is implemented as a prompt reminder injected
+   at the end of the engineer's workflow — the engineer summarizes its
+   findings as its final message, which ``runSubagent()`` captures as the
+   return value.
+
+   **Mutual Exclusion:** Only one skill with ``group: orchestration`` may
+   be installed at a time. The sync variant is the default.
+
+
+.. spec:: Orchestration Skill Group Membership
+   :id: SYSP_SPEC_SKILL_ORCHESTRATION_GROUP
+   :status: draft
+   :tags: agent-v2, skill, orchestration, architecture
+   :links: SYSP_REQ_SKILL_ORCHESTRATION_GROUP; SYSP_SPEC_SKILL_ARCH_FRONTMATTER
+
+   **Definition:**
+
+   The orchestration skill SHALL carry the following frontmatter field:
+
+   .. code-block:: yaml
+
+      group: orchestration
+
+   **Mutual Exclusion:** The Setup Agent enforces that at most one skill
+   with ``group: orchestration`` is installed. If a new variant is installed,
+   the previous one is removed.
+
+   **Default Variant:** ``syspilot.orchestration`` (sync variant) is the
+   default. It is installed by the Setup Agent unless an alternative is
+   explicitly configured.
+
+   **DEFINITIONS:** The ``orchestration`` group does not use DEFINITIONS.
+   Verbs (INVOKE/DELEGATE/REPLY) map directly to runtime tools via the installed
+   skill variant. No project-specific configuration is required.

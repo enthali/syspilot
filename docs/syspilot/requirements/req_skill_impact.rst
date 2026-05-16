@@ -58,3 +58,30 @@ Requirements for the impact analysis skill.
    * AC-5: The change process (Design Agent, Implement Agent) SHALL operate exclusively on the
      ``syspilot/`` and ``docs/`` directories. The ``.github/`` directory is the installed instance
      of syspilot and SHALL be maintained exclusively by the Setup Agent
+
+
+.. req:: Impact Skill Group Membership
+   :id: SYSP_REQ_SKILL_IMPACT_GROUP
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, skill, impact, architecture
+   :links: SYSP_US_SKILL_IMPACT
+
+   **Description:**
+   The impact analysis skill SHALL declare ``group: impact`` in its YAML
+   frontmatter. Only one skill with ``group: impact`` may be installed at
+   a time (mutual exclusion). The Python-based variant
+   ``syspilot.impact-python`` is the default installed variant.
+
+   **Rationale:**
+   Group membership enables substitutability — a future variant (e.g.
+   ``syspilot.impact-ubcode``) can replace the Python implementation
+   while agents continue to use the same impact analysis interface.
+
+   **Acceptance Criteria:**
+
+   * AC-1: The impact-python skill frontmatter contains ``group: impact``
+   * AC-2: At most one skill with ``group: impact`` is installed at any time
+   * AC-3: ``syspilot.impact-python`` is the default when no alternative is configured
+   * AC-4: The impact group does not require DEFINITIONS entries — the interface is
+     fixed (Need ID + options → dependency tree), not project-configurable

@@ -137,6 +137,19 @@ Multiple variants can exist for the same group. Examples:
 
 Install exactly one variant per group you need.
 
+### Implementation Status
+
+| Phase | Name | Version | Status |
+|-------|------|---------|--------|
+| 1 | Skill Architecture Foundation | v0.5.4 | ✅ complete |
+| 2 | Skill Frontmatter Migration | v0.5.6 | ✅ complete |
+
+**Phase 2 details** (feature/skill-frontmatter-migration):
+- `syspilot.orchestration` — `group: orchestration` added; INVOKE/DELEGATE/REPLY verb model implemented
+- `syspilot.impact-python` — `group: impact` added
+- `syspilot.ask-questions` — standalone skill; no `group` field (conformant)
+- `syspilot.branching` — standalone skill; no `group` field (conformant)
+
 ---
 
 ## DEFINITIONS Dictionary

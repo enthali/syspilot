@@ -120,3 +120,30 @@ Design specifications for the impact analysis skill.
    No agent code changes required — agents discover skills by description.
    The installed path (``.github/skills/<name>/scripts/``) is the runtime
    entry point; the product source (``syspilot/skills/``) is invisible to agents.
+
+
+.. spec:: Impact Skill Group Membership
+   :id: SYSP_SPEC_SKILL_IMPACT_GROUP
+   :status: draft
+   :tags: agent-v2, skill, impact, architecture
+   :links: SYSP_REQ_SKILL_IMPACT_GROUP; SYSP_SPEC_SKILL_ARCH_FRONTMATTER
+
+   **Definition:**
+
+   The impact-python skill SHALL carry the following frontmatter field:
+
+   .. code-block:: yaml
+
+      group: impact
+
+   **Mutual Exclusion:** The Setup Agent enforces that at most one skill
+   with ``group: impact`` is installed. If a new variant (e.g.
+   ``syspilot.impact-ubcode``) is installed, the previous one is removed.
+
+   **Default Variant:** ``syspilot.impact-python`` is the default. It is
+   installed by the Setup Agent unless an alternative is explicitly
+   configured.
+
+   **DEFINITIONS:** The ``impact`` group does not use DEFINITIONS.
+   The interface is fixed (Need ID + query options → dependency tree);
+   no project-specific configuration is required.
