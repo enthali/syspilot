@@ -1,7 +1,7 @@
 ---
 name: syspilot.orchestration-jarvis
 group: orchestration
-description: "Implements INVOKE/SEND/RECEIVE/RESPOND using runSubagent() and Jarvis messaging tools. Enables parallel Change Manager sessions via async inter-session communication. USE FOR: understanding agent communication patterns, INVOKE/SEND/RECEIVE/RESPOND semantics, Jarvis-backed session messaging."
+description: "Implements the INVOKE/SEND/RECEIVE/RESPOND orchestration vocabulary using runSubagent() and Jarvis messaging tools. USE FOR: any agent that calls subagents (INVOKE), sends messages to other sessions (SEND), checks its inbox (RECEIVE), or returns results to callers (RESPOND). Also use when agents need to determine whether they were triggered by a message or invoked directly. DO NOT USE FOR: general agent design, skill architecture rules, or spec writing."
 ---
 
 # Skill: Agent Orchestration (Jarvis Variant)
@@ -14,9 +14,9 @@ description: "Implements INVOKE/SEND/RECEIVE/RESPOND using runSubagent() and Jar
 
 | Term | Semantics |
 |------|-----------|
-| `INVOKE` | Synchronous call. Caller blocks until callee returns a structured result. Used for same-session manager-to-engineer calls. |
-| `SEND` | Deliver a message to another session. Non-blocking cross-session communication. Used for manager-to-manager handoff. |
-| `RECEIVE` | Check inbox for pending messages. Returns the next pending message or indicates no messages available. Used by agents waiting for async work assignments. |
+| `INVOKE` | Synchronous call. Caller blocks until callee returns a structured result. |
+| `SEND` | Deliver a message to another session. Non-blocking cross-session communication. |
+| `RECEIVE` | Check inbox for pending messages. Returns the next pending message or indicates none available. |
 | `RESPOND` | Deliver result to caller. Auto-detects invocation mode and routes accordingly (see below). Terminal workflow step. |
 
 ## Verb Mappings
@@ -28,36 +28,14 @@ description: "Implements INVOKE/SEND/RECEIVE/RESPOND using runSubagent() and Jar
 | `RECEIVE` | `RECEIVE` | `jarvis_readMessage()` — returns next pending message or empty |
 | `RESPOND` | `RESPOND` | Mode-detection logic (see below) |
 
-## RESPOND: Invocation-Mode Detection
+## RESPOND: Delivering Your Result
 
-RESPOND auto-detects how the agent was invoked and routes the result accordingly:
+RESPOND is the terminal step. How you deliver depends on how you were invoked:
 
-1. Call `jarvis_readMessage()` to check if a pending message triggered this run
-2. **If a triggering message is found** (sender context present): deliver the result via `jarvis_sendToSession` to the originating session
-3. **If no triggering message**: output the result directly as structured final message (captured by `runSubagent()` return value)
+- **If you received your instructions via RECEIVE** (a message was present when you checked your inbox at workflow start): deliver your result via SEND to the originating sender.
+- **If you were invoked directly** (no pending message was found via RECEIVE at workflow start): emit the result as direct structured output — `runSubagent()` captures this as its return value.
 
-Agents always call `RESPOND` — the detection logic is internal to this skill. Agents do not branch on invocation mode.
-
-## Communication Pattern
-
-**Manager → Engineer (INVOKE):**
-- Assign work with input paths, instruction to work autonomously, expected output format
-- Caller blocks until the engineer's RESPOND delivers the structured result
-
-**Manager → Manager (SEND):**
-- Deliver message to a named session
-- Caller continues immediately (non-blocking)
-
-**Engineer waiting for async work (RECEIVE):**
-- First step in the workflow: call RECEIVE
-- If a message is found, proceed with the work described in the message
-- The RESPOND at the end routes back to the sender automatically
-
-**Completion Reporting:**
-- Status: `completed` / `blocked` / `failed`
-- Commits: list of commit hashes with messages (if applicable)
-- Summary: brief description of what was done
-- Issues: list of problems or follow-up items (empty if none)
+Do not call `jarvis_readMessage()` inside RESPOND. The invocation mode is already known from the RECEIVE call at workflow start.
 
 ## `agents:` Frontmatter
 

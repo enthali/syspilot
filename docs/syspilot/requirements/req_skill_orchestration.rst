@@ -44,8 +44,8 @@ Requirements for agent orchestration patterns.
    **Acceptance Criteria:**
 
    * AC-1: Given any agent document that uses "invoke", "dispatch", or "run" for another agent, When interpreted at runtime, Then this SHALL mean INVOKE
-   * AC-2: Given a manager that needs to deliver a message to another session, When it acts, Then it uses SEND — a non-blocking cross-session verb
-   * AC-3: Given an agent that waits for async work assignments, When it starts, Then it uses RECEIVE to check inbox for pending messages
+   * AC-2: Given a caller that needs to deliver a message to another session, When it acts, Then it uses SEND — a non-blocking cross-session verb
+   * AC-3: Given an agent that checks for pending work, When it starts, Then it uses RECEIVE to inspect its inbox
    * AC-4: Given a callee that completes a task, When it finishes, Then it executes RESPOND — which auto-detects invocation mode and delivers the result appropriately
    * AC-5: Given the verb definitions, When inspected, Then they are tool-agnostic — no runtime API is prescribed at this level
    * AC-6: Given the verb vocabulary, When inspected, Then no alternative invocation verbs exist beyond INVOKE, SEND, RECEIVE, RESPOND
@@ -74,7 +74,7 @@ Requirements for agent orchestration patterns.
    * AC-2: Given an ``agents:`` list entry, When inspected, Then each entry follows the format ``syspilot.<name>``
    * AC-3: Given an agent with an empty ``agents: []``, When it attempts to invoke a subagent, Then no subagent invocation is permitted
    * AC-4: Given the ``agents:`` frontmatter field, When used, Then it is a list of strings in YAML syntax
-   * AC-5: Given any manager that attempts to call an agent, When the call is resolved, Then only agents listed in the manager's own ``agents:`` frontmatter field can be invoked — engineer-to-engineer references are structurally prevented
+   * AC-5: Given any agent that attempts to call another agent via INVOKE, When the call is resolved, Then only agents listed in the calling agent's own ``agents:`` frontmatter field can be invoked — cross-agent references outside that list are structurally prevented
 
 
 .. req:: Orchestration Completion Reporting
@@ -85,13 +85,13 @@ Requirements for agent orchestration patterns.
    :links: SYSP_US_SKILL_ORCHESTRATION
 
    **Description:**
-   When an orchestrator completes a delegated task, it SHALL report back to
-   the sender with a structured result. The report SHALL include status,
+   When an agent completes a delegated task, it SHALL report back to
+   the caller with a structured result. The report SHALL include status,
    commit hashes (if applicable), summary, and issues found.
 
    **Rationale:**
    Structured reporting enables reliable handoff between workflow stages.
-   The sender can verify completion and route follow-up work based on
+   The caller can verify completion and route follow-up work based on
    reported status and issues.
 
    **Note:** AC-5 of this requirement still references ``jarvis_sendToSession`` directly.
@@ -100,11 +100,11 @@ Requirements for agent orchestration patterns.
 
    **Acceptance Criteria:**
 
-   * AC-1: Given an orchestrator that completes a delegated task, When it reports back, Then the report includes status (completed / blocked / failed)
-   * AC-2: Given an orchestrator that made commits, When it reports back, Then the report includes commit hashes with messages
-   * AC-3: Given an orchestrator that completes work, When it reports back, Then the report includes a summary of what was done
-   * AC-4: Given an orchestrator that encountered issues, When it reports back, Then the report includes any issues or follow-up items found
-   * AC-5: Given inter-session reporting (manager to manager), When a result is delivered, Then it is sent via ``jarvis_sendToSession``
+   * AC-1: Given an agent that completes a delegated task, When it reports back, Then the report includes status (completed / blocked / failed)
+   * AC-2: Given an agent that made commits, When it reports back, Then the report includes commit hashes with messages
+   * AC-3: Given an agent that completes work, When it reports back, Then the report includes a summary of what was done
+   * AC-4: Given an agent that encountered issues, When it reports back, Then the report includes any issues or follow-up items found
+   * AC-5: Given cross-session reporting, When a result is delivered, Then it is sent via ``jarvis_sendToSession``
 
 
 .. req:: Orchestration Skill Group Membership
@@ -146,20 +146,20 @@ Requirements for agent orchestration patterns.
    vocabulary (INVOKE, SEND, RECEIVE, RESPOND) instead of referencing
    concrete runtime tools or mechanisms.
 
-   * Manager agents SHALL use **INVOKE** in workflow step prose when
-     calling an engineer subagent (same-session synchronous call).
-   * Manager agents SHALL use **SEND** in workflow step prose when
-     delivering a message to another session (cross-session communication).
-   * Agents waiting for async work assignments SHALL use **RECEIVE** as
-     their first workflow step to check for pending messages.
+   * An agent SHALL use **INVOKE** in workflow step prose when calling
+     another agent synchronously in the same session (caller waits for result).
+   * An agent SHALL use **SEND** in workflow step prose when delivering
+     a message to another session (non-blocking cross-session communication).
+   * An agent that checks for pending work SHALL use **RECEIVE** as
+     its first workflow step.
    * Every agent that is called by another agent
      SHALL include **RESPOND** as the terminal step in its workflow.
    * No agent workflow step description SHALL contain a specific runtime
      tool name (e.g. ``runSubagent()``, ``jarvis_sendToSession``) — tool
      mapping is delegated to the installed orchestration skill.
 
-   **Routing rule:** Manager-to-Engineer = INVOKE;
-   Manager-to-Manager = SEND; Callee returning = RESPOND (terminal).
+   **Routing rule:** Synchronous same-session call = INVOKE;
+   Cross-session delivery = SEND; Callee returning = RESPOND (terminal).
 
    **Rationale:**
    While ``SYSP_REQ_SKILL_ORCHESTRATION_INVOKE`` defines the verb
@@ -170,9 +170,9 @@ Requirements for agent orchestration patterns.
 
    **Acceptance Criteria:**
 
-   * AC-1: Given a manager that calls an engineer subagent, When the workflow step is written, Then "INVOKE" appears — no alternative verbs permitted
-   * AC-2: Given a manager that delivers a message to another session, When the workflow step is written, Then "SEND" appears — no "delegate to" or tool-referencing language
-   * AC-3: Given an agent that waits for async work assignments, When its workflow is written, Then RECEIVE appears as the first step
+   * AC-1: Given an agent that calls another agent synchronously, When the workflow step is written, Then "INVOKE" appears — no alternative verbs permitted
+   * AC-2: Given an agent that delivers a message to another session, When the workflow step is written, Then "SEND" appears — no "delegate to" or tool-referencing language
+   * AC-3: Given an agent that checks for pending work, When its workflow is written, Then RECEIVE appears as the first step
    * AC-4: Given a callee agent that is called by another agent, When its workflow is written, Then RESPOND appears as the terminal step
    * AC-5: Given any agent file in ``syspilot/agents/``, When its workflow step prose is inspected, Then it contains no concrete runtime tool names (``runSubagent()``, ``jarvis_sendToSession``, ``jarvis_readMessage``)
-   * AC-6: Given all agent documents, When the routing rule is verified, Then Manager-to-Engineer=INVOKE and Manager-to-Manager=SEND are respected across all agent documents
+   * AC-6: Given all agent documents, When the routing rule is verified, Then synchronous same-session calls use INVOKE and cross-session deliveries use SEND

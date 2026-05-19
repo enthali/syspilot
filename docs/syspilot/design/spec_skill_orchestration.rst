@@ -1,7 +1,7 @@
 Skill: Orchestration Design
 ===========================
 
-Design specifications for the manager-engineer orchestration pattern.
+Design specifications for the agent orchestration skill.
 
 
 .. spec:: Communication Pattern
@@ -12,23 +12,21 @@ Design specifications for the manager-engineer orchestration pattern.
 
    **Definition:**
 
-   Agent orchestration follows a strict three-phase communication pattern
-   expressed through the generic verb model:
+   Agent orchestration follows a strict four-verb communication model:
 
-   **1. Manager → Engineer (INVOKE) / Manager → Manager (SEND):**
+   **Initiating work (INVOKE or SEND):**
 
-   The manager uses INVOKE or SEND to assign work:
+   The caller uses INVOKE or SEND to pass work to another agent:
 
-   * Input paths (Change Document, file paths, scope description)
+   * Input context (file paths, scope description, expected output format)
    * Instruction to work autonomously without asking questions
-   * Expected output format
 
    The choice of verb determines the calling semantics:
 
-   * **INVOKE** — synchronous, caller blocks until result
+   * **INVOKE** — synchronous, caller blocks until callee returns a result
    * **SEND** — cross-session message delivery (non-blocking)
 
-   **2. Callee → Caller (RESPOND):**
+   **Returning a result (RESPOND):**
 
    The callee executes RESPOND to return a structured result:
 
@@ -38,14 +36,15 @@ Design specifications for the manager-engineer orchestration pattern.
    * Decisions made during execution
 
    RESPOND auto-detects invocation mode: if a pending message triggered
-   this run (detected via RECEIVE), RESPOND routes the result back to the
-   sender via SEND; otherwise the result is returned directly.
+   this run (detected at workflow start via RECEIVE), RESPOND routes the
+   result back to the sender via SEND; otherwise the result is returned
+   directly.
 
-   **3. Engineers are decoupled:**
+   **Callee isolation:**
 
-   * Engineers do not know about each other
-   * Only the manager knows the full sequence
-   * Engineers receive all needed context from the manager, not from sibling engineers
+   * Each callee receives all needed context from its caller
+   * Callees have no knowledge of other callees in the same workflow
+   * The caller alone holds the full sequence
 
    **Invocation (abstract):**
 
@@ -65,15 +64,13 @@ Design specifications for the manager-engineer orchestration pattern.
 
    **Definition:**
 
-   The following constraints govern orchestration topology:
+   The following constraints govern orchestration verb usage:
 
    **Rules:**
 
-   * Managers may INVOKE engineers (same-session synchronous call)
-   * Managers may SEND messages to other managers (cross-session)
-   * Engineers generally do not invoke other engineers
-   * Special-case engineers (e.g. those with advisory capabilities) may
-     INVOKE specific utility agents if declared in their ``agents:`` frontmatter
+   * A caller may INVOKE a callee (synchronous; caller blocks until result)
+   * A caller may SEND to another session (non-blocking cross-session delivery)
+   * A callee may INVOKE other callees only if declared in its ``agents:`` frontmatter
    * The ``agents:`` frontmatter is the single source of truth for permitted
      INVOKE targets
 
@@ -92,8 +89,8 @@ Design specifications for the manager-engineer orchestration pattern.
 
    **Definition:**
 
-   Engineer-to-manager reports and manager-to-sender reports SHALL use the
-   following structured format:
+   Agents completing a delegated task SHALL report back with a structured
+   result using RESPOND. The report SHALL include the following fields:
 
    **Report Fields:**
 
@@ -102,14 +99,8 @@ Design specifications for the manager-engineer orchestration pattern.
    * **Summary** — Brief description of what was done
    * **Issues** — List of problems or follow-up items found (empty if none)
 
-   **Applies to:**
-
-   * CM → PM: After completing a Change Request
-   * QM → PM: After completing a Quality Audit
-   * Any engineer → orchestrating manager: After completing a delegated task
-
-   **Delivery mechanism:** ``jarvis_sendToSession`` for inter-manager communication.
-   Direct return value for engineer → manager within the same workflow.
+   **Delivery mechanism:** SEND (cross-session) or direct return value
+   (same-session). RESPOND auto-detects the appropriate delivery path.
 
 
 .. spec:: Orchestration Group Contract
@@ -134,14 +125,13 @@ Design specifications for the manager-engineer orchestration pattern.
         - Semantics
       * - ``INVOKE``
         - Synchronous call. The caller blocks until the callee returns a
-          structured result. Used for same-session manager-to-engineer calls.
+          structured result.
       * - ``SEND``
         - Deliver a message to another session. Non-blocking cross-session
-          communication. Used for manager-to-manager handoff.
+          communication.
       * - ``RECEIVE``
         - Check inbox for pending messages. Returns the next pending message
-          or indicates no messages are available. Used by agents waiting for
-          async work assignments.
+          or indicates no messages are available.
       * - ``RESPOND``
         - Deliver result to caller. Auto-detects invocation mode: if a
           pending message triggered this run (detected via RECEIVE), routes
@@ -196,12 +186,16 @@ Design specifications for the manager-engineer orchestration pattern.
 
    **RESPOND mode-detection:**
 
-   1. Call RECEIVE (``jarvis_readMessage()``) to check if a pending
-      message triggered this run
-   2. If yes (message found with sender context): route the result back
-      to the sender via SEND (``jarvis_sendToSession``)
-   3. If no (no triggering message): output the result directly as
-      structured final message (captured by ``runSubagent()`` return value)
+   At workflow start, the agent calls RECEIVE (``jarvis_readMessage()``) to
+   determine its invocation mode. This determines how RESPOND delivers:
+
+   * If a triggering message was found at workflow start: route the result
+     back to the sender via SEND (``jarvis_sendToSession``)
+   * If no triggering message was found: output the result directly as
+     structured final message (captured by ``runSubagent()`` return value)
+
+   RESPOND does NOT call ``jarvis_readMessage()`` again. The invocation mode
+   is already known from the RECEIVE call at workflow start.
 
    **Mutual Exclusion:** Only one skill with ``group: orchestration`` may
    be installed at a time. The Jarvis variant is delivered in this CR.
@@ -248,21 +242,21 @@ Design specifications for the manager-engineer orchestration pattern.
 
    .. list-table:: Agent Vocabulary Routing
       :header-rows: 1
-      :widths: 40 30 30
+      :widths: 50 20 30
 
-      * - Caller → Callee
+      * - Situation
         - Verb
         - Semantics
-      * - Manager → Engineer subagent
+      * - Calling another agent synchronously (caller waits for result)
         - ``INVOKE``
         - Same-session synchronous call
-      * - Manager → Manager (cross-session)
+      * - Delivering a message to another session (no wait)
         - ``SEND``
         - Cross-session message delivery
-      * - Agent waiting for async work
+      * - Checking inbox for pending work at workflow start
         - ``RECEIVE`` (first step)
-        - Check inbox for pending messages
-      * - Any callee returning result
+        - Inbox check; returns message or empty
+      * - Returning a result to the caller
         - ``RESPOND`` (terminal)
         - Final workflow step; mode-detected delivery
 
@@ -285,9 +279,9 @@ Design specifications for the manager-engineer orchestration pattern.
 
    **Acceptance Criteria:**
 
-   * AC-1: All manager agents workflow steps use INVOKE for engineer calls
-   * AC-2: All manager agents use SEND for cross-session message delivery
-   * AC-3: Agents waiting for async work include RECEIVE as first step
+   * AC-1: All agent workflow steps use INVOKE for synchronous same-session calls
+   * AC-2: All agents use SEND for cross-session message delivery
+   * AC-3: Agents that check for pending work include RECEIVE as first step
    * AC-4: All callee agents have RESPOND as terminal workflow step
    * AC-5: No agent file in ``syspilot/agents/`` contains
      ``runSubagent()``, ``jarvis_sendToSession``, or ``jarvis_readMessage``
