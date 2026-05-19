@@ -50,7 +50,7 @@ syspilot/                          # The Product
 │   ├── syspilot.ask-questions/    #   Each skill has SKILL.md with YAML frontmatter
 │   ├── syspilot.branching/
 │   ├── syspilot.impact-python/
-│   └── syspilot.orchestration/
+│   └── syspilot.orchestration-jarvis/
 ├── scripts/python/                # Utility scripts
 ├── sphinx/                        # Build scripts (build.ps1, build.sh)
 └── templates/

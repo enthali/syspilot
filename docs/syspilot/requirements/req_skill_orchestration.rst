@@ -12,18 +12,23 @@ Requirements for agent orchestration patterns.
    :links: SYSP_US_SKILL_ORCHESTRATION
 
    **Description:**
-   The orchestration skill SHALL define three generic verbs for
+   The orchestration skill SHALL define four generic verbs for
    inter-agent communication:
 
    * **INVOKE <agent>** — Synchronous call. The caller blocks until the
      callee returns a result. Whenever an agent document says "invoke",
      "dispatch", or "run" another agent, this SHALL mean INVOKE.
-   * **DELEGATE <task> to <agent>** — Hand off work. In async variants
-     this is non-blocking with a Reply Contract. In the default sync
-     variant, DELEGATE collapses to INVOKE.
-   * **REPLY** — Return result to the caller. The callee executes REPLY
-     at the end of its workflow to deliver findings back. The concrete
-     mechanism is resolved by the installed orchestration skill variant.
+   * **SEND <message> to <session>** — Deliver a message to another
+     session. Non-blocking cross-session communication. Replaces the
+     former DELEGATE verb for async handoff scenarios.
+   * **RECEIVE** — Check inbox for pending messages. Used by agents
+     waiting for async work assignments. Returns the next pending
+     message or indicates no messages are available.
+   * **RESPOND** — Return result to the caller. The callee executes
+     RESPOND at the end of its workflow. The skill auto-detects
+     invocation mode: if a pending message triggered this run (detected
+     via RECEIVE), RESPOND routes the result back to the sender via
+     SEND; otherwise the result is returned directly as structured output.
 
    These verbs are **tool-agnostic**. The concrete mapping (e.g.
    INVOKE → ``runSubagent()``) is provided by the installed skill variant,
@@ -31,18 +36,19 @@ Requirements for agent orchestration patterns.
 
    **Rationale:**
    A fixed set of generic verbs decouples agent workflows from the
-   orchestration mechanism. Agents use INVOKE/DELEGATE/REPLY in their
+   orchestration mechanism. Agents use INVOKE/SEND/RECEIVE/RESPOND in their
    documents; the installed skill translates these to runtime calls.
    This enables exchangeability — a different orchestration backend can
    be installed without rewriting agent documents.
 
    **Acceptance Criteria:**
 
-   * AC-1: "invoke", "dispatch", or "run" in any agent document means INVOKE
-   * AC-2: DELEGATE is defined as a work hand-off verb; in sync variant it collapses to INVOKE
-   * AC-3: REPLY is defined as the callee's mechanism to return results
-   * AC-4: The verb definitions are tool-agnostic — no runtime API is prescribed at this level
-   * AC-5: No alternative invocation verbs exist beyond INVOKE, DELEGATE, REPLY
+   * AC-1: Given any agent document that uses "invoke", "dispatch", or "run" for another agent, When interpreted at runtime, Then this SHALL mean INVOKE
+   * AC-2: Given a manager that needs to deliver a message to another session, When it acts, Then it uses SEND — a non-blocking cross-session verb
+   * AC-3: Given an agent that waits for async work assignments, When it starts, Then it uses RECEIVE to check inbox for pending messages
+   * AC-4: Given a callee that completes a task, When it finishes, Then it executes RESPOND — which auto-detects invocation mode and delivers the result appropriately
+   * AC-5: Given the verb definitions, When inspected, Then they are tool-agnostic — no runtime API is prescribed at this level
+   * AC-6: Given the verb vocabulary, When inspected, Then no alternative invocation verbs exist beyond INVOKE, SEND, RECEIVE, RESPOND
 
 
 .. req:: Agents Frontmatter Semantics
@@ -64,10 +70,11 @@ Requirements for agent orchestration patterns.
 
    **Acceptance Criteria:**
 
-   * AC-1: ``agents:`` is a list of strings in YAML frontmatter
-   * AC-2: Each entry follows the format ``syspilot.<name>``
-   * AC-3: Only listed agents can be invoked by this agent
-   * AC-4: An empty ``agents: []`` means no subagent invocation permitted
+   * AC-1: Given an agent that declares ``agents:`` in YAML frontmatter, When it operates, Then only the agents listed there can be invoked via INVOKE
+   * AC-2: Given an ``agents:`` list entry, When inspected, Then each entry follows the format ``syspilot.<name>``
+   * AC-3: Given an agent with an empty ``agents: []``, When it attempts to invoke a subagent, Then no subagent invocation is permitted
+   * AC-4: Given the ``agents:`` frontmatter field, When used, Then it is a list of strings in YAML syntax
+   * AC-5: Given any manager that attempts to call an agent, When the call is resolved, Then only agents listed in the manager's own ``agents:`` frontmatter field can be invoked — engineer-to-engineer references are structurally prevented
 
 
 .. req:: Orchestration Completion Reporting
@@ -93,11 +100,11 @@ Requirements for agent orchestration patterns.
 
    **Acceptance Criteria:**
 
-   * AC-1: Completion reports include status (completed / blocked / failed)
-   * AC-2: Completion reports include commit hashes when commits were made
-   * AC-3: Completion reports include a summary of what was done
-   * AC-4: Completion reports include any issues or follow-up items found
-   * AC-5: Reports are sent via ``jarvis_sendToSession``
+   * AC-1: Given an orchestrator that completes a delegated task, When it reports back, Then the report includes status (completed / blocked / failed)
+   * AC-2: Given an orchestrator that made commits, When it reports back, Then the report includes commit hashes with messages
+   * AC-3: Given an orchestrator that completes work, When it reports back, Then the report includes a summary of what was done
+   * AC-4: Given an orchestrator that encountered issues, When it reports back, Then the report includes any issues or follow-up items found
+   * AC-5: Given inter-session reporting (manager to manager), When a result is delivered, Then it is sent via ``jarvis_sendToSession``
 
 
 .. req:: Orchestration Skill Group Membership
@@ -110,22 +117,21 @@ Requirements for agent orchestration patterns.
    **Description:**
    The orchestration skill SHALL declare ``group: orchestration`` in its
    YAML frontmatter. Only one skill with ``group: orchestration`` may be
-   installed at a time (mutual exclusion). The sync variant
-   ``syspilot.orchestration`` is the default installed variant.
+   installed at a time (mutual exclusion). The variant delivered in this
+   CR is ``syspilot.orchestration-jarvis``.
 
    **Rationale:**
    Group membership enables the Skill Architecture's substitutability
    mechanism. By declaring a group, the orchestration skill advertises
-   that it can be replaced by another skill in the same group (e.g. an
-   async variant) while agents continue to use the same verbs.
+   that it can be replaced by another skill in the same group (e.g. a
+   sync-only variant) while agents continue to use the same verbs.
 
    **Acceptance Criteria:**
 
-   * AC-1: The orchestration skill frontmatter contains ``group: orchestration``
-   * AC-2: At most one skill with ``group: orchestration`` is installed at any time
-   * AC-3: ``syspilot.orchestration`` (sync variant) is the default when no alternative is configured
-   * AC-4: The orchestration group does not require DEFINITIONS entries — verbs map
-     directly to installed tools, not to project-specific configuration
+   * AC-1: Given an orchestration skill, When its frontmatter is inspected, Then it contains ``group: orchestration``
+   * AC-2: Given a target project, When skills are installed, Then at most one skill with ``group: orchestration`` is installed at any time
+   * AC-3: Given the orchestration group contract, When inspected, Then it contains a DEFINITIONS section declaring INVOKE, SEND, RECEIVE, RESPOND
+   * AC-4: Given this CR, When delivered, Then ``syspilot.orchestration-jarvis`` is the orchestration variant present
 
 
 .. req:: Agent Workflow Vocabulary
@@ -137,21 +143,23 @@ Requirements for agent orchestration patterns.
 
    **Description:**
    Agent workflow step descriptions SHALL use the orchestration verb
-   vocabulary (INVOKE, DELEGATE, REPLY) instead of referencing concrete
-   runtime tools or mechanisms.
+   vocabulary (INVOKE, SEND, RECEIVE, RESPOND) instead of referencing
+   concrete runtime tools or mechanisms.
 
    * Manager agents SHALL use **INVOKE** in workflow step prose when
      calling an engineer subagent (same-session synchronous call).
-   * Manager agents SHALL use **DELEGATE** in workflow step prose when
-     handing off work to another manager agent (cross-session).
+   * Manager agents SHALL use **SEND** in workflow step prose when
+     delivering a message to another session (cross-session communication).
+   * Agents waiting for async work assignments SHALL use **RECEIVE** as
+     their first workflow step to check for pending messages.
    * Every agent that is called by another agent
-     SHALL include **REPLY** as the terminal step in its workflow.
+     SHALL include **RESPOND** as the terminal step in its workflow.
    * No agent workflow step description SHALL contain a specific runtime
      tool name (e.g. ``runSubagent()``, ``jarvis_sendToSession``) — tool
      mapping is delegated to the installed orchestration skill.
 
    **Routing rule:** Manager-to-Engineer = INVOKE;
-   Manager-to-Manager = DELEGATE.
+   Manager-to-Manager = SEND; Callee returning = RESPOND (terminal).
 
    **Rationale:**
    While ``SYSP_REQ_SKILL_ORCHESTRATION_INVOKE`` defines the verb
@@ -162,14 +170,9 @@ Requirements for agent orchestration patterns.
 
    **Acceptance Criteria:**
 
-   * AC-1: "INVOKE" appears in manager workflow steps whenever an
-     engineer subagent is called — no alternative verbs
-   * AC-2: "DELEGATE" appears in manager workflow steps whenever work
-     is handed off to another manager agent — no "send to" or "notify"
-     language with tool references
-   * AC-3: Every callee agent (called by another agent) has REPLY as
-     its terminal workflow step
-   * AC-4: No agent workflow step contains ``runSubagent()``,
-     ``jarvis_sendToSession``, or similar runtime tool names
-   * AC-5: The routing rule Manager-to-Engineer=INVOKE,
-     Manager-to-Manager=DELEGATE is respected across all agent documents
+   * AC-1: Given a manager that calls an engineer subagent, When the workflow step is written, Then "INVOKE" appears — no alternative verbs permitted
+   * AC-2: Given a manager that delivers a message to another session, When the workflow step is written, Then "SEND" appears — no "delegate to" or tool-referencing language
+   * AC-3: Given an agent that waits for async work assignments, When its workflow is written, Then RECEIVE appears as the first step
+   * AC-4: Given a callee agent that is called by another agent, When its workflow is written, Then RESPOND appears as the terminal step
+   * AC-5: Given any agent file in ``syspilot/agents/``, When its workflow step prose is inspected, Then it contains no concrete runtime tool names (``runSubagent()``, ``jarvis_sendToSession``, ``jarvis_readMessage``)
+   * AC-6: Given all agent documents, When the routing rule is verified, Then Manager-to-Engineer=INVOKE and Manager-to-Manager=SEND are respected across all agent documents

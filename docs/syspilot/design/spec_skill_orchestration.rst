@@ -15,9 +15,9 @@ Design specifications for the manager-engineer orchestration pattern.
    Agent orchestration follows a strict three-phase communication pattern
    expressed through the generic verb model:
 
-   **1. Manager → Engineer (INVOKE / DELEGATE):**
+   **1. Manager → Engineer (INVOKE) / Manager → Manager (SEND):**
 
-   The manager uses INVOKE or DELEGATE to assign work to an engineer:
+   The manager uses INVOKE or SEND to assign work:
 
    * Input paths (Change Document, file paths, scope description)
    * Instruction to work autonomously without asking questions
@@ -26,17 +26,20 @@ Design specifications for the manager-engineer orchestration pattern.
    The choice of verb determines the calling semantics:
 
    * **INVOKE** — synchronous, caller blocks until result
-   * **DELEGATE** — hand-off (async variants add Reply Contract;
-     sync variant collapses to INVOKE)
+   * **SEND** — cross-session message delivery (non-blocking)
 
-   **2. Engineer → Manager (REPLY):**
+   **2. Callee → Caller (RESPOND):**
 
-   The engineer executes REPLY to return a structured result:
+   The callee executes RESPOND to return a structured result:
 
    * Created / modified files
    * Specification IDs (new or changed)
    * Build status
    * Decisions made during execution
+
+   RESPOND auto-detects invocation mode: if a pending message triggered
+   this run (detected via RECEIVE), RESPOND routes the result back to the
+   sender via SEND; otherwise the result is returned directly.
 
    **3. Engineers are decoupled:**
 
@@ -48,12 +51,13 @@ Design specifications for the manager-engineer orchestration pattern.
 
    ::
 
-      INVOKE <agent>        → installed skill maps to runtime call
-      DELEGATE <task> to <agent> → installed skill maps to delegation
-      REPLY                 → installed skill delivers result to caller
+      INVOKE <agent>               → installed skill maps to synchronous call
+      SEND <message> to <session>  → installed skill maps to message delivery
+      RECEIVE                      → installed skill checks inbox for pending messages
+      RESPOND                      → installed skill delivers result (mode-detected)
 
 
-.. spec:: Orchestration Matrix
+.. spec:: Orchestration Constraints
    :id: SYSP_SPEC_SKILL_ORCHESTRATION_MATRIX
    :status: approved
    :tags: agent-v2, skill, orchestration, architecture
@@ -61,31 +65,23 @@ Design specifications for the manager-engineer orchestration pattern.
 
    **Definition:**
 
-   The following table defines who may orchestrate whom:
+   The following constraints govern orchestration topology:
 
-   .. list-table:: Orchestration Matrix
-      :header-rows: 1
-      :widths: 20 40 40
+   **Rules:**
 
-      * - Agent
-        - Invokes
-        - Purpose
-      * - ``syspilot.cm``
-        - change, implement, uat, verify, mece, trace, release, docu
-        - Full change workflow orchestration
-      * - ``syspilot.qm``
-        - mece, trace
-        - Quality audits (MECE + Trace checks)
-      * - ``syspilot.design``
-        - mece
-        - Advisory MECE check per specification level
-
-   **Constraints:**
-
-   * Managers (CM, QM, PM) may invoke engineers
+   * Managers may INVOKE engineers (same-session synchronous call)
+   * Managers may SEND messages to other managers (cross-session)
    * Engineers generally do not invoke other engineers
-   * The ``syspilot.design`` agent is a special case: it is an engineer
-     that may invoke ``syspilot.mece`` for advisory checks
+   * Special-case engineers (e.g. those with advisory capabilities) may
+     INVOKE specific utility agents if declared in their ``agents:`` frontmatter
+   * The ``agents:`` frontmatter is the single source of truth for permitted
+     INVOKE targets
+
+   **Prohibited:**
+
+   * Agent names SHALL NOT appear in the orchestration skill content
+   * Orchestration matrices listing specific agent→agent mappings belong
+     in agent frontmatter declarations, not in the skill
 
 
 .. spec:: Reporting Format
@@ -116,20 +112,71 @@ Design specifications for the manager-engineer orchestration pattern.
    Direct return value for engineer → manager within the same workflow.
 
 
-.. spec:: Orchestration Verb Model Implementation (Sync Variant)
-   :id: SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL
-   :status: draft
+.. spec:: Orchestration Group Contract
+   :id: SYSP_SPEC_SKILL_ORCHESTRATION_CONTRACT
+   :status: approved
    :tags: agent-v2, skill, orchestration, architecture
-   :links: SYSP_REQ_SKILL_ORCHESTRATION_INVOKE; SYSP_SPEC_SKILL_ORCHESTRATION_PATTERN
+   :links: SYSP_REQ_SKILL_ORCHESTRATION_INVOKE; SYSP_REQ_SKILL_ORCHESTRATION_GROUP
 
    **Definition:**
 
-   The default sync variant (``syspilot.orchestration``) maps the three
+   This is the Group Contract Spec for the ``orchestration`` skill group.
+   It defines the DEFINITIONS section that all variants in the group must
+   implement.
+
+   **DEFINITIONS:**
+
+   .. list-table:: Orchestration Group Vocabulary
+      :header-rows: 1
+      :widths: 20 80
+
+      * - Term
+        - Semantics
+      * - ``INVOKE``
+        - Synchronous call. The caller blocks until the callee returns a
+          structured result. Used for same-session manager-to-engineer calls.
+      * - ``SEND``
+        - Deliver a message to another session. Non-blocking cross-session
+          communication. Used for manager-to-manager handoff.
+      * - ``RECEIVE``
+        - Check inbox for pending messages. Returns the next pending message
+          or indicates no messages are available. Used by agents waiting for
+          async work assignments.
+      * - ``RESPOND``
+        - Deliver result to caller. Auto-detects invocation mode: if a
+          pending message triggered this run (detected via RECEIVE), routes
+          the result back to the sender via SEND; otherwise returns the
+          result directly as structured output. Terminal workflow step.
+
+   **Constraints:**
+
+   * The DEFINITIONS section declares exactly these four terms — no more, no less
+   * No agent names appear in the group contract
+   * No orchestration matrix (who-calls-whom) appears in the group contract
+   * Each definition is tool-agnostic — no runtime API names (e.g.
+     ``runSubagent``, ``jarvis_sendToSession``) appear in DEFINITIONS
+
+   **Acceptance Criteria:**
+
+   * AC-1: DEFINITIONS section exists with exactly INVOKE, SEND, RECEIVE, RESPOND
+   * AC-2: No agent names or orchestration matrix in the group contract
+   * AC-3: Each definition is tool-agnostic (no runtime API references)
+
+
+.. spec:: Orchestration Verb Model Implementation (Jarvis Variant)
+   :id: SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL
+   :status: draft
+   :tags: agent-v2, skill, orchestration, architecture
+   :links: SYSP_REQ_SKILL_ORCHESTRATION_INVOKE; SYSP_SPEC_SKILL_ORCHESTRATION_PATTERN; SYSP_SPEC_SKILL_ORCHESTRATION_CONTRACT
+
+   **Definition:**
+
+   The Jarvis variant (``syspilot.orchestration-jarvis``) maps the four
    generic verbs to concrete runtime mechanisms:
 
-   .. list-table:: Verb Mapping — Sync Variant
+   .. list-table:: Verb Mapping — Jarvis Variant
       :header-rows: 1
-      :widths: 25 35 40
+      :widths: 20 30 50
 
       * - Verb
         - Syntax
@@ -137,21 +184,27 @@ Design specifications for the manager-engineer orchestration pattern.
       * - ``INVOKE``
         - ``INVOKE <agent>``
         - ``runSubagent("syspilot.<agent>", "<prompt>")``
-      * - ``DELEGATE``
-        - ``DELEGATE <task> to <agent>``
-        - Collapses to INVOKE (no async in sync variant)
-      * - ``REPLY``
-        - ``REPLY``
-        - Prompt-Reminder: "Summarize findings as your final message"
+      * - ``SEND``
+        - ``SEND <message> to <session>``
+        - ``jarvis_sendToSession("<session>", "<message>")``
+      * - ``RECEIVE``
+        - ``RECEIVE``
+        - ``jarvis_readMessage()`` — returns next pending message or empty
+      * - ``RESPOND``
+        - ``RESPOND``
+        - Mode-detection logic (see below)
 
-   **REPLY is runtime-conditional:** The callee checks how it was called.
-   In the sync variant, REPLY is implemented as a prompt reminder injected
-   at the end of the engineer's workflow — the engineer summarizes its
-   findings as its final message, which ``runSubagent()`` captures as the
-   return value.
+   **RESPOND mode-detection:**
+
+   1. Call RECEIVE (``jarvis_readMessage()``) to check if a pending
+      message triggered this run
+   2. If yes (message found with sender context): route the result back
+      to the sender via SEND (``jarvis_sendToSession``)
+   3. If no (no triggering message): output the result directly as
+      structured final message (captured by ``runSubagent()`` return value)
 
    **Mutual Exclusion:** Only one skill with ``group: orchestration`` may
-   be installed at a time. The sync variant is the default.
+   be installed at a time. The Jarvis variant is delivered in this CR.
 
 
 .. spec:: Orchestration Skill Group Membership
@@ -172,13 +225,13 @@ Design specifications for the manager-engineer orchestration pattern.
    with ``group: orchestration`` is installed. If a new variant is installed,
    the previous one is removed.
 
-   **Default Variant:** ``syspilot.orchestration`` (sync variant) is the
-   default. It is installed by the Setup Agent unless an alternative is
-   explicitly configured.
+   **Delivered Variant:** ``syspilot.orchestration-jarvis`` is the variant
+   delivered in this CR. No default assumption is made about which variant
+   is installed — the group mechanism handles substitutability.
 
-   **DEFINITIONS:** The ``orchestration`` group does not use DEFINITIONS.
-   Verbs (INVOKE/DELEGATE/REPLY) map directly to runtime tools via the installed
-   skill variant. No project-specific configuration is required.
+   **DEFINITIONS:** The ``orchestration`` group uses a DEFINITIONS section
+   in the Group Contract Spec (``SYSP_SPEC_SKILL_ORCHESTRATION_CONTRACT``)
+   to declare the four vocabulary terms: INVOKE, SEND, RECEIVE, RESPOND.
 
 
 .. spec:: Agent Workflow Vocabulary Rules
@@ -204,22 +257,26 @@ Design specifications for the manager-engineer orchestration pattern.
         - ``INVOKE``
         - Same-session synchronous call
       * - Manager → Manager (cross-session)
-        - ``DELEGATE``
-        - Cross-session handoff
+        - ``SEND``
+        - Cross-session message delivery
+      * - Agent waiting for async work
+        - ``RECEIVE`` (first step)
+        - Check inbox for pending messages
       * - Any callee returning result
-        - ``REPLY`` (terminal)
-        - Final workflow step
+        - ``RESPOND`` (terminal)
+        - Final workflow step; mode-detected delivery
 
    **Prohibited patterns in workflow step prose:**
 
    * ``runSubagent()`` — platform-specific invocation mechanism
    * ``jarvis_sendToSession`` — platform-specific messaging tool
+   * ``jarvis_readMessage`` — platform-specific inbox mechanism
    * Any other concrete runtime tool name used as an invocation verb
 
    These tool names belong to the orchestration skill implementation
    (``SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL``), not to agent documents.
 
-   **Binding:** INVOKE and DELEGATE in agent workflow prose bind to the
+   **Binding:** INVOKE and SEND in agent workflow prose bind to the
    installed orchestration skill for runtime resolution. The skill
    translates these verbs to concrete tool calls at execution time.
 
@@ -228,11 +285,10 @@ Design specifications for the manager-engineer orchestration pattern.
 
    **Acceptance Criteria:**
 
-   * AC-1: All 3 manager agents (CM, PM, QM) workflow steps use INVOKE
-     for engineer calls
-   * AC-2: All 3 manager agents use DELEGATE for Manager-to-Manager
-     handoffs
-   * AC-3: All engineer agents called by another agent have REPLY as
-     terminal step
-   * AC-4: No agent file in ``syspilot/agents/`` contains
-     ``runSubagent()`` or ``jarvis_sendToSession`` in workflow step prose
+   * AC-1: All manager agents workflow steps use INVOKE for engineer calls
+   * AC-2: All manager agents use SEND for cross-session message delivery
+   * AC-3: Agents waiting for async work include RECEIVE as first step
+   * AC-4: All callee agents have RESPOND as terminal workflow step
+   * AC-5: No agent file in ``syspilot/agents/`` contains
+     ``runSubagent()``, ``jarvis_sendToSession``, or ``jarvis_readMessage``
+     in workflow step prose

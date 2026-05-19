@@ -129,8 +129,7 @@ Multiple variants can exist for the same group. Examples:
 
 | Group | Variant | Description |
 |-------|---------|-------------|
-| `orchestration` | `syspilot.orchestration-subagent` | `invoke`/`delegate` both map to `runSubagent()` |
-| `orchestration` | `syspilot.orchestration-jarvis` | `invoke` → `runSubagent()`, `delegate` → `jarvis_sendToSession()` |
+| `orchestration` | `syspilot.orchestration-jarvis` | `INVOKE` → `runSubagent()`, `SEND` → `jarvis_sendToSession()`, `RECEIVE` → `jarvis_readMessage()`, `RESPOND` → mode-detected |
 | `impact` | `syspilot.impact-python` | Impact analysis via Python script |
 | `impact` | `syspilot.impact-ubcode` | Impact analysis via ubCode MCP *(planned)* |
 | `release` | `syspilot.release-syspilot` | Release skill for this syspilot repository |
@@ -147,7 +146,7 @@ Install exactly one variant per group you need.
 | 3 | Agent Vocabulary Migration | v0.5.6 | ✅ complete |
 
 **Phase 2 details** (feature/skill-frontmatter-migration):
-- `syspilot.orchestration` — `group: orchestration` added; INVOKE/DELEGATE/REPLY verb model implemented
+- `syspilot.orchestration-jarvis` — replaces `syspilot.orchestration`; 4-verb model (INVOKE/SEND/RECEIVE/RESPOND) with Jarvis backend
 - `syspilot.impact-python` — `group: impact` added
 - `syspilot.ask-questions` — standalone skill; no `group` field (conformant)
 - `syspilot.branching` — standalone skill; no `group` field (conformant)
@@ -262,6 +261,42 @@ more link reaches all Skills and Agents.
 | DEFINITIONS of a specific group | `SYSP_SPEC_SKILL_<GROUP>_CONTRACT` (`:defines:` field) |
 | Which groups currently use DEFINITIONS | `SYSP_SPEC_SKILL_DEFINITIONS` (Group Status table) |
 | The architectural rules for Skills | `SYSP_REQ_SKILL_DEFINITIONS`, `SYSP_US_SKILL_ARCH` |
+
+---
+
+## Acceptance Criteria Style
+
+### Convention: Given/When/Then
+
+All Acceptance Criteria in RST spec files (User Stories, Requirements, Design Specs)
+SHALL use the **Given/When/Then** format:
+
+```
+Given <precondition>, When <action or trigger>, Then <expected outcome>
+```
+
+**Rationale:** This style is consistent, testable, and maps directly to UAT scenarios.
+It avoids property-statement style ("X is Y") which can be ambiguous about when the
+property must hold and who is responsible for verifying it.
+
+**Applies to:** All `:id: SYSP_*` spec nodes in `docs/syspilot/`. Both Acceptance Criteria
+in `.. story::`, `.. req::`, and `.. spec::` directives.
+
+**Note:** Duties use a different convention (outcome guarantees: "After X, Y is guaranteed").
+Obs-L (mechanism leak) applies to Duties only, not to ACs.
+
+### Examples
+
+**Correct (Given/When/Then):**
+```
+* AC-1: Given any agent document that says "INVOKE", When interpreted by a manager,
+  Then the installed orchestration skill maps it to a concrete synchronous call mechanism
+```
+
+**Incorrect (property-statement):**
+```
+* AC-1: "invoke" in any agent document means INVOKE
+```
 
 ---
 

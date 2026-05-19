@@ -45,8 +45,8 @@ elements (Frontmatter, Instructions, Rules) are laid out.
    .. code-block:: yaml
 
       ---
-      name: syspilot.orchestration-subagent
-      description: Manager-to-engineer orchestration via subagent invocation.
+      name: syspilot.orchestration-jarvis
+      description: "Implements INVOKE/SEND/RECEIVE/RESPOND using runSubagent() and Jarvis messaging tools."
       group: orchestration
       ---
 
