@@ -7,6 +7,8 @@
 
 <p align="center"><strong>Requirements Engineering that scales with AI.</strong></p>
 
+> **⚠️ Early Research Project** — syspilot is under active development. Feel free to use it, fork it, or just study the approach. Updates may introduce breaking changes without migration paths.
+
 > Your project has 5000 requirements. A change affects 5 of them.
 > syspilot follows [sphinx-needs](https://sphinx-needs.readthedocs.io/) traceability links to find exactly those 5 — so your AI agent gets focused context, not the entire codebase.
 
