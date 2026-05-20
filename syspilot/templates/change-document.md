@@ -3,7 +3,7 @@
 **Status**: draft | in-progress | review | approved | merged
 **Branch**: feature/{NAME}
 **Created**: {DATE}
-**Author**: {AUTHOR}
+**Author**: {AUTHOR(S)}
 
 ---
 

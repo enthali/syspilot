@@ -4,7 +4,6 @@
 **Branch**: feature/pm-owns-branch-and-change-setup
 **Created**: 2026-05-21
 **Author**: PM
-**Authoring Mode**: instance-first (author in `.github/agents/`; sync to `syspilot/agents/` before close)
 
 ---
 
