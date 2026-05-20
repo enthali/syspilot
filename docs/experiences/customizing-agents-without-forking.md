@@ -46,28 +46,11 @@ Your `context.md` is yours. syspilot updates never touch it.
 
 ## What Jarvis 0.5.11 Added
 
-Before 0.5.11, session state was scattered across various per-agent folders. With
-0.5.11, each named session gets its own folder:
-
-```
-.jarvis/sessions/
-  Change Manager/
-    session.yaml
-    context.md
-  Quality Manager/
-    session.yaml
-    context.md
-  Project Manager/
-    session.yaml
-    context.md
-```
-
 In the Jarvis panel, clicking the book icon next to a session opens its `context.md`
 directly. You can read and edit the agent's project-specific instructions at any time
-without leaving VS Code.
+without leaving VS Code. But you don't have to. you can also ask your agent to maintain it based on your instructions
 
-`.jarvis/` is per-installation private — it belongs in `.gitignore` and should never
-be committed. It's your local workspace, not part of the product.
+`.jarvis/` is per-installation private — it belongs in `.gitignore` and it's up to you whether it gets committed. It's your local workspace. Depening on your processes and preferences, you might choose to commit it (for team visibility or auditability) or ignore it (for personal overrides). Either way, it's separate from the agent files that syspilot manages.
 
 ## Other Approaches
 
@@ -90,7 +73,7 @@ agent definition.
 
 `.github/agents/` belongs to syspilot. `.jarvis/` belongs to you.
 
-Never edit files in `.github/agents/` to adapt behavior for your project. Put your
+I wouldn't recommend editing the files in `.github/agents/` to adapt behavior for your project. Put your
 project-specific instructions where the agent update cycle can't reach them.
 
 ## How Do You Actually Do It?
@@ -102,8 +85,7 @@ That's it.
 
 For example, I once told my Change Manager:
 
-> *"From now on, always create the branch before you open the Change Document. Record
-> that as a standing instruction in your context.md."*
+> *"From now on, always create the branch with the prefix `feature/` before you open the Change Document. >Remember that in your context.md."*
 
 The CM wrote the instruction into `.jarvis/sessions/Change Manager/context.md`. Every
 subsequent session, it starts with that instruction already loaded. I never touched the
