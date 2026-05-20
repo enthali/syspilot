@@ -45,6 +45,12 @@ Setup Manager Requirements
    * AC-5: If a Skill belonging to an exclusive group is being installed and
      a Skill of the same group already exists, the installation is rejected
      with a conflict report
+   * AC-6: The file sync for every directory in scope is idempotent — re-running
+     with unchanged source produces the same end-state with no side effects
+   * AC-7: Files present in a target directory that no longer exist in the
+     corresponding source directory are removed (orphan cleanup)
+   * AC-8: The Installer run summary reports installed / updated / removed
+     counts so the invoking agent can verify completeness
 
 
 .. req:: Installer Workflow
@@ -72,6 +78,11 @@ Setup Manager Requirements
      value in each installed agent file before overwriting it, and re-inject
      the saved value after copying from product source
    * AC-8: During Configure step, Installer performs doc bootstrap per SYSP_REQ_INSTALLER_DOC_BOOTSTRAP
+   * AC-9: During Install/Update, Installer detects orphan files in each
+     target directory (files present in target but absent in source) and
+     removes them
+   * AC-10: After Install/Update, Installer outputs a run summary with
+     per-directory counts of installed, updated, and removed files
 
 .. req:: Installer Installation Scope
    :id: SYSP_REQ_INSTALLER_SCOPE
@@ -90,7 +101,7 @@ Setup Manager Requirements
    * ``syspilot/agents/`` → ``.github/agents/``
    * ``syspilot/prompts/`` → ``.github/prompts/``
    * ``syspilot/skills/`` → ``.github/skills/``
-   * ``syspilot/templates/`` → ``.syspilot/templates/``
+   * ``syspilot/templates/`` → ``.github/templates/``
 
    **Explicitly excluded (NOT copied to user projects):**
 
@@ -106,6 +117,12 @@ Setup Manager Requirements
    * AC-2: ``docs/syspilot/`` is never copied to any user project
    * AC-3: ``docs/changes/`` is never copied to any user project
    * AC-4: No unlisted file or directory from the syspilot source is copied to the target project
+   * AC-5: The sync for each directory in scope is idempotent — re-running
+     the Installer with unchanged source yields the identical end-state
+   * AC-6: Files present in a target directory that no longer exist in the
+     corresponding source directory are removed (orphan cleanup)
+   * AC-7: The Installer run summary reports the count of files installed,
+     updated, and removed per scope directory
 
 
 .. req:: Installer Doc Bootstrap

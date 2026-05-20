@@ -15,36 +15,34 @@ Setup Agent must sync `syspilot/templates/*` → `.github/templates/*` during in
 
 ## Level 0: User Stories
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted User Stories
 
 | ID | Title | Impact | Notes |
 |----|-------|--------|-------|
-| US_xxx | ... | modified | ... |
+| SYSP_US_INSTALLER | Installer Agent | modified | Added AC7 (orphan cleanup) and AC8 (observable summary) |
 
 ### New User Stories
 
-| ID | Title | Priority |
-|----|-------|----------|
-| SYSPILOT_US_NEW_1 | As a..., I want..., so that... | mandatory |
+_None required — existing US covers the scope._
 
 ### Decisions
 
-- Decision 1: ...
-- Decision 2: ...
+- Decision 1: `SYSP_US_SETUP` not impacted — the Setup Bootloader delegates all file copy work to the Installer; no change to the Bootloader US.
+- Decision 2: Orphan cleanup and observable summary are new acceptance criteria on `SYSP_US_INSTALLER` (AC7, AC8), not new User Stories, because they extend the existing "file copy" responsibility.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing User Stories
-- [ ] No redundancies
-- [ ] Gaps identified and addressed
+- [x] No contradictions with existing User Stories
+- [x] No redundancies
+- [x] Gaps identified and addressed
 
 ---
 
 ## Level 1: Requirements
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Requirements
 
@@ -52,34 +50,33 @@ Found via links from User Stories above.
 
 | ID | Linked From | Impact | Notes |
 |----|-------------|--------|-------|
-| REQ_xxx | US_xxx | modified | ... |
+| SYSP_REQ_INSTALLER_SCOPE | SYSP_US_INSTALLER | modified | Target for `templates/` changed from `.syspilot/templates/` to `.github/templates/`; added AC5 (idempotency), AC6 (orphan cleanup), AC7 (observable summary) |
+| SYSP_REQ_INSTALLER_DUTIES | SYSP_US_INSTALLER | modified | Added AC6 (idempotent sync), AC7 (orphan cleanup), AC8 (observable summary) |
+| SYSP_REQ_INSTALLER_WORKFLOW | SYSP_US_INSTALLER | modified | Added AC9 (orphan detection/removal during Install/Update), AC10 (run summary output) |
 
 ### New Requirements
 
-| ID | Title | Links | Priority |
-|----|-------|-------|----------|
-| SYSPILOT_REQ_NEW_1 | ... | US_xxx | mandatory |
+_None required — existing REQs cover all ACs after modification._
 
 ### Conflicts Detected
 
-- ⚠️ REQ_xxx vs REQ_yyy: {description}
-  - Resolution: {decision}
+_None._
 
 ### Decisions
 
-- Decision 1: ...
+- Decision 1: Template target changed from `.syspilot/templates/` to `.github/templates/` — aligns with AC2 of the CR and makes templates consistent with the other three scope directories (all under `.github/`). The prior CR flagged this explicitly as a follow-up.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Requirements
-- [ ] No redundancies
-- [ ] All new REQs link to User Stories
+- [x] No contradictions with existing Requirements
+- [x] No redundancies
+- [x] All new REQs link to User Stories
 
 ---
 
 ## Level 2: Design
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Design Elements
 
@@ -87,66 +84,56 @@ Found via links from Requirements above.
 
 | ID | Linked From | Impact | Notes |
 |----|-------------|--------|-------|
-| SPEC_xxx | REQ_xxx | modified | ... |
+| SYSP_SPEC_INSTALLER_SCOPE | SYSP_REQ_INSTALLER_SCOPE | modified | Target for `templates/` changed from `.syspilot/templates/` to `.github/templates/` |
+| SYSP_SPEC_INSTALLER_DUTIES | SYSP_REQ_INSTALLER_DUTIES | modified | Added duties: Idempotent Sync, Orphan Cleanup, Observable Summary |
+| SYSP_SPEC_INSTALLER_WORKFLOW | SYSP_REQ_INSTALLER_WORKFLOW | modified | Added steps 6 (Orphan Cleanup) and 7 (Summary); renumbered Validate→8, Commit→9 |
 
 ### New Design Elements
 
-| ID | Title | Links |
-|----|-------|-------|
-| SYSPILOT_SPEC_NEW_1 | ... | REQ_xxx, SYSPILOT_REQ_NEW_1 |
+_None required — existing SPECs cover all REQ changes after modification._
 
 ### Conflicts Detected
 
-- ⚠️ SPEC_xxx vs SPEC_yyy: {description}
-  - Resolution: {decision}
+_None._
 
 ### Decisions
 
-- Decision 1: ...
+- Decision 1: Orphan Cleanup is a separate workflow step (step 6) rather than being embedded inside Install/Update (step 4) — this ensures orphan removal is always performed regardless of whether files were updated, and makes testing easier.
+- Decision 2: Summary (step 7) runs after orphan cleanup so it can report all three categories (installed, updated, removed) in one pass.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Designs
-- [ ] All new SPECs link to Requirements
+- [x] No contradictions with existing Designs
+- [x] All new SPECs link to Requirements
 
 ---
 
 ## Final Consistency Check
 
-**Status**: ⏳ not started | ✅ passed | ❌ failed
+**Status**: ✅ passed
 
 ### Traceability Verification
 
 | User Story | Requirements | Design | Complete? |
 |------------|--------------|--------|-----------|
-| US_xxx | REQ_xxx | SPEC_xxx | ✅ |
-| SYSPILOT_US_NEW_1 | SYSPILOT_REQ_NEW_1 | SYSPILOT_SPEC_NEW_1 | ✅ |
+| SYSP_US_INSTALLER | SYSP_REQ_INSTALLER_SCOPE | SYSP_SPEC_INSTALLER_SCOPE | ✅ |
+| SYSP_US_INSTALLER | SYSP_REQ_INSTALLER_DUTIES | SYSP_SPEC_INSTALLER_DUTIES | ✅ |
+| SYSP_US_INSTALLER | SYSP_REQ_INSTALLER_WORKFLOW | SYSP_SPEC_INSTALLER_WORKFLOW | ✅ |
 
 ### Artefakt-Removal-Check
 
-*Fill in only when this CR removes an artefact (file, field, configuration key, REQ-ID).*
-
-For each removed artefact, run a project-wide grep on all plausible name variants and classify results:
-
-| Removed Artefact | Class (a): Code/Workflow refs | Class (b): Doc refs | Class (c): Historic Change Docs |
-|------------------|-------------------------------|---------------------|---------------------------------|
-| `{artefact name}` | {files + lines fixed / none} | {files + lines fixed / none} | {count — acceptable historic stranding} |
-
-- [ ] All class (a) active code/workflow references fixed in this CR
-- [ ] All class (b) active documentation references fixed in this CR
-- [ ] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
+_Not applicable — this CR does not remove any artefact. It changes a mapping target (`.syspilot/templates/` → `.github/templates/`) but `.syspilot/templates/` was never actually created in any installation (prior CR flagged it as deferred)._
 
 ### Issues Found
 
-- [ ] Issue 1: ...
-- [ ] Issue 2: ...
+- [x] No issues found
 
 ### Sign-off
 
-- [ ] All levels completed (no ⚠️ DEPRECATED markers remaining)
-- [ ] All conflicts resolved
-- [ ] Traceability verified
-- [ ] Ready for implementation
+- [x] All levels completed (no ⚠️ DEPRECATED markers remaining)
+- [x] All conflicts resolved
+- [x] Traceability verified
+- [x] Ready for implementation
 
 ---
 
