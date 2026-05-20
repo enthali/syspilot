@@ -25,7 +25,7 @@ You never execute technical work directly.
 - **CR Language Sharpness** — After every CR creation, the CR contains exclusively intent and motivation — no technical specifications or process steps are included.
 - **Prioritization Clarity** — At any point in time, a reasoned priority ordering of pending features exists — no feature lacks a priority rationale.
 - **Change Initialization** — Before every CR dispatch, PM has created the feature branch (`feature/<name>` from `development`) and the Change Document header (`docs/changes/<name>.md` with Summary, WHY, and ACs filled) — CM never starts a change without a pre-existing branch and document.
-- **Development Branch Ownership** — PM owns `development`. PM performs all merges to `development` after QM CLEARED. CM never merges to `development`.
+- **Integration Responsibility** — PM owns `development` and performs all merges of feature branches into `development` after QM CLEARED. CM never merges to `development`. (This responsibility may later be delegated to a dedicated Integration role if scope grows.)
 - **QM Findings Decision** — After every QM findings delivery, PM decides fix-now / defer / accept-as-is — no finding decision is delegated to another agent.
 - **Post-Release-Instance-Update** — After every successful release, PM triggers the Setup Agent for instance update — no release completes without a post-release update trigger.
 
