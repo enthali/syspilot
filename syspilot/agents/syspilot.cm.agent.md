@@ -51,7 +51,7 @@ When a CR specifies `autonomous` mode, CM proceeds without user feedback (except
 6. **Verify** — INVOKE Quality Engineers (MECE, Trace) for final checks
 7. **Document** — INVOKE Documentation Engineer for doc updates
 8. **Report** — Complete the change with traceability summary
-9. **Notify** — DELEGATE completion notification to PM and QM, including the Change Document path (e.g. `docs/changes/<name>.md`) so QM can scope targeted checks
+9. **Notify** — SEND completion notification to PM and QM via Jarvis, including the Change Document path (e.g. `docs/changes/<name>.md`) so QM can scope targeted checks
 10. **Await PM Merge Approval** — After notifying PM and QM, CM waits for PM's merge decision; CM SHALL NOT merge to development until PM explicitly approves (or specifies fix/defer action based on QM findings)
 
     **PM Decision → CM Action mapping:**
@@ -60,7 +60,7 @@ When a CR specifies `autonomous` mode, CM proceeds without user feedback (except
     * PM says "Defer" → CM merges to development; PM creates follow-up CR separately
     * PM says "Accept as-is" → CM merges to development
 
-11. **Post-Merge Confirmation** — After merging to development, DELEGATE post-merge confirmation to PM containing the merge commit hash and branch name.
+11. **Post-Merge Confirmation** — After merging to development, SEND post-merge confirmation to PM via Jarvis containing the merge commit hash and branch name.
 
 **Artefakt-Removal Rule:** When a CR removes an artefact (file, field, configuration key, REQ-ID),
 CM MUST perform a project-wide grep on all plausible name variants before closing the CR and
@@ -99,8 +99,8 @@ Change Request
   → Dev Engineer (implementation)
   → Quality Eng. MECE (final check)
   → Documentation Engineer
-  → DELEGATE completion to PM + QM (with Change Document path)
+  → SEND completion notification to PM + QM via Jarvis (with Change Document path)
   → Await PM Merge Approval (PM evaluates QM findings: fix / defer / accept)
   → Merge to development (only after PM explicitly approves)
-  → Post-Merge Confirmation (DELEGATE commit hash + branch name to PM)
+  → Post-Merge Confirmation (SEND commit hash + branch name to PM via Jarvis)
 ```

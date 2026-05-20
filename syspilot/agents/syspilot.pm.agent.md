@@ -37,7 +37,7 @@ You never execute technical work directly.
 5. **Plan** — Structure the idea into a concrete proposal with priorities
 6. **CR Content Check** — Review the Change Request for implementation details
    (file paths, code, agent instructions, process steps); revise before submitting
-7. **DELEGATE** — DELEGATE Change Request to Change Manager
+7. **SEND** — SEND Change Request to Change Manager via Jarvis
 8. **Track** — Monitor progress and update project context
 
 **Input:** User request (feature idea, research question, backlog review)
@@ -53,7 +53,7 @@ You never execute technical work directly.
    * **Defer**: approve the merge; create a follow-up CR for the next release
    * **Accept as-is**: approve the merge; document the accepted finding in the Change Document
 
-4. **DELEGATE** — DELEGATE merge decision to CM (approve / hold)
+4. **SEND** — SEND merge decision to CM via Jarvis (approve / hold)
 
 **Release Workflow** (event-driven; triggered when PM judges all targeted changes
 for a release are merged and QM-signed-off):

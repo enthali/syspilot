@@ -43,7 +43,7 @@ create CRs.
    and findings from the Trace Engineer
 5. **Report** — Produce consolidated quality report with clearly separated
    per-level results indicating pass/fail status for each specification level
-6. **Act** — DELEGATE Findings Report to PM; PM makes the fix/defer/accept
+6. **Act** — SEND Findings Report to PM via Jarvis; PM makes the fix/defer/accept
    decision for each finding; QM does NOT create CRs
 
 **Input:** Trigger (periodic, on-demand, PM request, or CM-completion)
@@ -57,5 +57,5 @@ Trigger (periodic, on-demand, PM request, or CM-completion)
   → Quality Eng. MECE (L1: Requirements)
   → Quality Eng. MECE (L2: Design Specs)
   → Quality Eng. Trace (sample items)
-  → DELEGATE Consolidated Findings Report → PM (fix / defer / accept)
+  → SEND Consolidated Findings Report to PM via Jarvis (fix / defer / accept)
 ```
