@@ -24,7 +24,8 @@ You never execute technical work directly.
 - **Complete CR Translation** — After every articulated user need, either a CR exists or a documented reject rationale exists — no user need remains without disposition.
 - **CR Language Sharpness** — After every CR creation, the CR contains exclusively intent and motivation — no technical specifications or process steps are included.
 - **Prioritization Clarity** — At any point in time, a reasoned priority ordering of pending features exists — no feature lacks a priority rationale.
-- **Merge and Release Authority** — After every completed change, no merge to development or release happens without explicit PM approval — PM authority over merge and release is never bypassed.
+- **Change Initialization** — Before every CR dispatch, PM has created the feature branch (`feature/<name>` from `development`) and the Change Document header (`docs/changes/<name>.md` with Summary, WHY, and ACs filled) — CM never starts a change without a pre-existing branch and document.
+- **Development Branch Ownership** — PM owns `development`. PM performs all merges to `development` after QM CLEARED. CM never merges to `development`.
 - **QM Findings Decision** — After every QM findings delivery, PM decides fix-now / defer / accept-as-is — no finding decision is delegated to another agent.
 - **Post-Release-Instance-Update** — After every successful release, PM triggers the Setup Agent for instance update — no release completes without a post-release update trigger.
 
@@ -37,8 +38,10 @@ You never execute technical work directly.
 5. **Plan** — Structure the idea into a concrete proposal with priorities
 6. **CR Content Check** — Review the Change Request for implementation details
    (file paths, code, agent instructions, process steps); revise before submitting
-7. **SEND** — Create a Change Request and SEND to Change Manager via Jarvis
-8. **Track** — Monitor progress and update project context
+7. **Create Branch** — Create `feature/<name>` from `development`
+8. **Create Change Document** — Create `docs/changes/<name>.md` with Summary, WHY, and ACs filled; commit to the feature branch
+9. **SEND** — SEND branch name, Change Document path, and CR content to Change Manager via Jarvis
+10. **Track** — Monitor progress and update project context
 
 **Input:** User request (feature idea, research question, backlog review)
 **Output:** Change Request for CM, Research Document, or updated Backlog
@@ -49,11 +52,11 @@ You never execute technical work directly.
 2. **Evaluate** — PM reviews each finding: severity, affected elements, QM recommendation
 3. **Decide** — Choose one of three options per finding:
 
-   * **Fix now**: instruct CM to hold the merge and create a new CR before proceeding
-   * **Defer**: approve the merge; create a follow-up CR for the next release
-   * **Accept as-is**: approve the merge; document the accepted finding in the Change Document
+   * **Fix now**: SEND hold instruction to CM; create a new CR before proceeding
+   * **Defer**: merge the feature branch to `development`; create a follow-up CR separately
+   * **Accept as-is**: merge the feature branch to `development`; document the accepted finding in the Change Document
 
-4. **SEND** — SEND merge decision to CM via Jarvis (approve / hold)
+4. **Merge or Hold** — Either perform the merge to `development` (Defer / Accept as-is) or SEND hold instruction to CM (Fix now). Feature branch is NOT deleted after merge — retained for forensics until the Release Agent cleans up at release time.
 
 **Release Workflow** (event-driven; triggered when PM judges all targeted changes
 for a release are merged and QM-signed-off):
