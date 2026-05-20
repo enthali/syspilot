@@ -77,7 +77,7 @@ Setup Manager Design
    **Frontmatter Configuration:**
 
    * **description:** ``"Setup Bootloader for syspilot. Fetches the current Installer from upstream and invokes it. User-invocable entry point for syspilot installation."``
-   * **tools:** ``[read, edit, search, execute, todo, agent, agent/runSubagent, vscode/askQuestions]``
+   * **tools:** ``[read, edit, search, execute, todo, agent, vscode/askQuestions]``
    * **user-invocable:** ``true``
    * **agents:** ``["syspilot.installer"]``
    * **version:** ``0.5.3``
