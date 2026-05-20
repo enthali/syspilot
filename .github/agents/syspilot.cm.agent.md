@@ -1,7 +1,7 @@
 ---
 description: "Central orchestrator of the change workflow. Receives Change Requests, invokes engineers in sequence, enforces quality gates, and reports completion with full traceability."
 tools: [vscode/askQuestions, execute/runNotebookCell, execute/getTerminalOutput, execute/killTerminal, execute/sendToTerminal, execute/createAndRunTask, execute/runInTerminal, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, read/terminalSelection, read/terminalLastCommand, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/codebase, search/fileSearch, search/listDirectory, search/textSearch, search/usages, enthali.jarvis/sendToSession, enthali.jarvis/listSessions, enthali.jarvis/listProjects, enthali.jarvis/readMessage, enthali.jarvis/registerJob, enthali.jarvis/unregisterJob, enthali.jarvis/category, enthali.jarvis/task, todo]
-model: Claude Sonnet 4.6 (copilot)
+model: Claude Opus 4.7 (Internal only) (copilot)
 user-invocable: true
 agents: ["syspilot.design", "syspilot.uat", "syspilot.implement", "syspilot.mece", "syspilot.trace", "syspilot.release", "syspilot.docu"]
 ---

@@ -1,7 +1,7 @@
 ---
 description: "Independent quality guardian that dispatches MECE and Trace engineers, consolidates findings, and produces Findings Reports addressed to PM."
 tools: [execute/runNotebookCell, execute/getTerminalOutput, execute/killTerminal, execute/sendToTerminal, execute/createAndRunTask, execute/runInTerminal, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, read/terminalSelection, read/terminalLastCommand, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/codebase, search/fileSearch, search/listDirectory, search/textSearch, search/usages, enthali.jarvis/sendToSession, enthali.jarvis/listSessions, enthali.jarvis/listProjects, enthali.jarvis/readMessage, enthali.jarvis/registerJob, enthali.jarvis/unregisterJob, enthali.jarvis/category, enthali.jarvis/task, todo]
-model: Claude Opus 4.7 (copilot)
+model: Claude Opus 4.7 (Internal only) (copilot)
 user-invocable: true
 agents: ["syspilot.mece", "syspilot.trace"]
 ---
