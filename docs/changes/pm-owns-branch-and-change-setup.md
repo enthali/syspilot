@@ -133,12 +133,22 @@ _(none)_
 
 ### Artefakt-Removal-Check
 
-_Not applicable — this CR does not remove any artefact. The "Authoring Mode" field was removed from the template in a prior commit but is not a spec-level artefact._
+This CR removes one template field: `Authoring Mode` (Change Document template, removed in commit `3000fbf`).
+
+| Removed Artefact | Class (a): Code/Workflow refs | Class (b): Doc refs | Class (c): Historic Change Docs |
+|------------------|-------------------------------|---------------------|---------------------------------|
+| `Authoring Mode` (template field) | none | none — all remaining `autonomous mode` / `user-guided mode` matches reference the **concept** (still in use), not the removed field | 1 (this CR's own narrative entry); historic CDs under `docs/changes/v0.5.2/` reference the concept, not the field |
+
+- [x] All class (a) active code/workflow references fixed in this CR
+- [x] All class (b) active documentation references fixed in this CR
+- [x] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
 
 ### Issues Found
 
-- [x] Product-side agents (`syspilot/agents/`) are not yet updated to match `.github/` end-state — this is implementation work for the Dev Engineer (not spec scope)
-- [x] `SYSP_REQ_INSTALLER_SCOPE` maps `syspilot/templates/` → `.syspilot/templates/` but the new template location is `.github/templates/` — deferred to a follow-up CR for Setup-Agent sync
+- [x] Product-side agents (`syspilot/agents/`) brought into sync with `.github/` end-state by Dev Engineer (commit `3dcf77b`); residual Frontmatter differences (tools/model) are intentional (source vs. installed instance).
+- [ ] **Deferred to follow-up CR (Setup-Agent template sync):** `SYSP_REQ_INSTALLER_SCOPE` maps `syspilot/templates/` → `.syspilot/templates/` but the new template location is `.github/templates/` — Setup Agent needs a new sync rule for `syspilot/templates/` → `.github/templates/`.
+- [ ] **Deferred to follow-up CR (Operation Mode signalling):** removing the `Authoring Mode` template field leaves no structural channel for PM to declare a CR's mode to CM — current CR-level practice is freeform text in the CR body or CM asks at intake. The justification in commit `3000fbf` ("redundant since PM sets branch context") does not address this gap.
+- [x] **Scope bleed observed (informational only):** This bootstrap CR also includes commits unrelated to its stated intent — `ae65c55` (model-version fix), `0a98186` + `43b9fb8` (no-blame-language guidance), `3000fbf` (Authoring Mode removal). They are accepted as part of this CR but illustrate the very pattern the new ownership rules aim to make visible going forward.
 
 ### Sign-off
 
