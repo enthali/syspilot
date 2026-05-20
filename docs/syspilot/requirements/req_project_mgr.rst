@@ -30,17 +30,20 @@ Project Manager Requirements
 
    **Description:**
    The Project Manager agent SHALL have Duties that guarantee complete CR
-   translation, CR language purity, prioritization clarity, merge/release
-   authority, QM-findings decisions, and post-release instance updates.
+   translation, CR language purity, prioritization clarity, change initialization
+   (branch + template-copied document), integration responsibility (PM merges),
+   QM-findings decisions, and post-release instance updates.
 
    **Acceptance Criteria:**
 
    * AC-1: After every articulated user need, either a CR exists or a documented reject rationale exists — no user need remains without disposition
    * AC-2: After every CR creation, CRs contain exclusively intent and motivation — no technical specifications or process steps are included
    * AC-3: At any point in time, a reasoned priority ordering of pending features exists — no feature lacks a priority rationale
-   * AC-4: After every completed change, no merge to development or release happens without explicit PM approval — PM authority over merge and release is never bypassed
-   * AC-5: After every QM findings delivery, PM decides fix-now / defer / accept-as-is — no finding decision is delegated to another agent
-   * AC-6: After every successful release, PM triggers the Setup Agent for instance update — no release completes without a post-release update trigger
+   * AC-4: Before every CR dispatch, PM has created the feature branch ``feature/<name>`` from ``development`` and created the Change Document by copying ``.github/templates/change-document.md`` verbatim — no hand-written document structure
+   * AC-5: PM fills only the header fields (Status, Branch, Created, Author) and the ``## Summary`` section of the template-copied Change Document — all other sections remain untouched for CM
+   * AC-6: PM owns ``development`` and performs all merges of feature branches into ``development`` — no other agent merges to ``development``
+   * AC-7: After every QM findings delivery, PM decides fix-now / defer / accept-as-is — no finding decision is delegated to another agent
+   * AC-8: After every successful release, PM triggers the Setup Agent for instance update — no release completes without a post-release update trigger
 
 
 .. req:: Project Manager Workflow
@@ -52,7 +55,8 @@ Project Manager Requirements
 
    **Description:**
    The Project Manager agent SHALL follow a workflow from intake through
-   research and planning to delegation.
+   research and planning to delegation, including explicit branch creation,
+   template-copy document initialization, and integration (merge) execution.
 
    **Acceptance Criteria:**
 
@@ -60,11 +64,14 @@ Project Manager Requirements
    * AC-2: PM conducts research when needed before making recommendations
    * AC-3: PM MAY run impact analysis to understand blast radius before creating a Change Request
    * AC-4: PM produces a structured plan or Change Request as output
-   * AC-5: PM delegates execution to Change Manager
-   * AC-6: Before delegating to CM, PM SHALL self-check the CR for implementation details and revise if needed
-   * AC-7: Before CM merges to development, PM SHALL receive QM findings for the change, decide fix/defer/accept, and communicate the merge approval (or hold) decision to CM
-   * AC-8: PM workflow SHALL include a Release-Trigger step: PM evaluates readiness, decides release criteria are met, and invokes the Release Agent
-   * AC-9: PM workflow SHALL include a Setup-Trigger step: after a successful release, PM invokes the Setup Agent to update the installed instance
+   * AC-5: PM workflow includes a Create Branch step: PM creates ``feature/<name>`` from ``development``
+   * AC-6: PM workflow includes a Create Change Document step: PM copies ``.github/templates/change-document.md`` verbatim to ``docs/changes/<name>.md`` and fills only header + Summary
+   * AC-7: PM delegates execution to Change Manager by sending branch name, Change Document path, and CR content
+   * AC-8: Before delegating to CM, PM SHALL self-check the CR for implementation details and revise if needed
+   * AC-9: PM workflow SHALL include a QM Findings Review: PM evaluates findings and either performs the merge (defer/accept) or instructs CM to fix
+   * AC-10: Feature branches are NOT deleted after merge — they are retained for forensic purposes until the Release Agent cleans them up
+   * AC-11: PM workflow SHALL include a Release-Trigger step: PM evaluates readiness, decides release criteria are met, and invokes the Release Agent
+   * AC-12: PM workflow SHALL include a Setup-Trigger step: after a successful release, PM invokes the Setup Agent to update the installed instance
 
 
 .. req:: Project Manager Frontmatter Configuration

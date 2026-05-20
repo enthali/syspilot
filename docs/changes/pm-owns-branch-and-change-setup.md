@@ -15,36 +15,37 @@ Clarify and enforce the ownership boundary between PM and CM for branch creation
 
 ## Level 0: User Stories
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted User Stories
 
 | ID | Title | Impact | Notes |
 |----|-------|--------|-------|
-| US_xxx | ... | modified | ... |
+| SYSP_US_PM | Project Manager Agent | modified | Added duties for Change Initialization + Integration Responsibility; updated AC4 (PM performs merge); added AC7 (branch+doc setup) |
+| SYSP_US_CM | Change Manager Agent | modified | Sharpened duties: Merge Abstinence (never merges), Change Auditability (PM creates doc, CM fills); updated ACs 7-9 |
+| SYSP_US_RELEASE | Release Engineer Agent | modified | Added duty for feature-branch cleanup at release time; added AC7 |
 
 ### New User Stories
 
-| ID | Title | Priority |
-|----|-------|----------|
-| SYSPILOT_US_NEW_1 | As a..., I want..., so that... | mandatory |
+_(none — existing USes cover the scope)_
 
 ### Decisions
 
-- Decision 1: ...
-- Decision 2: ...
+- Decision 1: SYSP_US_SETUP is explicitly out of scope (deferred follow-up CR for Setup-Agent sync logic)
+- Decision 2: PM US duty "Autorität über Merge und Release" split into "Change Initialization" + "Integration Responsibility" for clarity
+- Decision 3: CM US no longer creates branch or Change Document — these are PM responsibilities
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing User Stories
-- [ ] No redundancies
-- [ ] Gaps identified and addressed
+- [x] No contradictions with existing User Stories
+- [x] No redundancies
+- [x] Gaps identified and addressed
 
 ---
 
 ## Level 1: Requirements
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Requirements
 
@@ -52,34 +53,38 @@ Found via links from User Stories above.
 
 | ID | Linked From | Impact | Notes |
 |----|-------------|--------|-------|
-| REQ_xxx | US_xxx | modified | ... |
+| SYSP_REQ_PM_DUTIES | SYSP_US_PM | modified | Added ACs 4-6 for Change Initialization + Integration Responsibility; renumbered remaining |
+| SYSP_REQ_PM_WORKFLOW | SYSP_US_PM | modified | Added ACs 5-6 (branch creation, template copy); AC-7 (delegation with branch+path); AC-9 (PM performs merge); AC-10 (branch retention) |
+| SYSP_REQ_CM_DUTIES | SYSP_US_CM | modified | AC-4 updated (PM creates doc, CM fills); AC-5 (merge abstinence); AC-6 (readiness notification); status → approved |
+| SYSP_REQ_CM_WORKFLOW | SYSP_US_CM | modified | Removed Branch/CD creation steps; added checkout step; updated merge language; status → approved |
+| SYSP_REQ_RELEASE_DUTIES | SYSP_US_RELEASE | modified | Added AC-6 for feature-branch cleanup |
+| SYSP_REQ_RELEASE_WORKFLOW | SYSP_US_RELEASE | modified | Added AC-8 for branch cleanup step |
 
 ### New Requirements
 
-| ID | Title | Links | Priority |
-|----|-------|-------|----------|
-| SYSPILOT_REQ_NEW_1 | ... | US_xxx | mandatory |
+_(none — existing REQs cover the scope after modification)_
 
 ### Conflicts Detected
 
-- ⚠️ REQ_xxx vs REQ_yyy: {description}
-  - Resolution: {decision}
+_(none)_
 
 ### Decisions
 
-- Decision 1: ...
+- Decision 1: SYSP_REQ_CM_DUTIES and SYSP_REQ_CM_WORKFLOW promoted from `draft` to `approved` since they now reflect the agreed bootstrap state
+- Decision 2: SYSP_REQ_SETUP_BOOTLOADER_* not touched (deferred follow-up CR for template sync)
+- Decision 3: The Installer scope REQ (SYSP_REQ_INSTALLER_SCOPE) already maps `syspilot/templates/` → `.syspilot/templates/` — a separate follow-up CR will add the `.github/templates/` path when Setup-Agent sync is implemented
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Requirements
-- [ ] No redundancies
-- [ ] All new REQs link to User Stories
+- [x] No contradictions with existing Requirements
+- [x] No redundancies
+- [x] All new REQs link to User Stories
 
 ---
 
 ## Level 2: Design
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Design Elements
 
@@ -87,66 +92,60 @@ Found via links from Requirements above.
 
 | ID | Linked From | Impact | Notes |
 |----|-------------|--------|-------|
-| SPEC_xxx | REQ_xxx | modified | ... |
+| SYSP_SPEC_PM_DUTIES | SYSP_REQ_PM_DUTIES | modified | Replaced "Merge and Release Authority" with "Change Initialization" + "Integration Responsibility" |
+| SYSP_SPEC_PM_WORKFLOW | SYSP_REQ_PM_WORKFLOW | modified | Added Create Branch, Create Change Document, SEND steps; updated QM workflow to perform merge |
+| SYSP_SPEC_CM_DUTIES | SYSP_REQ_CM_DUTIES | modified | Updated Change Auditability (template ownership), replaced Merge-Authority with Merge Abstinence, updated PM Notification; status → approved |
+| SYSP_SPEC_CM_WORKFLOW | SYSP_REQ_CM_WORKFLOW | modified | Removed Branch+CD creation steps; CM receives branch from PM; updated PM Decision mapping (PM merges); status → approved |
+| SYSP_SPEC_RELEASE_DUTIES | SYSP_REQ_RELEASE_DUTIES | modified | Added Feature Branch Cleanup duty |
+| SYSP_SPEC_RELEASE_WORKFLOW | SYSP_REQ_RELEASE_WORKFLOW | modified | Added step 10 Cleanup Branches; renumbered Publish to step 11 |
 
 ### New Design Elements
 
-| ID | Title | Links |
-|----|-------|-------|
-| SYSPILOT_SPEC_NEW_1 | ... | REQ_xxx, SYSPILOT_REQ_NEW_1 |
+_(none — existing SPECs cover the scope after modification)_
 
 ### Conflicts Detected
 
-- ⚠️ SPEC_xxx vs SPEC_yyy: {description}
-  - Resolution: {decision}
+_(none)_
 
 ### Decisions
 
-- Decision 1: ...
+- Decision 1: SYSP_SPEC_CM_DUTIES and SYSP_SPEC_CM_WORKFLOW promoted from `draft` to `approved`
+- Decision 2: Release workflow Cleanup step placed after Back-Merge (step 10) to ensure branches are only cleaned after full synchronization
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Designs
-- [ ] All new SPECs link to Requirements
+- [x] No contradictions with existing Designs
+- [x] All new SPECs link to Requirements
 
 ---
 
 ## Final Consistency Check
 
-**Status**: ⏳ not started | ✅ passed | ❌ failed
+**Status**: ✅ passed
 
 ### Traceability Verification
 
 | User Story | Requirements | Design | Complete? |
 |------------|--------------|--------|-----------|
-| US_xxx | REQ_xxx | SPEC_xxx | ✅ |
-| SYSPILOT_US_NEW_1 | SYSPILOT_REQ_NEW_1 | SYSPILOT_SPEC_NEW_1 | ✅ |
+| SYSP_US_PM | SYSP_REQ_PM_DUTIES, SYSP_REQ_PM_WORKFLOW | SYSP_SPEC_PM_DUTIES, SYSP_SPEC_PM_WORKFLOW | ✅ |
+| SYSP_US_CM | SYSP_REQ_CM_DUTIES, SYSP_REQ_CM_WORKFLOW | SYSP_SPEC_CM_DUTIES, SYSP_SPEC_CM_WORKFLOW | ✅ |
+| SYSP_US_RELEASE | SYSP_REQ_RELEASE_DUTIES, SYSP_REQ_RELEASE_WORKFLOW | SYSP_SPEC_RELEASE_DUTIES, SYSP_SPEC_RELEASE_WORKFLOW | ✅ |
 
 ### Artefakt-Removal-Check
 
-*Fill in only when this CR removes an artefact (file, field, configuration key, REQ-ID).*
-
-For each removed artefact, run a project-wide grep on all plausible name variants and classify results:
-
-| Removed Artefact | Class (a): Code/Workflow refs | Class (b): Doc refs | Class (c): Historic Change Docs |
-|------------------|-------------------------------|---------------------|---------------------------------|
-| `{artefact name}` | {files + lines fixed / none} | {files + lines fixed / none} | {count — acceptable historic stranding} |
-
-- [ ] All class (a) active code/workflow references fixed in this CR
-- [ ] All class (b) active documentation references fixed in this CR
-- [ ] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
+_Not applicable — this CR does not remove any artefact. The "Authoring Mode" field was removed from the template in a prior commit but is not a spec-level artefact._
 
 ### Issues Found
 
-- [ ] Issue 1: ...
-- [ ] Issue 2: ...
+- [x] Product-side agents (`syspilot/agents/`) are not yet updated to match `.github/` end-state — this is implementation work for the Dev Engineer (not spec scope)
+- [x] `SYSP_REQ_INSTALLER_SCOPE` maps `syspilot/templates/` → `.syspilot/templates/` but the new template location is `.github/templates/` — deferred to a follow-up CR for Setup-Agent sync
 
 ### Sign-off
 
-- [ ] All levels completed (no ⚠️ DEPRECATED markers remaining)
-- [ ] All conflicts resolved
-- [ ] Traceability verified
-- [ ] Ready for implementation
+- [x] All levels completed (no ⚠️ DEPRECATED markers remaining)
+- [x] All conflicts resolved
+- [x] Traceability verified
+- [x] Ready for implementation
 
 ---
 

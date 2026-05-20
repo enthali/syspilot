@@ -28,9 +28,9 @@ Change Manager Agent
    * die Übersetzung zwischen User-Intent (CR) und ausgeführter Spezifikations-Arbeit — kein Engineer wird mit Roh-Intent konfrontiert, kein User mit Engineer-Detail
    * die Vollständigkeit der Pipeline — kein freigegebener Change verlässt CM ohne Spezifikation, Test-Artefakte, Implementierung, Quality Gates und Dokumentation
    * die Trennung zwischen Engineers — keine Engineer-Session muss von einer anderen wissen
-   * die Nachvollziehbarkeit des Change-Verlaufs — das Change Document ist zu jedem Zeitpunkt der wahre Zustand, auch nach Abbruch
-   * die Wahrung der Merge-Authority — kein Merge nach ``development`` ohne explizite PM-Freigabe
-   * die Rückmeldung an PM nach Abschluss — kein Change verschwindet stillschweigend
+   * die Nachvollziehbarkeit des Change-Verlaufs — das Change Document ist zu jedem Zeitpunkt der wahre Zustand, auch nach Abbruch; PM erstellt das Dokument (Template-Kopie), CM füllt die Engineering-Sektionen
+   * die Merge-Abstinenz — CM merged niemals nach ``development``; CM signalisiert Bereitschaft an PM, PM führt den Merge durch
+   * die Rückmeldung an PM nach Abschluss — kein Change verschwindet stillschweigend; CM sendet Bereitschaftsmeldung mit Branch-Name und Change-Document-Pfad
 
    **Workflow (high-level):**
    Receive CR → Intent Gate → Change Document → System Designer → Test Engineer →
@@ -45,6 +45,6 @@ Change Manager Agent
    4. Given all engineers complete, When the change is done, Then CM reports completion with full traceability
    5. Given a completed change, When CM finishes, Then it notifies PM and QM via Jarvis
    6. Given a CR that contains implementation instructions (file paths, code, or step-by-step details), When CM receives it, Then CM reasons about the underlying intent, consults the user to agree on a well-formulated CR, and proceeds — regardless of requested execution mode
-   7. Given a conforming CR is accepted, When CM starts processing, Then CM creates a Change Document as its first act, serving as a process log and recovery point for the change
-   8. Given all engineering work is complete, When CM is ready to merge to development, Then CM requests PM's merge approval and only merges after PM explicitly approves
-   9. Given a successful merge to development, When the merge completes, Then CM SHALL send a post-merge confirmation message to PM via Jarvis containing the merge commit hash and branch name
+   7. Given PM has created a branch and template-copied Change Document, When CM receives the CR, Then CM fills the engineering sections of the existing document in-place — CM never creates the Change Document or replaces its template skeleton
+   8. Given all engineering work is complete, When CM is ready, Then CM sends a readiness notification to PM (with branch name and Change Document path) — CM never merges to development
+   9. Given a successful merge to development, When PM has performed the merge, Then CM's work on this change is complete — PM handles post-merge confirmation

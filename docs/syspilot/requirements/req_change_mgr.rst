@@ -24,50 +24,55 @@ Change Manager Requirements
 
 .. req:: Change Manager Duties
    :id: SYSP_REQ_CM_DUTIES
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, manager, cm, duties
    :links: SYSP_US_CM
 
    **Description:**
    The Change Manager agent SHALL have Duties that guarantee intent translation,
-   pipeline completeness, engineer separation, change traceability, merge authority,
-   and PM notification for every change.
+   pipeline completeness, engineer separation, change auditability (PM creates
+   document, CM fills engineering sections), merge abstinence (CM never merges),
+   and PM readiness notification for every change.
 
    **Acceptance Criteria:**
 
    * AC-1: After every completed change, the engineer chain received only well-formulated intent — no raw CR detail leaked to engineers, no engineer detail leaked to the user
    * AC-2: No change reaches ``development`` without having passed through specification, test artifacts, implementation, quality gates, and documentation — the pipeline is never short-circuited
    * AC-3: No engineer session has knowledge of or dependency on another engineer session — each operates in isolation
-   * AC-4: At every point during and after a change, the Change Document reflects the true state — including after abort or failure
-   * AC-5: No merge to ``development`` occurs without explicit PM approval — CM never merges autonomously
-   * AC-6: After every completed change, PM has received a post-merge confirmation — no change completes silently
+   * AC-4: At every point during and after a change, the Change Document reflects the true state — PM creates the document by copying the template verbatim and filling header + Summary; CM fills all engineering sections (L0/L1/L2, MECE, Traceability, Sign-off) in-place — CM never creates the document and never replaces the template skeleton
+   * AC-5: CM never merges to ``development`` — CM signals readiness to PM; PM performs the merge
+   * AC-6: After every completed change, PM has received a readiness notification including the Change Document path and branch name — no change completes silently
 
 
 .. req:: Change Manager Workflow
    :id: SYSP_REQ_CM_WORKFLOW
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, manager, cm, workflow
    :links: SYSP_US_CM
 
    **Description:**
    The Change Manager agent SHALL follow a workflow that drives the complete
-   change lifecycle through the engineer chain.
+   change lifecycle through the engineer chain. PM provides the branch and
+   template-copied Change Document; CM checks out the branch and fills the
+   engineering sections. CM never creates branches, never creates the Change
+   Document, and never merges to development.
 
    **Acceptance Criteria:**
 
-   * AC-1: CM workflow starts with a Change Request as input
-   * AC-2: CM invokes System Designer for analysis
-   * AC-3: CM invokes Test Engineer, Dev Engineer, Quality Engineers as needed
-   * AC-4: CM invokes Documentation Engineer at the end
-   * AC-5: CM reports completion with full traceability
-   * AC-6: Upon completion, CM SHALL notify PM and QM via Jarvis message queue
-   * AC-7: CM SHALL ensure Impact Analysis is executed before any spec changes — CR file lists are hints, not the complete scope
-   * AC-8: Upon receiving a CR, CM SHALL assess its conformance; if it contains implementation instructions, CM SHALL reason about the underlying intent, consult the user to agree on a well-formulated CR, then proceed — regardless of operation mode
-   * AC-9: CM SHALL create the Change Document before invoking any engineer
-   * AC-10: Before merging to development, CM SHALL request PM's merge approval; CM SHALL only proceed with the merge after PM explicitly approves
-   * AC-11: After merging to development, CM SHALL send a post-merge confirmation message to PM via Jarvis containing the merge commit hash and branch name
+   * AC-1: CM workflow starts with a Change Request from PM, which includes branch name and Change Document path
+   * AC-2: CM checks out the provided branch (created by PM)
+   * AC-3: CM invokes System Designer for analysis
+   * AC-4: CM invokes Test Engineer, Dev Engineer, Quality Engineers as needed
+   * AC-5: CM invokes Documentation Engineer at the end
+   * AC-6: CM reports completion with full traceability
+   * AC-7: Upon completion, CM SHALL send a readiness notification to PM and QM via Jarvis, including branch name and Change Document path
+   * AC-8: CM SHALL ensure Impact Analysis is executed before any spec changes — CR file lists are hints, not the complete scope
+   * AC-9: Upon receiving a CR, CM SHALL assess its conformance; if it contains implementation instructions, CM SHALL reason about the underlying intent, consult the user to agree on a well-formulated CR, then proceed — regardless of operation mode
+   * AC-10: CM fills the engineering sections (L0/L1/L2, MECE, Traceability, Sign-off) of the existing Change Document in-place — CM never creates or replaces the document
+   * AC-11: After sending readiness notification, CM awaits PM's decision — CM never merges to development
+   * AC-12: If PM says "Fix now", CM applies the fix on the same branch and re-notifies PM and QM; if PM says "Defer" or "Accept as-is", PM merges and CM's work is done
 
 
 .. req:: Change Manager Frontmatter Configuration

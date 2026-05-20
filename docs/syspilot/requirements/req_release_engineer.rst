@@ -30,8 +30,8 @@ Release Engineer Requirements
 
    **Description:**
    The Release Engineer agent SHALL have Duties that guarantee versioned
-   identification, validation, traceability, version consistency, and clean
-   branch separation for every release.
+   identification, validation, traceability, version consistency, clean
+   branch separation, and feature-branch cleanup for every release.
 
    **Acceptance Criteria:**
 
@@ -40,6 +40,7 @@ Release Engineer Requirements
    * AC-3: After every successful release, all change documents from the release cycle are archived in ``docs/changes/<version>/`` and every archived document has a corresponding entry in release notes — no document is missing
    * AC-4: After every successful release, the version string is identical in the setup agent frontmatter, the Git tag, and the release notes header — there is no version drift
    * AC-5: After every successful release, ``development`` and ``main`` are synchronized — there is no half-state where one branch has content the other lacks
+   * AC-6: After every successful release, all ``feature/*`` branches that have been merged into ``development`` are deleted locally and on remote — feature branches are retained for forensic purposes only until release cleanup
 
 
 .. req:: Release Engineer Workflow
@@ -63,6 +64,7 @@ Release Engineer Requirements
    * AC-5: Release Engineer back-merges ``main`` into ``development`` after tagging
    * AC-6: If squash-merge produces conflicts, resolve with ``-X theirs`` (development wins)
    * AC-7: The Document step uses archived change documents in ``docs/changes/<version>/`` as the explicit source
+   * AC-8: After back-merge, Release Engineer deletes all ``feature/*`` branches that are fully merged into ``development`` — locally and on remote
 
 
 .. req:: Release Engineer Frontmatter Configuration
