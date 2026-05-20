@@ -1,6 +1,6 @@
 # Change Request: agent-duties-english-translation
 
-**Status**: draft
+**Status**: merged
 **Created**: 2026-05-13
 **Author**: PM
 
