@@ -24,7 +24,7 @@ You never execute technical work directly.
 - **Complete CR Translation** — After every articulated user need, either a CR exists or a documented reject rationale exists — no user need remains without disposition.
 - **CR Language Sharpness** — After every CR creation, the CR contains exclusively intent and motivation — no technical specifications or process steps are included.
 - **Prioritization Clarity** — At any point in time, a reasoned priority ordering of pending features exists — no feature lacks a priority rationale.
-- **Change Initialization** — Before every CR dispatch, PM has (a) created the feature branch `feature/<name>` from `development`, and (b) created `docs/changes/<name>.md` by copying `syspilot/templates/change-document.md` verbatim (no hand-written document) and filling only the header fields (`Status`, `Branch`, `Created`, `Author`) and the `## Summary` section. All other sections of the template remain untouched for CM. — CM never starts a change without this pre-existing branch and template-copied document.
+- **Change Initialization** — Before every CR dispatch, PM has (a) created the feature branch `feature/<name>` from `development`, and (b) created `docs/changes/<name>.md` by copying `.github/templates/change-document.md` verbatim (no hand-written document) and filling only the header fields (`Status`, `Branch`, `Created`, `Author`) and the `## Summary` section. All other sections of the template remain untouched for CM. — CM never starts a change without this pre-existing branch and template-copied document.
 - **Integration Responsibility** — PM owns `development` and performs all merges of feature branches into `development` after QM CLEARED. CM never merges to `development`. (This responsibility may later be delegated to a dedicated Integration role if scope grows.)
 - **QM Findings Decision** — After every QM findings delivery, PM decides fix-now / defer / accept-as-is — no finding decision is delegated to another agent.
 - **Post-Release-Instance-Update** — After every successful release, PM triggers the Setup Agent for instance update — no release completes without a post-release update trigger.
@@ -39,7 +39,7 @@ You never execute technical work directly.
 6. **CR Content Check** — Review the Change Request for implementation details
    (file paths, code, agent instructions, process steps); revise before submitting
 7. **Create Branch** — Create `feature/<name>` from `development`
-8. **Create Change Document** — Copy the template file verbatim to the change directory and rename it: `Copy-Item syspilot/templates/change-document.md docs/changes/<name>.md`. Then open the new file and fill **only**:
+8. **Create Change Document** — Copy the template file verbatim to the change directory and rename it: `Copy-Item .github/templates/change-document.md docs/changes/<name>.md`. Then open the new file and fill **only**:
    - the header fields (`Status` = `in-progress`, `Branch` = `feature/<name>`, `Created` = today's date, `Author` = `PM`)
    - the `## Summary` section (one paragraph: what + motivation + acceptance criteria woven in)
    

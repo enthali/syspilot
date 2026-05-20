@@ -1,15 +1,15 @@
-# Change Document: pm-owns-branch-and-change-setup
+# Change Document: {NAME}
 
-**Status**: in-progress
-**Branch**: feature/pm-owns-branch-and-change-setup
-**Created**: 2026-05-21
-**Author**: PM
+**Status**: draft | in-progress | review | approved | merged
+**Branch**: feature/{NAME}
+**Created**: {DATE}
+**Author**: {AUTHOR(S)}
 
 ---
 
 ## Summary
 
-Clarify and enforce the ownership boundary between PM and CM for branch creation, Change Document initialization, and integration. PM creates the feature branch from `development` and creates the Change Document by copying `.github/templates/change-document.md` verbatim to `docs/changes/<name>.md`, then fills only the header fields and the `## Summary` section before sending the CR — the L0/L1/L2/MECE/Traceability/Sign-off sections remain untouched template skeleton. CM receives the ready-made branch and template-copied document and fills the engineering sections in-place, never replacing the template structure with hand-written content. Integration into `development` is the responsibility of the PM role — CM signals readiness, the integrator performs the merge. Feature branches are retained after merge for forensic/bisect purposes and cleaned up by the Release Agent at release time. Templates live at `.github/templates/` so they are present in any installed instance (Kunden-Repo) alongside agents/prompts/skills; the corresponding Setup-Agent sync logic (`syspilot/templates/` → `.github/templates/`) is scope of a separate follow-up CR. Motivation: without explicit, verbatim-template ownership of branch and document setup, agents will improvise document structures, which silently erodes traceability and MECE discipline; explicit structural ownership and a hard "copy template, do not invent" rule eliminate this class of drift. Acceptance: (1) PM agent describes the `Copy-Item .github/templates/change-document.md` + which exact fields PM fills (header + Summary only), (2) CM agent states CM receives branch + template-copied CD from PM and never creates the document or replaces its skeleton, (3) CM agent states CM never merges to `development` — Integration is a PM-role responsibility, (4) feature branches are not deleted after merge, (5) Release Agent file describes the cleanup step, (6) `.github/templates/change-document.md` exists in the repo as the installed-instance copy of the template.
+{One paragraph describing the change}
 
 ---
 
