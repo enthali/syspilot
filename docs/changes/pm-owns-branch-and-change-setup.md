@@ -19,11 +19,10 @@ performs the merge to `development` — CM only signals readiness. Feature
 branches are retained after merge (for forensic/bisect purposes) and
 cleaned up by the Release Agent at release time.
 
-**WHY**: In practice, CM was inferring branch names and creating Change
-Documents without clear ownership rules. This caused CM to create files
-in wrong locations (versioned subdirectories instead of flat
-`docs/changes/`). Structural ownership boundaries eliminate this class of
-error without requiring additional guardrails.
+**WHY**: The current agent files leave branch creation and Change Document
+initialization unassigned. Without explicit ownership, agents must infer
+conventions from context — which is fragile. Explicit structural ownership
+eliminates this class of ambiguity without requiring additional guardrails.
 
 **Acceptance Criteria (user-visible):**
 1. PM agent file describes PM's responsibility to create the feature branch
