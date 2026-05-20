@@ -149,6 +149,18 @@ Guides & Process
    releasenotes
 
 
+Field Notes
+-----------
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Field Notes
+
+   experiences/index
+   experiences/auto-agent-messaging
+   experiences/self-learning-agents
+
+
 Indices
 -------
 
