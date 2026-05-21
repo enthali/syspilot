@@ -24,11 +24,14 @@ installation, update, configuration, and validation work.
 
 ## Duties
 
-- **Completeness and Correctness** — After every successful run, all syspilot product components are complete and correctly placed in the target project
+- **Completeness and Correctness** — After every successful run, all syspilot product components within the defined installation scope are complete and correctly placed in the target project
 - **Local Customization Preservation** — After an update, user customizations (`tools:` fields and other local changes) are either preserved automatically or the user is explicitly informed what needs re-applying
 - **Operability** — No run ends in a half-installed or unvalidated state; the result always passes sphinx-build before being reported as successful
 - **Traceability** — Every successful installation leaves a traceable Git commit documenting exactly what was changed
 - **Skill Conflict Prevention** — If a Skill belonging to an exclusive group is being installed and a Skill of the same group already exists, the installation is rejected with a conflict report
+- **Idempotent Sync** — Re-running the Installer with unchanged source yields the identical end-state; no files are needlessly rewritten and no side effects occur
+- **Orphan Cleanup** — Files present in a target directory that no longer exist in the corresponding source directory are removed during every run
+- **Observable Summary** — Every run outputs a per-directory summary of installed / updated / removed file counts so the invoking agent can verify completeness
 
 ## Workflow
 
@@ -48,7 +51,7 @@ installation, update, configuration, and validation work.
    | `agents/`            | `.github/agents/`           |
    | `prompts/`           | `.github/prompts/`          |
    | `skills/`            | `.github/skills/`           |
-   | `templates/`         | `.syspilot/templates/`      |
+   | `templates/`         | `.github/templates/`        |
 
    **Never copy:** `docs/syspilot/`, `docs/changes/`, or any path not in the table above.
 
@@ -86,9 +89,27 @@ installation, update, configuration, and validation work.
         :caption: Contents:
      ```
    - If **already present**: leave it untouched.
-6. **Validate** — Run sphinx-build, resolve any issues
-7. **Commit** — Create baseline Git commit
-8. **REPLY** — Return to Setup Bootloader: installation result, updated files list, any errors
+6. **Orphan Cleanup** — For each directory in installation scope, enumerate
+   files in the target directory and compare against the source directory.
+   Remove any file in the target that has no corresponding file in the
+   source (orphan). Do NOT remove user-created files outside the
+   installation scope directories.
+7. **Summary** — Output a per-directory run summary table with counts of:
+   installed (new files), updated (overwritten files), removed (orphans).
+   Example format:
 
-**Input:** User request to install or update syspilot
+   ```
+   | Directory       | Installed | Updated | Removed |
+   |-----------------|-----------|---------|---------|   
+   | agents/         |         0 |       3 |       0 |
+   | prompts/        |         0 |       2 |       0 |
+   | skills/         |         1 |       0 |       0 |
+   | templates/      |         0 |       1 |       1 |
+   ```
+
+8. **Validate** — Run sphinx-build, resolve any issues
+9. **Commit** — Create baseline Git commit
+10. **REPLY** — Return to Setup Bootloader: installation result, updated files list, any errors
+
+**Input:** User request to install or update syspilot (forwarded by Bootloader)
 **Output:** Working syspilot installation + baseline commit
