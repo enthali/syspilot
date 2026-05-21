@@ -122,11 +122,20 @@ _None._
 
 ### Artefakt-Removal-Check
 
-_Not applicable — this CR does not remove any artefact. It changes a mapping target (`.syspilot/templates/` → `.github/templates/`) but `.syspilot/templates/` was never actually created in any installation (prior CR flagged it as deferred)._
+This CR removes one configuration-key mapping target: the `templates/ → .syspilot/templates/` row in the Installer scope table is replaced by `templates/ → .github/templates/`.
+
+| Removed Artefact | Class (a): Code/Workflow refs | Class (b): Doc refs | Class (c): Historic Change Docs |
+|------------------|-------------------------------|---------------------|---------------------------------|
+| `.syspilot/templates/` (Installer scope target) | none — Installer is agent-driven; no code held the path | `docs/methodology.md` line 46 fixed to `.github/templates/` | 3 (this CD, `pm-owns-branch-and-change-setup.md`, and `docs/changes/v0.2.3/val-*`) — acceptable historic stranding |
+
+- [x] All class (a) active code/workflow references fixed in this CR
+- [x] All class (b) active documentation references fixed in this CR
+- [x] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
 
 ### Issues Found
 
-- [x] No issues found
+- [x] `docs/methodology.md` family-tree diagram fixed in the same CR (was still showing `.syspilot/templates/` as the install target)
+- [ ] **Informational (no action):** This CR is the second of a stacked pair with `pm-owns-branch-and-change-setup`. Both must be merged together. The first CR placed `.github/templates/change-document.md` manually; this CR makes the Installer the canonical owner so the file is reproducible on every fresh install.
 
 ### Sign-off
 
