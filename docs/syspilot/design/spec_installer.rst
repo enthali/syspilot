@@ -59,6 +59,14 @@ Installer Design
    * **Skill Conflict Prevention** — If a Skill belonging to an exclusive group
      is being installed and a Skill of the same group already exists, the
      installation is rejected with a conflict report
+   * **Idempotent Sync** — Re-running the Installer with unchanged source
+     yields the identical end-state; no files are needlessly rewritten and
+     no side effects occur
+   * **Orphan Cleanup** — Files present in a target directory that no longer
+     exist in the corresponding source directory are removed during every run
+   * **Observable Summary** — Every run outputs a per-directory summary of
+     installed / updated / removed file counts so the invoking agent can
+     verify completeness
 
 
 .. spec:: Installer Scope Definition
@@ -85,7 +93,7 @@ Installer Design
       * - ``skills/``
         - ``.github/skills/``
       * - ``templates/``
-        - ``.syspilot/templates/``
+        - ``.github/templates/``
 
    **Explicitly excluded (NEVER copied to user projects):**
 
@@ -206,8 +214,26 @@ Installer Design
       SYSP_SPEC_INSTALLER_DOC_BOOTSTRAP: if ``docs/index.rst`` does not exist,
       create a minimal starter ``index.rst``; if it already exists, leave it
       untouched.
-   6. **Validate** — Run sphinx-build, resolve any issues
-   7. **Commit** — Create baseline Git commit
+   6. **Orphan Cleanup** — For each directory in installation scope, enumerate
+      files in the target directory and compare against the source directory.
+      Remove any file in the target that has no corresponding file in the
+      source (orphan). Do NOT remove user-created files outside the
+      installation scope directories.
+   7. **Summary** — Output a per-directory run summary table with counts of:
+      installed (new files), updated (overwritten files), removed (orphans).
+      Example format:
+
+      .. code-block:: text
+
+         | Directory       | Installed | Updated | Removed |
+         |-----------------|-----------|---------|---------|
+         | agents/         |         0 |       3 |       0 |
+         | prompts/        |         0 |       2 |       0 |
+         | skills/         |         1 |       0 |       0 |
+         | templates/      |         0 |       1 |       1 |
+
+   8. **Validate** — Run sphinx-build, resolve any issues
+   9. **Commit** — Create baseline Git commit
 
    **Input:** User request to install or update syspilot (forwarded by Bootloader)
    **Output:** Working syspilot installation + baseline commit

@@ -50,8 +50,10 @@ never rewrite history. When in doubt, you stop and ask.
 7. **Squash Merge** — `git checkout main && git merge --squash development && git commit`
 8. **Tag** — Create Git tag `v{version}`, push `main` + tag to remote
 9. **Back-Merge** — `git checkout development && git merge main` to sync squash commit
-10. **Publish** — Create GitHub Release
-11. **REPLY** — Return to PM: release tag, git tag, GitHub Release URL, any issues
+10. **Cleanup Branches** — Delete all `feature/*` branches that have been merged into `development`:
+    `git branch --merged development | Where-Object { $_ -match 'feature/' } | ForEach-Object { git branch -d $_.Trim(); git push origin --delete $_.Trim() }`
+    Feature branches are retained after merge for forensic purposes and only cleaned up here at release time.
+11. **Publish** — Create GitHub Release
 
 **Input:** Trigger from CM (after all engineers complete)
 **Output:** Tagged release on main + GitHub Release + archived change docs

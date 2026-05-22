@@ -30,3 +30,7 @@ All documents, specs, commit messages, and code comments shall be in English.
 This project develops itself using its own agents and skills.
 The agents you are running ARE the product being developed.
 Be aware of circular dependencies — changes to agent specs affect your own (future) behavior.
+
+## Culture
+
+**No blame language.** Change Documents, CRs, findings, and commit messages describe structural gaps and improvements — not causes or actors. Every gap is an opportunity to improve the system. Every mistake is a chance to learn.

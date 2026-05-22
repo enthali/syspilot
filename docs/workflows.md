@@ -46,7 +46,8 @@ flowchart LR
 **Input:** A change request (GitHub issue, verbal description, or idea)
 
 **What it does:**
-1. Creates a **Change Document** in `docs/changes/`
+1. Receives the Change Document prepared by PM and fills the engineering sections
+   (L0 User Stories, L1 Requirements, L2 Design Specs, MECE, Traceability, Sign-off)
 2. Analyzes impact **level by level** — at each level, runs **impact analysis**
    (via `syspilot.impact-python` skill) to discover affected elements through
    sphinx-needs traceability links before identifying changes:
@@ -214,21 +215,23 @@ gitGraph
 
 | Rule | What | Why |
 |------|------|-----|
-| **One branch per change** | `@syspilot.design` creates `feature/<name>` from `development` | Isolates each change for independent review |
+| **One branch per change** | `@syspilot.pm` creates `feature/<name>` from `development` | Isolates each change for independent review |
 | **Development as integration** | All feature branches squash-merge into `development` | Permanent integration branch for all work |
+| **Branches retained after merge** | Feature branches are kept after merge; `@syspilot.release` cleans them at release time | Enables forensic use and bisect after merge |
 | **Squash-merge everywhere** | Feature→development and development→main use squash-merge | Clean history on both branches |
 | **Main = releases only** | Squash merge to main happens only during `@syspilot.release` | Main always equals the latest release |
 | **Tag on main** | Release creates `v{version}` tag on the squash merge commit | Tags mark published releases |
 
 **Workflow:**
 
-1. `@syspilot.design` → creates `feature/<name>` branch from `development`
-2. `@syspilot.implement` → commits code on the same branch
-3. `@syspilot.uat` → generates UAT artifacts on the same branch
-4. `@syspilot.verify` → commits validation report on the same branch
-5. `@syspilot.docu` → commits documentation updates on the same branch
-6. **Complete** → squash-merge feature branch into ``development``
-6. `@syspilot.release` → squash-merge `development` into main, bump version, tag
+1. `@syspilot.pm` → creates `feature/<name>` branch from `development`, creates Change Document (header + Summary only)
+2. `@syspilot.cm` → fills the engineering sections of the Change Document (via design agent)
+3. `@syspilot.implement` → commits code on the same branch
+4. `@syspilot.uat` → generates UAT artifacts on the same branch
+5. `@syspilot.verify` → commits validation report on the same branch
+6. `@syspilot.docu` → commits documentation updates on the same branch
+7. `@syspilot.pm` → squash-merges feature branch into `development`
+8. `@syspilot.release` → squash-merges `development` into main, bumps version, tags, cleans up feature branches
 
 
 ## When to Use Which Agent

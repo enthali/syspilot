@@ -29,7 +29,7 @@ Change Manager Design
 
 .. spec:: Change Manager Duties
    :id: SYSP_SPEC_CM_DUTIES
-   :status: draft
+   :status: approved
    :tags: agent-v2, manager, cm, duties
    :links: SYSP_REQ_CM_DUTIES
 
@@ -46,11 +46,16 @@ Change Manager Design
      Document.
    * **Change Auditability** — At every point during and after a change,
      the Change Document (``docs/changes/<name>.md``) reflects the true state —
-     including after abort or failure.
-   * **Merge-Authority** — No merge to ``development`` occurs without explicit
-     PM approval — CM never merges autonomously.
+     including after abort or failure. PM creates the document by copying
+     ``.github/templates/change-document.md`` verbatim and filling header +
+     ``## Summary``. CM fills all engineering sections (L0/L1/L2, MECE,
+     Traceability, Artefakt-Removal-Check, Sign-off) of the same file — CM
+     never creates the document and never replaces the template skeleton with
+     hand-written structure.
+   * **Merge Abstinence** — CM never merges to ``development``. CM signals
+     readiness to PM; PM performs the merge. CM's workflow ends when PM decides.
    * **PM Notification** — After every completed change, PM has received a
-     post-merge confirmation containing merge commit hash and branch name —
+     readiness notification including the Change Document path and branch name —
      no change completes silently.
 
    When a CR specifies ``autonomous`` mode, CM proceeds without user feedback
@@ -59,44 +64,36 @@ Change Manager Design
 
 .. spec:: Change Manager Workflow
    :id: SYSP_SPEC_CM_WORKFLOW
-   :status: draft
+   :status: approved
    :tags: agent-v2, manager, cm, workflow
    :links: SYSP_REQ_CM_WORKFLOW
 
    **Workflow:**
 
-   0. **Branch** — Create ``feature/<name>`` from ``development``. Skip if PM specifies an existing branch. If current branch is ``main``, ALWAYS create a feature branch — never commit directly to ``main``.
-   1. **Receive + Intent Gate** — Accept Change Request (from PM, user, or QM finding);
-      if the CR contains implementation instructions, reason about the underlying intent,
-      consult the user to agree on a well-formulated CR, then proceed — regardless of
-      operation mode
+   1. **Receive + Intent Gate** — Accept Change Request from PM. PM provides the
+      branch name and Change Document path. If the CR contains implementation
+      instructions, reason about the underlying intent, consult the user to agree
+      on a well-formulated CR, then proceed — regardless of operation mode. Checkout
+      the provided branch.
 
-   2. **Change Document** — Create ``docs/changes/<name>.md`` before invoking any
-      engineer; this is the process log and recovery point for the change.
-      Required sections: Summary, Change Request, Impact Analysis, Process Log,
-      Level 0/1/2 (each with Designer Section), Final Consistency Check, Sign-off.
-      Each agent fills its own section; CM owns the document lifecycle.
+   2. **Analyze** — Invoke System Designer for level-by-level analysis
+   3. **Test** — Invoke Test Engineer for UAT artifact generation
+   4. **Implement** — Invoke Dev Engineer for code/config changes
+   5. **Verify** — Invoke Quality Engineers (MECE, Trace) for final checks
+   6. **Document** — Invoke Documentation Engineer for doc updates
+   7. **Report** — Complete the change with traceability summary
+   8. **Notify** — SEND readiness notification to PM and QM via Jarvis, including
+      the Change Document path and branch name so QM can scope targeted checks and
+      PM can perform the merge.
+   9. **Await PM Decision** — CM waits for PM's decision based on QM findings.
+      CM never merges.
 
-   3. **Analyze** — Invoke System Designer for level-by-level analysis
-   4. **Test** — Invoke Test Engineer for UAT artifact generation
-   5. **Implement** — Invoke Dev Engineer for code/config changes
-   6. **Verify** — Invoke Quality Engineers (MECE, Trace) for final checks
-   7. **Document** — Invoke Documentation Engineer for doc updates
-   8. **Report** — Complete the change with traceability summary
-   9. **Notify** — Send completion notification to PM and QM via Jarvis message queue, including the Change Document path (e.g. ``docs/changes/<name>.md``) so QM can scope targeted checks
-   10. **Await PM Merge Approval** — After notifying PM and QM, CM waits for PM's
-       merge decision. CM SHALL NOT merge to development until PM responds.
+      **PM Decision → CM Action mapping:**
 
-       **PM Decision → CM Action mapping:**
+      * PM says "Fix now" → CM applies fix on the same branch, then re-notifies QM and PM
+      * PM says "Defer" or "Accept as-is" → PM merges; CM's work on this change is done
 
-       * PM says "Fix now" → CM holds merge, awaits fix CR, applies fix, then re-notifies QM
-       * PM says "Defer" → CM merges to development; PM creates follow-up CR separately
-       * PM says "Accept as-is" → CM merges to development
-
-   11. **Post-Merge Confirmation** — After merging to development, send a confirmation
-       message to PM via Jarvis containing the merge commit hash and branch name.
-
-   **Input:** Change Request (from PM, user, or QM findings)
+   **Input:** Change Request (from PM: branch name + Change Document path + CR content)
    **Output:** Completed change with full traceability chain
 
    **Constraint:** Impact Analysis is mandatory for every change. File lists
@@ -109,24 +106,34 @@ Change Manager Design
    the user to agree on a well-formulated CR, and only then begins the workflow.
    This applies regardless of operation mode (autonomous or user-guided).
 
+   **Artefakt-Removal Rule:** When a CR removes an artefact (file, field,
+   configuration key, REQ-ID), CM MUST perform a project-wide grep on all plausible
+   name variants before closing the CR and sort all matches into three classes:
+
+   - **(a) Active code/workflow references** (agents, scripts, CI) → fix in the same CR
+   - **(b) Active documentation references** (docs/, README) → fix in the same CR
+   - **(c) Historical Change Documents** (``docs/changes/``) → acceptable historic stranding
+
+   Classes (a) and (b) MUST be fixed before signaling readiness. Class (c) is
+   explicitly disclosed in the Change Document Artefakt-Removal-Check section.
+
    **Process Flow:**
 
    ::
 
-      Change Request
-        → Branch (feature/<name> from development)
+      Change Request (from PM: branch name + Change Document path + CR content)
         → Intent Gate (reason + consult user if CR has implementation details)
-        → Change Document (docs/changes/<name>.md)
+        → Checkout branch (provided by PM)
         → System Designer (per-level: analyse, write RST)
         |   → Quality Eng. MECE (advisory per level)
         → Test Engineer (UAT artifacts)
         → Dev Engineer (implementation)
         → Quality Eng. MECE (final check)
         → Documentation Engineer
-        → Notify PM + QM via Jarvis (with Change Document path)
-        → Await PM Merge Approval (PM evaluates QM findings: fix / defer / accept)
-        → Merge to development (only after PM explicitly approves)
-        → Post-Merge Confirmation (Jarvis to PM: commit hash + branch name)
+        → SEND readiness to PM + QM (with Change Document path + branch name)
+        → Await PM Decision (PM evaluates QM findings: fix / defer / accept)
+        → [if fix] Apply fix on branch → re-notify QM + PM
+        → [if defer/accept] PM merges — CM done
 
 
 .. spec:: Change Manager Frontmatter

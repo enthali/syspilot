@@ -29,6 +29,7 @@ Release Engineer Agent
    * die vollständige Nachvollziehbarkeit dessen, was in dieser Version steckt — kein Change-Dokument fehlt in der Archivierung, Release Notes spiegeln vollständig wider was archiviert wurde
    * die konsistente Versions-Identität über alle Quellen hinweg — Frontmatter, Tag, Release Notes referenzieren dieselbe Version
    * die Trennschärfe zwischen Entwicklungslinie und freigegebener Linie — nach einem Release gibt es keinen Halbzustand zwischen ``development`` und ``main``
+   * die Bereinigung von Feature-Branches — nach jedem Release werden alle bereits in ``development`` gemergten Feature-Branches gelöscht; bis dahin bleiben sie für forensische Zwecke erhalten
 
    **Workflow (high-level):**
    Archive change docs → version bump → release notes → validate →
@@ -43,3 +44,4 @@ Release Engineer Agent
    4. Given a release, When archiving change documents, Then ALL ``*.md`` files in ``docs/changes/`` (root level only, excluding subdirectories) are moved — no document is missed
    5. Given a release, When generating release notes, Then the release notes are generated from the archived change documents in ``docs/changes/<version>/`` and list every archived document completely
    6. Given a tag is pushed, When the release completes, Then a GitHub Release exists for that tag
+   7. Given a successful release, When branch cleanup runs, Then all ``feature/*`` branches already merged into ``development`` are deleted locally and on remote — no stale feature branch survives past its release cycle
