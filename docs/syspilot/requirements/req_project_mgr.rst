@@ -40,7 +40,8 @@ Project Manager Requirements
    * AC-2: After every CR creation, CRs contain exclusively intent and motivation — no technical specifications or process steps are included
    * AC-3: At any point in time, a reasoned priority ordering of pending features exists — no feature lacks a priority rationale
    * AC-4: Before every CR dispatch, PM has created the feature branch ``feature/<name>`` from ``development`` and created the Change Document by copying ``.github/templates/change-document.md`` verbatim — no hand-written document structure
-   * AC-5: PM fills only the header fields (Status, Branch, Created, Author) and the ``## Summary`` section of the template-copied Change Document — all other sections remain untouched for CM
+   * AC-5: PM fills only the header fields (Status, Branch, Created, Author, Operation Mode) and the ``## Summary`` section of the template-copied Change Document — all other sections remain untouched for CM
+   * AC-5a: PM creates no Change Document without filling the ``Operation Mode`` header field — allowed values are exactly ``autonomous`` | ``user-guided``
    * AC-6: PM owns ``development`` and performs all merges of feature branches into ``development`` — no other agent merges to ``development``
    * AC-7: After every QM findings delivery, PM decides fix-now / defer / accept-as-is — no finding decision is delegated to another agent
    * AC-8: After every successful release, PM triggers the Setup Agent for instance update — no release completes without a post-release update trigger
@@ -65,7 +66,7 @@ Project Manager Requirements
    * AC-3: PM MAY run impact analysis to understand blast radius before creating a Change Request
    * AC-4: PM produces a structured plan or Change Request as output
    * AC-5: PM workflow includes a Create Branch step: PM creates ``feature/<name>`` from ``development``
-   * AC-6: PM workflow includes a Create Change Document step: PM copies ``.github/templates/change-document.md`` verbatim to ``docs/changes/<name>.md`` and fills only header + Summary
+   * AC-6: PM workflow includes a Create Change Document step: PM copies ``.github/templates/change-document.md`` verbatim to ``docs/changes/<name>.md`` and fills only header (including ``Operation Mode``) + Summary
    * AC-7: PM delegates execution to Change Manager by sending branch name, Change Document path, and CR content
    * AC-8: Before delegating to CM, PM SHALL self-check the CR for implementation details and revise if needed
    * AC-9: PM workflow SHALL include a QM Findings Review: PM evaluates findings and either performs the merge (defer/accept) or instructs CM to fix

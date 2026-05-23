@@ -25,6 +25,10 @@ Three managers orchestrate the engineers:
 - **autonomous** — proceeds without user feedback except for UAT
 - **user-guided** — requests user approval after each spec level
 
+PM sets the mode via the `Operation Mode` field in the Change Document header
+(see `SYSP_SPEC_PM_DUTIES`). CM reads that field as authoritative; the value in
+the PM→CM dispatch message is a sanity check only (see `SYSP_SPEC_CM_WORKFLOW`).
+
 Each workflow is a defined sequence of agent invocations. You always know which
 agent to call next.
 

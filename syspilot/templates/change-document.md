@@ -4,6 +4,7 @@
 **Branch**: feature/{NAME}
 **Created**: {DATE}
 **Author**: {AUTHOR(S)}
+**Operation Mode**: autonomous | user-guided
 
 ---
 

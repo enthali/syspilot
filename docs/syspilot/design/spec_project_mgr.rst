@@ -41,10 +41,11 @@ Project Manager Design
      the feature branch ``feature/<name>`` from ``development``, and (b) created
      ``docs/changes/<name>.md`` by copying ``.github/templates/change-document.md``
      verbatim (no hand-written document) and filling only the header fields
-     (``Status``, ``Branch``, ``Created``, ``Author``) and the ``## Summary``
-     section. All other sections of the template remain untouched for CM. —
-     CM never starts a change without this pre-existing branch and template-copied
-     document.
+     (``Status``, ``Branch``, ``Created``, ``Author``, ``Operation Mode``) and the
+     ``## Summary`` section. The ``Operation Mode`` field is mandatory and SHALL be
+     set to exactly ``autonomous`` or ``user-guided``. All other sections of the
+     template remain untouched for CM. — CM never starts a change without this
+     pre-existing branch and template-copied document.
    * **Integration Responsibility** — PM owns ``development`` and performs all
      merges of feature branches into ``development`` after QM CLEARED. CM never
      merges to ``development``. (This responsibility may later be delegated to a
@@ -78,7 +79,8 @@ Project Manager Design
       docs/changes/<name>.md``. Then open the new file and fill **only**:
 
       - the header fields (``Status`` = ``in-progress``, ``Branch`` = ``feature/<name>``,
-        ``Created`` = today's date, ``Author`` = ``PM``)
+        ``Created`` = today's date, ``Author`` = ``PM``,
+        ``Operation Mode`` = ``autonomous`` | ``user-guided``)
       - the ``## Summary`` section (one paragraph: what + motivation + acceptance
         criteria woven in)
 
