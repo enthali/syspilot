@@ -22,7 +22,7 @@ Setup Manager Requirements
 
 .. req:: Installer Duties
    :id: SYSP_REQ_INSTALLER_DUTIES
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, installer, duties
    :links: SYSP_US_INSTALLER
@@ -51,38 +51,158 @@ Setup Manager Requirements
      corresponding source directory are removed (orphan cleanup)
    * AC-8: The Installer run summary reports installed / updated / removed
      counts so the invoking agent can verify completeness
+   * AC-9: All files written by the Installer are encoded as UTF-8 without BOM
+   * AC-10: The Installer performs file operations directly per file — it
+     SHALL NOT generate wrapper scripts or helper files
+   * AC-11: On any failure between install start and final commit, the
+     Installer restores the workspace to the pre-install state via
+     transactional rollback
 
 
 .. req:: Installer Workflow
    :id: SYSP_REQ_INSTALLER_WORKFLOW
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, installer, workflow
    :links: SYSP_US_INSTALLER
 
    **Description:**
-   The Installer agent SHALL follow a workflow from source detection
-   through installation to validation and commit. The installation scope
-   is governed by SYSP_REQ_INSTALLER_SCOPE. Doc bootstrapping is governed
-   by SYSP_REQ_INSTALLER_DOC_BOOTSTRAP.
+   The Installer agent SHALL follow a workflow from source fetch through
+   installation to validation and commit. The installation scope is governed
+   by SYSP_REQ_INSTALLER_SCOPE. Doc bootstrapping is governed by
+   SYSP_REQ_INSTALLER_DOC_BOOTSTRAP. Source acquisition is governed by
+   SYSP_REQ_INSTALLER_GITHUB_SOURCE. Encoding is governed by
+   SYSP_REQ_INSTALLER_ENCODING. File operations discipline is governed by
+   SYSP_REQ_INSTALLER_DIRECT_OPS. Rollback is governed by
+   SYSP_REQ_INSTALLER_ROLLBACK.
 
    **Acceptance Criteria:**
 
-   * AC-1: Workflow starts with detecting install source and mode
-   * AC-2: Installer checks dependencies (Python, Sphinx, sphinx-needs)
-   * AC-3: Installer installs/updates files within the defined scope and configures the project
-   * AC-4: Installer validates with sphinx-build and creates baseline commit
-   * AC-5: When installed version equals source version, Installer asks user for reinstall confirmation; if declined, aborts gracefully
-   * AC-6: Before overwriting files in update mode, Installer asks user whether customizations exist; if yes, records the list and reminds user to re-apply them after the update completes
-   * AC-7: During update, Installer SHALL detect the existing ``tools:``
-     value in each installed agent file before overwriting it, and re-inject
-     the saved value after copying from product source
-   * AC-8: During Configure step, Installer performs doc bootstrap per SYSP_REQ_INSTALLER_DOC_BOOTSTRAP
-   * AC-9: During Install/Update, Installer detects orphan files in each
+   * AC-1: Workflow starts with fetching from upstream GitHub repository
+     (default branch ``main``); branch override only via explicit user prompt
+     at runtime
+   * AC-2: Installer checks dependencies (Python, Sphinx, sphinx-needs);
+     if any dependency is missing, prints install instructions and stops —
+     does NOT auto-install
+   * AC-3: Before file operations, Installer creates a pre-install Git commit
+     of the current ``.github/`` state as a rollback point
+   * AC-4: Installer installs/updates files within the defined scope by
+     fetching each file from upstream and writing it to the target location
+   * AC-5: During install/update, for each existing file that is NOT the
+     Bootloader (``syspilot.setup.agent.md``): read the current ``tools:``
+     frontmatter value, fetch file from upstream, replace the upstream
+     ``tools:`` line with the saved value, write the result. All other
+     frontmatter fields come from upstream — no preservation
+   * AC-6: The Bootloader file (``syspilot.setup.agent.md``) is overwritten
+     verbatim from upstream with no field preservation
+   * AC-7: During Configure step, Installer performs doc bootstrap per
+     SYSP_REQ_INSTALLER_DOC_BOOTSTRAP
+   * AC-8: During Orphan Cleanup, Installer detects orphan files in each
      target directory (files present in target but absent in source) and
      removes them
-   * AC-10: After Install/Update, Installer outputs a run summary with
+   * AC-9: After Install/Update, Installer outputs a run summary with
      per-directory counts of installed, updated, and removed files
+   * AC-10: Installer validates with sphinx-build; on failure, executes
+     transactional rollback per SYSP_REQ_INSTALLER_ROLLBACK
+   * AC-11: On success, Installer creates final Git commit documenting
+     the installation
+
+
+.. req:: Installer GitHub-Only Source
+   :id: SYSP_REQ_INSTALLER_GITHUB_SOURCE
+   :status: approved
+   :priority: mandatory
+   :tags: agent-v2, installer, source
+   :links: SYSP_US_INSTALLER
+
+   **Description:**
+   The Installer SHALL always fetch product files from the upstream GitHub
+   repository. There is no local-source path, no source-choice dialog, and
+   no mode-detection step. The Installer always installs the latest version
+   from the specified branch.
+
+   **Acceptance Criteria:**
+
+   * AC-1: Installer always fetches files from upstream GitHub — no local
+     ``syspilot/`` directory is ever used as install source
+   * AC-2: There is no source-choice dialog presented to the user
+   * AC-3: There is no Mode-Detect step — the Installer always installs
+     the latest upstream version without comparing against an installed version
+   * AC-4: Default fetch branch is ``main``; branch override is only possible
+     via explicit user prompt at runtime
+
+
+.. req:: Installer File Encoding
+   :id: SYSP_REQ_INSTALLER_ENCODING
+   :status: approved
+   :priority: mandatory
+   :tags: agent-v2, installer, encoding
+   :links: SYSP_US_INSTALLER
+
+   **Description:**
+   The Installer SHALL write all output files using UTF-8 encoding without
+   Byte Order Mark (BOM). This applies to every file written during
+   installation, update, or configuration.
+
+   **Acceptance Criteria:**
+
+   * AC-1: All files written by the Installer are encoded as UTF-8
+   * AC-2: No file written by the Installer contains a BOM (byte sequence
+     ``EF BB BF``)
+   * AC-3: The encoding rule applies regardless of platform (Windows,
+     macOS, Linux)
+
+
+.. req:: Installer Direct File Operations
+   :id: SYSP_REQ_INSTALLER_DIRECT_OPS
+   :status: approved
+   :priority: mandatory
+   :tags: agent-v2, installer, file-ops
+   :links: SYSP_US_INSTALLER
+
+   **Description:**
+   The Installer SHALL perform all file operations directly per file using
+   platform-native commands (e.g. ``Invoke-WebRequest`` + ``Out-File`` on
+   PowerShell, or equivalent). It SHALL NOT generate wrapper scripts, helper
+   files, or intermediary artifacts.
+
+   **Acceptance Criteria:**
+
+   * AC-1: Each file is fetched and written individually via direct platform
+     commands
+   * AC-2: The Installer never generates wrapper scripts (e.g.
+     ``install.ps1``, ``install.sh``)
+   * AC-3: The Installer never writes helper files to ``temp/`` or any other
+     temporary location
+   * AC-4: No intermediary artifacts are produced — only the final target
+     files within the installation scope
+
+
+.. req:: Installer Transactional Rollback
+   :id: SYSP_REQ_INSTALLER_ROLLBACK
+   :status: approved
+   :priority: mandatory
+   :tags: agent-v2, installer, rollback, transaction
+   :links: SYSP_US_INSTALLER
+
+   **Description:**
+   The Installer SHALL implement a git-based transactional model: a
+   pre-install commit is created before file operations begin, and on any
+   failure between install start and final commit, the workspace is restored
+   to the pre-install state via ``git reset --hard``.
+
+   **Acceptance Criteria:**
+
+   * AC-1: Before file operations begin, a pre-install Git commit is created
+     capturing the current state of ``.github/``
+   * AC-2: On any failure between the pre-install commit and the final
+     success commit, the Installer executes ``git reset --hard`` to the
+     pre-install commit SHA
+   * AC-3: After rollback, the workspace is in exactly the state it was
+     before the Installer started — no partial installation remains
+   * AC-4: On successful completion, the pre-install commit is replaced by
+     the final post-install commit
+
 
 .. req:: Installer Installation Scope
    :id: SYSP_REQ_INSTALLER_SCOPE

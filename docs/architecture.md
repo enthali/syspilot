@@ -129,8 +129,9 @@ syspilot defines three ownership categories that determine what happens on updat
 2. **Customize project-owned agents via `@syspilot.design`** — This creates proper
    specs with traceability. The next update won't touch these files.
 
-3. **Git is your backup** — No special rollback mechanism needed. If an update
-   breaks something, `git diff` shows exactly what changed.
+3. **Transactional rollback** — Before writing any files, the Installer creates a
+   pre-install Git commit. On failure, it executes `git reset --hard` to restore the
+   exact pre-install state. No partial installs persist.
 
 ---
 

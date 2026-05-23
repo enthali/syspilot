@@ -78,7 +78,7 @@ Includes methodology, naming conventions, and traceability matrices.
 ## Requirements
 
 - **VS Code** + **GitHub Copilot** (license required)
-- Permission to install **Python 3.10+** and Python packages (sphinx, sphinx-needs)
+- **Python 3.10+** with `sphinx` and `sphinx-needs` pre-installed (`pip install sphinx sphinx-needs`)
 
-> `@syspilot.setup` handles all installation — your IT just needs to allow it.
+> If `sphinx-needs` is missing, `@syspilot.setup` prints install instructions and stops — it does not auto-install packages.
 
