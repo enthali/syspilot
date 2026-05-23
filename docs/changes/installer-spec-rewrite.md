@@ -1,6 +1,6 @@
 # Change Document: installer-spec-rewrite
 
-**Status**: in-progress
+**Status**: ready-for-merge
 **Branch**: feature/installer-spec-rewrite
 **Created**: 2026-05-23
 **Author**: PM
@@ -160,9 +160,15 @@ None.
 
 ### Sign-off
 
-- [ ] All levels completed (no ⚠️ DEPRECATED markers remaining)
-- [ ] All conflicts resolved
-- [ ] Traceability verified
+- [x] All levels completed (no ⚠️ DEPRECATED markers remaining)
+- [x] All conflicts resolved
+- [x] Traceability verified
+- [x] MECE check passed (L1, 10/10 REQs examined, 0 redundancies / 0 contradictions / 0 gaps)
+- [x] Trace check passed (all 4 new REQs link to SYSP_US_INSTALLER; all 4 new SPECs link to matching new REQs; all touched statuses = approved)
+- [x] sphinx-build clean (0 schema validation warnings)
+- [x] Implementation: `syspilot/agents/syspilot.installer.agent.md` v0.6.1, UTF-8 no BOM, `tools:` preserved
+- [x] Docu: releasenotes v0.6.1 entry added; architecture.md rollback section updated; README requirements section updated
+- [x] Ready for QM targeted check + PM merge to development
 
 ---
 
