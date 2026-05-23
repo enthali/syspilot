@@ -31,6 +31,7 @@ This section contains system requirements following Sphinx-Needs methodology.
    req_skill_impact
 
    req_uat_skill_orchestration_vocab
+   req_uat_installer_spec_rewrite
 
    req_documentation
 

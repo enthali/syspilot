@@ -32,6 +32,7 @@ This section contains design specifications following Sphinx-Needs methodology.
    spec_skill_impact
 
    spec_uat_skill_orchestration_vocab
+   spec_uat_installer_spec_rewrite
 
    spec_doc_scope
 
