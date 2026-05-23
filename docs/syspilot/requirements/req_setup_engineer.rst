@@ -379,7 +379,7 @@ Setup Manager Requirements
 
 .. req:: Installer Not User-Invocable
    :id: SYSP_REQ_SETUP_INSTALLER_NOT_USER_INVOCABLE
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, manager, setup, installer
    :links: SYSP_US_INSTALLER
