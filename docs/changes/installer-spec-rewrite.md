@@ -156,7 +156,22 @@ Removed concepts from the spec: **Mode-Detect step**, **local-source shortcut (D
 
 ### Issues Found
 
-None.
+**QM targeted-check findings (2026-05-23) — PM decisions applied:**
+
+Fix-now (applied on branch, second iteration):
+
+- **L2-F1** `SYSP_SPEC_INSTALLER_DUTIES` — Added two short duty bullets cross-referencing `SYSP_SPEC_INSTALLER_ENCODING` and `SYSP_SPEC_INSTALLER_DIRECT_OPS` so AC-9 (UTF-8 without BOM) and AC-10 (Direct File Operations) are visibly covered in the Duties enumeration. Fixed.
+- **L2-F2** `SYSP_SPEC_INSTALLER_WORKFLOW` — Added a single "Failure Handling" subsection after the numbered steps stating that rollback applies uniformly to Steps 4–7 (identical to Step 8 Validate failure rollback). Aligns WORKFLOW with `SYSP_SPEC_INSTALLER_ROLLBACK`. Fixed.
+- **T-F2** `SYSP_SPEC_INSTALLER_SOUL` — Extended `:links:` to include `SYSP_REQ_INSTALLER_ENCODING`, `SYSP_REQ_INSTALLER_DIRECT_OPS`, `SYSP_REQ_INSTALLER_ROLLBACK` (matching `SYSP_SPEC_INSTALLER_WORKFLOW`). Fixed.
+
+Accept-as-is (no spec change, recorded here):
+
+- **L1-N2** `SYSP_REQ_INSTALLER_DUTIES` vs `SYSP_REQ_INSTALLER_SCOPE` overlap — pre-existing in `req_setup_engineer.rst`, not introduced by this CR. Accepted.
+- **L2-F3** "Skill Conflict Prevention" duty has no corresponding WORKFLOW step — already captured as deferred Finding #17 in the PM idea file (no competing skills exist today; ME wiring deferred to a future CR when the first competing skill ships). Accepted.
+
+Deferred to separate housekeeping CR (out of scope here):
+
+- **T-F1** Parent REQ `SYSP_REQ_SETUP_INSTALLER_NOT_USER_INVOCABLE` still `:status: draft` while this CR elevates its child SPECs (`SOUL`, `FRONTMATTER`) to `approved`. This is a project-wide systemic gap across `req_setup_engineer.rst` (multiple REQs at `draft` with downstream approved SPECs), not specific to this CR. Status hierarchy mismatch acknowledged; project-wide REQ status sweep deferred to a separate housekeeping CR before v0.6.1 release.
 
 ### Sign-off
 

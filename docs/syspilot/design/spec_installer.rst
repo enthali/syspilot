@@ -6,7 +6,7 @@ Installer Design
    :id: SYSP_SPEC_INSTALLER_SOUL
    :status: approved
    :tags: agent-v2, installer, soul
-   :links: SYSP_REQ_SETUP_INSTALLER_NOT_USER_INVOCABLE
+   :links: SYSP_REQ_SETUP_INSTALLER_NOT_USER_INVOCABLE, SYSP_REQ_INSTALLER_ENCODING, SYSP_REQ_INSTALLER_DIRECT_OPS, SYSP_REQ_INSTALLER_ROLLBACK
 
    **Soul:**
 
@@ -78,6 +78,11 @@ Installer Design
    * **Observable Summary** — Every run outputs a per-directory summary of
      installed / updated / removed file counts so the invoking agent can
      verify completeness
+   * **UTF-8 Without BOM** — All files are written as UTF-8 without BOM,
+     regardless of platform. Detailed behaviour: SYSP_SPEC_INSTALLER_ENCODING.
+   * **Direct File Operations** — File operations are performed directly,
+     per file, without generating wrapper scripts or helper files. Detailed
+     behaviour: SYSP_SPEC_INSTALLER_DIRECT_OPS.
    * **Transaction Model** — Pre-install commit creates a rollback point;
      on any failure between install start and final commit, ``git reset --hard``
      restores the pre-install state. The customer always lands in a clean
@@ -252,6 +257,15 @@ Installer Design
 
    9. **Commit** — On successful validation, replace the pre-install commit
       with the final post-install commit documenting the installation.
+
+   **Failure Handling:**
+
+   On any failure during Steps 4–7 (Install/Update, Configure, Orphan
+   Cleanup, Summary), the Installer SHALL execute
+   ``git reset --hard <pre-install-commit>`` from Step 3 and report the
+   failure to the invoking agent — identical to the rollback already
+   documented for Step 8 Validate failure. See
+   SYSP_SPEC_INSTALLER_ROLLBACK for the full transactional model.
 
    **Input:** User request to install or update syspilot (forwarded by Bootloader)
    **Output:** Working syspilot installation + baseline commit
