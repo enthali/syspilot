@@ -158,6 +158,7 @@ Field Notes
 
    experiences/index
    experiences/auto-agent-messaging
+   experiences/case-study-self-optimizing-agents
    experiences/customizing-agents-without-forking
    experiences/self-learning-agents
 

@@ -1,6 +1,6 @@
 # Change Document: toctree-housekeeping
 
-**Status**: in-progress
+**Status**: ready-for-merge
 **Branch**: feature/toctree-housekeeping
 **Created**: 2026-05-23
 **Author**: PM
@@ -16,138 +16,88 @@ Resolve the `case-study-self-optimizing-agents.md` toctree warning that has been
 
 ## Level 0: User Stories
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
-### Impacted User Stories
-
-| ID | Title | Impact | Notes |
-|----|-------|--------|-------|
-| US_xxx | ... | modified | ... |
-
-### New User Stories
-
-| ID | Title | Priority |
-|----|-------|----------|
-| SYSPILOT_US_NEW_1 | As a..., I want..., so that... | mandatory |
+None — pure indexing fix, no user-facing intent change.
 
 ### Decisions
 
-- Decision 1: ...
-- Decision 2: ...
+- Decision 1: No L0 changes. The case study already exists and is reachable via cross-link from `self-learning-agents.md`; this CR only registers it in the main toctree to satisfy `sphinx-build -W`.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing User Stories
-- [ ] No redundancies
-- [ ] Gaps identified and addressed
+- [x] No contradictions with existing User Stories
+- [x] No redundancies
+- [x] Gaps identified and addressed
 
 ---
 
 ## Level 1: Requirements
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
-### Impacted Requirements
-
-Found via links from User Stories above.
-
-| ID | Linked From | Impact | Notes |
-|----|-------------|--------|-------|
-| REQ_xxx | US_xxx | modified | ... |
-
-### New Requirements
-
-| ID | Title | Links | Priority |
-|----|-------|-------|----------|
-| SYSPILOT_REQ_NEW_1 | ... | US_xxx | mandatory |
-
-### Conflicts Detected
-
-- ⚠️ REQ_xxx vs REQ_yyy: {description}
-  - Resolution: {decision}
+None — toctree wiring is a build-config concern, not a requirement.
 
 ### Decisions
 
-- Decision 1: ...
+- Decision 1: No L1 changes. No existing REQ covers "file appears in toctree" — nor should one; this is mechanical sphinx hygiene.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Requirements
-- [ ] No redundancies
-- [ ] All new REQs link to User Stories
+- [x] No contradictions with existing Requirements
+- [x] No redundancies
 
 ---
 
 ## Level 2: Design
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
-### Impacted Design Elements
-
-Found via links from Requirements above.
-
-| ID | Linked From | Impact | Notes |
-|----|-------------|--------|-------|
-| SPEC_xxx | REQ_xxx | modified | ... |
-
-### New Design Elements
-
-| ID | Title | Links |
-|----|-------|-------|
-| SYSPILOT_SPEC_NEW_1 | ... | REQ_xxx, SYSPILOT_REQ_NEW_1 |
-
-### Conflicts Detected
-
-- ⚠️ SPEC_xxx vs SPEC_yyy: {description}
-  - Resolution: {decision}
+None.
 
 ### Decisions
 
-- Decision 1: ...
+- Decision 1: No L2 changes.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Designs
-- [ ] All new SPECs link to Requirements
+- [x] No L2 changes — nothing to MECE-check at this level
 
 ---
 
 ## Final Consistency Check
 
-**Status**: ⏳ not started | ✅ passed | ❌ failed
+**Status**: ✅ passed
 
 ### Traceability Verification
 
-| User Story | Requirements | Design | Complete? |
-|------------|--------------|--------|-----------|
-| US_xxx | REQ_xxx | SPEC_xxx | ✅ |
-| SYSPILOT_US_NEW_1 | SYSPILOT_REQ_NEW_1 | SYSPILOT_SPEC_NEW_1 | ✅ |
+| CR AC | Coverage |
+|-------|----------|
+| AC1 | `experiences/case-study-self-optimizing-agents` added to the Field Notes toctree in `docs/index.rst` (line 161), alphabetically between `auto-agent-messaging` and `customizing-agents-without-forking`. |
+| AC2 | `sphinx-build -b html -W . _build/html` completed with zero warnings (verified). |
+| AC3 | Diff is +1/-0 lines in `docs/index.rst` only. `docs/experiences/case-study-self-optimizing-agents.md` untouched. |
+
+### Scope discipline
+
+`docs/experiences/index.md` carries a Notes table that does NOT list the case study — noted but not modified. AC1 explicitly scopes to the main toctree only; updating the index.md table would be scope-bleed. Filed as observation for a future discoverability CR.
 
 ### Artefakt-Removal-Check
 
-*Fill in only when this CR removes an artefact (file, field, configuration key, REQ-ID).*
+No artefact removal in this CR — only a toctree addition. Check informational only.
 
-For each removed artefact, run a project-wide grep on all plausible name variants and classify results:
-
-| Removed Artefact | Class (a): Code/Workflow refs | Class (b): Doc refs | Class (c): Historic Change Docs |
-|------------------|-------------------------------|---------------------|---------------------------------|
-| `{artefact name}` | {files + lines fixed / none} | {files + lines fixed / none} | {count — acceptable historic stranding} |
-
-- [ ] All class (a) active code/workflow references fixed in this CR
-- [ ] All class (b) active documentation references fixed in this CR
-- [ ] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
+- [x] No artefact removed; check is informational only
 
 ### Issues Found
 
-- [ ] Issue 1: ...
-- [ ] Issue 2: ...
+None.
 
 ### Sign-off
 
-- [ ] All levels completed (no ⚠️ DEPRECATED markers remaining)
-- [ ] All conflicts resolved
-- [ ] Traceability verified
-- [ ] Ready for implementation
+- [x] All levels completed
+- [x] All conflicts resolved
+- [x] Traceability verified (3/3 ACs)
+- [x] `sphinx-build -W` clean
+- [x] Ready for QM targeted check + PM merge to development
 
 ---
 
