@@ -73,6 +73,8 @@ Change Manager Requirements
    * AC-10: CM fills the engineering sections (L0/L1/L2, MECE, Traceability, Sign-off) of the existing Change Document in-place — CM never creates or replaces the document
    * AC-11: After sending readiness notification, CM awaits PM's decision — CM never merges to development
    * AC-12: If PM says "Fix now", CM applies the fix on the same branch and re-notifies PM and QM; if PM says "Defer" or "Accept as-is", PM merges and CM's work is done
+   * AC-13: Upon receiving a CR, CM SHALL read the ``Operation Mode`` field from the Change Document header as the authoritative source of truth for whether the change is ``autonomous`` or ``user-guided``
+   * AC-14: When the dispatch message contains a mode value that disagrees with the ``Operation Mode`` field in the Change Document header, CM SHALL stop and ask the user to resolve the conflict — CM never silently picks a winner
 
 
 .. req:: Change Manager Frontmatter Configuration

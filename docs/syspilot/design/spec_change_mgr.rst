@@ -58,8 +58,13 @@ Change Manager Design
      readiness notification including the Change Document path and branch name —
      no change completes silently.
 
-   When a CR specifies ``autonomous`` mode, CM proceeds without user feedback
-   (except UAT); when ``user-guided``, CM requests user approval after each spec level.
+   When a CR specifies a mode, CM reads the ``Operation Mode`` field from the
+   Change Document header as the authoritative source of truth. The mode value
+   (if any) in the dispatch message is treated as a sanity check only. When
+   ``autonomous``, CM proceeds without user feedback (except UAT); when
+   ``user-guided``, CM requests user approval after each spec level. If the
+   dispatch message contains a mode value that disagrees with the CD header,
+   CM stops and asks the user to resolve the conflict.
 
 
 .. spec:: Change Manager Workflow
@@ -71,10 +76,13 @@ Change Manager Design
    **Workflow:**
 
    1. **Receive + Intent Gate** — Accept Change Request from PM. PM provides the
-      branch name and Change Document path. If the CR contains implementation
-      instructions, reason about the underlying intent, consult the user to agree
-      on a well-formulated CR, then proceed — regardless of operation mode. Checkout
-      the provided branch.
+      branch name and Change Document path. Read the ``Operation Mode`` field from
+      the Change Document header as the authoritative source of truth for execution
+      mode. If the dispatch message contains a mode value that disagrees with the
+      CD header, stop and ask the user to resolve the conflict — never silently
+      pick a winner. If the CR contains implementation instructions, reason about
+      the underlying intent, consult the user to agree on a well-formulated CR,
+      then proceed — regardless of operation mode. Checkout the provided branch.
 
    2. **Analyze** — Invoke System Designer for level-by-level analysis
    3. **Test** — Invoke Test Engineer for UAT artifact generation
