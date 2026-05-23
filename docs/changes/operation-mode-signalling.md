@@ -1,0 +1,161 @@
+# Change Document: operation-mode-signalling
+
+**Status**: in-progress
+**Branch**: feature/operation-mode-signalling
+**Created**: 2026-05-23
+**Author**: PM
+
+---
+
+## Summary
+
+Re-introduce a structural channel for PM to declare a CR's operation mode to CM. An earlier CR removed the `Authoring Mode` field from the Change Document template on the rationale "redundant since PM sets branch context", which is incorrect: the branch encodes the change, not the workflow style. Today PM signals mode either as freetext in the CR body (interpretive, easy to miss) or not at all, with CM having to ask at intake. **Motivation**: closes the structural gap left by the field removal, makes the CD a self-contained contract, and enables future ultra-minimal PM→CM dispatch (the CD path alone, with everything else read from the CD). **Acceptance criteria**: (AC1) The Change Document template contains an `Operation Mode:` header field next to `Status`, `Branch`, `Created`, `Author`, with allowed values `autonomous` | `user-guided`. (AC2) PM creates no CD without filling `Operation Mode`. (AC3) CM reads `Operation Mode` from the CD header as authoritative; the mode value (if any) in the dispatch message is a sanity check only. (AC4) When the dispatch message contains a mode value that disagrees with the CD header, CM stops and asks the user instead of silently picking a winner. (AC5) Existing CDs (already merged) are not migrated; the new field applies to all CDs created from merge-date forward.
+
+---
+
+## Level 0: User Stories
+
+**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+
+### Impacted User Stories
+
+| ID | Title | Impact | Notes |
+|----|-------|--------|-------|
+| US_xxx | ... | modified | ... |
+
+### New User Stories
+
+| ID | Title | Priority |
+|----|-------|----------|
+| SYSPILOT_US_NEW_1 | As a..., I want..., so that... | mandatory |
+
+### Decisions
+
+- Decision 1: ...
+- Decision 2: ...
+
+### Horizontal Check (MECE)
+
+- [ ] No contradictions with existing User Stories
+- [ ] No redundancies
+- [ ] Gaps identified and addressed
+
+---
+
+## Level 1: Requirements
+
+**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+
+### Impacted Requirements
+
+Found via links from User Stories above.
+
+| ID | Linked From | Impact | Notes |
+|----|-------------|--------|-------|
+| REQ_xxx | US_xxx | modified | ... |
+
+### New Requirements
+
+| ID | Title | Links | Priority |
+|----|-------|-------|----------|
+| SYSPILOT_REQ_NEW_1 | ... | US_xxx | mandatory |
+
+### Conflicts Detected
+
+- ⚠️ REQ_xxx vs REQ_yyy: {description}
+  - Resolution: {decision}
+
+### Decisions
+
+- Decision 1: ...
+
+### Horizontal Check (MECE)
+
+- [ ] No contradictions with existing Requirements
+- [ ] No redundancies
+- [ ] All new REQs link to User Stories
+
+---
+
+## Level 2: Design
+
+**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+
+### Impacted Design Elements
+
+Found via links from Requirements above.
+
+| ID | Linked From | Impact | Notes |
+|----|-------------|--------|-------|
+| SPEC_xxx | REQ_xxx | modified | ... |
+
+### New Design Elements
+
+| ID | Title | Links |
+|----|-------|-------|
+| SYSPILOT_SPEC_NEW_1 | ... | REQ_xxx, SYSPILOT_REQ_NEW_1 |
+
+### Conflicts Detected
+
+- ⚠️ SPEC_xxx vs SPEC_yyy: {description}
+  - Resolution: {decision}
+
+### Decisions
+
+- Decision 1: ...
+
+### Horizontal Check (MECE)
+
+- [ ] No contradictions with existing Designs
+- [ ] All new SPECs link to Requirements
+
+---
+
+## Final Consistency Check
+
+**Status**: ⏳ not started | ✅ passed | ❌ failed
+
+### Traceability Verification
+
+| User Story | Requirements | Design | Complete? |
+|------------|--------------|--------|-----------|
+| US_xxx | REQ_xxx | SPEC_xxx | ✅ |
+| SYSPILOT_US_NEW_1 | SYSPILOT_REQ_NEW_1 | SYSPILOT_SPEC_NEW_1 | ✅ |
+
+### Artefakt-Removal-Check
+
+*Fill in only when this CR removes an artefact (file, field, configuration key, REQ-ID).*
+
+For each removed artefact, run a project-wide grep on all plausible name variants and classify results:
+
+| Removed Artefact | Class (a): Code/Workflow refs | Class (b): Doc refs | Class (c): Historic Change Docs |
+|------------------|-------------------------------|---------------------|---------------------------------|
+| `{artefact name}` | {files + lines fixed / none} | {files + lines fixed / none} | {count — acceptable historic stranding} |
+
+- [ ] All class (a) active code/workflow references fixed in this CR
+- [ ] All class (b) active documentation references fixed in this CR
+- [ ] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
+
+### Issues Found
+
+- [ ] Issue 1: ...
+- [ ] Issue 2: ...
+
+### Sign-off
+
+- [ ] All levels completed (no ⚠️ DEPRECATED markers remaining)
+- [ ] All conflicts resolved
+- [ ] Traceability verified
+- [ ] Ready for implementation
+
+---
+
+## Appendix: Link Discovery Results
+
+```
+{paste output from get_need_links.py as needed}
+```
+
+---
+
+*Generated by syspilot Change Agent*
