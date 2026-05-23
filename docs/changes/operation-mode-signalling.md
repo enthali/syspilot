@@ -1,6 +1,6 @@
 # Change Document: operation-mode-signalling
 
-**Status**: in-progress
+**Status**: ready-for-merge
 **Branch**: feature/operation-mode-signalling
 **Created**: 2026-05-23
 **Author**: PM
@@ -143,7 +143,10 @@ None.
 - [x] All levels completed (no ⚠️ DEPRECATED markers remaining)
 - [x] All conflicts resolved
 - [x] Traceability verified
-- [ ] Ready for implementation
+- [x] Implementation: template + PM + CM agent files updated (commit `b0dfe7e`)
+- [x] Docu: workflows.md updated (commit `e9813b9`)
+- [x] sphinx-build clean (1 pre-existing unrelated warning)
+- [x] Ready for QM targeted check + PM merge to development
 
 ---
 
