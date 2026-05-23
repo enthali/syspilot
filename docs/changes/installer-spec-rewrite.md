@@ -17,146 +17,185 @@ Full design decisions, finding-by-finding rationale, and validation strategy are
 
 ## Level 0: User Stories
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted User Stories
 
 | ID | Title | Impact | Notes |
 |----|-------|--------|-------|
-| US_xxx | ... | modified | ... |
+| SYSP_US_INSTALLER | Installer Agent | unchanged | User-facing intent unchanged; all changes are at L1/L2 |
 
 ### New User Stories
 
-| ID | Title | Priority |
-|----|-------|----------|
-| SYSPILOT_US_NEW_1 | As a..., I want..., so that... | mandatory |
+None — the existing user story fully covers the rewritten installer behavior.
 
 ### Decisions
 
-- Decision 1: ...
-- Decision 2: ...
+- Decision 1: SYSP_US_INSTALLER remains unchanged. The user-facing intent ("functioning, validated syspilot environment without losing local customizations") is preserved by the rewritten workflow — only the internal mechanism changes.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing User Stories
-- [ ] No redundancies
-- [ ] Gaps identified and addressed
+- [x] No contradictions with existing User Stories
+- [x] No redundancies
+- [x] Gaps identified and addressed
 
 ---
 
 ## Level 1: Requirements
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Requirements
 
-Found via links from User Stories above.
-
 | ID | Linked From | Impact | Notes |
 |----|-------------|--------|-------|
-| REQ_xxx | US_xxx | modified | ... |
+| SYSP_REQ_INSTALLER_WORKFLOW | SYSP_US_INSTALLER | rewritten | Mode-Detect removed, customization-question removed, GitHub-only source, rollback integrated, explicit encoding/direct-ops cross-refs |
+| SYSP_REQ_INSTALLER_DUTIES | SYSP_US_INSTALLER | extended | Added AC-9 (encoding), AC-10 (direct ops), AC-11 (transactional rollback) |
 
 ### New Requirements
 
 | ID | Title | Links | Priority |
 |----|-------|-------|----------|
-| SYSPILOT_REQ_NEW_1 | ... | US_xxx | mandatory |
+| SYSP_REQ_INSTALLER_GITHUB_SOURCE | Installer GitHub-Only Source | SYSP_US_INSTALLER | mandatory |
+| SYSP_REQ_INSTALLER_ENCODING | Installer File Encoding | SYSP_US_INSTALLER | mandatory |
+| SYSP_REQ_INSTALLER_DIRECT_OPS | Installer Direct File Operations | SYSP_US_INSTALLER | mandatory |
+| SYSP_REQ_INSTALLER_ROLLBACK | Installer Transactional Rollback | SYSP_US_INSTALLER | mandatory |
 
 ### Conflicts Detected
 
-- ⚠️ REQ_xxx vs REQ_yyy: {description}
-  - Resolution: {decision}
+None.
 
 ### Decisions
 
-- Decision 1: ...
+- Decision 1: AC1 (GitHub-only) and AC2 (Mode-Detect removed) consolidated into a single REQ `SYSP_REQ_INSTALLER_GITHUB_SOURCE` — they address the same concern (source acquisition) and splitting would create overlap.
+- Decision 2: AC9 (customer-path live validation) is a UAT/validation criterion, not a requirements-level AC. It will be covered by UAT artefacts created during the validation phase — no REQ-level AC needed.
+- Decision 3: Finding #11 (idempotency optimization) explicitly deferred — always-overwrite behavior is acceptable for correctness-first approach; no REQ change.
+- Decision 4: Finding #17 (Skill Mutual Exclusion wiring into workflow) explicitly deferred — no competing skills exist today; `SYSP_REQ_SETUP_SKILL_MUTEX` remains unchanged.
+- Decision 5: Encoding, direct-ops, and rollback are also added as ACs to `SYSP_REQ_INSTALLER_DUTIES` (AC-9, AC-10, AC-11) because they represent Duty-level guarantees in addition to having their own standalone REQs with detailed ACs.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Requirements
-- [ ] No redundancies
-- [ ] All new REQs link to User Stories
+- [x] No contradictions with existing Requirements
+- [x] No redundancies (GitHub-Source, Encoding, Direct-Ops, Rollback are orthogonal concerns)
+- [x] All new REQs link to User Stories
 
 ---
 
 ## Level 2: Design
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Design Elements
 
-Found via links from Requirements above.
-
 | ID | Linked From | Impact | Notes |
 |----|-------------|--------|-------|
-| SPEC_xxx | REQ_xxx | modified | ... |
+| SYSP_SPEC_INSTALLER_WORKFLOW | SYSP_REQ_INSTALLER_WORKFLOW | rewritten | 9-step workflow replacing old 9-step; Mode-Detect/customization-question removed; Pre-Install Commit + Rollback added |
+| SYSP_SPEC_INSTALLER_DUTIES | SYSP_REQ_INSTALLER_DUTIES | extended | Added Transaction Model duty |
+| SYSP_SPEC_INSTALLER_SOUL | SYSP_REQ_SETUP_INSTALLER_NOT_USER_INVOCABLE | extended | Guardrails expanded: direct file ops, UTF-8 no BOM, no wrapper scripts, transactional rollback |
+| SYSP_SPEC_INSTALLER_FRONTMATTER | SYSP_REQ_SETUP_INSTALLER_NOT_USER_INVOCABLE | modified | version bumped 0.5.3 → 0.6.1 |
 
 ### New Design Elements
 
 | ID | Title | Links |
 |----|-------|-------|
-| SYSPILOT_SPEC_NEW_1 | ... | REQ_xxx, SYSPILOT_REQ_NEW_1 |
+| SYSP_SPEC_INSTALLER_GITHUB_SOURCE | Installer GitHub-Only Source | SYSP_REQ_INSTALLER_GITHUB_SOURCE |
+| SYSP_SPEC_INSTALLER_ENCODING | Installer File Encoding | SYSP_REQ_INSTALLER_ENCODING |
+| SYSP_SPEC_INSTALLER_DIRECT_OPS | Installer Direct File Operations | SYSP_REQ_INSTALLER_DIRECT_OPS |
+| SYSP_SPEC_INSTALLER_ROLLBACK | Installer Transactional Rollback | SYSP_REQ_INSTALLER_ROLLBACK |
 
 ### Conflicts Detected
 
-- ⚠️ SPEC_xxx vs SPEC_yyy: {description}
-  - Resolution: {decision}
+None.
 
 ### Decisions
 
-- Decision 1: ...
+- Decision 1: Finding #11 (idempotency optimization) deferred — `SYSP_SPEC_INSTALLER_DUTIES` retains the "Idempotent Sync" duty as aspirational but the workflow always overwrites (correctness first). No SPEC change for #11.
+- Decision 2: Finding #17 (Skill ME wiring) deferred — `SYSP_SPEC_INSTALLER_SKILL_MUTEX` is unchanged; workflow does not wire the check because no competing skills exist today.
+- Decision 3: The old "Same workflow as the former Setup Manager, transferred verbatim" prefatory note is removed from WORKFLOW spec — it was a historical reference with no current value.
+- Decision 4: `SYSP_SPEC_INSTALLER_WORKFLOW` links expanded to include the four new REQs for explicit traceability.
+- Decision 5: Rollback SPEC Step 4 describes "commit --amend or equivalent" — the exact mechanism is left to implementation so long as the result is a single clean commit.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Designs
-- [ ] All new SPECs link to Requirements
+- [x] No contradictions with existing Designs
+- [x] All new SPECs link to Requirements
 
 ---
 
 ## Final Consistency Check
 
-**Status**: ⏳ not started | ✅ passed | ❌ failed
+**Status**: ✅ passed
 
 ### Traceability Verification
 
-| User Story | Requirements | Design | Complete? |
-|------------|--------------|--------|-----------|
-| US_xxx | REQ_xxx | SPEC_xxx | ✅ |
-| SYSPILOT_US_NEW_1 | SYSPILOT_REQ_NEW_1 | SYSPILOT_SPEC_NEW_1 | ✅ |
+| AC | User Story | Requirement(s) | Design | Complete? |
+|----|------------|----------------|--------|-----------|
+| AC1 GitHub-only source | SYSP_US_INSTALLER | SYSP_REQ_INSTALLER_GITHUB_SOURCE (AC-1, AC-2) | SYSP_SPEC_INSTALLER_GITHUB_SOURCE | ✅ |
+| AC2 Mode-Detect removed | SYSP_US_INSTALLER | SYSP_REQ_INSTALLER_GITHUB_SOURCE (AC-3, AC-4) | SYSP_SPEC_INSTALLER_GITHUB_SOURCE | ✅ |
+| AC3 UTF-8 without BOM | SYSP_US_INSTALLER | SYSP_REQ_INSTALLER_ENCODING; SYSP_REQ_INSTALLER_DUTIES AC-9 | SYSP_SPEC_INSTALLER_ENCODING; SYSP_SPEC_INSTALLER_SOUL | ✅ |
+| AC4 Direct per-file ops | SYSP_US_INSTALLER | SYSP_REQ_INSTALLER_DIRECT_OPS; SYSP_REQ_INSTALLER_DUTIES AC-10 | SYSP_SPEC_INSTALLER_DIRECT_OPS; SYSP_SPEC_INSTALLER_SOUL | ✅ |
+| AC5 Frontmatter preservation | SYSP_US_INSTALLER | SYSP_REQ_INSTALLER_WORKFLOW AC-5, AC-6 | SYSP_SPEC_INSTALLER_WORKFLOW Step 4 | ✅ |
+| AC6 sphinx-needs → instruct+stop | SYSP_US_INSTALLER | SYSP_REQ_INSTALLER_WORKFLOW AC-2 | SYSP_SPEC_INSTALLER_WORKFLOW Step 2 | ✅ |
+| AC7 Git-based rollback | SYSP_US_INSTALLER | SYSP_REQ_INSTALLER_ROLLBACK; SYSP_REQ_INSTALLER_DUTIES AC-11 | SYSP_SPEC_INSTALLER_ROLLBACK; SYSP_SPEC_INSTALLER_WORKFLOW Steps 3/8 | ✅ |
+| AC8 Customization-question removed | SYSP_US_INSTALLER | SYSP_REQ_INSTALLER_WORKFLOW (old AC-6 removed) | SYSP_SPEC_INSTALLER_WORKFLOW Step 4 (no question) | ✅ |
+| AC9 Customer-path live validation | SYSP_US_INSTALLER | (UAT artefact — not REQ) | (UAT artefact) | ✅ (UAT) |
 
 ### Artefakt-Removal-Check
 
-*Fill in only when this CR removes an artefact (file, field, configuration key, REQ-ID).*
-
-For each removed artefact, run a project-wide grep on all plausible name variants and classify results:
+Removed concepts from the spec: **Mode-Detect step**, **local-source shortcut (Detect Source)**, **customization-question + double-write flow**.
 
 | Removed Artefact | Class (a): Code/Workflow refs | Class (b): Doc refs | Class (c): Historic Change Docs |
 |------------------|-------------------------------|---------------------|---------------------------------|
-| `{artefact name}` | {files + lines fixed / none} | {files + lines fixed / none} | {count — acceptable historic stranding} |
+| "Detect Mode" / Mode-Detect step | `syspilot/agents/syspilot.installer.agent.md` line 39 (implementation phase), `.github/agents/syspilot.installer.agent.md` line 39 (installed instance — updated by Installer itself) | `docs/syspilot/design/spec_installer.rst` — fixed in this CR | `docs/changes/v0.3.0/val-local-install.md` — 1 historic ref (acceptable stranding) |
+| "Detect Source" / local syspilot/ check | `syspilot/agents/syspilot.installer.agent.md` line 38 (implementation phase), `.github/agents/syspilot.installer.agent.md` line 38 (installed instance) | `docs/syspilot/design/spec_installer.rst` — fixed in this CR | `docs/changes/v0.3.0/val-local-install.md` — 2 historic refs; `docs/releasenotes.md` line 424 — 1 historic ref (acceptable stranding) |
+| Customization-question + double-write flow | `syspilot/agents/syspilot.installer.agent.md` (implementation phase), `.github/agents/syspilot.installer.agent.md` (installed instance) | `docs/syspilot/design/spec_installer.rst` — fixed in this CR | none |
 
-- [ ] All class (a) active code/workflow references fixed in this CR
-- [ ] All class (b) active documentation references fixed in this CR
-- [ ] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
+- [x] All class (a) active code/workflow references: agent file updates are in scope for the **implementation phase** (Dev Engineer) — this CR covers only spec; agent file is explicitly out-of-scope per constraints
+- [x] All class (b) active documentation references fixed in this CR
+- [x] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
 
 ### Issues Found
 
-- [ ] Issue 1: ...
-- [ ] Issue 2: ...
+None.
 
 ### Sign-off
 
 - [ ] All levels completed (no ⚠️ DEPRECATED markers remaining)
 - [ ] All conflicts resolved
 - [ ] Traceability verified
-- [ ] Ready for implementation
 
 ---
 
 ## Appendix: Link Discovery Results
 
+Impact analysis run 2026-05-23 from `SYSP_US_INSTALLER` (direction=in, depth=2):
+
 ```
-{paste output from get_need_links.py as needed}
+SYSP_US_INSTALLER  (Level 0 — user intent unchanged)
+  └── SYSP_REQ_INSTALLER_DUTIES               ← to extend (new ACs)
+  │     └── SYSP_SPEC_INSTALLER_DUTIES        ← to extend
+  ├── SYSP_REQ_INSTALLER_WORKFLOW             ← to rewrite
+  │     └── SYSP_SPEC_INSTALLER_WORKFLOW      ← to rewrite
+  ├── SYSP_REQ_INSTALLER_SCOPE                ← unchanged
+  │     └── SYSP_SPEC_INSTALLER_SCOPE         ← unchanged
+  ├── SYSP_REQ_INSTALLER_DOC_BOOTSTRAP        ← unchanged
+  │     └── SYSP_SPEC_INSTALLER_DOC_BOOTSTRAP ← unchanged
+  ├── SYSP_REQ_SETUP_INSTALLER_NOT_USER_INVOCABLE ← unchanged
+  │     └── SYSP_SPEC_INSTALLER_SOUL / FRONTMATTER ← SOUL extended (new Guardrails); FRONTMATTER version bump
+  └── SYSP_REQ_SETUP_SKILL_MUTEX              ← unchanged (finding #17 deferred per idea file)
+        └── SYSP_SPEC_INSTALLER_SKILL_MUTEX   ← unchanged
 ```
+
+**Candidate NEW elements** (Designer to confirm/refine):
+
+- L1 REQ: Installer Transactional Rollback (covers AC7 git-reset rollback) → links SYSP_US_INSTALLER
+- L1 REQ: Installer File Encoding (covers AC3 UTF-8 without BOM) → links SYSP_US_INSTALLER
+- L1 REQ: Installer Direct File Operations (covers AC4 no wrapper scripts) → links SYSP_US_INSTALLER
+- L1 REQ: Installer GitHub-Only Source (covers AC1 always-fetch-upstream, AC2 no Mode-Detect) → links SYSP_US_INSTALLER
+- L2 SPECs corresponding to each new REQ
+- L2 SPEC update: extend `SYSP_SPEC_INSTALLER_SOUL` Guardrails ("performs file ops directly; writes UTF-8 without BOM; never generates wrapper scripts")
+- L2 SPEC update: extend `SYSP_SPEC_INSTALLER_DUTIES` with Transaction-Model entry
+
 
 ---
 
