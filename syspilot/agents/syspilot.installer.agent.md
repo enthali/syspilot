@@ -4,7 +4,6 @@ tools: [read, edit, search, execute, todo]
 model: Claude Sonnet 4.6 (copilot)
 user-invocable: false
 agents: []
-version: 0.6.1
 ---
 
 # syspilot Installer

@@ -15,8 +15,9 @@ Covers all nine CR acceptance criteria against ``SYSP_US_INSTALLER``.
    **As a** syspilot Test Engineer,
    **I want** to verify that the rewritten Installer agent and specification
    deliver a correct, transactional, customer-path-validated installation,
-   **so that** customers on v0.6.1 receive a working syspilot environment on
-   first contact and the release is not blocked by Installer defects.
+   **so that** customers on the released installer receive a working syspilot
+   environment on first contact and the release is not blocked by Installer
+   defects.
 
    **Context:**
 

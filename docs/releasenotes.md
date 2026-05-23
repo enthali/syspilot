@@ -1,30 +1,5 @@
 # syspilot Release Notes
 
-## v0.6.1 - 2026-05-23
-
-### Summary
-Minor release delivering a correct, transactional, customer-path-validated installer. The Installer now always fetches from upstream GitHub (`main` branch), writes all files as UTF-8 without BOM, and implements transactional rollback: a pre-install Git commit is created before any file operation; on failure `git reset --hard` restores the exact pre-install state. The Mode-Detect step, customization question, and double-write flow are removed. Missing `sphinx-needs` no longer triggers auto-install — the Installer prints installation instructions and stops instead.
-
-### 🔧 Fixes & Improvements
-
-- **Installer Spec Rewrite** (`installer-spec-rewrite`)
-  - Installer always fetches from upstream GitHub `main` — no local `syspilot/` shortcut, no Mode-Detect step
-  - All files written UTF-8 without BOM; BOM-producing PowerShell encoding path eliminated
-  - Per-file `Invoke-WebRequest` + `Out-File` (or platform equivalent) only — no wrapper scripts, no temp helpers generated
-  - Pre-install commit + `git reset --hard` rollback: workspace lands in clean state (pre-install or fully installed, never partial)
-  - `tools:` frontmatter preserved per file; all other fields sourced from upstream; Bootloader (`syspilot.setup.agent.md`) overwritten verbatim
-  - Missing `sphinx-needs`: print install instructions and stop — no auto-install
-  - Customization question and double-write flow removed
-  - Installer version bumped 0.5.3 → 0.6.1
-
-### 📋 Change Requests
-
-| Change Document | Scope |
-|----------------|-------|
-| `installer-spec-rewrite` | Installer rewrite for customer-path correctness |
-
----
-
 ## v0.5.5 - 2026-05-13
 
 ### Summary

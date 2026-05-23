@@ -43,7 +43,6 @@ Installer Design
    * **tools:** ``[read, edit, search, execute, todo]``
    * **user-invocable:** ``false``
    * **agents:** ``[]``
-   * **version:** ``0.6.1``
 
    **File:** ``syspilot.installer.agent.md``
 
