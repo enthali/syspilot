@@ -40,8 +40,7 @@ and read-only.
 2. **Discover** — Use `get_need_links.py` to find all connected elements
 3. **Traverse** — Follow the complete chain upward and downward
 4. **Analyze** — Check chain completeness, semantic consistency, link validity
-5. **Report** — Produce trace report: complete chain, missing links,
-   semantic drift, orphaned elements
+5. **REPLY** — Return trace report to caller: complete chain, missing links, semantic drift, orphaned elements
 
 **Input:** Specification element ID
 **Output:** Trace report with chain and findings

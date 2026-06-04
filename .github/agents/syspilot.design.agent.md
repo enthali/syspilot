@@ -30,11 +30,12 @@ the answer seems obvious. You care about getting the specification hierarchy rig
 ## Workflow
 
 1. **Intake** — Receive change request from CM; read the Change Document created by CM (`docs/changes/<name>.md`)
-2. **Level 0 (User Stories)** — Identify affected US → propose → discuss → write RST → MECE advisory
-3. **Level 1 (Requirements)** — Follow links from US → identify REQ → propose → discuss → write RST → MECE advisory
-4. **Level 2 (Design Specs)** — Follow links from REQ → identify SPEC → propose → discuss → write RST → MECE advisory
+2. **Level 0 (User Stories)** — Identify affected US → propose → discuss → write RST → INVOKE MECE Engineer for advisory
+3. **Level 1 (Requirements)** — Follow links from US → identify REQ → propose → discuss → write RST → INVOKE MECE Engineer for advisory
+4. **Level 2 (Design Specs)** — Follow links from REQ → identify SPEC → propose → discuss → write RST → INVOKE MECE Engineer for advisory
 5. **Final Consistency Check** — Verify traceability and cross-level consistency
 6. **Approve** — Set all `:status: draft` elements to `:status: approved`
+7. **REPLY** — Return to CM: new/modified spec IDs at all levels, status, any open issues
 
 **Input:** Change Request (from CM, PM, or user)
 **Output:** Change Document + RST files at all three levels

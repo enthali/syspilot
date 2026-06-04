@@ -1,5 +1,6 @@
 ---
 name: syspilot.impact-python
+group: impact
 description: >
   Impact analysis using sphinx-needs dependency trees.
   Discovers affected specification elements by traversing
@@ -9,8 +10,8 @@ description: >
 
 # Skill: Impact Analysis (Python)
 
-> **Implements**: SYSP_SPEC_SKILL_IMPACT_QUERY, SYSP_SPEC_SKILL_IMPACT_EXCHANGE
-> **Requirements**: SYSP_REQ_SKILL_IMPACT_QUERY, SYSP_REQ_SKILL_IMPACT_EXCHANGE
+> **Implements**: SYSP_SPEC_SKILL_IMPACT_QUERY, SYSP_SPEC_SKILL_IMPACT_EXCHANGE, SYSP_SPEC_SKILL_IMPACT_GROUP
+> **Requirements**: SYSP_REQ_SKILL_IMPACT_QUERY, SYSP_REQ_SKILL_IMPACT_EXCHANGE, SYSP_REQ_SKILL_IMPACT_GROUP
 
 ## Instructions
 
