@@ -1,5 +1,115 @@
 # syspilot Release Notes
 
+## v0.6.0 - 2026-06-04
+
+### Summary
+Minor release completing the orchestration skill architecture and aligning all agents to the new four-verb vocabulary (INVOKE/SEND/RECEIVE/RESPOND). Introduces the `syspilot.orchestration-jarvis` skill variant, rewrites the Installer spec for customer-path correctness with positive scope definition, adds templates directory management, and establishes structural operation mode signalling in Change Documents. Includes a Field Notes documentation section, skill frontmatter conformance, and a requirements status sweep.
+
+### 🏗️ Architecture
+
+- **Orchestration Skill Split** (`orchestration-skill-split`)
+  - Monolithic `syspilot.orchestration` skill split into an orchestration skill group
+  - New Group Contract Spec (`SYSP_SPEC_SKILL_ORCHESTRATION_CONTRACT`) declares four-verb vocabulary: `INVOKE`, `SEND`, `RECEIVE`, `RESPOND` — tool-agnostic and topology-agnostic
+  - New `syspilot.orchestration-jarvis` skill variant implements INVOKE → `runSubagent()`, SEND/RECEIVE → Jarvis messaging tools, RESPOND → mode-detected delivery
+  - Old standalone `syspilot.orchestration` skill removed; all active references updated
+
+- **Orchestration Agent Adoption** (`orchestration-agent-adoption`)
+  - All syspilot agent files migrated from deprecated `DELEGATE` verb to `SEND`
+  - Agents performing cross-session communication now declare `skills: [syspilot.orchestration-jarvis]` in frontmatter
+  - No semantic change to agent behaviour — only vocabulary alignment
+
+- **Installer Spec Rewrite** (`installer-spec-rewrite`)
+  - Complete rewrite of `SYSP_SPEC_INSTALLER_SCOPE`, `SYSP_SPEC_INSTALLER_DUTIES`, and `SYSP_SPEC_INSTALLER_WORKFLOW` for customer-path correctness
+  - Scope table now includes `templates/` → `.github/templates/` as an explicit install target
+  - Three new Installer duties: **Idempotent Sync**, **Orphan Cleanup**, and **Observable Summary**
+  - Installer workflow gains an Orphan Cleanup step (removes target files with no source counterpart) and a per-directory Summary table output
+
+- **PM/CM Branch and Change Document Ownership** (`pm-owns-branch-and-change-setup`)
+  - PM creates feature branch from `development` and initialises Change Document via verbatim copy of `.github/templates/change-document.md`
+  - PM fills header and Summary sections only; CM fills engineering sections in-place on the existing skeleton — CM never invents document structure
+  - Integration to `development` is a PM-role responsibility; CM signals readiness but never merges
+  - Feature branches retained after merge; Release Agent performs cleanup at release time
+  - Templates reside at `.github/templates/` — present in every installed instance
+
+### 🔧 Fixes & Improvements
+
+- **Orchestration Skill Fix** (`orchestration-skill-fix`)
+  - Three post-merge defects corrected in `syspilot.orchestration-jarvis` SKILL.md
+  - `description` frontmatter rewritten to Copilot discovery format with USE FOR / DO NOT USE FOR boundaries
+  - RESPOND logic corrected: no longer incorrectly calls `jarvis_readMessage()` inside RESPOND; uses invocation mode already determined at RECEIVE time
+  - Role-specific communication pattern sections removed from skill body (violated the no-agent-names AC-4 rule)
+
+- **Operation Mode Signalling** (`operation-mode-signalling`)
+  - Structural `Operation Mode:` header field added to the Change Document template
+  - Allowed values: `autonomous` | `user-guided`
+  - CM reads `Operation Mode` from the CD header as authoritative; mismatch with dispatch message triggers a stop-and-ask rather than silent resolution
+  - Applies to all Change Documents created from this release forward; existing archived CDs not migrated
+
+- **Setup Agent Installs Templates** (`setup-agent-installs-templates`)
+  - Installer now copies `syspilot/templates/` → `.github/templates/` on every run
+  - Idempotent: re-running with unchanged source yields identical end-state
+  - Orphan Cleanup removes `.github/templates/` files that have no corresponding source
+  - Run summary includes a `templates/` row with Installed/Updated/Removed counts
+
+- **Skill Frontmatter Migration** (`skill-frontmatter-migration`)
+  - `syspilot.orchestration-jarvis` and `syspilot.impact-python` skills gain `group:` frontmatter fields (`orchestration` and `impact` respectively)
+  - `syspilot.ask-questions` and `syspilot.branching` confirmed conformant as standalone skills (no `group` field needed)
+  - `SYSP_REQ_SKILL_ORCHESTRATION_INVOKE` expanded to cover three-verb model; new REQs `SYSP_REQ_SKILL_ORCHESTRATION_GROUP` and `SYSP_REQ_SKILL_IMPACT_GROUP` created
+
+- **Installer Scope Positive Definition** (`installer-scope-positive-definition`)
+  - Installer's installation scope defined explicitly: only `agents/`, `prompts/`, `skills/`, `templates/` from `syspilot/` are copied to customer projects
+  - `docs/syspilot/` and change documents are never copied
+  - Minimal `docs/index.rst` created for target projects that have none; existing docs structures never overwritten
+
+- **Requirements Status Sweep** (`req-status-sweep`)
+  - All REQs in `req_setup_engineer.rst` that have approved child SPECs elevated from `draft` to `approved`
+  - Resolves hierarchy violation surfaced by QM: a draft REQ cannot authorise an approved child SPEC
+  - No semantic changes — pure status hygiene
+
+- **Agent Vocabulary Migration** (`agent-vocabulary-migration`)
+  - Phase 3 of the Skill Architecture rollout: agents use finalised verb vocabulary (INVOKE, DELEGATE, REPLY) instead of concrete tool references
+  - Manager agents (PM, CM, QM) use INVOKE for engineer subagent calls; engineer agents add REPLY as terminal workflow step
+  - No agent document prescribes a specific runtime tool in workflow steps — tool mapping delegated to the installed orchestration skill
+
+- **Agent Duties English Translation** (`agent-duties-english-translation`)
+  - German duty names introduced during v0.5.4 conformance sweep translated to English across all agent files and spec files
+  - Restores English-only convention compliance
+
+- **Toctree Housekeeping** (`toctree-housekeeping`)
+  - `docs/experiences/case-study-self-optimizing-agents` added to the main toctree in `docs/index.rst`
+  - Resolves persistent `sphinx-build -W` warning that blocked release validation
+
+### 📚 Documentation
+
+- **Field Notes** (`field-notes`)
+  - New Field Notes section added to the documentation site
+  - `docs/experiences/index.md` — landing page for practical experiences
+  - `docs/experiences/auto-agent-messaging.md` — running messages between agent sessions using Jarvis
+  - `docs/experiences/self-learning-agents.md` — adding an Analyst agent to diagnose quality degradation
+  - `docs/experiences/case-study-self-optimizing-agents.md` — extended case study on self-optimising agent patterns
+
+### 📋 Change Requests
+
+| Change Document | Scope |
+|----------------|-------|
+| `orchestration-skill-split` | Four-verb orchestration skill group; jarvis variant |
+| `uat-orchestration-skill-split` | UAT validation for orchestration-skill-split |
+| `orchestration-skill-fix` | Three post-merge defect fixes in jarvis skill |
+| `orchestration-agent-adoption` | Migrate agents from DELEGATE to SEND; add skills: frontmatter |
+| `installer-spec-rewrite` | Installer spec/agent rewrite with orphan cleanup + summary |
+| `installer-scope-positive-definition` | Positive scope definition; minimal docs/index.rst creation |
+| `setup-agent-installs-templates` | Installer manages templates/ directory |
+| `operation-mode-signalling` | Operation Mode structural field in Change Document |
+| `pm-owns-branch-and-change-setup` | PM/CM branch and CD ownership boundary |
+| `skill-frontmatter-migration` | Group fields for orchestration and impact skills |
+| `req-status-sweep` | Draft→approved status sweep for req_setup_engineer.rst |
+| `agent-vocabulary-migration` | Phase 3 verb vocabulary alignment (INVOKE/DELEGATE/REPLY) |
+| `agent-duties-english-translation` | German duty names translated to English |
+| `toctree-housekeeping` | Register case-study in main toctree |
+| `field-notes` | Field Notes documentation section |
+
+---
+
 ## v0.5.5 - 2026-05-13
 
 ### Summary

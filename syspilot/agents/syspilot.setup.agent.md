@@ -4,7 +4,7 @@ tools: [read, edit, search, execute, todo, agent, agent/runSubagent, vscode/askQ
 model: Claude Sonnet 4.6 (copilot)
 user-invocable: true
 agents: ["syspilot.installer"]
-version: 0.5.5
+version: 0.6.0
 ---
 
 # syspilot Setup Bootloader
