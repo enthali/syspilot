@@ -133,7 +133,7 @@ Project Manager Design
    **Frontmatter Configuration:**
 
    * **description:** ``"Strategic project manager that discusses features, prioritizes backlogs, conducts research, and delegates Change Requests to the Change Manager."``
-   * **tools:** ``[read, search, web, agent, agent/runSubagent, todo, vscode, execute, github, context7, syspilot_jarvis_tools]``
+   * **tools:** ``[read, search, web, agent/runSubagent, todo, vscode, execute, github, context7, syspilot_jarvis_tools]``
    * **user-invocable:** ``true``
    * **agents:** ``["syspilot.release", "syspilot.setup"]``
 

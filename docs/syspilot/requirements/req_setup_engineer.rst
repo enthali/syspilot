@@ -302,7 +302,7 @@ Setup Manager Requirements
 
    * AC-1: Setup Manager frontmatter declares ``user-invocable: true``
    * AC-2: Setup Manager frontmatter lists ``agents: ["syspilot.installer"]``
-   * AC-3: Setup Manager frontmatter includes ``read``, ``edit``, ``search``, ``execute``, ``todo``, ``agent``, ``vscode/askQuestions`` in tools
+   * AC-3: Setup Manager frontmatter includes ``read``, ``edit``, ``search``, ``execute``, ``todo``, ``agent/runSubagent``, ``vscode/askQuestions`` in tools
    * AC-4: The setup agent frontmatter SHALL include a ``version:`` field reflecting the installed syspilot version
 
 

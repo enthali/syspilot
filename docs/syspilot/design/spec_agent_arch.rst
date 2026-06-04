@@ -122,7 +122,7 @@ Meta-level definitions of Soul, Duties, and Workflow concepts.
    * **description** (string, required) — One-sentence summary of the agent's
      purpose. Used by VS Code Copilot for agent discovery and selection.
    * **tools** (list of strings, required) — Permitted tool categories the agent
-     can use (e.g., ``read``, ``edit``, ``search``, ``agent``, ``execute``).
+     can use (e.g., ``read``, ``edit``, ``search``, ``agent/runSubagent``, ``execute``).
    * **user-invocable** (boolean, required) — Whether users can invoke the agent
      directly via ``@syspilot.<name>``. Managers are ``true``; most engineers
      are ``false`` (invoked only as subagents).
@@ -145,8 +145,10 @@ Meta-level definitions of Soul, Duties, and Workflow concepts.
       agents: []
       ---
 
-   **Constraint:** When ``agents:`` contains one or more entries, the ``agent``
-   tool MUST be included in ``tools:``.
+   **Constraint:** When ``agents:`` contains one or more entries, the
+   ``agent/runSubagent`` tool MUST be included in ``tools:``. The bare
+   ``agent`` token is NOT a valid substitute — the VS Code Copilot tool-loader
+   requires the specific ``agent/runSubagent`` token to enable subagent invocation.
 
 
 .. spec:: Prompt File Definition

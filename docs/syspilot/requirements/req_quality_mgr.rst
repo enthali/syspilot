@@ -76,14 +76,14 @@ Quality Manager Requirements
    and Trace engineer subagents.
 
    **Rationale:**
-   The QM needs the ``agent`` tool to dispatch MECE and Trace engineers, and
+   The QM needs the ``agent/runSubagent`` tool to dispatch MECE and Trace engineers, and
    ``syspilot_jarvis_tools`` for sending Findings Reports to PM via Jarvis.
 
    **Acceptance Criteria:**
 
    * AC-1: QM frontmatter declares ``user-invocable: true``
    * AC-2: QM frontmatter lists ``syspilot.mece`` and ``syspilot.trace`` in ``agents``
-   * AC-3: QM frontmatter includes ``agent`` and ``syspilot_jarvis_tools`` in tools
+   * AC-3: QM frontmatter includes ``agent/runSubagent`` and ``syspilot_jarvis_tools`` in tools
 
 
 .. req:: Quality Manager Prompt File

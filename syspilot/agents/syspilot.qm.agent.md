@@ -1,6 +1,6 @@
 ---
 description: "Independent quality guardian that dispatches MECE and Trace engineers, consolidates findings, and produces Findings Reports addressed to PM."
-tools: [read, edit, search, agent, agent/runSubagent, todo, execute, syspilot_jarvis_tools]
+tools: [read, edit, search, agent/runSubagent, todo, execute, syspilot_jarvis_tools]
 model: Claude Haiku 4.5 (copilot)
 user-invocable: true
 agents: ["syspilot.mece", "syspilot.trace"]

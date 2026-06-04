@@ -96,7 +96,7 @@ Quality Manager Design
    **Frontmatter Configuration:**
 
    * **description:** ``"Independent quality guardian that dispatches MECE and Trace engineers, consolidates findings, and produces Findings Reports addressed to PM."``
-   * **tools:** ``[read, edit, search, agent, agent/runSubagent, todo, execute, syspilot_jarvis_tools]``
+   * **tools:** ``[read, edit, search, agent/runSubagent, todo, execute, syspilot_jarvis_tools]``
    * **user-invocable:** ``true``
    * **agents:** ``["syspilot.mece", "syspilot.trace"]``
 
