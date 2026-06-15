@@ -3,6 +3,7 @@
 **Status**: draft
 **Created**: 2026-06-03
 **Author**: PM
+**Operation Mode**: autonomous
 
 ---
 
