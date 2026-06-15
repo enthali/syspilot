@@ -52,7 +52,7 @@ syspilot/                          # The Product
 │   ├── syspilot.impact-python/
 │   └── syspilot.orchestration-jarvis/
 ├── scripts/python/                # Utility scripts
-├── sphinx/                        # Build scripts (build.ps1, build.sh)
+├── sphinx/                        # Build scripts (docs-build.py)
 └── templates/
     └── change-document.md         # Change Document template
 ```
