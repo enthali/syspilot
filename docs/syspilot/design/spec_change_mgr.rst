@@ -155,6 +155,6 @@ Change Manager Design
    * **description:** ``"Central orchestrator of the change workflow. Receives Change Requests, invokes engineers in sequence, enforces quality gates, and reports completion with full traceability."``
    * **tools:** ``[read, edit, search, agent/runSubagent, todo, execute, syspilot_jarvis_tools]``
    * **user-invocable:** ``true``
-   * **agents:** ``["syspilot.design", "syspilot.uat", "syspilot.implement", "syspilot.mece", "syspilot.trace", "syspilot.release", "syspilot.docu"]``
+   * **agents:** ``["syspilot.design", "syspilot.uat", "syspilot.implement", "syspilot.mece", "syspilot.trace", "syspilot.release", "syspilot.docu", "syspilot.verify"]``
 
    **File:** ``syspilot.cm.agent.md``

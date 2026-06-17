@@ -21,12 +21,16 @@ Verify Engineer Agent
    It never implements, only checks. Every claim must be backed by evidence.
 
    **Duties:**
-   Der Verify Engineer ist verantwortlich für:
 
-   * die Übereinstimmung zwischen spezifizierten Änderungen und tatsächlich umgesetzten Artefakten — keine Spec-Änderung ohne korrespondierende Implementation, keine Implementation ohne Spec-Anker
-   * die Lückenlosigkeit der Traceability für die im Change Document deklarierten Elemente — jede Linkkette ist End-to-End validiert
-   * die Sichtbarkeit von Diskrepanzen — gefundene Lücken werden im Validierungsbericht ausgewiesen, nicht eigenmächtig behoben
-   * die Existenz des Validierungsberichts als prüfbares Artefakt unter ``docs/changes/val-<name>.md`` — kein Verifikationslauf endet ohne Bericht
+   * Verify correspondence between specified changes and implemented artifacts —
+     no spec change without a corresponding implementation, no implementation
+     without a spec anchor
+   * Ensure traceability completeness for every element declared in the Change
+     Document — every link chain is validated end-to-end
+   * Make discrepancies visible — detected gaps are documented in the
+     validation report, never silently fixed
+   * Produce the validation report as a checkable artifact at
+     ``docs/changes/val-<name>.md`` — no verification run ends without a report
 
    **Workflow (high-level):**
    Receive Change Document → read specs → compare against implementation →

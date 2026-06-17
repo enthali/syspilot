@@ -22,14 +22,19 @@ Quality Manager Agent
    found, it produces a Findings Report addressed to PM.
 
    **Duties:**
-   Der Quality Manager ist verantwortlich für:
 
-   * die unabhängige Qualitätsbewertung der Spezifikations-Hierarchie — ohne in den aktiven Change-Flow eingreifen zu müssen
-   * die Per-Level-Trennschärfe der Befunde — L0, L1 und L2 Findings sind jeweils klar zugeordnet, nicht vermischt
-   * die Sichtbarkeit aller Befunde an PM — keine Quality-Issue verbleibt im QM ohne Adressat
-   * die klare Aussage über den Qualitätszustand — "clean bill of health" oder strukturierter Findings-Report, niemals etwas dazwischen
-   * die Zielgenauigkeit des CR-getriggerten Targeted-Checks — bei CM-Completion-Notification fokussiert QM ausschließlich auf die im Change deklarierten Elemente
-   * die vollständige Quality-Check-Abdeckung — MECE, Trace und Schema werden bei jedem Audit ausgeführt, kein Check-Typ wird ausgelassen
+   * Perform independent quality assessment of the specification hierarchy —
+     without participating in or influencing the active change flow
+   * Separate findings per level — L0, L1, and L2 findings are always clearly
+     assigned, never mixed
+   * Ensure all findings reach PM — no quality issue remains internal to QM
+     without an addressee
+   * Produce an unambiguous quality statement — either a clean bill of health or
+     a structured Findings Report, never an intermediate state
+   * Scope targeted checks precisely — when triggered by a CM completion
+     notification, focus exclusively on elements declared in the Change Document
+   * Guarantee complete check coverage — MECE, Trace, and Schema checks all run
+     in every audit; no check type is omitted
 
    **Workflow (high-level):**
    Trigger → Plan scope → Dispatch MECE (per level) + Trace → Collect findings →

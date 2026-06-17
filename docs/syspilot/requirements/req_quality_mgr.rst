@@ -68,7 +68,7 @@ Quality Manager Requirements
    :status: approved
    :priority: mandatory
    :tags: agent-v2, manager, qm, frontmatter
-   :links: SYSP_US_QM; SYSP_REQ_AGENT_ARCH_FRONTMATTER
+   :links: SYSP_US_QM, SYSP_REQ_AGENT_ARCH_FRONTMATTER
 
    **Description:**
    The Quality Manager agent SHALL be configured with YAML frontmatter that
@@ -91,7 +91,7 @@ Quality Manager Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, qm, prompt
-   :links: SYSP_US_QM; SYSP_REQ_AGENT_ARCH_PROMPT
+   :links: SYSP_US_QM, SYSP_REQ_AGENT_ARCH_PROMPT
 
    **Description:**
    The Quality Manager SHALL have a prompt file ``syspilot.qm.prompt.md`` that

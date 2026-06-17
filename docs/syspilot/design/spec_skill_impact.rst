@@ -126,7 +126,7 @@ Design specifications for the impact analysis skill.
    :id: SYSP_SPEC_SKILL_IMPACT_GROUP
    :status: draft
    :tags: agent-v2, skill, impact, architecture
-   :links: SYSP_REQ_SKILL_IMPACT_GROUP; SYSP_SPEC_SKILL_ARCH_FRONTMATTER
+   :links: SYSP_REQ_SKILL_IMPACT_GROUP, SYSP_SPEC_SKILL_ARCH_FRONTMATTER
 
    **Definition:**
 

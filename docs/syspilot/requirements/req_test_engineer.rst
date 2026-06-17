@@ -65,7 +65,7 @@ Test Engineer Requirements
    :status: approved
    :priority: mandatory
    :tags: agent-v2, engineer, uat, frontmatter
-   :links: SYSP_US_UAT; SYSP_REQ_AGENT_ARCH_FRONTMATTER
+   :links: SYSP_US_UAT, SYSP_REQ_AGENT_ARCH_FRONTMATTER
 
    **Description:**
    The Test Engineer agent SHALL be configured with YAML frontmatter that

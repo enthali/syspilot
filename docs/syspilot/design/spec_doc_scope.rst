@@ -202,7 +202,7 @@ Design specifications defining the structure and content of each documentation f
 
 .. spec:: Copilot Instructions Template Guidance
    :id: SYSP_SPEC_DOC_COPILOT_INSTRUCTIONS
-   :status: open
+   :status: draft
    :tags: agent-v2, documentation, internal, copilot-instructions
    :links: SYSP_REQ_DOC_COPILOT_INSTRUCTIONS, SYSP_SPEC_AGENT_ARCH_SOUL, SYSP_SPEC_SKILL_BRANCHING_STRATEGY, SYSP_SPEC_SKILL_ORCHESTRATION_PATTERN
 

@@ -8,7 +8,7 @@ Design specifications for the agent orchestration skill.
    :id: SYSP_SPEC_SKILL_ORCHESTRATION_PATTERN
    :status: approved
    :tags: agent-v2, skill, orchestration, architecture
-   :links: SYSP_REQ_SKILL_ORCHESTRATION_INVOKE; SYSP_REQ_SKILL_ORCHESTRATION_FRONTMATTER; SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL
+   :links: SYSP_REQ_SKILL_ORCHESTRATION_INVOKE, SYSP_REQ_SKILL_ORCHESTRATION_FRONTMATTER, SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL
 
    **Definition:**
 
@@ -107,7 +107,7 @@ Design specifications for the agent orchestration skill.
    :id: SYSP_SPEC_SKILL_ORCHESTRATION_CONTRACT
    :status: approved
    :tags: agent-v2, skill, orchestration, architecture
-   :links: SYSP_REQ_SKILL_ORCHESTRATION_INVOKE; SYSP_REQ_SKILL_ORCHESTRATION_GROUP
+   :links: SYSP_REQ_SKILL_ORCHESTRATION_INVOKE, SYSP_REQ_SKILL_ORCHESTRATION_GROUP
 
    **Definition:**
 
@@ -157,7 +157,7 @@ Design specifications for the agent orchestration skill.
    :id: SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL
    :status: draft
    :tags: agent-v2, skill, orchestration, architecture
-   :links: SYSP_REQ_SKILL_ORCHESTRATION_INVOKE; SYSP_SPEC_SKILL_ORCHESTRATION_PATTERN; SYSP_SPEC_SKILL_ORCHESTRATION_CONTRACT
+   :links: SYSP_REQ_SKILL_ORCHESTRATION_INVOKE, SYSP_SPEC_SKILL_ORCHESTRATION_PATTERN, SYSP_SPEC_SKILL_ORCHESTRATION_CONTRACT
 
    **Definition:**
 
@@ -205,7 +205,7 @@ Design specifications for the agent orchestration skill.
    :id: SYSP_SPEC_SKILL_ORCHESTRATION_GROUP
    :status: draft
    :tags: agent-v2, skill, orchestration, architecture
-   :links: SYSP_REQ_SKILL_ORCHESTRATION_GROUP; SYSP_SPEC_SKILL_ARCH_FRONTMATTER
+   :links: SYSP_REQ_SKILL_ORCHESTRATION_GROUP, SYSP_SPEC_SKILL_ARCH_FRONTMATTER
 
    **Definition:**
 
@@ -233,7 +233,7 @@ Design specifications for the agent orchestration skill.
    :status: draft
    :priority: mandatory
    :tags: agent-v2, skill, orchestration, architecture
-   :links: SYSP_REQ_SKILL_ORCHESTRATION_AGENT_VOCAB; SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL
+   :links: SYSP_REQ_SKILL_ORCHESTRATION_AGENT_VOCAB, SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL
 
    **Definition:**
 

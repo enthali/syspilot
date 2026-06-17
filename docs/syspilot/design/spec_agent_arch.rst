@@ -155,7 +155,7 @@ Meta-level definitions of Soul, Duties, and Workflow concepts.
    :id: SYSP_SPEC_AGENT_ARCH_PROMPT
    :status: draft
    :tags: agent-v2, meta, architecture, prompt
-   :links: SYSP_REQ_AGENT_ARCH_PROMPT; SYSP_REQ_PM_PROMPT; SYSP_REQ_CM_PROMPT; SYSP_REQ_QM_PROMPT; SYSP_REQ_SETUP_PROMPT
+   :links: SYSP_REQ_AGENT_ARCH_PROMPT, SYSP_REQ_PM_PROMPT, SYSP_REQ_CM_PROMPT, SYSP_REQ_QM_PROMPT, SYSP_REQ_SETUP_PROMPT
 
    **Definition:**
 

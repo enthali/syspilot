@@ -63,7 +63,7 @@ Design specifications for the Git branching strategy.
    :id: SYSP_SPEC_SKILL_BRANCHING_PERMISSIONS
    :status: approved
    :tags: agent-v2, skill, branching, workflow
-   :links: SYSP_REQ_SKILL_BRANCHING_MAIN_PROTECTION; SYSP_REQ_SKILL_BRANCHING_NAMING
+   :links: SYSP_REQ_SKILL_BRANCHING_MAIN_PROTECTION, SYSP_REQ_SKILL_BRANCHING_NAMING
 
    **Definition:**
 

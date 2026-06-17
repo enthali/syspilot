@@ -72,7 +72,7 @@ Release Engineer Requirements
    :status: approved
    :priority: mandatory
    :tags: agent-v2, engineer, release, frontmatter
-   :links: SYSP_US_RELEASE; SYSP_REQ_AGENT_ARCH_FRONTMATTER
+   :links: SYSP_US_RELEASE, SYSP_REQ_AGENT_ARCH_FRONTMATTER
 
    **Description:**
    The Release Engineer agent SHALL be configured with YAML frontmatter that

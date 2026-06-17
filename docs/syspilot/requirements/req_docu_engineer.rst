@@ -66,7 +66,7 @@ Documentation Engineer Requirements
    :status: approved
    :priority: mandatory
    :tags: agent-v2, engineer, docu, frontmatter
-   :links: SYSP_US_DOCU; SYSP_REQ_AGENT_ARCH_FRONTMATTER
+   :links: SYSP_US_DOCU, SYSP_REQ_AGENT_ARCH_FRONTMATTER
 
    **Description:**
    The Documentation Engineer agent SHALL be configured with YAML frontmatter

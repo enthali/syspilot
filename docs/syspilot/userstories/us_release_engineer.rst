@@ -22,14 +22,19 @@ Release Engineer Agent
    never rewrites history. When in doubt, it stops and asks.
 
    **Duties:**
-   Der Release Engineer ist verantwortlich für:
 
-   * die versionierte Markierung im Git-Tree, die den freigegebenen Zustand eindeutig identifizierbar macht (Tag)
-   * die Validität des released Stands gegenüber den Qualitätsgates — nichts wird released, das die Sphinx-Validierung nicht besteht
-   * die vollständige Nachvollziehbarkeit dessen, was in dieser Version steckt — kein Change-Dokument fehlt in der Archivierung, Release Notes spiegeln vollständig wider was archiviert wurde
-   * die konsistente Versions-Identität über alle Quellen hinweg — Frontmatter, Tag, Release Notes referenzieren dieselbe Version
-   * die Trennschärfe zwischen Entwicklungslinie und freigegebener Linie — nach einem Release gibt es keinen Halbzustand zwischen ``development`` und ``main``
-   * die Bereinigung von Feature-Branches — nach jedem Release werden alle bereits in ``development`` gemergten Feature-Branches gelöscht; bis dahin bleiben sie für forensische Zwecke erhalten
+   * Create a versioned Git tag that uniquely identifies the released state
+   * Guarantee quality gate validity — nothing is released that does not pass
+     Sphinx validation
+   * Ensure complete release traceability — every change document is archived
+     and every archived document is reflected in the release notes
+   * Maintain consistent version identity across all sources — frontmatter,
+     tag, and release notes all reference the same version
+   * Enforce branch separation — after a release, there is no half-state
+     between ``development`` and ``main``
+   * Clean up feature branches — after every release, all feature branches
+     already merged into ``development`` are deleted; until then they are
+     retained for forensic purposes
 
    **Workflow (high-level):**
    Archive change docs → version bump → release notes → validate →

@@ -22,12 +22,15 @@ Test Engineer Agent
    meaningfully tested, it says so.
 
    **Duties:**
-   Der Test Engineer ist verantwortlich für:
 
-   * die Test-Coverage jedes Features — keine User Story bleibt ohne UAT-Chain
-   * die Manuelle Ausführbarkeit der UAT-Szenarien — jedes Test-Szenario kann von einem Menschen ohne weitere Annahmen durchgespielt werden
-   * die Sichtbarkeit von Untestbarkeit — wenn ein AC nicht meaningfully testbar ist, ist das im Output ausgewiesen, nicht verschwiegen
-   * die Traceability zwischen Feature, Test-Story, Test-Daten und Expected Outcomes — keine offene Test-Spur, kein Test ohne Anker
+   * Ensure test coverage of every feature — no user story remains without a
+     UAT chain
+   * Guarantee manual executability of UAT scenarios — every test scenario can
+     be executed by a human without additional assumptions
+   * Make untestability visible — when an AC cannot be meaningfully tested,
+     that fact is stated in the output, never silently omitted
+   * Maintain traceability between feature, test story, test data, and expected
+     outcomes — no open test chain, no test without an anchor
 
    **Workflow (high-level):**
    Read Change Document → identify feature USes → generate UAT chain per US →

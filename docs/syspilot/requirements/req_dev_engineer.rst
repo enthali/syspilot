@@ -66,7 +66,7 @@ Dev Engineer Requirements
    :status: approved
    :priority: mandatory
    :tags: agent-v2, engineer, implement, frontmatter
-   :links: SYSP_US_IMPLEMENT; SYSP_REQ_AGENT_ARCH_FRONTMATTER
+   :links: SYSP_US_IMPLEMENT, SYSP_REQ_AGENT_ARCH_FRONTMATTER
 
    **Description:**
    The Dev Engineer agent SHALL be configured with YAML frontmatter that

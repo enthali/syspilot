@@ -11,7 +11,7 @@ Manager-to-engineer orchestration pattern.
    :tags: agent-v2, skill, orchestration, architecture
    :links: SYSP_US_SKILL_ARCH
 
-   **As a** syspilot manager agent,
+   **As a** syspilot user,
    **I want** a defined orchestration pattern with generic verbs,
    **so that** engineer invocation is consistent, traceable, and
    independent of the underlying orchestration mechanism.

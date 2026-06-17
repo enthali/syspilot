@@ -5,7 +5,7 @@ System Designer
 .. spec:: System Designer Soul
    :id: SYSP_SPEC_DESIGN_SOUL
    :status: approved
-   :tags: agent-v2, engineer, change, soul
+   :tags: agent-v2, engineer, design, soul
    :links: SYSP_REQ_DESIGN_SOUL
 
    **Soul:**
@@ -24,7 +24,7 @@ System Designer
 .. spec:: System Designer Duties
    :id: SYSP_SPEC_DESIGN_DUTIES
    :status: draft
-   :tags: agent-v2, engineer, change, duties
+   :tags: agent-v2, engineer, design, duties
    :links: SYSP_REQ_DESIGN_DUTIES
 
    **Duties:**

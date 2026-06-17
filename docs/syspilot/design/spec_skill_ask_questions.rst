@@ -8,7 +8,7 @@ Design specifications for the ask_questions tool API and usage rules.
    :id: SYSP_SPEC_SKILL_ASK_QUESTIONS_API
    :status: approved
    :tags: agent-v2, skill, ask-questions, dx
-   :links: SYSP_REQ_SKILL_ASK_QUESTIONS_USAGE; SYSP_REQ_SKILL_ASK_QUESTIONS_FORMAT
+   :links: SYSP_REQ_SKILL_ASK_QUESTIONS_USAGE, SYSP_REQ_SKILL_ASK_QUESTIONS_FORMAT
 
    **Definition:**
 
@@ -50,7 +50,7 @@ Design specifications for the ask_questions tool API and usage rules.
    :id: SYSP_SPEC_SKILL_ASK_QUESTIONS_RULES
    :status: approved
    :tags: agent-v2, skill, ask-questions, dx
-   :links: SYSP_REQ_SKILL_ASK_QUESTIONS_USAGE; SYSP_REQ_SKILL_ASK_QUESTIONS_FORMAT
+   :links: SYSP_REQ_SKILL_ASK_QUESTIONS_USAGE, SYSP_REQ_SKILL_ASK_QUESTIONS_FORMAT
 
    **Definition:**
 

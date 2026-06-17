@@ -292,7 +292,7 @@ Setup Manager Requirements
    :status: approved
    :priority: mandatory
    :tags: agent-v2, manager, setup, frontmatter
-   :links: SYSP_US_SETUP; SYSP_REQ_AGENT_ARCH_FRONTMATTER
+   :links: SYSP_US_SETUP, SYSP_REQ_AGENT_ARCH_FRONTMATTER
 
    **Description:**
    The Setup Manager agent SHALL be configured with YAML Agent Frontmatter that
@@ -311,7 +311,7 @@ Setup Manager Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, setup, prompt
-   :links: SYSP_US_SETUP; SYSP_REQ_AGENT_ARCH_PROMPT
+   :links: SYSP_US_SETUP, SYSP_REQ_AGENT_ARCH_PROMPT
 
    **Description:**
    The Setup Manager SHALL have a prompt file ``syspilot.setup.prompt.md`` that

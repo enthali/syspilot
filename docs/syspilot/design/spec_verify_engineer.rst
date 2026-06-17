@@ -76,7 +76,7 @@ Verify Engineer Design
 
 .. spec:: Verify Engineer Frontmatter
    :id: SYSP_SPEC_VERIFY_FRONTMATTER
-   :status: draft
+   :status: approved
    :tags: agent-v2, engineer, verify, frontmatter
    :links: SYSP_REQ_VERIFY_FRONTMATTER
 

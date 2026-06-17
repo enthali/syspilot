@@ -64,7 +64,7 @@ Quality Engineer Trace Requirements
    :status: approved
    :priority: mandatory
    :tags: agent-v2, engineer, trace, frontmatter
-   :links: SYSP_US_TRACE; SYSP_REQ_AGENT_ARCH_FRONTMATTER
+   :links: SYSP_US_TRACE, SYSP_REQ_AGENT_ARCH_FRONTMATTER
 
    **Description:**
    The Quality Engineer Trace agent SHALL be configured with YAML frontmatter

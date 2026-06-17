@@ -64,7 +64,7 @@ Quality Engineer MECE Requirements
    :status: approved
    :priority: mandatory
    :tags: agent-v2, engineer, mece, frontmatter
-   :links: SYSP_US_MECE; SYSP_REQ_AGENT_ARCH_FRONTMATTER
+   :links: SYSP_US_MECE, SYSP_REQ_AGENT_ARCH_FRONTMATTER
 
    **Description:**
    The Quality Engineer MECE agent SHALL be configured with YAML frontmatter

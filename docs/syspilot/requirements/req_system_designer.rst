@@ -68,7 +68,7 @@ System Designer Requirements
    :status: approved
    :priority: mandatory
    :tags: agent-v2, engineer, change, frontmatter
-   :links: SYSP_US_DESIGN; SYSP_REQ_AGENT_ARCH_FRONTMATTER
+   :links: SYSP_US_DESIGN, SYSP_REQ_AGENT_ARCH_FRONTMATTER
 
    **Description:**
    The System Designer agent SHALL be configured with YAML frontmatter that

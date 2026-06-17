@@ -82,7 +82,7 @@ Change Manager Requirements
    :status: approved
    :priority: mandatory
    :tags: agent-v2, manager, cm, frontmatter
-   :links: SYSP_US_CM; SYSP_REQ_AGENT_ARCH_FRONTMATTER
+   :links: SYSP_US_CM, SYSP_REQ_AGENT_ARCH_FRONTMATTER
 
    **Description:**
    The Change Manager agent SHALL be configured with YAML frontmatter that
@@ -106,7 +106,7 @@ Change Manager Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, cm, prompt
-   :links: SYSP_US_CM; SYSP_REQ_AGENT_ARCH_PROMPT
+   :links: SYSP_US_CM, SYSP_REQ_AGENT_ARCH_PROMPT
 
    **Description:**
    The Change Manager SHALL have a prompt file ``syspilot.cm.prompt.md`` that
