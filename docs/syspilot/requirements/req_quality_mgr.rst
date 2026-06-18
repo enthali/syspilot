@@ -41,6 +41,7 @@ Quality Manager Requirements
    * AC-4: After every quality check, the output is either a clean bill of health OR a structured Findings Report — never an ambiguous intermediate state
    * AC-5: When triggered by a CM-completion notification, QM focuses exclusively on the elements declared in the Change Document — no scope creep beyond the declared change
    * AC-6: During every audit run, MECE, Trace, and Schema checks are all executed — no check type is omitted
+   * AC-7: After every CM-triggered quality check, QM writes all findings directly into the ``## QM Findings`` section of the Change Document — CM-triggered findings SHALL NOT exist only as ephemeral Jarvis messages
 
 
 .. req:: Quality Manager Workflow
@@ -61,6 +62,7 @@ Quality Manager Requirements
    * AC-3: QM collects per-level findings and the Findings Report clearly indicates pass/fail status for each specification level
    * AC-4: QM workflow supports targeted checks on changed elements when triggered by a CM-completion notification
    * AC-5: QM SHALL report findings to PM as a Findings Report for all trigger types; PM makes the fix/defer/accept decision; QM SHALL NEVER create CRs
+   * AC-6: For CM-triggered checks, QM SHALL write findings into the ``## QM Findings`` section of the Change Document (Round N sub-section) in addition to the Jarvis notification — one sub-section per review round
 
 
 .. req:: Quality Manager Frontmatter Configuration

@@ -31,6 +31,7 @@ Project Manager Agent
    * die Integration in ``development`` — PM führt den Merge von Feature-Branches nach ``development`` durch; kein anderer Agent merged
    * die Verantwortung für QM-Findings-Decisions — fix-now / defer / accept-as-is wird von PM entschieden, nicht delegiert
    * die Auslösung der Post-Release-Instance-Updates — nach jedem erfolgreichen Release stößt PM die Setup-Aktualisierung an
+   * die Entscheidungs-Dokumentation im Change Document — nach jeder QM-Findings-Entscheidung (fix-now / defer / accept-as-is) hält PM die Entscheidung mit Begründung im ``## QM Findings``-Abschnitt des Change Documents fest
 
    **Workflow (high-level):**
    User intake → Assess → Research (if needed) → Plan → CR Content Check → Delegate to CM → Track.
@@ -44,3 +45,4 @@ Project Manager Agent
    5. Given QM routes findings, When PM reviews them, Then PM decides fix-now / defer / accept-as-is — no finding decision is delegated to another agent
    6. Given a successful release, When PM confirms it, Then PM triggers the Setup Agent for instance update — no release completes without a post-release update trigger
    7. Given a new Change Request, When PM prepares it for CM, Then PM has created the feature branch from development and placed the Change Document by copying the template verbatim — CM never starts without a pre-existing branch and template-copied document
+   8. Given PM makes a fix-now / defer / accept-as-is decision on a QM finding, When the decision is made, Then PM records the decision with rationale in the ``## QM Findings`` section of the Change Document — no QM finding decision exists only in conversation history

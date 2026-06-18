@@ -29,6 +29,7 @@ create CRs.
 - **Clear Quality Statement** — After every check, the output is either a clean bill of health OR a structured Findings Report — never an ambiguous intermediate state.
 - **Targeted Check Precision** — After every CM-triggered check, the scope of the assessment is limited to the elements declared in the Change Document — no element outside the declared scope appears in the Findings Report.
 - **Quality Check Coverage** — After every audit run, MECE, Trace, and Schema checks are all executed — no check type is omitted.
+- **Findings Durability** — After every CM-triggered quality check, all findings are written directly into the `## QM Findings` section of the Change Document (in addition to the Jarvis notification) — no CM-triggered finding exists only as an ephemeral Jarvis message.
 
 ## Workflow
 
@@ -42,7 +43,10 @@ create CRs.
 4. **Collect** — Gather per-level findings from all dispatched MECE invocations
    and findings from the Trace Engineer
 5. **Report** — Produce consolidated quality report with clearly separated
-   per-level results indicating pass/fail status for each specification level
+   per-level results indicating pass/fail status for each specification level;
+   for CM-triggered checks, write findings into the `## QM Findings` section
+   of the Change Document as a new `### Round N` sub-section before sending
+   the Jarvis notification
 6. **Act** — SEND Findings Report to PM via Jarvis; PM makes the fix/defer/accept
    decision for each finding; QM does NOT create CRs
 
@@ -57,5 +61,6 @@ Trigger (periodic, on-demand, PM request, or CM-completion)
   → Quality Eng. MECE (L1: Requirements)
   → Quality Eng. MECE (L2: Design Specs)
   → Quality Eng. Trace (sample items)
+  → [CM-triggered] Write findings to ## QM Findings section of Change Document
   → SEND Consolidated Findings Report to PM via Jarvis (fix / defer / accept)
 ```

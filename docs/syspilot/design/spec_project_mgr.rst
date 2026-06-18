@@ -53,6 +53,9 @@ Project Manager Design
    * **QM Findings Decision** — After every QM findings delivery, PM decides
      fix-now / defer / accept-as-is — no finding decision is delegated to another
      agent.
+   * **QM Decision Recording** — After deciding on each QM finding, PM records
+     the decision with rationale in the ``## QM Findings`` section of the Change
+     Document — no QM finding decision remains undocumented in the CD.
    * **Post-Release-Instance-Update** — After every successful release, PM triggers
      the Setup Agent for instance update — no release completes without a
      post-release update trigger.
@@ -105,7 +108,10 @@ Project Manager Design
       * **Defer**: merge the feature branch to ``development``; create a follow-up CR separately
       * **Accept as-is**: merge the feature branch to ``development``; document the accepted finding in the Change Document
 
-   4. **Merge or Hold** — Either perform the merge to ``development`` (Defer /
+   4. **Record** — Write the decision (fix-now / defer / accept-as-is) with rationale
+      into the ``## QM Findings`` section of the Change Document under the
+      corresponding round's ``#### PM Decisions`` table.
+   5. **Merge or Hold** — Either perform the merge to ``development`` (Defer /
       Accept as-is) or SEND hold instruction to CM (Fix now). Feature branch is
       NOT deleted after merge — retained for forensics until the Release Agent
       cleans up at release time.
