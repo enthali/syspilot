@@ -1,5 +1,10 @@
 # syspilot Release Notes
 
+> **Versioning scheme:** syspilot uses CalVer (`vYYYY.MM.DD`) from this point
+> forward. The version is the release date — no Major/Minor/Patch judgment
+> needed. For multiple releases on the same day: `vYYYY.MM.DD.1`, `.2`, etc.
+> Older entries below retain their semver labels as historical record.
+
 ## v0.6.0 - 2026-06-04
 
 ### Summary

@@ -52,7 +52,7 @@ SYSP_US_DOC_MAINTAIN             # Documentation: maintain project docs
 SYSP_REQ_CORE_SPHINX_NEEDS       # Core: requirements management
 SYSP_REQ_CHG_ANALYSIS_AGENT      # Change Mgmt: change analysis agent
 SYSP_REQ_INST_AUTO_SETUP         # Installation: automatic env setup
-SYSP_REQ_REL_SEMVER              # Release: semantic versioning
+SYSP_REQ_REL_SEMVER              # Release: versioning scheme (CalVer)
 SYSP_REQ_TRACE_MECE              # Traceability: MECE review
 ```
 
