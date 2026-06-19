@@ -83,7 +83,7 @@ Verify Engineer Design
    **Frontmatter Configuration:**
 
    * **description:** ``"Verify implementation matches Change Document and traceability is complete."``
-   * **tools:** ``[read, search, execute, todo]``
+   * **tools:** ``[read, search, execute, todo, agent/runSubagent]``
    * **user-invocable:** ``false``
    * **agents:** ``[syspilot.trace]``
 

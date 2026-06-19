@@ -90,7 +90,7 @@ Change Manager Requirements
    invocation, and Jarvis tools.
 
    **Rationale:**
-   The CM is the central workflow hub. It needs the ``agent`` tool to invoke
+   The CM is the central workflow hub. It needs the ``agent/runSubagent`` tool to invoke
    all 7 engineer subagents, ``edit`` to manage change documents, and
    ``syspilot_jarvis_tools`` for inter-manager communication.
 
@@ -98,7 +98,7 @@ Change Manager Requirements
 
    * AC-1: CM frontmatter declares ``user-invocable: true``
    * AC-2: CM frontmatter lists all 7 engineer subagents in ``agents``
-   * AC-3: CM frontmatter includes ``agent`` and ``syspilot_jarvis_tools`` in tools
+   * AC-3: CM frontmatter includes ``agent/runSubagent`` and ``syspilot_jarvis_tools`` in tools
 
 
 .. req:: Change Manager Prompt File

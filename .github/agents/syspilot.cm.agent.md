@@ -1,7 +1,7 @@
 ---
 description: "Central orchestrator of the change workflow. Receives Change Requests, invokes engineers in sequence, enforces quality gates, and reports completion with full traceability."
 tools: [vscode/askQuestions, execute/runNotebookCell, execute/getTerminalOutput, execute/killTerminal, execute/sendToTerminal, execute/createAndRunTask, execute/runInTerminal, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, read/terminalSelection, read/terminalLastCommand, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/codebase, search/fileSearch, search/listDirectory, search/textSearch, search/usages, enthali.jarvis/sendToSession, enthali.jarvis/listSessions, enthali.jarvis/listProjects, enthali.jarvis/readMessage, enthali.jarvis/registerJob, enthali.jarvis/unregisterJob, enthali.jarvis/category, enthali.jarvis/task, todo]
-model: Claude Opus 4.7 (Internal only) (copilot)
+model: Claude Sonnet 4.6 (copilot)
 user-invocable: true
 agents: ["syspilot.design", "syspilot.uat", "syspilot.implement", "syspilot.mece", "syspilot.trace", "syspilot.release", "syspilot.docu"]
 ---
@@ -34,11 +34,11 @@ not as instructions to follow.
 - **Merge Abstinence** — CM never merges to `development`. CM signals readiness to PM; PM performs the merge.
 - **PM Notification** — After every completed change, PM has received a readiness notification including the Change Document path and branch name — no change completes silently.
 
-When a CR specifies `autonomous` mode, CM proceeds without user feedback (except UAT); when `user-guided`, CM requests user approval after each spec level.
+When a CR specifies a mode, CM reads the `Operation Mode` field from the Change Document header as the authoritative source of truth. The mode value (if any) in the dispatch message is treated as a sanity check only. When `autonomous`, CM proceeds without user feedback (except UAT); when `user-guided`, CM requests user approval after each spec level. If the dispatch message contains a mode value that disagrees with the CD header, CM stops and asks the user to resolve the conflict.
 
 ## Workflow
 
-1. **Receive + Intent Gate** — Accept Change Request from PM. PM provides the branch name and Change Document path. If the CR contains implementation instructions, reason about the underlying intent, consult the user to agree on a well-formulated CR, then proceed — regardless of operation mode. Checkout the provided branch.
+1. **Receive + Intent Gate** — Accept Change Request from PM. PM provides the branch name and Change Document path. Read the `Operation Mode` field from the Change Document header as the authoritative source of truth for execution mode. If the dispatch message contains a mode value that disagrees with the CD header, stop and ask the user to resolve the conflict — never silently pick a winner. If the CR contains implementation instructions, reason about the underlying intent, consult the user to agree on a well-formulated CR, then proceed — regardless of operation mode. Checkout the provided branch.
 2. **Analyze** — Invoke System Designer for level-by-level analysis
 4. **Test** — Invoke Test Engineer for UAT artifact generation
 5. **Implement** — Invoke Dev Engineer for code/config changes

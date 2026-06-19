@@ -47,7 +47,7 @@ Design specifications for the impact analysis skill.
    The impact analysis capability is packaged as a **skill** (SKILL.md), not
    hardcoded into agent workflows. This follows the architectural principle:
 
-      *Agents = stable processes, Skills = exchangeable tool bindings*
+   *Agents = stable processes, Skills = exchangeable tool bindings*
 
    **Skill File Structure:**
 

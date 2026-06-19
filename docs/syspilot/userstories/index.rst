@@ -42,9 +42,11 @@ User Stories describe **what users want to achieve** and **why**.
 
 **Format:**
 
-   **As a** [role],
-   **I want to** [action],
-   **so that** [benefit].
+.. code-block:: none
+
+   As a [role],
+   I want to [action],
+   so that [benefit].
 
 **A-SPICE Alignment:**
 

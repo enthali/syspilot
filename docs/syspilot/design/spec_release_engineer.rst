@@ -60,9 +60,14 @@ Release Engineer Design
    **Workflow:**
 
    1. **Pre-Release** — Confirm all engineers have completed. Stay on ``development``.
-   2. **Read Current Version** — Read the ``version:`` field from
-      ``syspilot/agents/syspilot.setup.agent.md`` to determine the current
-      version; derive the next version following semantic versioning rules
+   2. **Determine Next Version** — The version string uses CalVer format
+      ``vYYYY.MM.DD`` (e.g. ``v2026.06.18``). The version is the release date
+      — no Major/Minor/Patch judgment is required. If a second release occurs
+      on the same calendar day, append a numeric suffix: ``vYYYY.MM.DD.1``,
+      ``vYYYY.MM.DD.2``, etc. Read the ``version:`` field from
+      ``syspilot/agents/syspilot.setup.agent.md`` solely to check for a
+      same-day collision (matching ``vYYYY.MM.DD`` prefix); if a collision
+      exists, increment the suffix.
    3. **Archive** — Scan ALL ``*.md`` files in ``docs/changes/`` root
       (``Get-ChildItem docs/changes/ -Filter *.md -File`` or equivalent — no
       recursion into subdirectories). Move every found file to

@@ -4,6 +4,7 @@
 **Branch**: feature/{NAME}
 **Created**: {DATE}
 **Author**: {AUTHOR(S)}
+**Operation Mode**: autonomous | user-guided
 
 ---
 
@@ -147,6 +148,32 @@ For each removed artefact, run a project-wide grep on all plausible name variant
 - [ ] All conflicts resolved
 - [ ] Traceability verified
 - [ ] Ready for implementation
+
+---
+
+## QM Findings
+
+*QM writes findings directly into this section after each review round. PM records
+decisions (fix-now / defer / accept-as-is) with rationale in the same section.
+Multiple review rounds are appended as sub-sections. Existing CDs without this
+section are unaffected — the section is additive, never required retroactively.*
+
+### Round 1
+
+**Reviewed by:** QM
+**Review date:** {DATE}
+
+#### Findings
+
+| # | Level | Element ID | Finding | Severity |
+|---|-------|------------|---------|----------|
+| 1 | L? | {ID} | {description} | high / medium / low |
+
+#### PM Decisions
+
+| # | Finding # | Decision | Rationale |
+|---|-----------|----------|-----------|
+| 1 | 1 | fix-now / defer / accept-as-is | {rationale} |
 
 ---
 

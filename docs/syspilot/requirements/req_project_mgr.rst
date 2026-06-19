@@ -45,6 +45,7 @@ Project Manager Requirements
    * AC-6: PM owns ``development`` and performs all merges of feature branches into ``development`` — no other agent merges to ``development``
    * AC-7: After every QM findings delivery, PM decides fix-now / defer / accept-as-is — no finding decision is delegated to another agent
    * AC-8: After every successful release, PM triggers the Setup Agent for instance update — no release completes without a post-release update trigger
+   * AC-9: After deciding on a QM finding (fix-now / defer / accept-as-is), PM records the decision with rationale in the ``## QM Findings`` section of the Change Document — no QM finding decision remains undocumented in the CD
 
 
 .. req:: Project Manager Workflow

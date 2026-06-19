@@ -30,6 +30,7 @@ Quality Manager Agent
    * die klare Aussage über den Qualitätszustand — "clean bill of health" oder strukturierter Findings-Report, niemals etwas dazwischen
    * die Zielgenauigkeit des CR-getriggerten Targeted-Checks — bei CM-Completion-Notification fokussiert QM ausschließlich auf die im Change deklarierten Elemente
    * die vollständige Quality-Check-Abdeckung — MECE, Trace und Schema werden bei jedem Audit ausgeführt, kein Check-Typ wird ausgelassen
+   * die Befund-Dauerhaftigkeit — nach jeder QM-Review werden alle Findings direkt im ``## QM Findings``-Abschnitt des Change Documents festgehalten; Jarvis-Nachrichten allein genügen nicht
 
    **Workflow (high-level):**
    Trigger → Plan scope → Dispatch MECE (per level) + Trace → Collect findings →
@@ -44,3 +45,4 @@ Quality Manager Agent
    5. Given a CM-completion notification, When QM performs a targeted check, Then it focuses exclusively on the elements declared in the Change Document — no scope creep beyond the declared change
    6. Given QM dispatches the MECE Engineer, When checking a level, Then each invocation targets exactly one specification level (L0, L1, or L2) — never combined
    7. Given any audit run, When QM executes checks, Then MECE, Trace, and Schema checks are all executed — no check type is omitted
+   8. Given QM produces findings for a CM-triggered check, When findings exist, Then QM writes them into the ``## QM Findings`` section of the Change Document in addition to the Jarvis notification — no CM-triggered findings exist only as ephemeral messages

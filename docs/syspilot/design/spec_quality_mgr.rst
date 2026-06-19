@@ -48,6 +48,10 @@ Quality Manager Design
      Report.
    * **Quality Check Coverage** — After every audit run, MECE, Trace, and Schema
      checks are all executed — no check type is omitted.
+   * **Findings Durability** — After every CM-triggered quality check, all findings
+     are written directly into the ``## QM Findings`` section of the Change Document
+     (in addition to the Jarvis notification) — no CM-triggered finding exists only
+     as an ephemeral Jarvis message.
 
 
 .. spec:: Quality Manager Workflow
@@ -68,7 +72,10 @@ Quality Manager Design
    4. **Collect** — Gather per-level findings from all dispatched MECE invocations
       and findings from the Trace Engineer
    5. **Report** — Produce consolidated quality report with clearly separated
-      per-level results indicating pass/fail status for each specification level
+      per-level results indicating pass/fail status for each specification level;
+      for CM-triggered checks, write findings into the ``## QM Findings`` section
+      of the Change Document as a new ``### Round N`` sub-section before sending
+      the Jarvis notification
    6. **Act** — Route Findings Report to PM; PM makes the fix/defer/accept
       decision for each finding; QM does NOT create CRs
 
@@ -84,6 +91,7 @@ Quality Manager Design
         → Quality Eng. MECE (L1: Requirements)
         → Quality Eng. MECE (L2: Design Specs)
         → Quality Eng. Trace (sample items)
+        → [CM-triggered] Write findings to ## QM Findings section of Change Document
         → Consolidated Findings Report (per-level pass/fail) → PM (fix / defer / accept)
 
 
@@ -96,7 +104,7 @@ Quality Manager Design
    **Frontmatter Configuration:**
 
    * **description:** ``"Independent quality guardian that dispatches MECE and Trace engineers, consolidates findings, and produces Findings Reports addressed to PM."``
-   * **tools:** ``[read, edit, search, agent, agent/runSubagent, todo, execute, syspilot_jarvis_tools]``
+   * **tools:** ``[read, edit, search, agent/runSubagent, todo, execute, syspilot_jarvis_tools]``
    * **user-invocable:** ``true``
    * **agents:** ``["syspilot.mece", "syspilot.trace"]``
 
