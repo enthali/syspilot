@@ -5,6 +5,48 @@
 > needed. For multiple releases on the same day: `vYYYY.MM.DD.1`, `.2`, etc.
 > Older entries below retain their semver labels as historical record.
 
+## v2026.06.19 - 2026-06-19
+
+### Summary
+
+Patch release fixing agent frontmatter tool-token misuse that blocked the Setup Bootloader → Installer handoff at runtime. Switches syspilot versioning from semver to CalVer (`vYYYY.MM.DD`). Adds QM findings durability: findings and PM decisions are now recorded directly in the Change Document for post-release audit. Includes an unfinished draft CR for platform-independent build scripts (carried forward, not implemented this cycle).
+
+> **Upgrade note (agent-tool-token-fix):** Customers who installed syspilot under v0.6.0 may have the broken `agent` bare token in their `.github/agents/` files. Re-run `@syspilot.setup` after upgrading, or manually replace `agent` → `agent/runSubagent` in any installed agent files that use subagent invocation (setup, design, verify, cm, pm, qm).
+
+### 🔧 Fixes & Improvements
+
+- **Agent Tool Token Fix** (`agent-tool-token-fix`)
+  - Six agent files whose role includes subagent invocation carried the bare `agent` token instead of the specific `agent/runSubagent` token in their `tools:` frontmatter
+  - VS Code Copilot's tool-loader does not recognise the bare `agent` token as enabling subagent invocation — `runSubagent()` was silently unavailable at runtime, blocking the Setup Bootloader → Installer handoff discovered post-v0.6.0
+  - All six agents (`cm`, `design`, `pm`, `qm`, `setup`, `verify`) corrected to `agent/runSubagent`; seven agents without subagent invocation are untouched (AC2)
+  - Meta-spec `SYSP_SPEC_AGENT_ARCH_FRONTMATTER` updated to explicitly reject the bare `agent` token
+  - Two pre-existing SPEC/agent drift cases fixed: `SYSP_SPEC_VERIFY_FRONTMATTER` and `SYSP_SPEC_DESIGN_FRONTMATTER` now list `agent/runSubagent`
+  - sphinx-build -W: clean
+
+### 📋 Process & Tooling
+
+- **CalVer Release Versioning** (`calver-release-versioning`)
+  - syspilot switches from semver (`0.x.y`) to date-based versioning (CalVer, `vYYYY.MM.DD`) starting this release
+  - Eliminates the recurring subjective scope judgment (patch/minor/major) at release time — the version is simply the release date
+  - `SYSP_SPEC_RELEASE_WORKFLOW` Step 2 rewritten with CalVer format and same-day collision handling (`vYYYY.MM.DD.1`, `.2`, …)
+  - Release Agent mode instructions updated in parallel
+  - Naming conventions doc updated: SEMVER example comment corrected to "CalVer"
+  - Historic semver labels in older release notes entries retained as acceptable historic stranding
+
+- **QM Findings in Change Document** (`qm-findings-in-cd`)
+  - QM findings previously existed only in ephemeral Jarvis messages — once consumed, lost permanently
+  - `## QM Findings` section added to `syspilot/templates/change-document.md` with structured `### Round N` sub-sections for findings and PM decisions
+  - QM spec (duties + workflow) now requires writing findings into the CD section; PM spec requires recording fix/defer/accept-as-is decisions with rationale
+  - Multiple review rounds are supported by appending sub-sections; existing CDs without the section are unaffected
+  - Both the product template and the installed `.github/templates/` template updated immediately; this CR itself demonstrates the format in its own `## QM Findings` section
+  - QM Round 1 found three findings; Round 2 verified all clean; Closes GitHub issue #27
+
+### 📝 Draft / Carried Forward
+
+- **Platform-Independent Build Scripts** (`platform-independent-build`) — *status: draft, not implemented this cycle*
+  - CR proposes replacing the `docs/build.sh` + `docs/build.ps1` pair with a single cross-platform `docs/docs-build.py` script
+  - Not implemented in this release cycle; CR archived for reference
+
 ## v0.6.0 - 2026-06-04
 
 ### Summary
