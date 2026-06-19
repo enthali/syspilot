@@ -59,8 +59,6 @@ Four **managers** that orchestrate the work, and seven **engineers** that execut
 
 Agents are stable processes (WHAT to do). **Skills** are exchangeable tool bindings (HOW to do it) — customize syspilot by swapping skills, not agents.
 
-Agents are stable processes (WHAT to do). **Skills** are exchangeable tool bindings (HOW to do it) — customize syspilot by swapping skills, not agents.
-
 ## How It Works
 
 ```
