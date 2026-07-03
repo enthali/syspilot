@@ -4,7 +4,7 @@ tools: [vscode/installExtension, vscode/newWorkspace, vscode/runCommand, vscode/
 model: Claude Sonnet 4.6 (copilot)
 user-invocable: true
 agents: ["syspilot.installer"]
-version: v2026.06.19
+version: v0.8.0
 ---
 
 # syspilot Setup Bootloader

@@ -1,23 +1,30 @@
 # syspilot Release Notes
 
-> **Versioning scheme:** syspilot uses CalVer (`vYYYY.MM.DD`) from this point
-> forward. The version is the release date — no Major/Minor/Patch judgment
-> needed. For multiple releases on the same day: `vYYYY.MM.DD.1`, `.2`, etc.
-> Older entries below retain their semver labels as historical record.
+> **Versioning scheme:** syspilot uses Semantic Versioning (semver,
+> `MAJOR.MINOR.PATCH`) as of v0.8.0. The `v2026.06.19` (CalVer) release is
+> relabeled `v0.7.0` in the archive/changelog to keep the version sequence
+> consistent; CalVer was a brief interlude, reverted per the Release Agent
+> Tailoring Workflow (see `release-agent-tailoring-semver`).
 
-## Unreleased — generic-agent-workflow-pattern
+## v0.8.0 - 2026-07-03
 
 ### Summary
 
-Makes every syspilot agent's workflow skeleton project-neutral. Project-specific
-details (branch base, paths, distribution target) move from agent files into a
-per-agent tailoring file (`syspilot.<name>.tailoring.md`) stored next to the
-agent in `.github/agents/`. The PM agent is converted first as the pilot. Agents
-that lack a tailoring file RESPOND to PM, who interviews the user and authors
-the file. Setup ships `*.agent.md` only — tailoring files are instance-owned and
-never overwritten by updates.
+Major release delivering the session-first async orchestration architecture, retiring the per-agent `tools:` frontmatter model in favor of inheritance from the user's default VS Code agent, introducing the Release Agent Tailoring Workflow (with reversion to semver), and closing several critical Installer defects (frontmatter sync, orchestration variant selection, skill mutex, Jarvis session scaffolding) ahead of a partner demo. Also includes branching/naming and duties-translation hygiene fixes.
+
+> **Upgrade note (remove-tools-frontmatter):** `tools:` frontmatter is no longer prescribed for any agent except the Setup Bootloader. Agents now inherit whatever tools are enabled on the user's default VS Code agent — ensure `enthali.jarvis-core` is enabled there for orchestration to work.
+
+> **Upgrade note (installer-frontmatter-sync / installer-orchestration-select):** Re-run `@syspilot.setup` after upgrading to pick up the corrected Installer workflow (verbatim frontmatter sync, orchestration variant selection, skill mutex, and session scaffolding for the async variant).
 
 ### 🏗️ Architecture
+
+- **Session-First Async Orchestration** (`session-first-orchestration`)
+  - Flips syspilot's orchestration default from synchronous `runSubagent` to asynchronous Jarvis-session messaging; every orchestrating agent runs as its own persistent Jarvis session with its own `context.md`
+  - Three-verb group contract (SEND/RECEIVE/RESPOND, peer-to-peer, role-agnostic); INVOKE dropped — synchronous dispatch is just SEND under the sync variant
+  - New `syspilot.orchestration-subagent` skill (sync variant, `runSubagent`-only) completes the exchangeable orchestration-skill group alongside `syspilot.orchestration-jarvis`
+  - Bootstrap (Setup → Installer) is explicitly outside the orchestration contract — a plain in-process `runSubagent` call
+  - Every agent file gains `name:`/`agent:` session-identity frontmatter and `user-invocable: true` (Setup/Installer excluded)
+  - Design completed end-to-end in this CR; carried through Implementation/UAT by the follow-up `installer-orchestration-select` CR
 
 - **Generic Agent Workflow Pattern** (`generic-agent-workflow-pattern`)
   - New architecture pattern: every customizable agent's Workflow begins with a
@@ -43,14 +50,54 @@ never overwritten by updates.
     `experimental` branch base, `docs/changes/` path, GitHub Issues backlog,
     Setup Agent post-release
 
+- **Release Agent Tailoring + Semver Reversion** (`release-agent-tailoring-semver`)
+  - Release Engineer gains the same Preflight/Tailoring Workflow pattern already used by PM — versioning scheme (and other release conventions) become per-project tailoring decisions instead of a product-wide prescription
+  - Root cause fixed: CalVer had silently applied to a customer project requiring semver for package packaging (GH #44)
+  - syspilot's own instance tailored back to semver; version now read from the latest `docs/changes/<version>/` archive folder (not syspilot's own framework version marker) — a category-error correction
+  - New generic **Skill Tailoring** capability (`tailoring.md` sibling file, no RESPOND-escalation, safe default) applied to the branching skill
+  - Feature-branch retention default flipped to **retain** (was delete); deletion is now an explicit tailoring opt-in
+  - `SYSP_SPEC_SKILL_BRANCHING_STRATEGY`'s "Workflow Sequence" section removed (agent-attributed sequencing is Agent-file territory, not Skill territory)
+
+- **Product Owns Tool Lists → Retired in Favor of Inheritance** (`product-owns-tool-lists`, `remove-tools-frontmatter`, `agent-spec-base-toolset-links`)
+  - `product-owns-tool-lists` first moved `tools:` ownership from per-installation customization to a product-prescribed base toolset (`SYSP_SPEC_AGENT_BASE_TOOLSET`) shared by all agent frontmatter specs, with `agent-spec-base-toolset-links` adding the missing `:links:` traceability from all 13 frontmatter specs to it
+  - `remove-tools-frontmatter` then retired that model entirely: the VS Code custom-agent tool picker proved unstable (enumerated tool lists silently rewritten/dropped independent of any syspilot action) — agents now inherit whatever tools are enabled on the user's default VS Code agent
+  - Setup Bootloader remains the sole exception, keeping an explicit `tools:` list (including `agent/runSubagent`) since its bootstrap call is structural, not a customization surface
+  - `SYSP_SPEC_AGENT_BASE_TOOLSET` removed; no dangling `:links:` remain
+
+### 🔧 Fixes & Improvements
+
+- **Installer Frontmatter Sync** (`installer-frontmatter-sync`)
+  - Critical pre-demo fix: `syspilot.installer.agent.md` Step 4 still described the old `tools:`-preservation logic, already superseded by `remove-tools-frontmatter`'s corrected spec — the live Installer contradicted its own already-fixed design
+  - Step 4 now matches `SYSP_SPEC_INSTALLER_WORKFLOW`: every file written verbatim from upstream, no local field preserved
+  - QM Round 1 also caught a stale "Local Customization Preservation" Duties bullet directly contradicting the corrected Step 4 in the same file — removed (Round 2: clean)
+
+- **Installer Orchestration Variant Selection** (`installer-orchestration-select`)
+  - Implements three specs designed but never carried through implementation by `session-first-orchestration` (GH #35): orchestration variant inference/selection from `.jarvis/` presence, generic Skill mutual-exclusion enforcement for any `group:`-declaring Skill, and Jarvis session scaffold creation for every eligible agent
+  - Fixes GH #48 (both orchestration Skills were being installed on every fresh install instead of exactly one) and GH #22 (no session scaffolds were ever created)
+  - `SYSP_SPEC_INSTALLER_DUTIES`'s "Skill Conflict Prevention" wording corrected: replace (not reject) the existing Skill of the same group
+
+- **Installer Scoped Cleanup** (`installer-scoped-cleanup`)
+  - Orphan-cleanup previously removed every file in `.github/agents/`, `.github/prompts/`, `.github/skills/` with no upstream source — silently deleting customer-owned and instance-only files (e.g. `*.tailoring.md`) on every update
+  - Orphan eligibility now requires the `syspilot.` filename prefix **and** not ending in `.tailoring.md` — customer files and tailoring files are preserved across updates
+
+- **Branching Naming Fix** (`branching-naming-fix`)
+  - `SYSP_REQ_SKILL_BRANCHING_NAMING` and `syspilot.branching`'s `SKILL.md` corrected: the stale `update/v{version}` pattern attributed to `@syspilot.setup` is removed — the Installer commits directly on the checked-out branch, no dedicated branch is created
+  - Trace Engineer's consistency-check duty extended (new Duty #6) to re-verify content against a modified element's *existing* links, not only newly-touched elements — closes the gap class that let this contradiction slip through undetected
+
+- **German Duties Translation** (`german-duties-fix`)
+  - Nine user story files' "Duties" sections translated from German to English, restoring language consistency (GH #37)
+  - QM Round 1: zero semantic drift, all traceability links intact, sphinx-build clean
+  - Several pre-existing structural gaps in the specification hierarchy (role ownership ambiguities, missing L0↔L1 uplinks) surfaced during review and recorded for future follow-up CRs — not fixed in this cycle
+
 ### 📋 Specs
 
 - New user story `SYSP_US_CUSTOM_AGENT_WORKFLOWS` + AC-6 on `SYSP_US_AGENT_ARCH`
 - New requirement `SYSP_REQ_AGENT_WORKFLOW_BINDING` (tailoring file contract, 5 ACs)
 - `SYSP_REQ_PM_DUTIES` and `SYSP_REQ_PM_WORKFLOW` genericised; backlog ownership AC added
-- UAT chains: `SYSP_US_UAT_GENERIC_AGENT_WORKFLOW` (6 scenarios) + `SYSP_US_UAT_PM_GENERIC_WORKFLOW` (8 scenarios)
+- New `SYSP_REQ_SKILL_ARCH_TAILORING` and `SYSP_REQ_SKILL_BRANCHING_RETENTION` (default: retain)
+- UAT chains: `SYSP_US_UAT_GENERIC_AGENT_WORKFLOW` (6 scenarios), `SYSP_US_UAT_PM_GENERIC_WORKFLOW` (8 scenarios), `SYSP_US_UAT_RELEASE_TAILORING_SEMVER` (7 scenarios), `SYSP_US_UAT_REMOVE_TOOLS_FRONTMATTER` (5 scenarios), `SYSP_US_UAT_INSTALLER_ORCHESTRATION_SELECT` (3 scenarios), `SYSP_US_UAT_INSTALLER_SCOPED_CLEANUP` (3 scenarios), `SYSP_US_UAT_INSTALLER_FRONTMATTER_SYNC` (1 scenario), `SYSP_US_UAT_BRANCHING_NAMING_FIX` (4 scenarios)
 
-
+## v0.7.0 - 2026-06-19
 
 ### Summary
 
