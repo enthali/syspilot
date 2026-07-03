@@ -46,3 +46,12 @@ docs/_build/
 # temporary files
 temp/
 
+# build artifacts
+docs/build.log
+
+# jarvis temp files
+temp_messages.txt
+
+# jarvis runtime hooks (installed/generated locally, not product content)
+.github/hooks/
+

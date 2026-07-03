@@ -1,8 +1,9 @@
 ---
+name: "Dev Engineer"
+agent: syspilot.implement
 description: "Subagent that implements code changes from approved Change Documents. Reads specs, writes code, writes tests, commits with traceability."
-tools: [read, edit, search, todo, execute]
 model: Claude Opus 4.6 (copilot)
-user-invocable: false
+user-invocable: true
 agents: []
 ---
 
@@ -35,7 +36,7 @@ modify specifications — that is the System Designer's job.
 5. **Test** — Write tests, run them, ensure all pass
 6. **Document** — Update user-facing documentation
 7. **Commit** — Stage and commit with traceability message
-8. **REPLY** — Return to CM: commit hash, implemented SPEC IDs, any implementation issues
+8. **RESPOND** — Return to CM: commit hash, implemented SPEC IDs, any implementation issues
 
 **Input:** Change Document (path provided by CM)
 **Output:** Committed code + tests + documentation updates

@@ -1,8 +1,9 @@
 ---
+name: "Documentation Engineer"
+agent: syspilot.docu
 description: "Subagent that keeps internal and external documentation in sync with reality. Updates copilot-instructions.md, context.md, README, and methodology docs."
-tools: [read, edit, search, todo, execute]
 model: Claude Sonnet 4.6 (copilot)
-user-invocable: false
+user-invocable: true
 agents: []
 ---
 
@@ -50,7 +51,7 @@ file already says it, link don't copy.
 5. **Update External Docs** — README, methodology, architecture, release notes
 6. **Remove Stale Content** — Delete sections that became redundant
 7. **Verify** — Ensure consistency across all documentation
-8. **REPLY** — Return to CM: updated files, removed stale content, any documentation gaps found
+8. **RESPOND** — Return to CM: updated files, removed stale content, any documentation gaps found
 
 **Input:** Trigger from CM (after change completion) or direct invocation
 **Output:** Updated documentation files + commit

@@ -41,7 +41,7 @@ Quality Manager Requirements
    * AC-4: After every quality check, the output is either a clean bill of health OR a structured Findings Report — never an ambiguous intermediate state
    * AC-5: When triggered by a CM-completion notification, QM focuses exclusively on the elements declared in the Change Document — no scope creep beyond the declared change
    * AC-6: During every audit run, MECE, Trace, and Schema checks are all executed — no check type is omitted
-   * AC-7: After every CM-triggered quality check, QM writes all findings directly into the ``## QM Findings`` section of the Change Document — CM-triggered findings SHALL NOT exist only as ephemeral Jarvis messages
+   * AC-7: After every CM-triggered quality check, QM writes all findings directly into the ``## QM Findings`` section of the Change Document — the findings live durably in the contract, not only in a transient message
 
 
 .. req:: Quality Manager Workflow
@@ -52,40 +52,49 @@ Quality Manager Requirements
    :links: SYSP_US_QM
 
    **Description:**
-   The Quality Manager agent SHALL follow a workflow from trigger through
-   engineer dispatch to findings consolidation.
+   The Quality Manager is the final quality gate for a completed change. CM
+   triggers QM after implementation and validation. QM scopes the check to the
+   change. For the specification it SENDs work to the MECE Engineer once per
+   specification level and to the Trace Engineer; the implementation and
+   validation it assesses itself, as no specialist engineers exist for those.
+   QM consolidates all findings and records them in the change's Change
+   Document. The concrete orchestration flow is specified in
+   ``SYSP_SPEC_QM_WORKFLOW``.
 
    **Acceptance Criteria:**
 
-   * AC-1: QM workflow can be triggered periodically, on-demand, or by a CM-completion notification
-   * AC-2: QM dispatches the MECE Engineer in separate invocations — one per specification level (L0, L1, L2) in the current scope
-   * AC-3: QM collects per-level findings and the Findings Report clearly indicates pass/fail status for each specification level
-   * AC-4: QM workflow supports targeted checks on changed elements when triggered by a CM-completion notification
-   * AC-5: QM SHALL report findings to PM as a Findings Report for all trigger types; PM makes the fix/defer/accept decision; QM SHALL NEVER create CRs
-   * AC-6: For CM-triggered checks, QM SHALL write findings into the ``## QM Findings`` section of the Change Document (Round N sub-section) in addition to the Jarvis notification — one sub-section per review round
+   * AC-1: QM is triggered by CM as the final quality gate of a completed change, after implementation and validation
+   * AC-2: QM scopes the check to the elements declared in the Change Document
+   * AC-3: For each specification level in scope, QM SENDs one MECE check; traceability is covered via the Trace Engineer
+   * AC-4: QM assesses the implementation and the validation of the change itself
+   * AC-5: The findings state pass/fail per specification level, kept separate
+   * AC-6: QM records the consolidated findings in the Change Document's ``## QM Findings`` section, one sub-section per review round
+   * AC-7: The fix / defer / accept decision on the findings rests with PM
 
 
 .. req:: Quality Manager Frontmatter Configuration
    :id: SYSP_REQ_QM_FRONTMATTER
-   :status: approved
+   :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, qm, frontmatter
    :links: SYSP_US_QM; SYSP_REQ_AGENT_ARCH_FRONTMATTER
 
    **Description:**
    The Quality Manager agent SHALL be configured with YAML frontmatter that
-   declares it as a user-invocable quality dispatcher with access to the MECE
-   and Trace engineer subagents.
+   declares it as a user-invocable quality dispatcher. It declares no
+   ``tools:`` field.
 
    **Rationale:**
-   The QM needs the ``agent/runSubagent`` tool to dispatch MECE and Trace engineers, and
-   ``syspilot_jarvis_tools`` for sending Findings Reports to PM via Jarvis.
+   The QM SENDs work to the MECE and Trace engineer sessions and reports Findings
+   to PM using whatever tools are enabled on the user's default VS Code agent,
+   including session-messaging (``enthali.jarvis-core/*``). The QM does not invoke
+   subagents; it omits ``agents:`` and carries no ``agent/runSubagent``.
 
    **Acceptance Criteria:**
 
    * AC-1: QM frontmatter declares ``user-invocable: true``
-   * AC-2: QM frontmatter lists ``syspilot.mece`` and ``syspilot.trace`` in ``agents``
-   * AC-3: QM frontmatter includes ``agent/runSubagent`` and ``syspilot_jarvis_tools`` in tools
+   * AC-2: QM frontmatter omits ``agents:`` — it SENDs to engineer sessions
+   * AC-3: QM frontmatter declares no ``tools:`` field — it inherits the user's default agent tool selection
 
 
 .. req:: Quality Manager Prompt File

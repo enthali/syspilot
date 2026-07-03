@@ -77,6 +77,7 @@ Includes methodology, naming conventions, and traceability matrices.
 
 - **VS Code** + **GitHub Copilot** (license required)
 - **Python 3.10+** with `sphinx` and `sphinx-needs` pre-installed (`pip install sphinx sphinx-needs`)
+- **[`enthali.jarvis-core`](https://marketplace.visualstudio.com/items?itemName=enthali.jarvis-core)** VS Code extension, installed and enabled on your default agent's tool set — required for multi-agent orchestration (agents hand off work via `SEND`/session messaging). If disabled, agents silently lose this ability instead of erroring.
 
 > If `sphinx-needs` is missing, `@syspilot.setup` prints install instructions and stops — it does not auto-install packages.
 

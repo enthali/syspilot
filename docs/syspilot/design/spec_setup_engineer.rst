@@ -60,24 +60,28 @@ Setup Manager Design
       Files are fetched unconditionally on every run — no local cache is consulted.
       The manifest SHALL contain exactly one ``.agent.md`` entry which identifies
       the Installer.
-   4. **Invoke Installer** — Derive the Installer agent name from the written
-      ``.agent.md`` file and invoke it via ``runSubagent()``, passing through
-      the user's original request context.
+   4. **Call Installer (bootstrap exception)** — Derive the Installer agent name
+      from the written ``.agent.md`` file and call it synchronously via
+      ``runSubagent()``, passing through the user's original request context.
+      This call is deliberately **outside the orchestration contract**: it does
+      not use the orchestration skill or the SEND/RECEIVE/RESPOND verbs, because
+      the Bootloader runs before any orchestration skill or session
+      infrastructure is available.
 
    **Input:** User request to install or update syspilot
-   **Output:** Delegated to Installer subagent
+   **Output:** Delegated to Installer subagent (synchronous, outside the orchestration contract)
 
 
 .. spec:: Setup Manager Frontmatter
    :id: SYSP_SPEC_SETUP_FRONTMATTER
-   :status: approved
+   :status: draft
    :tags: agent-v2, manager, setup, frontmatter
    :links: SYSP_REQ_SETUP_FRONTMATTER
 
    **Frontmatter Configuration:**
 
    * **description:** ``"Setup Bootloader for syspilot. Fetches the current Installer from upstream and invokes it. User-invocable entry point for syspilot installation."``
-   * **tools:** ``[read, edit, search, execute, todo, agent/runSubagent, vscode/askQuestions]``
+   * **tools:** ``[read, edit, search, execute, todo, agent/runSubagent, vscode/askQuestions]`` — the Setup Bootloader's only per-agent exception, needed for its synchronous invocation of the Installer
    * **user-invocable:** ``true``
    * **agents:** ``["syspilot.installer"]``
    * **version:** ``0.5.3``

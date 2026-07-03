@@ -49,13 +49,14 @@ Dev Engineer Design
 
    **Workflow:**
 
-   1. **Read** — Open and read the Change Document
+   1. **RECEIVE** — RECEIVE the assignment from the initiator; open and read the Change Document
    2. **Query** — Use link discovery to find all impacted SPEC elements
    3. **Read Specs** — Read each SPEC's detailed design and acceptance criteria
    4. **Implement** — Write code matching the specifications
    5. **Test** — Write tests, run them, ensure all pass
    6. **Document** — Update user-facing documentation
    7. **Commit** — Stage and commit with traceability message
+   8. **RESPOND** — Report the result (status, commits, summary, issues) back to the initiator
 
    **Input:** Change Document (path provided by CM)
    **Output:** Committed code + tests + documentation updates
@@ -63,14 +64,13 @@ Dev Engineer Design
 
 .. spec:: Dev Engineer Frontmatter
    :id: SYSP_SPEC_IMPLEMENT_FRONTMATTER
-   :status: approved
+   :status: draft
    :tags: agent-v2, engineer, implement, frontmatter
    :links: SYSP_REQ_IMPLEMENT_FRONTMATTER
 
    **Frontmatter Configuration:**
 
    * **description:** ``"Subagent that implements code changes from approved Change Documents. Reads specs, writes code, writes tests, commits with traceability."``
-   * **tools:** ``[read, edit, search, todo, execute]``
    * **user-invocable:** ``false``
    * **agents:** ``[]``
 

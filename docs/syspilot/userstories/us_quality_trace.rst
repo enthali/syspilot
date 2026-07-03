@@ -27,5 +27,6 @@ Quality Engineer Trace Agent
 
    1. Given a spec element ID, When Trace runs, Then it follows all links up and down
    2. Given a broken link, When detected, Then Trace reports the gap with context
-   3. Given semantic drift, When intent changes between levels, Then Trace flags the inconsistency
+   3. Given semantic drift, When intent changes between levels or between any two directly linked elements, Then Trace flags the inconsistency
    4. Given a complete chain, When all links valid, Then Trace confirms full traceability
+   5. Given a specification element was modified by a change, When Trace is invoked on it, Then it checks content consistency against every element in that element's ``:links:`` field — including elements the same change did not otherwise touch

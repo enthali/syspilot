@@ -22,12 +22,12 @@ Quality Engineer MECE Agent
    Exhaustive (no gaps). It reports findings but never modifies specifications.
 
    **Duties:**
-   Die MECE-Engine ist verantwortlich für:
+   The MECE Engine is responsible for:
 
-   * die vollständige Abdeckung der Items des geprüften Levels — kein Item bleibt ungeprüft
-   * die Sichtbarkeit von Überlappungen — gefundene Überlappungen werden mit Details ausgewiesen, nicht implizit gelassen
-   * die Sichtbarkeit von Lücken — fehlende Coverage wird benannt, nicht stillschweigend übergangen
-   * die strikte Level-Begrenzung — ein Lauf prüft genau ein Level, vermischt L0/L1/L2 nicht
+   * the complete coverage of all items at the checked level — no item remains unexamined
+   * the visibility of overlaps — detected overlaps are reported with details, never left implicit
+   * the visibility of gaps — missing coverage is named explicitly, never silently passed over
+   * the strict level boundary — one run checks exactly one level, never mixing L0/L1/L2
 
    **Workflow (high-level):**
    Receive level → Read all items → Analyze (overlaps, gaps, contradictions) → Report findings.

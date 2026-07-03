@@ -13,91 +13,111 @@ Test data requirements for ``SYSP_US_UAT_SKILL_ORCHESTRATION_VOCAB``.
 
    **Description:**
 
-   To execute the test scenarios in ``SYSP_US_UAT_SKILL_ORCHESTRATION_VOCAB``,
-   the following test data and preconditions SHALL be available:
+   To run the scenarios in ``SYSP_US_UAT_SKILL_ORCHESTRATION_VOCAB``, the
+   following test data and preconditions SHALL be available to the human
+   tester.
 
    **Primary Artifacts Under Test:**
 
-   The 13 product agent files in the ``syspilot/agents/`` directory after
-   the ``agent-vocabulary-migration`` CR is merged to ``development``:
+   The product agent files in the ``syspilot/agents/`` directory after the
+   ``session-first-orchestration`` CR is applied on the branch:
 
    .. list-table:: Agent Files Under Test
       :header-rows: 1
-      :widths: 40 20 40
+      :widths: 36 22 42
 
       * - File
-        - Role
-        - Key Vocabulary Expectation
+        - Layer
+        - Key Expectation
       * - ``syspilot.cm.agent.md``
-        - Manager
-        - INVOKE for engineers; DELEGATE for PM/QM notifications; no "via Jarvis"
+        - Orchestrating
+        - SEND for dispatch; RECEIVE first; RESPOND terminal; ``name:``/``agent:``/``user-invocable: true``
       * - ``syspilot.pm.agent.md``
-        - Manager
-        - DELEGATE for CM handoff; no concrete tool name in workflow steps
+        - Orchestrating
+        - SEND for dispatch; session-identity frontmatter present
       * - ``syspilot.qm.agent.md``
-        - Manager
-        - INVOKE for MECE/Trace dispatch; DELEGATE for PM reporting
+        - Orchestrating
+        - SEND to MECE/Trace; RESPOND terminal; session-identity frontmatter present
       * - ``syspilot.design.agent.md``
-        - Engineer
-        - REPLY as terminal step; INVOKE permitted for advisory MECE call
+        - Orchestrating
+        - RECEIVE first; RESPOND terminal; session-identity frontmatter present
       * - ``syspilot.uat.agent.md``
-        - Engineer
-        - REPLY as terminal step
+        - Orchestrating
+        - RECEIVE first; RESPOND terminal; session-identity frontmatter present
       * - ``syspilot.implement.agent.md``
-        - Engineer
-        - REPLY as terminal step
+        - Orchestrating
+        - RECEIVE first; RESPOND terminal; session-identity frontmatter present
       * - ``syspilot.mece.agent.md``
-        - Engineer
-        - REPLY as terminal step
+        - Orchestrating
+        - RECEIVE first; RESPOND terminal; session-identity frontmatter present
       * - ``syspilot.trace.agent.md``
-        - Engineer
-        - REPLY as terminal step
+        - Orchestrating
+        - RECEIVE first; RESPOND terminal; session-identity frontmatter present
       * - ``syspilot.docu.agent.md``
-        - Engineer
-        - REPLY as terminal step
+        - Orchestrating
+        - RECEIVE first; RESPOND terminal; session-identity frontmatter present
       * - ``syspilot.verify.agent.md``
-        - Engineer
-        - REPLY as terminal step
+        - Orchestrating
+        - RECEIVE first; RESPOND terminal; session-identity frontmatter present
       * - ``syspilot.release.agent.md``
-        - Engineer
-        - REPLY as terminal step
-      * - ``syspilot.installer.agent.md``
-        - Engineer
-        - REPLY as terminal step
+        - Orchestrating
+        - RECEIVE first; RESPOND terminal; session-identity frontmatter present
       * - ``syspilot.setup.agent.md``
-        - Bootloader
-        - INVOKE for Installer call; no ``runSubagent()`` in workflow step prose
+        - Bootstrap
+        - No INVOKE/DELEGATE/REPLY in workflow prose; NO session-identity frontmatter (excluded)
+      * - ``syspilot.installer.agent.md``
+        - Bootstrap
+        - No INVOKE/DELEGATE/REPLY in workflow prose; NO session-identity frontmatter (excluded)
 
    **Preconditions:**
 
-   * AC-1: The ``feature/agent-vocabulary-migration`` branch is checked out
-     or merged to ``development`` — test is executed on the migrated file set
+   * AC-1: The ``feature/session-first-orchestration`` branch is checked out —
+     the scenarios run against the migrated file set
    * AC-2: The tester has read access to ``syspilot/agents/`` in the workspace
-   * AC-3: The tester has access to a text search tool (e.g. ``grep`` or
-     VS Code search) to verify prohibited pattern absence
+   * AC-3: The tester has a text-search tool (e.g. ``grep`` or VS Code search)
+     to verify token presence and prohibited-pattern absence
 
-   **Prohibited-Pattern Reference Set:**
+   **Obsolete-Vocabulary Reference Set:**
 
-   The following strings SHALL NOT appear in workflow step prose of any agent
-   file.  The tester uses these as a search corpus:
+   The following uppercase verb tokens SHALL NOT appear in the ``## Workflow``
+   prose of any agent file. The tester uses these as a search corpus:
+
+   * ``INVOKE``
+   * ``DELEGATE``
+   * ``REPLY``
+
+   **Prohibited-Tool Reference Set:**
+
+   The following runtime tool names / mechanisms SHALL NOT appear in workflow
+   step prose of any agent file:
 
    * ``runSubagent()``
    * ``jarvis_sendToSession``
+   * ``jarvis_readMessage``
    * ``via Jarvis``
    * ``via Jarvis message queue``
 
+   **Role-Framing Reference Set:**
+
+   The following role-conditioned routing phrases SHALL NOT appear in workflow
+   prose (the model is peer-to-peer):
+
+   * ``Manager → Engineer``
+   * ``Manager → Manager``
+   * any rule that selects the verb based on caller or callee role
+
    **Sensitive-Token Exclusion:**
 
-   ``agent/runSubagent`` appearing in YAML frontmatter ``tools:`` or
-   ``agents:`` fields is an agent path declaration — it is NOT a prohibited
-   pattern.  Only workflow step prose (Markdown sections under ``## Workflow``)
-   is in scope.
+   ``agent``/``runSubagent`` appearing in YAML frontmatter ``tools:`` or
+   ``agents:`` fields is a declaration — it is NOT a prohibited pattern. Only
+   ``## Workflow`` step prose is in scope for the prohibited-tool and
+   obsolete-vocabulary checks.
 
    **Acceptance Criteria:**
 
-   * AC-1: All 13 agent files listed in the table above are present in
-     ``syspilot/agents/`` at the time of test execution
+   * AC-1: All agent files listed in the table above are present in
+     ``syspilot/agents/`` at the time the scenarios are run
    * AC-2: The tester can open each file and locate the ``## Workflow``
-     section without consulting external references
-   * AC-3: The prohibited-pattern reference set is available to the tester
-     before execution begins
+     section and the YAML frontmatter without consulting external references
+   * AC-3: The obsolete-vocabulary, prohibited-tool, and role-framing
+     reference sets are available to the tester before they begin

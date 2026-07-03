@@ -35,17 +35,6 @@ Design specifications for the Git branching strategy.
                         └── verify
                         → squash-merge to development
 
-   **Workflow Sequence:**
-
-   1. ``@syspilot.design`` creates ``feature/<name>`` from ``development``
-   2. ``@syspilot.implement`` commits code on the same branch
-   3. ``@syspilot.verify`` commits validation report on the same branch
-   4. ``@syspilot.docu`` commits documentation updates on the same branch
-   5. Completed feature branch is squash-merged into ``development``
-   6. ``@syspilot.release`` prepares on ``development`` (archive, version bump,
-      release notes, validate, commit+push), then squash-merges ``development``
-      into ``main``, tags, and back-merges ``main`` into ``development``
-
    **Key Properties:**
 
    * One branch per change — isolates each change for independent review
@@ -79,12 +68,13 @@ Design specifications for the Git branching strategy.
       * - ``@syspilot.release``
         - (none)
         - ``main`` (squash merge from ``development`` + tag); ``development`` (prep + back-merge)
-      * - ``@syspilot.design``
+      * - ``@syspilot.pm``
         - ``feature/<name>``
         - ``feature/<name>`` (the branch it created)
-      * - ``@syspilot.setup``
-        - ``update/v{version}``
-        - ``update/v{version}`` (the branch it created)
+      * - ``@syspilot.installer``
+        - (none)
+        - pre-install and final commit on the branch that was checked out
+          when invoked (no dedicated branch created)
       * - ``@syspilot.implement``
         - (none)
         - current feature branch
@@ -102,7 +92,8 @@ Design specifications for the Git branching strategy.
    No agent creates ``development`` — it exists permanently.
 
    **Hard Rule:** If any agent finds itself on ``main`` and needs to make
-   changes, it SHALL create a ``feature/<name>`` branch first. No exceptions.
+   changes, it SHALL create a ``feature/<name>`` branch from ``development``
+   first. No exceptions.
 
 
 .. spec:: Commit Message Conventions
@@ -150,3 +141,37 @@ Design specifications for the Git branching strategy.
    * Description is lowercase, no period at end
    * Keep description under 72 characters
    * Reference spec IDs in description when relevant
+
+
+.. spec:: Feature Branch Retention Policy
+   :id: SYSP_SPEC_SKILL_BRANCHING_RETENTION
+   :status: draft
+   :tags: agent-v2, skill, branching, workflow, tailoring
+   :links: SYSP_REQ_SKILL_BRANCHING_RETENTION; SYSP_SPEC_SKILL_ARCH_TAILORING
+
+   **Definition:**
+
+   After a feature branch is squash-merged into ``development`` and the
+   release that includes it completes, the default policy is to **retain**
+   the branch (locally and on remote) rather than delete it.
+
+   **Tailoring:**
+
+   A project MAY opt into automatic deletion of merged feature branches by
+   stating so in ``.github/skills/syspilot.branching/tailoring.md``, e.g.:
+
+   ::
+
+      Delete feature branches after they are merged into development and
+      released — do not retain them.
+
+   Absent such an override, branches are retained indefinitely; retaining
+   them costs nothing and preserves forensic/bisect history.
+
+   **Execution:** The Release Engineer applies this policy during its
+   Branch Retention workflow step — the policy itself is defined here, not
+   in the Release Engineer's own spec.
+
+   **Input:** List of ``feature/*`` branches merged into ``development``
+   **Output:** Branches retained (default) or deleted (if tailored) locally and on remote
+

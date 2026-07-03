@@ -22,27 +22,27 @@ Quality Manager Agent
    found, it produces a Findings Report addressed to PM.
 
    **Duties:**
-   Der Quality Manager ist verantwortlich für:
+   The Quality Manager is responsible for:
 
-   * die unabhängige Qualitätsbewertung der Spezifikations-Hierarchie — ohne in den aktiven Change-Flow eingreifen zu müssen
-   * die Per-Level-Trennschärfe der Befunde — L0, L1 und L2 Findings sind jeweils klar zugeordnet, nicht vermischt
-   * die Sichtbarkeit aller Befunde an PM — keine Quality-Issue verbleibt im QM ohne Adressat
-   * die klare Aussage über den Qualitätszustand — "clean bill of health" oder strukturierter Findings-Report, niemals etwas dazwischen
-   * die Zielgenauigkeit des CR-getriggerten Targeted-Checks — bei CM-Completion-Notification fokussiert QM ausschließlich auf die im Change deklarierten Elemente
-   * die vollständige Quality-Check-Abdeckung — MECE, Trace und Schema werden bei jedem Audit ausgeführt, kein Check-Typ wird ausgelassen
-   * die Befund-Dauerhaftigkeit — nach jeder QM-Review werden alle Findings direkt im ``## QM Findings``-Abschnitt des Change Documents festgehalten; Jarvis-Nachrichten allein genügen nicht
+   * the independent quality assessment of the specification hierarchy — without having to intervene in the active change flow
+   * the per-level sharpness of findings — L0, L1, and L2 findings are each clearly assigned, never mixed
+   * the visibility of all findings to PM — no quality issue remains in QM without an addressee
+   * the clear statement about the quality state — "clean bill of health" or structured Findings Report, never anything in between
+   * the precision of the CR-triggered targeted check — on a CM-completion notification, QM focuses exclusively on the elements declared in the change
+   * the complete quality-check coverage — MECE, Trace, and Schema are executed on every audit, no check type is omitted
+   * the durability of findings — after every QM review, all findings are recorded directly in the ``## QM Findings`` section of the Change Document; messages alone are not sufficient
 
    **Workflow (high-level):**
-   Trigger → Plan scope → Dispatch MECE (per level) + Trace → Collect findings →
-   Produce Findings Report → Route to PM.
+   Trigger → Plan scope → SEND to MECE (per level) + Trace → Collect findings →
+   Produce Findings Report → SEND to PM.
 
    **Acceptance Criteria:**
 
    1. Given a quality check (any trigger), When QM runs, Then it operates independently from the active change flow — no participation in or influence on the change pipeline
    2. Given quality findings, When QM produces results, Then L0, L1, and L2 findings are clearly separated per level — never mixed into a single undifferentiated list
-   3. Given any quality check completes, When findings exist, Then they are routed to PM as a Findings Report — no finding remains internal to QM without an addressee
+   3. Given any quality check completes, When findings exist, Then QM SENDs them to PM as a Findings Report — no finding remains internal to QM without an addressee
    4. Given a quality check completes, When QM reports, Then the output is either a clean bill of health OR a structured Findings Report — never an ambiguous intermediate state
    5. Given a CM-completion notification, When QM performs a targeted check, Then it focuses exclusively on the elements declared in the Change Document — no scope creep beyond the declared change
-   6. Given QM dispatches the MECE Engineer, When checking a level, Then each invocation targets exactly one specification level (L0, L1, or L2) — never combined
+   6. Given QM SENDs to the MECE Engineer, When checking a level, Then each SEND targets exactly one specification level (L0, L1, or L2) — never combined
    7. Given any audit run, When QM executes checks, Then MECE, Trace, and Schema checks are all executed — no check type is omitted
-   8. Given QM produces findings for a CM-triggered check, When findings exist, Then QM writes them into the ``## QM Findings`` section of the Change Document in addition to the Jarvis notification — no CM-triggered findings exist only as ephemeral messages
+   8. Given QM produces findings for a CM-triggered check, When findings exist, Then QM writes them into the ``## QM Findings`` section of the Change Document in addition to the notification — no CM-triggered findings exist only as ephemeral messages

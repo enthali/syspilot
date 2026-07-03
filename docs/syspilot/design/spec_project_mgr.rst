@@ -23,9 +23,9 @@ Project Manager Design
 
 .. spec:: Project Manager Duties
    :id: SYSP_SPEC_PM_DUTIES
-   :status: approved
+   :status: draft
    :tags: agent-v2, manager, pm, duties
-   :links: SYSP_REQ_PM_DUTIES
+   :links: SYSP_REQ_PM_DUTIES; SYSP_REQ_SKILL_BRANCHING_CHAINED
 
    **Duties:**
 
@@ -38,17 +38,17 @@ Project Manager Design
    * **Prioritization Clarity** — At any point in time, a reasoned priority
      ordering of pending features exists — no feature lacks a priority rationale.
    * **Change Initialization** — Before every CR dispatch, PM has (a) created
-     the feature branch ``feature/<name>`` from ``development``, and (b) created
-     ``docs/changes/<name>.md`` by copying ``.github/templates/change-document.md``
-     verbatim (no hand-written document) and filling only the header fields
-     (``Status``, ``Branch``, ``Created``, ``Author``, ``Operation Mode``) and the
+     the feature branch per the ``syspilot.branching`` skill, and (b) created
+     the Change Document by copying the change-document template verbatim (no
+     hand-written document) and filling only the header fields (``Status``,
+     ``Branch``, ``Created``, ``Author``, ``Operation Mode``) and the
      ``## Summary`` section. The ``Operation Mode`` field is mandatory and SHALL be
      set to exactly ``autonomous`` or ``user-guided``. All other sections of the
      template remain untouched for CM. — CM never starts a change without this
      pre-existing branch and template-copied document.
-   * **Integration Responsibility** — PM owns ``development`` and performs all
-     merges of feature branches into ``development`` after QM CLEARED. CM never
-     merges to ``development``. (This responsibility may later be delegated to a
+   * **Integration Responsibility** — PM owns the integration branch and performs
+     all merges of feature branches per the ``syspilot.branching`` skill after QM
+     CLEARED. CM never merges. (This responsibility may later be delegated to a
      dedicated Integration role if scope grows.)
    * **QM Findings Decision** — After every QM findings delivery, PM decides
      fix-now / defer / accept-as-is — no finding decision is delegated to another
@@ -56,18 +56,33 @@ Project Manager Design
    * **QM Decision Recording** — After deciding on each QM finding, PM records
      the decision with rationale in the ``## QM Findings`` section of the Change
      Document — no QM finding decision remains undocumented in the CD.
-   * **Post-Release-Instance-Update** — After every successful release, PM triggers
-     the Setup Agent for instance update — no release completes without a
-     post-release update trigger.
+   * **Post-Release Distribution** — After every successful release, PM performs
+     the project's post-release distribution — no release completes without its
+     distribution step accounted for. What that distribution is (instance update,
+     registry publish, automatic) is a tailoring detail.
 
 
 .. spec:: Project Manager Workflow
    :id: SYSP_SPEC_PM_WORKFLOW
-   :status: approved
+   :status: draft
    :tags: agent-v2, manager, pm, workflow
-   :links: SYSP_REQ_PM_WORKFLOW
+   :links: SYSP_REQ_PM_WORKFLOW; SYSP_REQ_SKILL_BRANCHING_CHAINED; SYSP_REQ_AGENT_WORKFLOW_BINDING
 
-   **Workflow:**
+   **Preflight:** Before executing, read ``syspilot.pm.tailoring.md`` for any
+   project-specific clarifications or overrides to the steps below. If the file
+   is missing, run the Tailoring Workflow first. If empty, proceed generic.
+   (Tailoring file pattern per ``SYSP_SPEC_AGENT_ARCH_WORKFLOW``.)
+
+   Alongside the change lifecycle, the PM continuously works with the user to
+   plan upcoming releases and prioritize the backlog. This is open-ended advisory
+   activity, not a scripted flow: it feeds Intake (step 1) and Release Readiness
+   (step 14), and is where deferred findings on the backlog resurface as new work.
+
+   **Main Workflow** (one continuous change lifecycle; the review and release
+   phases are continuations triggered by inbound CM/QM reports, not separate
+   workflows):
+
+   *Initiate a change:*
 
    1. **Intake** — User presents a feature idea, question, or request
    2. **Assess** — Determine if this needs research, discussion, or immediate action
@@ -76,12 +91,13 @@ Project Manager Design
    5. **Plan** — Structure the idea into a concrete proposal with priorities
    6. **CR Content Check** — Review the Change Request for implementation details
       (file paths, code, agent instructions, process steps); revise before submitting
-   7. **Create Branch** — Create ``feature/<name>`` from ``development``
-   8. **Create Change Document** — Copy the template file verbatim to the change
-      directory and rename it: ``Copy-Item .github/templates/change-document.md
-      docs/changes/<name>.md``. Then open the new file and fill **only**:
+   7. **Create Branch** — Create the feature branch per the ``syspilot.branching``
+      skill; branch base and naming come from the skill, not from this spec
+   8. **Create Change Document** — Copy the change-document template verbatim to
+      the change directory and rename it ``<name>.md``. Then open the new file
+      and fill **only**:
 
-      - the header fields (``Status`` = ``in-progress``, ``Branch`` = ``feature/<name>``,
+      - the header fields (``Status`` = ``in-progress``, ``Branch`` = feature branch,
         ``Created`` = today's date, ``Author`` = ``PM``,
         ``Operation Mode`` = ``autonomous`` | ``user-guided``)
       - the ``## Summary`` section (one paragraph: what + motivation + acceptance
@@ -90,57 +106,60 @@ Project Manager Design
       Do **not** touch the L0/L1/L2 sections, MECE checks, Traceability table,
       Artefakt-Removal-Check, Sign-off, or Appendix — those are CM territory.
       Commit the file to the feature branch.
-   9. **SEND** — SEND branch name, Change Document path, and CR content to Change
-      Manager via Jarvis
-   10. **Track** — Monitor progress and update project context
+   9. **SEND** — SEND the change to the Change Manager
+
+   *Review the change* (continues when CM reports readiness and QM findings arrive):
+
+   10. **Evaluate Findings** — Review the QM findings as a set: severity, affected elements, recommendations
+   11. **Decide** — Decide across the findings (handled in bulk, not one CR per finding):
+
+       * **Fix now** — SEND the findings to CM to address on the same branch
+       * **Defer** — accept for now but record each deferred finding on the project's
+         backlog (tailoring file may specify backlog location); no further action
+       * **Accept as-is** — document the finding in the Change Document; no further action
+   12. **Record** — Write each decision with rationale into the ``## QM Findings``
+       section of the Change Document
+   13. **Merge or Loop** — If any finding was decided **Fix now**, SEND the fix
+       request to CM and return to step 10 when the new QM report arrives (CM
+       runs the fixes, re-sends to QM, QM reports again). Repeat 10–13 until no
+       Fix-now findings remain, then merge per the ``syspilot.branching`` skill.
+       The feature branch is retained for forensics until the Release Agent
+       retires it
+
+   *Release* (continues when PM judges the accumulated changes are release-ready):
+
+   14. **Evaluate Release Readiness** — All planned changes merged, QM findings resolved
+   15. **SEND to Release Agent** — SEND the release; the Release Agent executes the
+       release process (version bump, changelog, tag, publish)
+   16. **Confirm Release** — Confirm the release completed successfully
+   17. **Post-Release Distribution** — Perform the project's post-release distribution
 
    **Input:** User request (feature idea, research question, backlog review)
    **Output:** Change Request for CM, Research Document, or updated Backlog
 
-   **QM Findings Review Workflow** (event-driven, asynchronous to main workflow;
-   triggered by QM findings notification — may interrupt any main workflow step):
+   **Tailoring Workflow** (triggered when PM's tailoring file is missing, or when
+   any agent RESPONDs that its tailoring file is missing):
 
-   1. **Receive Findings** — QM routes a targeted-check findings report to PM
-   2. **Evaluate** — PM reviews each finding: severity, affected elements, QM recommendation
-   3. **Decide** — Choose one of three options per finding:
-
-      * **Fix now**: SEND hold instruction to CM; create a new CR before proceeding
-      * **Defer**: merge the feature branch to ``development``; create a follow-up CR separately
-      * **Accept as-is**: merge the feature branch to ``development``; document the accepted finding in the Change Document
-
-   4. **Record** — Write the decision (fix-now / defer / accept-as-is) with rationale
-      into the ``## QM Findings`` section of the Change Document under the
-      corresponding round's ``#### PM Decisions`` table.
-   5. **Merge or Hold** — Either perform the merge to ``development`` (Defer /
-      Accept as-is) or SEND hold instruction to CM (Fix now). Feature branch is
-      NOT deleted after merge — retained for forensics until the Release Agent
-      cleans up at release time.
-
-   **Release Workflow** (event-driven; triggered when PM judges all targeted changes
-   for a release are merged and QM-signed-off):
-
-   1. **Evaluate Release Readiness** — PM reviews the current development state: all
-      planned changes merged, QM findings resolved (fixed / deferred / accepted)
-   2. **Release Decision** — PM decides the release criteria are met and chooses to
-      trigger the release
-   3. **Invoke Release Agent** — PM invokes the Release Agent to execute the release
-      process (version bump, changelog, tag, publish)
-   4. **Confirm Release** — PM confirms the release completed successfully
-   5. **Invoke Setup Agent** — PM invokes the Setup Agent to update the installed
-      instance with the newly published release
+   1. **Detect** — No ``syspilot.<name>.tailoring.md`` exists for the agent; it
+      cannot resolve its project-specific steps
+   2. **Interview** — PM reads the agent's generic workflow and asks the user
+      whether this project clarifies, overrides, or deviates from any step
+   3. **Author** — PM writes ``syspilot.<name>.tailoring.md`` next to the agent.
+      It may be empty (nothing to tailor), clarify steps, or override them. This
+      file is instance-only and never shipped by setup
+   4. **Resume** — The agent continues now that its tailoring file exists
 
 
 .. spec:: Project Manager Frontmatter
    :id: SYSP_SPEC_PM_FRONTMATTER
-   :status: approved
+   :status: draft
    :tags: agent-v2, manager, pm, frontmatter
    :links: SYSP_REQ_PM_FRONTMATTER
 
    **Frontmatter Configuration:**
 
-   * **description:** ``"Strategic project manager that discusses features, prioritizes backlogs, conducts research, and delegates Change Requests to the Change Manager."``
-   * **tools:** ``[read, search, web, agent/runSubagent, todo, vscode, execute, github, context7, syspilot_jarvis_tools]``
+   * **description:** ``"Strategic project manager that discusses features, prioritizes backlogs, conducts research, and dispatches Change Requests to the Change Manager."``
    * **user-invocable:** ``true``
-   * **agents:** ``["syspilot.release", "syspilot.setup"]``
+   * **agents:** ``[]``
 
    **File:** ``syspilot.pm.agent.md``

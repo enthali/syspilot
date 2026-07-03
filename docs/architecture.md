@@ -4,7 +4,13 @@
 
 syspilot separates **what it delivers** from **how each project uses it**.
 The Product is the distribution package; each project installs a copy and
-customizes it via the agent architecture (Soul, Duties, Workflow, Frontmatter).
+customizes it via the agent architecture (Soul, Duties, Workflow). Agent
+frontmatter no longer prescribes a `tools:` list — the VS Code tool picker
+proved unstable across saves and window reloads, silently rewriting or
+dropping enumerated lists independent of any syspilot action. Agents instead
+inherit whatever tools are enabled on your default VS Code agent, with one
+exception: the Setup Bootloader keeps an explicit `tools:` list, since its
+bootstrap `agent/runSubagent` call must not depend on picker state.
 
 | Layer | What it is | Where it lives |
 |-------|-----------|----------------|
@@ -14,6 +20,14 @@ customizes it via the agent architecture (Soul, Duties, Workflow, Frontmatter).
 The Setup Agent copies Product files into a project. Project teams then
 customize project-owned agents directly. Specifications live in
 `docs/syspilot/` and cover all agents at the product level.
+
+**Required: `enthali.jarvis-core`** — Multi-agent orchestration (the `SEND` /
+session-messaging mechanism agents use to hand off work to each other) depends
+on the `enthali.jarvis-core` tool set being enabled on your default VS Code
+agent. If it is disabled, agents do not error — they silently lose the
+ability to hand off work, and a multi-agent workflow simply stalls with no
+diagnostic. Verify `enthali.jarvis-core` is enabled in the Copilot Chat tool
+picker before running any syspilot multi-agent workflow.
 
 
 ## Why the Separation?
@@ -50,7 +64,8 @@ syspilot/                          # The Product
 │   ├── syspilot.ask-questions/    #   Each skill has SKILL.md with YAML frontmatter
 │   ├── syspilot.branching/
 │   ├── syspilot.impact-python/
-│   └── syspilot.orchestration-jarvis/
+│   ├── syspilot.orchestration-jarvis/     #   Async variant (mutex pair)
+│   └── syspilot.orchestration-subagent/   #   Sync variant (mutex pair)
 ├── scripts/python/                # Utility scripts
 ├── sphinx/                        # Build scripts (docs-build.py)
 └── templates/
@@ -64,6 +79,14 @@ syspilot/                          # The Product
 - **Versioned** — The `version:` field in `syspilot/agents/syspilot.setup.agent.md` frontmatter tracks the release; main branch = current release
 - **Single source of truth** — The Setup Agent sources all distributable files
   exclusively from `syspilot/`, never from `.github/` or project config
+- **Orchestration variant selection** — `syspilot.orchestration-jarvis` (async,
+  session-based) and `syspilot.orchestration-subagent` (sync, subagent-based)
+  are mutually exclusive. On fresh install, the Setup Agent infers a default
+  from `.jarvis/` presence, asks the user to confirm or override, and installs
+  exactly one — the same mutex mechanism applies to any future Skill that
+  declares a `group:` field. When the async variant is chosen, the Setup Agent
+  also creates a `.jarvis/sessions/<name>/session.yaml` scaffold for every
+  eligible agent.
 
 
 ## How Installation Works
@@ -87,23 +110,52 @@ The flow:
 4. **sphinx-needs** resolves `:links:` across the spec hierarchy, enabling impact analysis
 
 
-## Concrete Example: The Release Agent
+## Concrete Example: The PM Agent
 
-The Release Agent demonstrates the Product/Installation pattern:
+The Project Manager agent demonstrates the Product/Installation pattern with the
+tailoring file mechanism:
 
-**Product** (`syspilot/agents/syspilot.release.agent.md`):
-- Generic release workflow: version bump → validate → release notes → tag → publish
-- No hardcoded paths, tag formats, or validation commands
-- Contains `TODO` placeholders where project configuration is needed
+**Product** (`syspilot/agents/syspilot.pm.agent.md`):
+- Generic workflow skeleton — 17 steps, zero project-specific nouns
+- Branch naming, change-doc location, and post-release distribution are
+  deliberately absent; they live in the tailoring file
+- Preflight block directs the agent to read its tailoring file before executing
 
-**Specifications** (`docs/syspilot/design/spec_release_engineer.rst`):
-- `SYSP_SPEC_RELEASE_FRONTMATTER` documents the exact frontmatter configuration
-- `SYSP_SPEC_RELEASE_*` specs define Soul, Duties, and Workflow
+**Specifications** (`docs/syspilot/design/spec_project_mgr.rst`):
+- `SYSP_SPEC_PM_WORKFLOW` specifies the Preflight pattern and Tailoring Workflow
+- `SYSP_SPEC_AGENT_ARCH_WORKFLOW` defines the generic Tailoring File property
+  and provides the canonical preflight sentence template
 
-**Installed copy** (`.github/agents/syspilot.release.agent.md`):
-- The Product template, customized by the project team
-- Contains the actual configuration values
-- Never overwritten by updates (project-owned)
+**Tailoring file** (`.github/agents/syspilot.pm.tailoring.md` — created on first PM invocation):
+- Instance-only; never shipped by setup, never overwritten on update
+- Captures this project's bindings: branch base, change-doc path, backlog
+  location, merge target, post-release mechanism
+- May be empty (proceed generic), clarify a step, or override it
+- Authored by PM via the Tailoring Workflow on first invocation; the file
+  does not exist until PM runs for the first time in a new project
+
+
+## Skill Tailoring
+
+Skills support the same per-project override mechanism as Agents, with one
+simplification: every Skill convention ships with a safe default, so there is
+no RESPOND-escalation step — a project that never tailors a skill simply gets
+the documented default behavior.
+
+**Product** (`syspilot/skills/<name>/SKILL.md`):
+- Defines conventions with explicit, safe defaults (e.g. the `syspilot.branching`
+  skill's feature-branch retention policy defaults to retain)
+
+**Specification** (`SYSP_SPEC_SKILL_ARCH_TAILORING`):
+- Defines the generic tailoring-file contract for Skills: an optional
+  `tailoring.md` file colocated with `SKILL.md`, read by any agent invoking
+  that skill
+
+**Tailoring file** (`syspilot.<skill-name>.tailoring.md` — instance-only, optional):
+- May be absent entirely — the skill's documented default applies
+- Never shipped by setup, never overwritten on update
+- Example: a project may tailor `syspilot.branching` to delete feature
+  branches after merge instead of retaining them
 
 
 ## Update Safety
@@ -121,15 +173,26 @@ syspilot defines three ownership categories that determine what happens on updat
 | **Project-owned** | release, implement agents and prompts | **Never touched** — copied once on install, then yours |
 | **User-owned** | Your specs, change docs, copilot-instructions.md | **Never touched** — Setup Agent ignores these entirely |
 
+**Orphan cleanup** — The Installer removes stale files from previous syspilot versions,
+but only files whose name **starts with `syspilot.`** and does **not** end with
+`.tailoring.md`. Any file without a `syspilot.` prefix and all `*.tailoring.md` files
+are always preserved, regardless of whether they appear in the current release.
+
 **How to customize safely:**
 
-1. **Don't edit methodology agents directly** — Your changes will be overwritten on
+1. **Use tailoring files for project-specific steps** — Each agent reads a sibling
+   `syspilot.<name>.tailoring.md` file for project-specific details (paths, branch
+   names, distribution targets). Edit this file freely — it is instance-only and
+   never removed or overwritten by updates. If it is missing, the agent will walk
+   you through creating it.
+
+2. **Don't edit methodology agents directly** — Your changes will be overwritten on
    the next update. Instead, file a change request upstream.
 
-2. **Customize project-owned agents via `@syspilot.design`** — This creates proper
+3. **Customize project-owned agents via `@syspilot.design`** — This creates proper
    specs with traceability. The next update won't touch these files.
 
-3. **Transactional rollback** — Before writing any files, the Installer creates a
+4. **Transactional rollback** — Before writing any files, the Installer creates a
    pre-install Git commit. On failure, it executes `git reset --hard` to restore the
    exact pre-install state. No partial installs persist.
 

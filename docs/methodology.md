@@ -40,7 +40,8 @@ syspilot/                       # syspilot family product
 │   ├── syspilot.ask-questions/ #     Folder-based, YAML frontmatter
 │   ├── syspilot.branching/
 │   ├── syspilot.impact-python/
-│   └── syspilot.orchestration-jarvis/
+│   ├── syspilot.orchestration-jarvis/     #   Async variant (mutex pair)
+│   └── syspilot.orchestration-subagent/   #   Sync variant (mutex pair)
 ├── scripts/python/             #   Utilities → .syspilot/scripts/
 ├── sphinx/                     #   Build scripts → docs/
 ├── templates/                  #   Document templates → .github/templates/
@@ -130,7 +131,7 @@ Each agent has a defined scope of what it may write:
 | Implement Agent | `<family>/` (product artifacts) | `.github/agents/` |
 | Setup Agent | `.github/` (installation) | `<family>/` |
 | Release Agent | `docs/`, version files | `.github/agents/` |
-| Test Engineer (`uat`) | Status updates in specs | — |
+| Test Designer (`uat`) | Designs UAT test scenarios for human executors | — |
 | Documentation Engineer (`docu`) | `.github/copilot-instructions.md`, `docs/` | `<family>/` |
 
 The **Setup Agent** is the only agent that syncs `<family>/` → `.github/`.

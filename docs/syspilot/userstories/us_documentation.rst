@@ -6,7 +6,7 @@ User stories for external and internal documentation artifacts.
 
 .. story:: External Documentation
    :id: SYSP_US_DOC_EXTERNAL
-   :status: approved
+   :status: draft
    :priority: mandatory
    :tags: agent-v2, documentation, external
    :links: SYSP_US_AGENT_ARCH
@@ -29,6 +29,7 @@ User stories for external and internal documentation artifacts.
    3. Given architecture.md, When I read it, Then it describes the Product/Installation model and customization approach
    4. Given workflows.md, When I read it, Then it describes the change, quality, and release workflows
    5. Given namingconventions.md, When I read it, Then it defines ID formats, file naming, and theme abbreviations
+   6. Given the user installs syspilot, When they read the documentation, Then it clearly states that ``enthali.jarvis-core`` must be enabled on their default VS Code agent for session-based orchestration to work — without it, agents silently lose orchestration capability
 
 
 .. story:: Internal Reference Documentation

@@ -32,6 +32,14 @@ This section contains system requirements following Sphinx-Needs methodology.
 
    req_uat_skill_orchestration_vocab
    req_uat_installer_spec_rewrite
+   req_uat_installer_session_first
+   req_uat_installer_scoped_cleanup
+   req_uat_product_owns_tool_lists
+   req_uat_remove_tools_frontmatter
+   req_uat_release_agent_tailoring_semver
+   req_uat_branching_naming_fix
+   req_uat_installer_frontmatter_sync
+   req_uat_installer_orchestration_select
 
    req_documentation
 

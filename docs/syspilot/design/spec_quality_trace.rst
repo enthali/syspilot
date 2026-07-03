@@ -37,9 +37,16 @@ Quality Engineer Trace Design
    3. **Link Validation** — Verify all ``:links:`` references resolve to
       existing specification elements
    4. **Semantic Consistency** — Check that the intent of a User Story is
-      faithfully represented in its linked Requirements and Design Specs
+      faithfully represented in its linked Requirements and Design Specs,
+      AND that any element's content agrees with every other element named
+      in its ``:links:`` field — including cross-references outside the
+      direct structural parent chain
    5. **Orphan Detection** — Find elements with no upward or downward links
-   6. **Report Generation** — Produce a structured trace report with the
+   6. **Modified-Element Re-verification** — When invoked on an element
+      that a change modified, check its content against all currently-linked
+      elements, not only links newly created by the same change — catching
+      drift where only one side of an existing link was updated
+   7. **Report Generation** — Produce a structured trace report with the
       complete chain and any gaps found
 
 
@@ -51,12 +58,12 @@ Quality Engineer Trace Design
 
    **Workflow:**
 
-   1. **Input** — Receive a specification element ID to trace
+   1. **RECEIVE** — RECEIVE a specification element ID to trace from the initiator
    2. **Discover** — Use ``get_need_links.py`` to find all connected elements:
       ``python .github/skills/syspilot.impact-python/scripts/get_need_links.py <ID> --flat --depth 3``
    3. **Traverse** — Follow the complete chain upward and downward
    4. **Analyze** — Check chain completeness, semantic consistency, link validity
-   5. **Report** — Produce trace report with:
+   5. **RESPOND** — Report the trace result back to the initiator with:
 
       * Complete chain (US → REQ → SPEC)
       * Missing links
@@ -69,14 +76,13 @@ Quality Engineer Trace Design
 
 .. spec:: Quality Engineer Trace Frontmatter
    :id: SYSP_SPEC_TRACE_FRONTMATTER
-   :status: approved
+   :status: draft
    :tags: agent-v2, engineer, trace, frontmatter
    :links: SYSP_REQ_TRACE_FRONTMATTER
 
    **Frontmatter Configuration:**
 
    * **description:** ``"Subagent that traces one specification element vertically through all levels (US → REQ → SPEC) and checks traceability completeness."``
-   * **tools:** ``[read, search, execute]``
    * **user-invocable:** ``false``
    * **agents:** ``[]``
 

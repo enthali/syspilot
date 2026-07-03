@@ -132,3 +132,42 @@ Instructions, Rules) and the optional Group / DEFINITIONS extension.
    * AC-3: Two Skills of the same group are interchangeable from the
      perspective of every Agent that uses that group
 
+
+.. req:: Skill Tailoring Contract
+   :id: SYSP_REQ_SKILL_ARCH_TAILORING
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, skill, architecture, tailoring
+   :links: SYSP_US_SKILL_ARCH
+
+   **Description:**
+   Every syspilot Skill's documented conventions MAY be overridden
+   per project via a sibling ``tailoring.md`` file colocated with
+   ``SKILL.md``. Unlike Agent Workflow tailoring
+   (SYSP_REQ_AGENT_WORKFLOW_BINDING), a Skill is consulted by Agents
+   rather than independently invoked, so a missing Skill tailoring file
+   requires no RESPOND-to-PM escalation — every Skill convention has a
+   safe, documented default that applies unmodified when no tailoring
+   file exists.
+
+   **Rationale:**
+   Skills package generic, product-wide conventions, but individual
+   conventions within a Skill (e.g. a branching strategy's feature-branch
+   retention policy) may legitimately vary per project. Mirroring the
+   Agent tailoring pattern gives Skills the same one-place-to-customize
+   model without requiring a PM interview for every consultation — a
+   Skill's defaults are always safe to fall back to, unlike an Agent
+   workflow step that may have no safe default (e.g. a versioning scheme).
+
+   **Acceptance Criteria:**
+
+   * AC-1: A Skill's tailoring file, when present, is named ``tailoring.md``
+     and lives in the Skill's own directory next to ``SKILL.md``
+     (e.g. ``.github/skills/syspilot.branching/tailoring.md``)
+   * AC-2: The tailoring file is instance-only; setup ships ``SKILL.md``
+     only and never overwrites ``tailoring.md``
+   * AC-3: When the tailoring file is absent, the Skill's documented
+     default convention applies — no escalation or interview is required
+   * AC-4: When the tailoring file specifies an override, Agents consulting
+     the Skill honor the override instead of the documented default
+

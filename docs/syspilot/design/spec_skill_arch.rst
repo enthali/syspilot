@@ -128,6 +128,47 @@ elements (Frontmatter, Instructions, Rules) are laid out.
    the section, with the single line ``No special rules.``. This makes
    "no rules" an explicit, reviewable statement rather than an oversight.
 
+
+.. spec:: Skill Tailoring File
+   :id: SYSP_SPEC_SKILL_ARCH_TAILORING
+   :status: draft
+   :tags: agent-v2, skill, architecture, tailoring
+   :links: SYSP_REQ_SKILL_ARCH_TAILORING
+
+   **File:** ``tailoring.md``, colocated with ``SKILL.md`` in the Skill's
+   own directory (e.g. ``.github/skills/syspilot.branching/tailoring.md``).
+
+   **Format:** Free-form Markdown — no required heading structure. Each
+   override is a short, self-contained statement naming the convention it
+   changes and the new value.
+
+   **Behavior:**
+
+   * **Absent** — the Skill's documented default convention applies
+     unmodified. No Agent needs to check for the file's existence before
+     proceeding; a missing file is equivalent to an empty one.
+   * **Present, empty** — same as absent: proceed with documented defaults.
+   * **Present, with content** — each stated override takes precedence over
+     the corresponding documented default. Conventions not mentioned in the
+     file keep their documented default.
+
+   **Instance-only:** Setup ships ``SKILL.md`` and never writes or
+   overwrites ``tailoring.md`` — it is instance-only content, authored
+   directly by the user or PM.
+
+   **Difference from Agent tailoring:** Agent tailoring
+   (SYSP_SPEC_AGENT_ARCH_WORKFLOW) escalates via RESPOND-to-PM when the
+   file is missing, because some Agent workflow steps have no safe generic
+   default (e.g. a versioning scheme). Skill tailoring never escalates —
+   every documented Skill convention is required to have a safe default,
+   so "file missing" and "file present but silent on this convention" are
+   both simply "use the default," resolved locally by whichever Agent is
+   consulting the Skill.
+
+   **Input:** none (static per-project content, read on demand)
+   **Output:** override values for the Skill's documented conventions
+
+
    **Example:**
 
    .. code-block:: markdown

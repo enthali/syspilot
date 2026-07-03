@@ -6,7 +6,7 @@ Git branching rules for syspilot agents.
 
 .. story:: Clear Branching Rules for Agents
    :id: SYSP_US_SKILL_BRANCHING
-   :status: approved
+   :status: draft
    :priority: mandatory
    :tags: agent-v2, skill, branching, workflow
    :links: SYSP_US_SKILL_ARCH
@@ -28,6 +28,7 @@ Git branching rules for syspilot agents.
    * Who may write to which branches
    * Branch naming conventions
    * Commit message conventions
+   * The feature-branch retention policy after a release (tailorable per project)
 
    **Acceptance Criteria:**
 
@@ -36,3 +37,4 @@ Git branching rules for syspilot agents.
    3. Given a new change, When starting work, Then the agent creates a ``feature/<name>`` branch from ``development``
    4. Given an agent commits, When writing the message, Then it follows the Conventional Commits format
    5. Given a completed feature branch, When merging back, Then it is squash-merged into ``development``
+   6. Given no ``tailoring.md`` override, When a feature branch has been merged into ``development`` and a release completes, Then the branch is retained (not deleted) — deletion is an explicit per-project opt-in via tailoring, never the default

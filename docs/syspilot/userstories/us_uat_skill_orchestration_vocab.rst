@@ -1,7 +1,8 @@
 Skill: Orchestration — Agent Vocabulary UAT
 ===========================================
 
-User Acceptance Test Story for the agent workflow vocabulary migration
+User Acceptance Test Story for the agent workflow vocabulary migration to the
+peer-to-peer three-verb model
 (``SYSP_REQ_SKILL_ORCHESTRATION_AGENT_VOCAB``).
 
 
@@ -12,77 +13,96 @@ User Acceptance Test Story for the agent workflow vocabulary migration
    :tags: uat, skill, orchestration, agent-vocabulary
    :links: SYSP_US_SKILL_ORCHESTRATION
 
-   **As a** syspilot Test Engineer,
-   **I want** to verify that all product agent documents use INVOKE, DELEGATE,
-   and REPLY vocabulary consistently in their workflow step prose,
-   **so that** the orchestration skill can resolve verb invocations to runtime
-   calls without ambiguity and no agent prescribes a concrete runtime tool.
+   **As a** syspilot Test Designer,
+   **I want** self-contained test scenarios that let a human verify every
+   product agent document uses the peer-to-peer **SEND / RECEIVE / RESPOND**
+   vocabulary and carries the session-identity frontmatter,
+   **so that** the orchestration skill can resolve verbs to runtime calls
+   without ambiguity, no obsolete INVOKE / DELEGATE / REPLY token survives,
+   and every orchestrating agent is a startable Jarvis session.
 
    **Context:**
 
-   Phase 3 of the Skill Architecture rollout migrated all agent workflow step
-   prose from concrete tool references (e.g. ``runSubagent()``,
-   ``jarvis_sendToSession``, "via Jarvis") to the three-verb model
-   (INVOKE / DELEGATE / REPLY).  This test story covers end-to-end verification
-   of that migration across all 13 product agents in ``syspilot/agents/``.
+   The ``session-first-orchestration`` CR flipped the orchestration default to
+   asynchronous session messaging and replaced the old
+   INVOKE / DELEGATE / REPLY vocabulary (with its manager-to-engineer routing
+   rule) by a **role-agnostic, peer-to-peer** three-verb model:
 
-   The routing rule is: **Manager → Engineer = INVOKE**;
-   **Manager → Manager = DELEGATE**; every callee agent's workflow ends with
-   **REPLY**.
+   * **SEND** — pass work to another agent
+   * **RECEIVE** — obtain triggering instructions (first workflow step)
+   * **RESPOND** — return a result to the initiator (terminal workflow step)
+
+   There is no separate synchronous verb and no manager / engineer framing in
+   the orchestration contract. Any agent may communicate with any other.
+
+   This story covers human verification of that migration across all product
+   agents in ``syspilot/agents/``. The Test Designer authors the scenarios;
+   a human tester runs them — there is no automated execution step.
 
    **Artifacts Under Test:**
 
-   All 13 agent files in ``syspilot/agents/``:
+   All agent files in ``syspilot/agents/``:
 
-   * Manager agents: ``syspilot.cm``, ``syspilot.pm``, ``syspilot.qm``
-   * Engineer agents: ``syspilot.design``, ``syspilot.uat``,
-     ``syspilot.implement``, ``syspilot.mece``, ``syspilot.trace``,
-     ``syspilot.docu``, ``syspilot.verify``, ``syspilot.release``,
+   * ``syspilot.cm``, ``syspilot.pm``, ``syspilot.qm``
+   * ``syspilot.design``, ``syspilot.uat``, ``syspilot.implement``,
+     ``syspilot.mece``, ``syspilot.trace``, ``syspilot.docu``,
+     ``syspilot.verify``, ``syspilot.release``
+   * Bootstrap layer (excluded from session identity): ``syspilot.setup``,
      ``syspilot.installer``
-   * Bootloader: ``syspilot.setup``
 
    **Traceability:**
 
-   Covers feature ACs 1–3 of ``SYSP_US_SKILL_ORCHESTRATION`` (INVOKE mapping,
-   DELEGATE mapping, REPLY delivery) and all ACs of
-   ``SYSP_REQ_SKILL_ORCHESTRATION_AGENT_VOCAB`` and
-   ``SYSP_SPEC_SKILL_ORCHESTRATION_AGENT_VOCAB``.
+   Covers the SEND / RECEIVE / RESPOND ACs of
+   ``SYSP_US_SKILL_ORCHESTRATION`` and all ACs of
+   ``SYSP_REQ_SKILL_ORCHESTRATION_AGENT_VOCAB``,
+   ``SYSP_SPEC_UAT_SKILL_ORCHESTRATION_VOCAB``, and the session-identity
+   frontmatter ACs of ``SYSP_REQ_AGENT_ARCH_FRONTMATTER`` (AC-7, AC-8).
 
    **Acceptance Criteria:**
 
-   1. Given the CM agent (``syspilot.cm.agent.md``) workflow steps,
-      When reviewed by a human tester,
-      Then each step that calls an engineer subagent uses the word
-      ``INVOKE`` (uppercase), each step that notifies PM or QM uses
-      ``DELEGATE`` (uppercase), and neither "via Jarvis", "via Jarvis
-      message queue", nor any runtime tool name appears in any workflow
-      step — traces to ``SYSP_REQ_SKILL_ORCHESTRATION_AGENT_VOCAB`` AC-1,
-      AC-2, AC-4, AC-5
+   1. **No obsolete vocabulary.**
+      *Precondition:* The ``feature/session-first-orchestration`` work is on
+      the active branch; the tester has a text-search tool.
+      *Action:* Search every file in ``syspilot/agents/`` for the uppercase
+      tokens ``INVOKE``, ``DELEGATE``, and ``REPLY`` in workflow prose.
+      *Expected result:* Zero matches in any agent's ``## Workflow`` section —
+      the obsolete vocabulary is fully removed — traces to
+      ``SYSP_REQ_SKILL_ORCHESTRATION_AGENT_VOCAB`` AC-1
 
-   2. Given the PM agent (``syspilot.pm.agent.md``) workflow steps,
-      When reviewed by a human tester,
-      Then the step that sends a Change Request to CM uses ``DELEGATE``
-      and no concrete tool name appears in any workflow step — traces to
-      ``SYSP_REQ_SKILL_ORCHESTRATION_AGENT_VOCAB`` AC-2, AC-4
+   2. **New vocabulary present and correctly routed.**
+      *Precondition:* Each agent file is open at its ``## Workflow`` section.
+      *Action:* Read the workflow prose of every agent.
+      *Expected result:* Work passed to another agent reads ``SEND``; the
+      step that obtains triggering instructions reads ``RECEIVE`` as the
+      first step; the step that returns a result reads ``RESPOND`` as the
+      terminal step — traces to
+      ``SYSP_REQ_SKILL_ORCHESTRATION_AGENT_VOCAB`` AC-2, AC-3, AC-5
 
-   3. Given the QM agent (``syspilot.qm.agent.md``) workflow steps,
-      When reviewed by a human tester,
-      Then the steps that dispatch MECE and Trace engineers use ``INVOKE``
-      and the step that routes the Findings Report to PM uses ``DELEGATE``,
-      and no concrete tool name appears in any step — traces to
-      ``SYSP_REQ_SKILL_ORCHESTRATION_AGENT_VOCAB`` AC-1, AC-2, AC-4, AC-5
+   3. **Peer-to-peer framing.**
+      *Precondition:* Each agent file is open.
+      *Action:* Scan workflow prose for routing framed by role
+      (e.g. "Manager → Engineer", "managers DELEGATE, engineers REPLY",
+      or any rule that conditions the verb on the caller's or callee's role).
+      *Expected result:* No role-conditioned routing language remains; the
+      verb chosen depends only on the action (pass work / receive / return),
+      not on who the agents are — traces to
+      ``SYSP_REQ_SKILL_ORCHESTRATION_AGENT_VOCAB`` AC-1
 
-   4. Given each engineer agent (``syspilot.design``, ``syspilot.uat``,
-      ``syspilot.implement``, ``syspilot.mece``, ``syspilot.trace``,
-      ``syspilot.docu``, ``syspilot.verify``, ``syspilot.release``,
-      ``syspilot.installer``) and the bootloader (``syspilot.setup``),
-      When reviewed by a human tester,
-      Then every agent whose workflow is invoked by a manager has
-      ``REPLY`` (uppercase) as its terminal workflow step — traces to
-      ``SYSP_REQ_SKILL_ORCHESTRATION_AGENT_VOCAB`` AC-3
+   4. **Session-identity frontmatter.**
+      *Precondition:* Each agent file is open at its YAML frontmatter.
+      *Action:* Inspect the frontmatter of every agent except
+      ``syspilot.setup`` and ``syspilot.installer``.
+      *Expected result:* Each carries a human-readable session ``name:`` and
+      an ``agent:`` identifier, and declares ``user-invocable: true``; the
+      two bootstrap agents carry neither session-identity field — traces to
+      ``SYSP_REQ_AGENT_ARCH_FRONTMATTER`` AC-7, AC-8
 
-   5. Given all 13 agent files in ``syspilot/agents/``,
-      When searched for prohibited patterns,
-      Then no file contains ``runSubagent()``, ``jarvis_sendToSession``,
-      or any other runtime tool name within workflow step prose — traces to
+   5. **No concrete runtime tool names.**
+      *Precondition:* The tester has the prohibited-pattern reference set
+      from ``SYSP_REQ_UAT_SKILL_ORCHESTRATION_VOCAB``.
+      *Action:* Search each agent's workflow prose for runtime tool names
+      (e.g. ``runSubagent()``, ``jarvis_sendToSession``, ``jarvis_readMessage``,
+      "via Jarvis").
+      *Expected result:* Zero matches in workflow prose; tool mapping is left
+      entirely to the installed orchestration skill — traces to
       ``SYSP_REQ_SKILL_ORCHESTRATION_AGENT_VOCAB`` AC-4

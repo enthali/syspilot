@@ -22,7 +22,7 @@ Setup Manager Requirements
 
 .. req:: Installer Duties
    :id: SYSP_REQ_INSTALLER_DUTIES
-   :status: approved
+   :status: draft
    :priority: mandatory
    :tags: agent-v2, installer, duties
    :links: SYSP_US_INSTALLER
@@ -36,32 +36,34 @@ Setup Manager Requirements
    * AC-1: After every successful run, all syspilot product components within
      the defined installation scope are complete and correctly placed in the
      target project
-   * AC-2: After an update, all local user-anpassungen (``tools:`` and other
-     customizations) are either preserved automatically or the user is
-     explicitly informed what needs re-applying
-   * AC-3: No installation run ends in a half-installed or unvalidated state —
+   * AC-2: No installation run ends in a half-installed or unvalidated state —
      the result always passes sphinx-build before being reported as successful
-   * AC-4: Every successful installation leaves a traceable Git commit
-   * AC-5: If a Skill belonging to an exclusive group is being installed and
-     a Skill of the same group already exists, the installation is rejected
-     with a conflict report
-   * AC-6: The file sync for every directory in scope is idempotent — re-running
+   * AC-3: Every successful installation leaves a traceable Git commit
+   * AC-4: If a Skill belonging to an exclusive group is being installed and
+     a Skill of the same group already exists, the existing Skill is removed
+     before the new one is written — mutual exclusion is enforced through
+     replacement, and the run summary names the replaced Skill
+   * AC-5: The file sync for every directory in scope is idempotent — re-running
      with unchanged source produces the same end-state with no side effects
-   * AC-7: Files present in a target directory that no longer exist in the
-     corresponding source directory are removed (orphan cleanup)
-   * AC-8: The Installer run summary reports installed / updated / removed
+   * AC-6: A file is eligible for orphan removal only if its name starts with
+     the ``syspilot.`` filename prefix **and** does not end with
+     ``.tailoring.md``; an eligible file present in a target directory but no
+     longer existing in the corresponding source directory is removed (orphan
+     cleanup). Files without the ``syspilot.`` prefix, and ``syspilot.*``
+     files ending in ``.tailoring.md``, are never removed
+   * AC-7: The Installer run summary reports installed / updated / removed
      counts so the invoking agent can verify completeness
-   * AC-9: All files written by the Installer are encoded as UTF-8 without BOM
-   * AC-10: The Installer performs file operations directly per file — it
+   * AC-8: All files written by the Installer are encoded as UTF-8 without BOM
+   * AC-9: The Installer performs file operations directly per file — it
      SHALL NOT generate wrapper scripts or helper files
-   * AC-11: On any failure between install start and final commit, the
+   * AC-10: On any failure between install start and final commit, the
      Installer restores the workspace to the pre-install state via
      transactional rollback
 
 
 .. req:: Installer Workflow
    :id: SYSP_REQ_INSTALLER_WORKFLOW
-   :status: approved
+   :status: draft
    :priority: mandatory
    :tags: agent-v2, installer, workflow
    :links: SYSP_US_INSTALLER
@@ -74,7 +76,9 @@ Setup Manager Requirements
    SYSP_REQ_INSTALLER_GITHUB_SOURCE. Encoding is governed by
    SYSP_REQ_INSTALLER_ENCODING. File operations discipline is governed by
    SYSP_REQ_INSTALLER_DIRECT_OPS. Rollback is governed by
-   SYSP_REQ_INSTALLER_ROLLBACK.
+   SYSP_REQ_INSTALLER_ROLLBACK. Orchestration variant selection is governed by
+   SYSP_REQ_INSTALLER_ORCHESTRATION_SELECT. Session scaffold creation is
+   governed by SYSP_REQ_INSTALLER_SESSION_SCAFFOLD.
 
    **Acceptance Criteria:**
 
@@ -88,23 +92,26 @@ Setup Manager Requirements
      of the current ``.github/`` state as a rollback point
    * AC-4: Installer installs/updates files within the defined scope by
      fetching each file from upstream and writing it to the target location
-   * AC-5: During install/update, for each existing file that is NOT the
-     Bootloader (``syspilot.setup.agent.md``): read the current ``tools:``
-     frontmatter value, fetch file from upstream, replace the upstream
-     ``tools:`` line with the saved value, write the result. All other
-     frontmatter fields come from upstream — no preservation
-   * AC-6: The Bootloader file (``syspilot.setup.agent.md``) is overwritten
-     verbatim from upstream with no field preservation
-   * AC-7: During Configure step, Installer performs doc bootstrap per
+   * AC-5: During install/update, for each file in scope, all frontmatter
+     fields come from upstream — no local field is preserved; every file is
+     written verbatim from upstream
+   * AC-6: During Configure step, Installer performs doc bootstrap per
      SYSP_REQ_INSTALLER_DOC_BOOTSTRAP
+   * AC-7: During Configure step, Installer selects and installs exactly one
+     orchestration-group Skill per SYSP_REQ_INSTALLER_ORCHESTRATION_SELECT
    * AC-8: During Orphan Cleanup, Installer detects orphan files in each
-     target directory (files present in target but absent in source) and
-     removes them
+     target directory (files that start with ``syspilot.`` and do not end
+     with ``.tailoring.md``, present in target but absent in source) and
+     removes them; files without the ``syspilot.`` prefix and
+     ``syspilot.*.tailoring.md`` files are left untouched
    * AC-9: After Install/Update, Installer outputs a run summary with
      per-directory counts of installed, updated, and removed files
    * AC-10: Installer validates with sphinx-build; on failure, executes
      transactional rollback per SYSP_REQ_INSTALLER_ROLLBACK
-   * AC-11: On success, Installer creates final Git commit documenting
+   * AC-11: When the asynchronous orchestration variant was selected, as the
+     final step before commit, Installer creates session scaffolds per
+     SYSP_REQ_INSTALLER_SESSION_SCAFFOLD
+   * AC-12: On success, Installer creates final Git commit documenting
      the installation
 
 
@@ -239,8 +246,12 @@ Setup Manager Requirements
    * AC-4: No unlisted file or directory from the syspilot source is copied to the target project
    * AC-5: The sync for each directory in scope is idempotent — re-running
      the Installer with unchanged source yields the identical end-state
-   * AC-6: Files present in a target directory that no longer exist in the
-     corresponding source directory are removed (orphan cleanup)
+   * AC-6: A file is eligible for orphan removal only if its name starts with
+     the ``syspilot.`` filename prefix **and** does not end with
+     ``.tailoring.md``; an eligible file present in a target directory but no
+     longer existing in the corresponding source directory is removed (orphan
+     cleanup). Files without the ``syspilot.`` prefix, and ``syspilot.*``
+     files ending in ``.tailoring.md``, are never removed
    * AC-7: The Installer run summary reports the count of files installed,
      updated, and removed per scope directory
 
@@ -349,13 +360,18 @@ Setup Manager Requirements
    :links: SYSP_US_SETUP
 
    **Description:**
-   The Setup Bootloader SHALL invoke the fetched Installer as a subagent,
-   passing through the user's original request context.
+   The Setup Bootloader SHALL call the fetched Installer as a synchronous
+   in-process subagent, passing through the user's original request context.
+   This call is a deliberate exception **outside the orchestration contract**:
+   it does not use the orchestration skill and does not use the SEND/RECEIVE/
+   RESPOND verbs, because the Bootloader runs before any orchestration skill or
+   session infrastructure is available.
 
    **Acceptance Criteria:**
 
-   * AC-1: Bootloader invokes Installer via runSubagent()
-   * AC-2: Bootloader passes user context to Installer subagent
+   * AC-1: Bootloader calls the Installer as a synchronous in-process subagent
+   * AC-2: Bootloader passes user context to the Installer
+   * AC-3: The Bootloader → Installer call is explicitly outside the orchestration contract — it does not use the orchestration skill or its verbs
 
 
 .. req:: Bootloader Version Gate
@@ -402,12 +418,75 @@ Setup Manager Requirements
    :links: SYSP_US_INSTALLER
 
    **Description:**
-   The Setup Agent SHALL reject installation of a Skill that declares a ``group:``
-   field when a Skill belonging to the same group is already installed, and SHALL
-   report the conflict to the user.
+   The Setup Agent SHALL enforce mutual exclusion for Skills that declare a
+   ``group:`` field: at most one Skill per group is installed at any time. When
+   a Skill of a group is installed and a Skill of the same group already exists,
+   the Setup Agent SHALL remove the existing Skill before writing the new one,
+   and SHALL report the replacement to the user.
 
    **Acceptance Criteria:**
 
    * AC-1: Before installing a Skill with a ``group:`` field, Setup Agent checks whether any installed Skill declares the same ``group:`` value
-   * AC-2: If a conflicting Skill is found, Setup Agent aborts the installation and reports the conflict, naming the conflicting Skill
-   * AC-3: If no conflicting Skill is found, installation proceeds normally
+   * AC-2: If a Skill of the same group is found, Setup Agent removes the existing Skill before writing the new one — installation proceeds through replacement, not rejection
+   * AC-3: After installation, exactly one Skill of the group is present and the run summary names the replaced Skill (if any)
+
+
+.. req:: Installer Orchestration Variant Selection
+   :id: SYSP_REQ_INSTALLER_ORCHESTRATION_SELECT
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, installer, orchestration, skill
+   :links: SYSP_US_INSTALLER, SYSP_US_SKILL_ORCHESTRATION
+
+   **Description:**
+   The Installer SHALL install exactly one orchestration-group Skill, chosen
+   between the asynchronous (session-messaging) variant and the synchronous
+   (in-process) variant. The Installer SHALL ask the user which variant to use
+   and SHALL infer the default answer from the workspace: if a session-messaging
+   infrastructure is detected, the asynchronous variant is the default;
+   otherwise the synchronous variant is the default. The selected variant is
+   installed under the mutual-exclusion rule (SYSP_REQ_SETUP_SKILL_MUTEX).
+
+   **Rationale:**
+   syspilot must run with or without session-messaging infrastructure. Letting
+   the Installer pick a sensible default while still asking keeps installation
+   automatic in the common case and explicit when the user wants the other
+   variant.
+
+   **Acceptance Criteria:**
+
+   * AC-1: Given an install or update, When the Installer runs, Then it asks the user which orchestration variant to install
+   * AC-2: Given a workspace with session-messaging infrastructure present, When the Installer determines the default, Then the asynchronous variant is the default
+   * AC-3: Given a workspace without session-messaging infrastructure, When the Installer determines the default, Then the synchronous variant is the default
+   * AC-4: Given the variant is chosen, When the Installer writes it, Then exactly one orchestration-group Skill is present afterward (mutual exclusion via replacement)
+
+
+.. req:: Installer Session Scaffold Creation
+   :id: SYSP_REQ_INSTALLER_SESSION_SCAFFOLD
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, installer, session, scaffold
+   :links: SYSP_US_INSTALLER
+
+   **Description:**
+   When the asynchronous orchestration variant is selected, the Installer SHALL,
+   as the final installation step, create a session scaffold for every installed
+   agent except the Setup Bootloader and the Installer. Each scaffold declares
+   the agent's session identity, derived from the agent file's frontmatter. The
+   Installer SHALL preserve any existing scaffold and its agent-owned context on
+   update — only missing scaffolds are created.
+
+   **Rationale:**
+   The asynchronous variant runs each orchestrating agent as its own persistent
+   session. Pre-declaring a scaffold per agent gives every agent a stable session
+   identity and a place to accumulate its own context across changes, without the
+   Installer ever overwriting accumulated context.
+
+   **Acceptance Criteria:**
+
+   * AC-1: Given the asynchronous variant is selected, When the Installer finishes, Then a session scaffold exists for every installed agent except the Setup Bootloader and the Installer
+   * AC-2: Given an agent file with session-identity frontmatter, When the Installer creates that agent's scaffold, Then the scaffold's identity is taken from the agent file's frontmatter
+   * AC-3: Given an update where a scaffold already exists, When the Installer runs, Then the existing scaffold and its agent-owned context are left untouched
+   * AC-4: Given an update where a scaffold is missing, When the Installer runs, Then the missing scaffold is created
+   * AC-5: Given the synchronous variant is selected, When the Installer finishes, Then no session scaffolds are created
+

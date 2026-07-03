@@ -12,7 +12,7 @@ Covers all nine CR acceptance criteria against ``SYSP_US_INSTALLER``.
    :tags: uat, installer, spec-rewrite
    :links: SYSP_US_INSTALLER
 
-   **As a** syspilot Test Engineer,
+   **As a** syspilot Test Designer,
    **I want** to verify that the rewritten Installer agent and specification
    deliver a correct, transactional, customer-path-validated installation,
    **so that** customers on the released installer receive a working syspilot

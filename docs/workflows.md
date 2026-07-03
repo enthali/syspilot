@@ -156,6 +156,9 @@ requirements define conflicting behavior for the same feature.
 **What it does:** Traces **one specification element** through all levels:
 - Up: Which User Stories does this requirement serve?
 - Down: Which Design Specs implement this requirement? Which code?
+- Cross-reference re-verification: when an element is modified, re-checks
+  the *content* of its existing linked elements for consistency — not just
+  that the links structurally resolve
 
 **When to use:**
 - To verify a specific item has complete coverage
@@ -178,7 +181,7 @@ flowchart LR
 
 **`@syspilot.release`** handles the full process:
 
-1. **Version bump** — Update the `version:` field in `syspilot/agents/syspilot.setup.agent.md` frontmatter with the new version
+1. **Version bump** — Determine the next version per the project's tailored scheme (e.g. semver or CalVer), sourced from the latest `docs/changes/` archive — not syspilot's own framework version
 2. **Validate** — Run Sphinx build, check for broken links and schema violations
 3. **Release notes** — Generate `docs/releasenotes.md` from Change Documents
 4. **Archive** — Move Change Documents to `docs/changes/archive/<version>/`
@@ -221,7 +224,7 @@ gitGraph
 |------|------|-----|
 | **One branch per change** | `@syspilot.pm` creates `feature/<name>` from `development` | Isolates each change for independent review |
 | **Development as integration** | All feature branches squash-merge into `development` | Permanent integration branch for all work |
-| **Branches retained after merge** | Feature branches are kept after merge; `@syspilot.release` cleans them at release time | Enables forensic use and bisect after merge |
+| **Branches retained after merge** | Feature branches are kept after merge by default (tailorable per project via the `syspilot.branching` skill) | Enables forensic use and bisect after merge |
 | **Squash-merge everywhere** | Feature→development and development→main use squash-merge | Clean history on both branches |
 | **Main = releases only** | Squash merge to main happens only during `@syspilot.release` | Main always equals the latest release |
 | **Tag on main** | Release creates `v{version}` tag on the squash merge commit | Tags mark published releases |
@@ -235,7 +238,7 @@ gitGraph
 5. `@syspilot.verify` → commits validation report on the same branch
 6. `@syspilot.docu` → commits documentation updates on the same branch
 7. `@syspilot.pm` → squash-merges feature branch into `development`
-8. `@syspilot.release` → squash-merges `development` into main, bumps version, tags, cleans up feature branches
+8. `@syspilot.release` → squash-merges `development` into main, bumps version, tags, applies the project's tailored branch-retention policy
 
 
 ## When to Use Which Agent
