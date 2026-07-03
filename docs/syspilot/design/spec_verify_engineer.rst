@@ -54,8 +54,9 @@ Verify Engineer Design
 
    **Workflow:**
 
-   1. **Receive Change Document** — Open the Change Document (path provided by CM),
-      extract the list of all changed element IDs and implementation files
+   1. **RECEIVE Change Document** — RECEIVE the assignment from the initiator;
+      open the Change Document (path provided by CM), extract the list of all
+      changed element IDs and implementation files
    2. **Read Specs** — For each changed element, read the RST source to understand
       what was specified
    3. **Compare Against Implementation** — Locate the implementation artifact
@@ -67,6 +68,7 @@ Verify Engineer Design
       per-element pass/fail, evidence, and summary
    7. **Update Spec Statuses** — Set ``:status: implemented`` on elements that pass
       verification; flag elements that fail with evidence
+   8. **RESPOND** — Report the validation result (per-element pass/fail, evidence) back to the initiator
 
    **Input:** Change Document path (provided by CM)
    **Output:** Validation report + updated spec statuses
@@ -83,8 +85,7 @@ Verify Engineer Design
    **Frontmatter Configuration:**
 
    * **description:** ``"Verify implementation matches Change Document and traceability is complete."``
-   * **tools:** ``[read, search, execute, todo, agent/runSubagent]``
    * **user-invocable:** ``false``
-   * **agents:** ``[syspilot.trace]``
+   * **agents:** ``[]``
 
    **File:** ``syspilot.verify.agent.md``

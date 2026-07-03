@@ -37,7 +37,8 @@ Quality Engineer Trace Requirements
    * AC-1: Trace agent can follow links upward (SPEC → REQ → US)
    * AC-2: Trace agent can follow links downward (US → REQ → SPEC → Code → Tests)
    * AC-3: Trace agent can detect broken links and orphaned elements
-   * AC-4: Trace agent can verify semantic consistency across levels
+   * AC-4: Trace agent verifies semantic consistency against every element referenced in a target element's ``:links:`` field — including cross-references outside the direct structural parent chain, not only the US → REQ → SPEC lineage
+   * AC-5: When invoked on a modified element, Trace checks that element's content against all currently-linked elements, even those left untouched by the same change — catching drift introduced when only one side of an existing link is updated
 
 
 .. req:: Quality Engineer Trace Workflow

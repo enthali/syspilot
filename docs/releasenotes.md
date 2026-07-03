@@ -5,7 +5,52 @@
 > needed. For multiple releases on the same day: `vYYYY.MM.DD.1`, `.2`, etc.
 > Older entries below retain their semver labels as historical record.
 
-## v2026.06.19 - 2026-06-19
+## Unreleased — generic-agent-workflow-pattern
+
+### Summary
+
+Makes every syspilot agent's workflow skeleton project-neutral. Project-specific
+details (branch base, paths, distribution target) move from agent files into a
+per-agent tailoring file (`syspilot.<name>.tailoring.md`) stored next to the
+agent in `.github/agents/`. The PM agent is converted first as the pilot. Agents
+that lack a tailoring file RESPOND to PM, who interviews the user and authors
+the file. Setup ships `*.agent.md` only — tailoring files are instance-owned and
+never overwritten by updates.
+
+### 🏗️ Architecture
+
+- **Generic Agent Workflow Pattern** (`generic-agent-workflow-pattern`)
+  - New architecture pattern: every customizable agent's Workflow begins with a
+    Preflight block directing it to read `syspilot.<name>.tailoring.md`
+  - Three states: missing → agent RESPONDs to PM (or PM runs Tailoring Workflow);
+    empty → proceed generic; present → use project-specific overrides
+  - `SYSP_SPEC_AGENT_ARCH_WORKFLOW` updated with Tailoring File property and
+    canonical Implementation Template (preflight sentence form)
+  - PM agent gains a dedicated **Tailoring Workflow** (detect → interview → author
+    → resume) triggered when any agent reports a missing tailoring file
+  - Product/instance boundary enforced: Setup ships `*.agent.md`, never
+    `*.tailoring.md`; existing tailoring files survive updates unchanged
+
+- **PM Agent Genericised** (`generic-agent-workflow-pattern`)
+  - `syspilot.pm.agent.md` Duties and Workflow rewritten to contain zero
+    project-specific nouns
+  - Duties: branch creation and merge reference `syspilot.branching` skill;
+    post-release distribution is a generic duty resolved by tailoring
+  - Workflow: single Main lifecycle (17 steps, 3 phases: Initiate/Review/Release)
+    replaces the previous 3-workflow structure (Main + QM Review + Release);
+    Tailoring Workflow added as a separate flow
+  - `syspilot.pm.tailoring.md` added as the syspilot dogfooding instance:
+    `experimental` branch base, `docs/changes/` path, GitHub Issues backlog,
+    Setup Agent post-release
+
+### 📋 Specs
+
+- New user story `SYSP_US_CUSTOM_AGENT_WORKFLOWS` + AC-6 on `SYSP_US_AGENT_ARCH`
+- New requirement `SYSP_REQ_AGENT_WORKFLOW_BINDING` (tailoring file contract, 5 ACs)
+- `SYSP_REQ_PM_DUTIES` and `SYSP_REQ_PM_WORKFLOW` genericised; backlog ownership AC added
+- UAT chains: `SYSP_US_UAT_GENERIC_AGENT_WORKFLOW` (6 scenarios) + `SYSP_US_UAT_PM_GENERIC_WORKFLOW` (8 scenarios)
+
+
 
 ### Summary
 

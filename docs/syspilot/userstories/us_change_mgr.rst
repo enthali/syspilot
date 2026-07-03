@@ -23,27 +23,27 @@ Change Manager Agent
    details, it treats them as imprecise intent and works to clarify.
 
    **Duties:**
-   Der Change Manager ist verantwortlich für:
+   The Change Manager is responsible for:
 
-   * die Übersetzung zwischen User-Intent (CR) und ausgeführter Spezifikations-Arbeit — kein Engineer wird mit Roh-Intent konfrontiert, kein User mit Engineer-Detail
-   * die Vollständigkeit der Pipeline — kein freigegebener Change verlässt CM ohne Spezifikation, Test-Artefakte, Implementierung, Quality Gates und Dokumentation
-   * die Trennung zwischen Engineers — keine Engineer-Session muss von einer anderen wissen
-   * die Nachvollziehbarkeit des Change-Verlaufs — das Change Document ist zu jedem Zeitpunkt der wahre Zustand, auch nach Abbruch; PM erstellt das Dokument (Template-Kopie), CM füllt die Engineering-Sektionen
-   * die Merge-Abstinenz — CM merged niemals nach ``development``; CM signalisiert Bereitschaft an PM, PM führt den Merge durch
-   * die Rückmeldung an PM nach Abschluss — kein Change verschwindet stillschweigend; CM sendet Bereitschaftsmeldung mit Branch-Name und Change-Document-Pfad
+   * the translation between user intent (CR) and executed specification work — no engineer is confronted with raw intent, no user with engineer-level detail
+   * the completeness of the pipeline — no approved change leaves CM without specification, test artefacts, implementation, quality gates, and documentation
+   * the separation between engineers — no engineer session needs to know about another
+   * the traceability of the change history — the Change Document is the true state at all times, even after abort; PM creates the document (template copy), CM fills the engineering sections
+   * the merge abstinence — CM never merges to ``development``; CM signals readiness to PM, PM performs the merge
+   * the completion notification to PM — no change disappears silently; CM sends a readiness notification with branch name and Change Document path
 
    **Workflow (high-level):**
-   Receive CR → Intent Gate → Change Document → System Designer → Test Engineer →
+   Receive CR → Intent Gate → Change Document → System Designer → Test Designer →
    Dev Engineer → Quality checks → Documentation → Notify PM/QM → Await merge approval →
    Merge → Post-merge confirmation.
 
    **Acceptance Criteria:**
 
-   1. Given a Change Request, When CM starts processing, Then it invokes the System Designer first
-   2. Given the engineer chain, When one engineer completes, Then CM invokes the next engineer
+   1. Given a Change Request, When CM starts processing, Then it dispatches work to the System Designer via SEND
+   2. Given the engineer chain, When one engineer completes, Then CM dispatches the next engineer via SEND
    3. Given a quality gate failure, When an engineer reports issues, Then CM handles the exception
    4. Given all engineers complete, When the change is done, Then CM reports completion with full traceability
-   5. Given a completed change, When CM finishes, Then it notifies PM and QM via Jarvis
+   5. Given a completed change, When CM finishes, Then it notifies PM and QM via SEND
    6. Given a CR that contains implementation instructions (file paths, code, or step-by-step details), When CM receives it, Then CM reasons about the underlying intent, consults the user to agree on a well-formulated CR, and proceeds — regardless of requested execution mode
    7. Given PM has created a branch and template-copied Change Document, When CM receives the CR, Then CM fills the engineering sections of the existing document in-place — CM never creates the Change Document or replaces its template skeleton
    8. Given all engineering work is complete, When CM is ready, Then CM sends a readiness notification to PM (with branch name and Change Document path) — CM never merges to development

@@ -33,6 +33,14 @@ This section contains design specifications following Sphinx-Needs methodology.
 
    spec_uat_skill_orchestration_vocab
    spec_uat_installer_spec_rewrite
+   spec_uat_installer_session_first
+   spec_uat_installer_scoped_cleanup
+   spec_uat_product_owns_tool_lists
+   spec_uat_remove_tools_frontmatter
+   spec_uat_release_agent_tailoring_semver
+   spec_uat_branching_naming_fix
+   spec_uat_installer_frontmatter_sync
+   spec_uat_installer_orchestration_select
 
    spec_doc_scope
 

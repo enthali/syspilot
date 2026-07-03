@@ -69,36 +69,39 @@ Change Manager Design
 
 .. spec:: Change Manager Workflow
    :id: SYSP_SPEC_CM_WORKFLOW
-   :status: approved
+   :status: draft
    :tags: agent-v2, manager, cm, workflow
    :links: SYSP_REQ_CM_WORKFLOW
 
    **Workflow:**
 
-   1. **Receive + Intent Gate** — Accept Change Request from PM. PM provides the
-      branch name and Change Document path. Read the ``Operation Mode`` field from
-      the Change Document header as the authoritative source of truth for execution
-      mode. If the dispatch message contains a mode value that disagrees with the
-      CD header, stop and ask the user to resolve the conflict — never silently
-      pick a winner. If the CR contains implementation instructions, reason about
-      the underlying intent, consult the user to agree on a well-formulated CR,
-      then proceed — regardless of operation mode. Checkout the provided branch.
+   1. **RECEIVE + Intent Gate** — RECEIVE the Change Request from PM, which
+      provides the branch name and Change Document path. Read the
+      ``Operation Mode`` field from the Change Document header as the
+      authoritative source of truth for execution mode. If the dispatch message
+      contains a mode value that disagrees with the CD header, stop and ask the
+      user to resolve the conflict. If the CR contains implementation
+      instructions, reason about the underlying intent, consult the user to
+      agree on a well-formulated CR, then proceed — regardless of operation
+      mode. Checkout the provided branch.
 
-   2. **Analyze** — Invoke System Designer for level-by-level analysis
-   3. **Test** — Invoke Test Engineer for UAT artifact generation
-   4. **Implement** — Invoke Dev Engineer for code/config changes
-   5. **Verify** — Invoke Quality Engineers (MECE, Trace) for final checks
-   6. **Document** — Invoke Documentation Engineer for doc updates
-   7. **Report** — Complete the change with traceability summary
-   8. **Notify** — SEND readiness notification to PM and QM via Jarvis, including
-      the Change Document path and branch name so QM can scope targeted checks and
-      PM can perform the merge.
-   9. **Await PM Decision** — CM waits for PM's decision based on QM findings.
-      CM never merges.
+   2. **Analyze** — SEND to System Designer for level-by-level analysis; await
+      its RESPOND. The Designer runs a MECE quality gate per level, so the spec
+      is independently checked before CM proceeds.
+   3. **Test** — SEND to Test Designer for UAT artifact generation; await its RESPOND.
+   4. **Implement** — SEND to Dev Engineer for code/config changes; await its RESPOND.
+   5. **Document** — SEND to Documentation Engineer for doc updates; await its RESPOND.
+   6. **Report** — Complete the change with traceability summary in the Change Document.
+   7. **Trigger QM + Notify PM** — SEND a readiness notification to PM (with the
+      Change Document path and branch name) and SEND a review trigger to QM as
+      the final quality gate. QM is the gate that runs MECE/Trace and assesses
+      the implementation and validation; QM records its findings in the Change
+      Document and reports to PM.
+   8. **Await PM Decision** — CM waits for PM's decision based on QM findings.
 
       **PM Decision → CM Action mapping:**
 
-      * PM says "Fix now" → CM applies fix on the same branch, then re-notifies QM and PM
+      * PM says "Fix now" → CM applies the fix on the same branch, then re-triggers QM and re-notifies PM
       * PM says "Defer" or "Accept as-is" → PM merges; CM's work on this change is done
 
    **Input:** Change Request (from PM: branch name + Change Document path + CR content)
@@ -129,32 +132,30 @@ Change Manager Design
 
    ::
 
-      Change Request (from PM: branch name + Change Document path + CR content)
+      RECEIVE Change Request (from PM: branch + Change Document path + CR content)
         → Intent Gate (reason + consult user if CR has implementation details)
         → Checkout branch (provided by PM)
-        → System Designer (per-level: analyse, write RST)
-        |   → Quality Eng. MECE (advisory per level)
-        → Test Engineer (UAT artifacts)
-        → Dev Engineer (implementation)
-        → Quality Eng. MECE (final check)
-        → Documentation Engineer
-        → SEND readiness to PM + QM (with Change Document path + branch name)
+        → SEND System Designer (per-level: analyse, write RST; MECE quality gate per level)
+        → SEND Test Designer (UAT artifacts)
+        → SEND Dev Engineer (implementation)
+        → SEND Documentation Engineer (doc updates)
+        → SEND readiness to PM  +  SEND review trigger to QM (final gate)
+        |     QM → MECE/Trace + impl/validation assessment → records findings in CD → PM
         → Await PM Decision (PM evaluates QM findings: fix / defer / accept)
-        → [if fix] Apply fix on branch → re-notify QM + PM
+        → [if fix] Apply fix on branch → re-trigger QM + re-notify PM
         → [if defer/accept] PM merges — CM done
 
 
 .. spec:: Change Manager Frontmatter
    :id: SYSP_SPEC_CM_FRONTMATTER
-   :status: approved
+   :status: draft
    :tags: agent-v2, manager, cm, frontmatter
    :links: SYSP_REQ_CM_FRONTMATTER
 
    **Frontmatter Configuration:**
 
-   * **description:** ``"Central orchestrator of the change workflow. Receives Change Requests, invokes engineers in sequence, enforces quality gates, and reports completion with full traceability."``
-   * **tools:** ``[read, edit, search, agent/runSubagent, todo, execute, syspilot_jarvis_tools]``
+   * **description:** ``"Central orchestrator of the change workflow. Receives Change Requests, dispatches engineers in sequence, enforces quality gates, and reports completion with full traceability."``
    * **user-invocable:** ``true``
-   * **agents:** ``["syspilot.design", "syspilot.uat", "syspilot.implement", "syspilot.mece", "syspilot.trace", "syspilot.release", "syspilot.docu"]``
+   * **agents:** ``[]``
 
    **File:** ``syspilot.cm.agent.md``

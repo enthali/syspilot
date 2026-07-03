@@ -4,7 +4,7 @@
 **Branch**: feature/{NAME}
 **Created**: {DATE}
 **Author**: {AUTHOR(S)}
-**Operation Mode**: autonomous | user-guided
+**Operation Mode**: user-guided (default) | autonomous
 
 ---
 
@@ -22,13 +22,13 @@
 
 | ID | Title | Impact | Notes |
 |----|-------|--------|-------|
-| US_xxx | ... | modified | ... |
+| US_abc | ... | modified | ... |
 
 ### New User Stories
 
 | ID | Title | Priority |
 |----|-------|----------|
-| SYSPILOT_US_NEW_1 | As a..., I want..., so that... | mandatory |
+| US_xxx | As a..., I want..., so that... | mandatory |
 
 ### Decisions
 
@@ -53,13 +53,13 @@ Found via links from User Stories above.
 
 | ID | Linked From | Impact | Notes |
 |----|-------------|--------|-------|
-| REQ_xxx | US_xxx | modified | ... |
+| REQ_abc | US_abc | modified | ... |
 
 ### New Requirements
 
 | ID | Title | Links | Priority |
 |----|-------|-------|----------|
-| SYSPILOT_REQ_NEW_1 | ... | US_xxx | mandatory |
+| REQ_xxx | ... | US_xxx | mandatory |
 
 ### Conflicts Detected
 
@@ -88,13 +88,13 @@ Found via links from Requirements above.
 
 | ID | Linked From | Impact | Notes |
 |----|-------------|--------|-------|
-| SPEC_xxx | REQ_xxx | modified | ... |
+| SPEC_abc | REQ_abc | modified | ... |
 
 ### New Design Elements
 
 | ID | Title | Links |
 |----|-------|-------|
-| SYSPILOT_SPEC_NEW_1 | ... | REQ_xxx, SYSPILOT_REQ_NEW_1 |
+| SPEC_xxx | ... | REQ_abc, REQ_xxx |
 
 ### Conflicts Detected
 
@@ -121,7 +121,7 @@ Found via links from Requirements above.
 | User Story | Requirements | Design | Complete? |
 |------------|--------------|--------|-----------|
 | US_xxx | REQ_xxx | SPEC_xxx | ✅ |
-| SYSPILOT_US_NEW_1 | SYSPILOT_REQ_NEW_1 | SYSPILOT_SPEC_NEW_1 | ✅ |
+...
 
 ### Artefakt-Removal-Check
 

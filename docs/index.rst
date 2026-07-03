@@ -157,6 +157,7 @@ Field Notes
    :caption: Field Notes
 
    experiences/index
+   experiences/beyond-agent-memory
    experiences/auto-agent-messaging
    experiences/case-study-self-optimizing-agents
    experiences/customizing-agents-without-forking

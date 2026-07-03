@@ -53,16 +53,24 @@ System Designer
 
    **Design Workflow:**
 
-   1. **Intake** — Receive change request from CM; read the Change Document created by CM (``docs/changes/<name>.md``)
-   2. **Level 0 (User Stories)** — Impact analysis (from consumer USes) → identify affected US → propose → discuss → write RST → update Change Document (Level 0 ✅) → commit → MECE advisory
-   3. **Level 1 (Requirements)** — Impact analysis (from affected USes, direction in) → identify REQ → propose → discuss → write RST → update Change Document (Level 1 ✅) → commit → MECE advisory
-   4. **Level 2 (Design Specs)** — Impact analysis (from affected REQs, direction in) → identify SPEC → propose → discuss → write RST → update Change Document (Level 2 ✅) → commit → MECE advisory
+   1. **RECEIVE** — RECEIVE the change request from the initiator; read the
+      Change Document created by CM (``docs/changes/<name>.md``)
+   2. **Level 0 (User Stories)** — Impact analysis (from consumer USes) → identify affected US → propose → discuss → write RST → update Change Document (Level 0 ✅) → commit → MECE quality gate
+   3. **Level 1 (Requirements)** — Impact analysis (from affected USes, direction in) → identify REQ → propose → discuss → write RST → update Change Document (Level 1 ✅) → commit → MECE quality gate
+   4. **Level 2 (Design Specs)** — Impact analysis (from affected REQs, direction in) → identify SPEC → propose → discuss → write RST → update Change Document (Level 2 ✅) → commit → MECE quality gate
    5. **Final Consistency Check** — Verify traceability, cross-level consistency, MECE across levels
    6. **Approve** — Set all ``:status: draft`` elements to ``:status: approved``
+   7. **RESPOND** — Report the new/changed element IDs at all levels, status, and
+      any open issues back to the initiator
 
    The Change Document is the living log of the design process. It is created at
    Intake and updated after every level with the decisions made and elements written.
    Each level commit includes both the RST files and the updated Change Document.
+
+   **MECE Quality Gate:** At each level the Designer SENDs the completed level to
+   the MECE Engineer and acts on the findings before moving to the next level.
+   This makes the specification's MECE quality the Designer's own gate — the
+   Change Manager does not run a separate spec-quality check.
 
    **Input:** Change Request (from CM, PM, or user)
    **Output:** Change Document + RST files at all three levels
@@ -78,20 +86,19 @@ System Designer
       Impact analysis → Identify affected → Horizontal MECE
         → Propose changes → Discuss with user → Write RST (status: draft)
         → Update Change Document → commit
-        → sphinx-build → MECE advisory (subagent) → Ask navigation
+        → sphinx-build → SEND MECE quality gate → act on findings → Ask navigation
 
 
 .. spec:: System Designer Frontmatter
    :id: SYSP_SPEC_DESIGN_FRONTMATTER
-   :status: approved
+   :status: draft
    :tags: agent-v2, engineer, change, frontmatter
    :links: SYSP_REQ_DESIGN_FRONTMATTER
 
    **Frontmatter Configuration:**
 
    * **description:** ``"Subagent that analyzes change requests level-by-level (US → REQ → SPEC) with a persistent Change Document. Writes RST files with full traceability."``
-   * **tools:** ``[read, edit, search, todo, execute, agent/runSubagent, vscode/askQuestions]``
    * **user-invocable:** ``false``
-   * **agents:** ``["syspilot.mece"]``
+   * **agents:** ``[]``
 
    **File:** ``syspilot.design.agent.md``

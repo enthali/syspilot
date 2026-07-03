@@ -47,58 +47,54 @@ Change Manager Requirements
 
 .. req:: Change Manager Workflow
    :id: SYSP_REQ_CM_WORKFLOW
-   :status: approved
+   :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, cm, workflow
    :links: SYSP_US_CM
 
    **Description:**
-   The Change Manager agent SHALL follow a workflow that drives the complete
-   change lifecycle through the engineer chain. PM provides the branch and
-   template-copied Change Document; CM checks out the branch and fills the
-   engineering sections. CM never creates branches, never creates the Change
-   Document, and never merges to development.
+   The Change Manager drives a change through the engineering gates and reports
+   its readiness to PM. PM hands over an existing Change Document (the contract)
+   on its branch; CM fills the engineering sections, runs the change through the
+   gates, triggers a QM review, and returns the change to PM for the merge
+   decision. The concrete orchestration flow is specified in
+   ``SYSP_SPEC_CM_WORKFLOW``.
 
    **Acceptance Criteria:**
 
-   * AC-1: CM workflow starts with a Change Request from PM, which includes branch name and Change Document path
-   * AC-2: CM checks out the provided branch (created by PM)
-   * AC-3: CM invokes System Designer for analysis
-   * AC-4: CM invokes Test Engineer, Dev Engineer, Quality Engineers as needed
-   * AC-5: CM invokes Documentation Engineer at the end
-   * AC-6: CM reports completion with full traceability
-   * AC-7: Upon completion, CM SHALL send a readiness notification to PM and QM via Jarvis, including branch name and Change Document path
-   * AC-8: CM SHALL ensure Impact Analysis is executed before any spec changes — CR file lists are hints, not the complete scope
-   * AC-9: Upon receiving a CR, CM SHALL assess its conformance; if it contains implementation instructions, CM SHALL reason about the underlying intent, consult the user to agree on a well-formulated CR, then proceed — regardless of operation mode
-   * AC-10: CM fills the engineering sections (L0/L1/L2, MECE, Traceability, Sign-off) of the existing Change Document in-place — CM never creates or replaces the document
-   * AC-11: After sending readiness notification, CM awaits PM's decision — CM never merges to development
-   * AC-12: If PM says "Fix now", CM applies the fix on the same branch and re-notifies PM and QM; if PM says "Defer" or "Accept as-is", PM merges and CM's work is done
-   * AC-13: Upon receiving a CR, CM SHALL read the ``Operation Mode`` field from the Change Document header as the authoritative source of truth for whether the change is ``autonomous`` or ``user-guided``
-   * AC-14: When the dispatch message contains a mode value that disagrees with the ``Operation Mode`` field in the Change Document header, CM SHALL stop and ask the user to resolve the conflict — CM never silently picks a winner
+   * AC-1: CM works on the Change Document and branch handed over by PM
+   * AC-2: Every change passes specification, test artifacts, implementation, quality gates, and documentation before it is reported ready
+   * AC-3: The true change scope is established by Impact Analysis before spec work begins — the CR file list is treated as a hint
+   * AC-4: CM fills the engineering sections of the Change Document in-place; the section structure is owned by the Change Document template
+   * AC-5: CM SENDs a quality review of the completed change to QM
+   * AC-6: On completion, PM receives a readiness notification (branch and Change Document path) and decides on the merge; CM acts on PM's decision
+   * AC-7: CM follows the ``Operation Mode`` declared in the Change Document header; on a conflicting mode in the dispatch message, CM resolves it with the user
 
 
 .. req:: Change Manager Frontmatter Configuration
    :id: SYSP_REQ_CM_FRONTMATTER
-   :status: approved
+   :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, cm, frontmatter
    :links: SYSP_US_CM; SYSP_REQ_AGENT_ARCH_FRONTMATTER
 
    **Description:**
    The Change Manager agent SHALL be configured with YAML frontmatter that
-   declares it as a user-invocable orchestrator with access to editing, agent
-   invocation, and Jarvis tools.
+   declares it as a user-invocable orchestrator. It declares no ``tools:``
+   field.
 
    **Rationale:**
-   The CM is the central workflow hub. It needs the ``agent/runSubagent`` tool to invoke
-   all 7 engineer subagents, ``edit`` to manage change documents, and
-   ``syspilot_jarvis_tools`` for inter-manager communication.
+   The CM is the central workflow hub. It SENDs work to engineer sessions and
+   manages change documents using whatever tools are enabled on the user's
+   default VS Code agent, including session-messaging (``enthali.jarvis-core/*``) for
+   inter-session communication. The CM does not invoke subagents; it omits
+   ``agents:`` and carries no ``agent/runSubagent``.
 
    **Acceptance Criteria:**
 
    * AC-1: CM frontmatter declares ``user-invocable: true``
-   * AC-2: CM frontmatter lists all 7 engineer subagents in ``agents``
-   * AC-3: CM frontmatter includes ``agent/runSubagent`` and ``syspilot_jarvis_tools`` in tools
+   * AC-2: CM frontmatter omits ``agents:`` — it SENDs to engineer sessions
+   * AC-3: CM frontmatter declares no ``tools:`` field — it inherits the user's default agent tool selection
 
 
 .. req:: Change Manager Prompt File

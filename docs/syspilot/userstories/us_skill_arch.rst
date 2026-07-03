@@ -49,6 +49,14 @@ Meta-level definition of the Skill structure and its exchangeability model.
    today — e.g. ``syspilot.impact-python``, ``syspilot.branching``,
    ``syspilot.ask-questions``.
 
+   **Tailoring:** A Skill's documented conventions MAY be overridden
+   per project via a sibling ``tailoring.md`` file colocated with
+   ``SKILL.md``. Unlike Agent Workflow tailoring (SYSP_US_CUSTOM_AGENT_WORKFLOWS),
+   a Skill is consulted rather than independently invoked, so a missing
+   Skill tailoring file requires no RESPOND-escalation — every Skill
+   convention has a safe, documented default that applies unmodified
+   when no tailoring file exists.
+
    **Acceptance Criteria — Inner Structure (mandatory for every Skill):**
 
    1. Given any Skill, When I read it, Then it has a Frontmatter block
@@ -71,3 +79,13 @@ Meta-level definition of the Skill structure and its exchangeability model.
    7. Given a Skill is removed and replaced by another Skill of the same
       group, Then the Agent that uses the group continues to function
       without modification
+
+   **Acceptance Criteria — Tailoring (optional):**
+
+   8. Given a Skill's convention needs project-specific tailoring, When a
+      sibling ``tailoring.md`` file exists next to ``SKILL.md``, Then any
+      override it specifies takes precedence over the Skill's documented
+      default
+   9. Given no ``tailoring.md`` file exists for a Skill, When an Agent
+      consults that Skill, Then the Skill's documented default convention
+      applies unmodified — no escalation or interview is required

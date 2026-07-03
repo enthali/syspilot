@@ -23,81 +23,87 @@ Project Manager Requirements
 
 .. req:: Project Manager Duties
    :id: SYSP_REQ_PM_DUTIES
-   :status: approved
+   :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, pm, duties
-   :links: SYSP_US_PM
+   :links: SYSP_US_PM; SYSP_REQ_SKILL_BRANCHING_CHAINED; SYSP_REQ_AGENT_WORKFLOW_BINDING
 
    **Description:**
    The Project Manager agent SHALL have Duties that guarantee complete CR
    translation, CR language purity, prioritization clarity, change initialization
    (branch + template-copied document), integration responsibility (PM merges),
-   QM-findings decisions, and post-release instance updates.
+   QM-findings decisions, and post-release distribution.
 
    **Acceptance Criteria:**
 
    * AC-1: After every articulated user need, either a CR exists or a documented reject rationale exists — no user need remains without disposition
    * AC-2: After every CR creation, CRs contain exclusively intent and motivation — no technical specifications or process steps are included
    * AC-3: At any point in time, a reasoned priority ordering of pending features exists — no feature lacks a priority rationale
-   * AC-4: Before every CR dispatch, PM has created the feature branch ``feature/<name>`` from ``development`` and created the Change Document by copying ``.github/templates/change-document.md`` verbatim — no hand-written document structure
+   * AC-4: Before every CR dispatch, PM has created the feature branch per the ``syspilot.branching`` skill and created the Change Document by copying the change-document template verbatim — no hand-written document structure
    * AC-5: PM fills only the header fields (Status, Branch, Created, Author, Operation Mode) and the ``## Summary`` section of the template-copied Change Document — all other sections remain untouched for CM
    * AC-5a: PM creates no Change Document without filling the ``Operation Mode`` header field — allowed values are exactly ``autonomous`` | ``user-guided``
-   * AC-6: PM owns ``development`` and performs all merges of feature branches into ``development`` — no other agent merges to ``development``
+   * AC-6: PM owns the integration branch and performs all merges of feature branches per the ``syspilot.branching`` skill — no other agent merges
    * AC-7: After every QM findings delivery, PM decides fix-now / defer / accept-as-is — no finding decision is delegated to another agent
-   * AC-8: After every successful release, PM triggers the Setup Agent for instance update — no release completes without a post-release update trigger
+   * AC-8: After every successful release, PM performs the project's post-release distribution — no release completes without its distribution step accounted for; the distribution mechanism is a tailoring detail
    * AC-9: After deciding on a QM finding (fix-now / defer / accept-as-is), PM records the decision with rationale in the ``## QM Findings`` section of the Change Document — no QM finding decision remains undocumented in the CD
 
 
 .. req:: Project Manager Workflow
    :id: SYSP_REQ_PM_WORKFLOW
-   :status: approved
+   :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, pm, workflow
-   :links: SYSP_US_PM
+   :links: SYSP_US_PM; SYSP_REQ_AGENT_ARCH_WORKFLOW; SYSP_REQ_SKILL_BRANCHING_CHAINED; SYSP_REQ_AGENT_WORKFLOW_BINDING
 
    **Description:**
-   The Project Manager agent SHALL follow a workflow from intake through
-   research and planning to delegation, including explicit branch creation,
-   template-copy document initialization, and integration (merge) execution.
+   The Project Manager turns user intent into a Change Request and brackets the
+   change lifecycle. PM intakes an idea, optionally researches and scopes it,
+   then opens the change by creating its branch and its Change Document (the
+   contract) from the template, filling header and Summary. PM SENDs the change
+   to CM for execution. When CM reports readiness, PM reviews the QM findings,
+   decides per finding (fix-now / defer / accept-as-is), and either SENDs a fix
+   instruction to CM or performs the merge per the branching strategy. When a release
+   is due, PM SENDs the release to the Release Agent and, once published, SENDs
+   the post-release distribution. The concrete orchestration flow is
+   specified in ``SYSP_SPEC_PM_WORKFLOW``.
 
    **Acceptance Criteria:**
 
-   * AC-1: PM workflow starts with user intake (feature idea or question)
-   * AC-2: PM conducts research when needed before making recommendations
-   * AC-3: PM MAY run impact analysis to understand blast radius before creating a Change Request
-   * AC-4: PM produces a structured plan or Change Request as output
-   * AC-5: PM workflow includes a Create Branch step: PM creates ``feature/<name>`` from ``development``
-   * AC-6: PM workflow includes a Create Change Document step: PM copies ``.github/templates/change-document.md`` verbatim to ``docs/changes/<name>.md`` and fills only header (including ``Operation Mode``) + Summary
-   * AC-7: PM delegates execution to Change Manager by sending branch name, Change Document path, and CR content
-   * AC-8: Before delegating to CM, PM SHALL self-check the CR for implementation details and revise if needed
-   * AC-9: PM workflow SHALL include a QM Findings Review: PM evaluates findings and either performs the merge (defer/accept) or instructs CM to fix
-   * AC-10: Feature branches are NOT deleted after merge — they are retained for forensic purposes until the Release Agent cleans them up
-   * AC-11: PM workflow SHALL include a Release-Trigger step: PM evaluates readiness, decides release criteria are met, and invokes the Release Agent
-   * AC-12: PM workflow SHALL include a Setup-Trigger step: after a successful release, PM invokes the Setup Agent to update the installed instance
+   * AC-1: Every articulated user need leaves PM either as a Change Request or as a recorded reject rationale
+   * AC-2: A Change Request carries only intent and motivation — implementation detail is removed before it reaches CM
+   * AC-3: PM opens each change with its branch and a template-based Change Document (header and Summary filled); the document structure is owned by the template
+   * AC-4: PM SENDs the change to CM with everything CM needs to start (branch and Change Document)
+   * AC-5: On CM readiness signal, PM evaluates and decides on all QM findings per ``SYSP_REQ_PM_DUTIES`` AC-7 and AC-9
+   * AC-6: PM owns integration — the merge of a completed feature branch is performed by PM according to the ``syspilot.branching`` skill — no branch name is hardcoded in this requirement
+   * AC-7: Feature branches remain available for forensics until the Release Agent retires them
+   * AC-8: When release criteria are met, PM SENDs the release to the Release Agent
+   * AC-9: Project-specific step details (file paths, build commands) SHALL be read from the sibling tailoring file ``syspilot.pm.tailoring.md`` — the workflow description contains only method-level steps; branch naming is governed by the ``syspilot.branching`` skill
+   * AC-10: The project backlog is jointly owned by PM and the user — PM structures and prioritizes items; the user makes value decisions; the backlog location is a project-specific detail captured in the tailoring file
 
 
 .. req:: Project Manager Frontmatter Configuration
    :id: SYSP_REQ_PM_FRONTMATTER
-   :status: approved
+   :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, pm, frontmatter
    :links: SYSP_US_PM; SYSP_REQ_AGENT_ARCH_FRONTMATTER
 
    **Description:**
    The Project Manager agent SHALL be configured with YAML frontmatter that
-   declares it as a user-invocable strategic planner with broad research tools
-   but no engineer subagents.
+   declares it as a user-invocable strategic planner. It declares no
+   ``tools:`` field.
 
    **Rationale:**
-   The PM needs ``web``, ``github``, and ``context7`` tools for research, and
-   ``syspilot_jarvis_tools`` for delegating Change Requests to the CM. It has
-   no subagents because it delegates execution, not engineering.
+   The PM discusses features, prioritizes backlogs, and dispatches Change Requests
+   to the CM by SENDing to its session. It SENDs work but never invokes a subagent,
+   so it omits ``agents:`` and carries no ``agent/runSubagent``. It inherits
+   whatever tools are enabled on the user's default VS Code agent.
 
    **Acceptance Criteria:**
 
    * AC-1: PM frontmatter declares ``user-invocable: true``
-   * AC-2: PM frontmatter lists ``agents: ["syspilot.release", "syspilot.setup"]``
-   * AC-3: PM frontmatter includes ``web``, ``github``, ``context7`` in tools
+   * AC-2: PM frontmatter omits ``agents:`` — it SENDs to the CM session and never invokes a subagent
+   * AC-3: PM frontmatter declares no ``tools:`` field — it inherits the user's default agent tool selection
 
 
 .. req:: Project Manager Prompt File

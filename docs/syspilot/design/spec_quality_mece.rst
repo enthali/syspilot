@@ -48,11 +48,11 @@ Quality Engineer MECE Design
 
    **Workflow:**
 
-   1. **Input** — Receive specification level to analyze (US, REQ, or SPEC).
-      Default to REQ if not specified.
+   1. **RECEIVE** — RECEIVE the specification level to analyze (US, REQ, or SPEC)
+      from the initiator. Default to REQ if not specified.
    2. **Read** — Load all items at the specified level from RST files
    3. **Analyze** — Apply MECE checks: overlaps, gaps, contradictions
-   4. **Report** — Produce structured findings with categories:
+   4. **RESPOND** — Report structured findings back to the initiator with categories:
 
       * Redundancies (merge candidates)
       * Contradictions (conflict resolution needed)
@@ -65,14 +65,13 @@ Quality Engineer MECE Design
 
 .. spec:: Quality Engineer MECE Frontmatter
    :id: SYSP_SPEC_MECE_FRONTMATTER
-   :status: approved
+   :status: draft
    :tags: agent-v2, engineer, mece, frontmatter
    :links: SYSP_REQ_MECE_FRONTMATTER
 
    **Frontmatter Configuration:**
 
    * **description:** ``"Subagent that analyzes one specification level for MECE properties — finds redundancies, gaps, contradictions, and overlaps."``
-   * **tools:** ``[read, search, todo]``
    * **user-invocable:** ``false``
    * **agents:** ``[]``
 

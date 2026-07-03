@@ -6,61 +6,62 @@ Design specifications for the agent orchestration skill.
 
 .. spec:: Communication Pattern
    :id: SYSP_SPEC_SKILL_ORCHESTRATION_PATTERN
-   :status: approved
+   :status: draft
    :tags: agent-v2, skill, orchestration, architecture
-   :links: SYSP_REQ_SKILL_ORCHESTRATION_INVOKE; SYSP_REQ_SKILL_ORCHESTRATION_FRONTMATTER; SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL
+   :links: SYSP_REQ_SKILL_ORCHESTRATION_VERBS; SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL
 
    **Definition:**
 
-   Agent orchestration follows a strict four-verb communication model:
+   Agent communication is peer-to-peer and follows a three-verb model:
 
-   **Initiating work (INVOKE or SEND):**
+   **Initiating work (SEND):**
 
-   The caller uses INVOKE or SEND to pass work to another agent:
+   The initiator uses SEND to pass work to another agent:
 
    * Input context (file paths, scope description, expected output format)
    * Instruction to work autonomously without asking questions
 
-   The choice of verb determines the calling semantics:
+   The installed variant decides whether SEND is asynchronous message
+   delivery or a synchronous call.
 
-   * **INVOKE** — synchronous, caller blocks until callee returns a result
-   * **SEND** — cross-session message delivery (non-blocking)
+   **Obtaining the assignment (RECEIVE):**
+
+   The agent uses RECEIVE at workflow start to obtain the instructions that
+   triggered the run — a pending inbox message or the task it was started
+   with, depending on the installed variant.
 
    **Returning a result (RESPOND):**
 
-   The callee executes RESPOND to return a structured result:
+   The agent executes RESPOND to return a structured result:
 
    * Created / modified files
    * Specification IDs (new or changed)
    * Build status
    * Decisions made during execution
 
-   RESPOND auto-detects invocation mode: if a pending message triggered
-   this run (detected at workflow start via RECEIVE), RESPOND routes the
-   result back to the sender via SEND; otherwise the result is returned
-   directly.
+   RESPOND is the only mode-dependent verb: the installed variant routes
+   the result back to the initiator (active send-back or plain output).
 
    **Callee isolation:**
 
-   * Each callee receives all needed context from its caller
+   * Each callee receives all needed context from its initiator
    * Callees have no knowledge of other callees in the same workflow
-   * The caller alone holds the full sequence
+   * The initiator alone holds the full sequence
 
-   **Invocation (abstract):**
+   **Verbs (abstract):**
 
    ::
 
-      INVOKE <agent>               → installed skill maps to synchronous call
-      SEND <message> to <session>  → installed skill maps to message delivery
-      RECEIVE                      → installed skill checks inbox for pending messages
-      RESPOND                      → installed skill delivers result (mode-detected)
+      SEND <work> to <agent>  → installed skill maps to work dispatch
+      RECEIVE                 → installed skill provides the triggering instructions
+      RESPOND                 → installed skill delivers result to the initiator (mode-detected)
 
 
 .. spec:: Orchestration Constraints
    :id: SYSP_SPEC_SKILL_ORCHESTRATION_MATRIX
-   :status: approved
+   :status: draft
    :tags: agent-v2, skill, orchestration, architecture
-   :links: SYSP_REQ_SKILL_ORCHESTRATION_FRONTMATTER
+   :links: SYSP_REQ_SKILL_ORCHESTRATION_VERBS
 
    **Definition:**
 
@@ -68,11 +69,15 @@ Design specifications for the agent orchestration skill.
 
    **Rules:**
 
-   * A caller may INVOKE a callee (synchronous; caller blocks until result)
-   * A caller may SEND to another session (non-blocking cross-session delivery)
-   * A callee may INVOKE other callees only if declared in its ``agents:`` frontmatter
-   * The ``agents:`` frontmatter is the single source of truth for permitted
-     INVOKE targets
+   * An agent may SEND work to another agent
+   * An agent RESPONDs to its initiator regardless of any frontmatter field —
+     RESPOND is always permitted
+   * The ``agents:`` frontmatter field is **optional documentation** of typical
+     SEND targets; it does not constrain which sessions an agent may SEND to at
+     runtime
+   * The ``agents:`` field is retained only on the Setup Bootloader (which lists
+     ``syspilot.installer`` — a real synchronous ``runSubagent`` call outside
+     the orchestration contract)
 
    **Prohibited:**
 
@@ -83,7 +88,7 @@ Design specifications for the agent orchestration skill.
 
 .. spec:: Reporting Format
    :id: SYSP_SPEC_SKILL_ORCHESTRATION_REPORTING
-   :status: approved
+   :status: draft
    :tags: agent-v2, skill, orchestration, architecture
    :links: SYSP_REQ_SKILL_ORCHESTRATION_REPORTING
 
@@ -99,15 +104,15 @@ Design specifications for the agent orchestration skill.
    * **Summary** — Brief description of what was done
    * **Issues** — List of problems or follow-up items found (empty if none)
 
-   **Delivery mechanism:** SEND (cross-session) or direct return value
-   (same-session). RESPOND auto-detects the appropriate delivery path.
+   **Delivery mechanism:** RESPOND. The installed variant routes the result
+   to the initiator (active send-back or plain output).
 
 
 .. spec:: Orchestration Group Contract
    :id: SYSP_SPEC_SKILL_ORCHESTRATION_CONTRACT
-   :status: approved
+   :status: draft
    :tags: agent-v2, skill, orchestration, architecture
-   :links: SYSP_REQ_SKILL_ORCHESTRATION_INVOKE; SYSP_REQ_SKILL_ORCHESTRATION_GROUP
+   :links: SYSP_REQ_SKILL_ORCHESTRATION_VERBS; SYSP_REQ_SKILL_ORCHESTRATION_GROUP
 
    **Definition:**
 
@@ -123,24 +128,20 @@ Design specifications for the agent orchestration skill.
 
       * - Term
         - Semantics
-      * - ``INVOKE``
-        - Synchronous call. The caller blocks until the callee returns a
-          structured result.
       * - ``SEND``
-        - Deliver a message to another session. Non-blocking cross-session
-          communication.
+        - Pass work to another agent. The installed variant decides whether
+          this is asynchronous message delivery or a synchronous call.
       * - ``RECEIVE``
-        - Check inbox for pending messages. Returns the next pending message
-          or indicates no messages are available.
+        - Obtain the instructions that triggered this run — a pending inbox
+          message or the task the agent was started with.
       * - ``RESPOND``
-        - Deliver result to caller. Auto-detects invocation mode: if a
-          pending message triggered this run (detected via RECEIVE), routes
-          the result back to the sender via SEND; otherwise returns the
-          result directly as structured output. Terminal workflow step.
+        - Deliver result to the initiator. The only mode-dependent verb: the
+          installed variant routes the result back (active send-back or plain
+          output). Terminal workflow step.
 
    **Constraints:**
 
-   * The DEFINITIONS section declares exactly these four terms — no more, no less
+   * The DEFINITIONS section declares exactly these three terms — no more, no less
    * No agent names appear in the group contract
    * No orchestration matrix (who-calls-whom) appears in the group contract
    * Each definition is tool-agnostic — no runtime API names (e.g.
@@ -148,7 +149,7 @@ Design specifications for the agent orchestration skill.
 
    **Acceptance Criteria:**
 
-   * AC-1: DEFINITIONS section exists with exactly INVOKE, SEND, RECEIVE, RESPOND
+   * AC-1: DEFINITIONS section exists with exactly SEND, RECEIVE, RESPOND
    * AC-2: No agent names or orchestration matrix in the group contract
    * AC-3: Each definition is tool-agnostic (no runtime API references)
 
@@ -157,12 +158,13 @@ Design specifications for the agent orchestration skill.
    :id: SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL
    :status: draft
    :tags: agent-v2, skill, orchestration, architecture
-   :links: SYSP_REQ_SKILL_ORCHESTRATION_INVOKE; SYSP_SPEC_SKILL_ORCHESTRATION_PATTERN; SYSP_SPEC_SKILL_ORCHESTRATION_CONTRACT
+   :links: SYSP_REQ_SKILL_ORCHESTRATION_VERBS; SYSP_SPEC_SKILL_ORCHESTRATION_PATTERN; SYSP_SPEC_SKILL_ORCHESTRATION_CONTRACT
 
    **Definition:**
 
-   The Jarvis variant (``syspilot.orchestration-jarvis``) maps the four
-   generic verbs to concrete runtime mechanisms:
+   The Jarvis variant (``syspilot.orchestration-jarvis``) is the asynchronous,
+   session-messaging variant. It maps the three generic verbs to concrete
+   runtime mechanisms:
 
    .. list-table:: Verb Mapping — Jarvis Variant
       :header-rows: 1
@@ -171,15 +173,12 @@ Design specifications for the agent orchestration skill.
       * - Verb
         - Syntax
         - Mapping
-      * - ``INVOKE``
-        - ``INVOKE <agent>``
-        - ``runSubagent("syspilot.<agent>", "<prompt>")``
       * - ``SEND``
-        - ``SEND <message> to <session>``
+        - ``SEND <work> to <agent>``
         - ``jarvis_sendToSession("<session>", "<message>")``
       * - ``RECEIVE``
         - ``RECEIVE``
-        - ``jarvis_readMessage()`` — returns next pending message or empty
+        - ``jarvis_readMessage()`` — returns the triggering message or empty
       * - ``RESPOND``
         - ``RESPOND``
         - Mode-detection logic (see below)
@@ -190,7 +189,7 @@ Design specifications for the agent orchestration skill.
    determine its invocation mode. This determines how RESPOND delivers:
 
    * If a triggering message was found at workflow start: route the result
-     back to the sender via SEND (``jarvis_sendToSession``)
+     back to the sender via ``jarvis_sendToSession``
    * If no triggering message was found: output the result directly as
      structured final message (captured by ``runSubagent()`` return value)
 
@@ -198,7 +197,51 @@ Design specifications for the agent orchestration skill.
    is already known from the RECEIVE call at workflow start.
 
    **Mutual Exclusion:** Only one skill with ``group: orchestration`` may
-   be installed at a time. The Jarvis variant is delivered in this CR.
+   be installed at a time.
+
+
+.. spec:: Orchestration Verb Model Implementation (Subagent Variant)
+   :id: SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL_SUBAGENT
+   :status: draft
+   :tags: agent-v2, skill, orchestration, architecture, graceful-degradation
+   :links: SYSP_REQ_SKILL_ORCHESTRATION_VERBS; SYSP_REQ_SKILL_ORCHESTRATION_GROUP; SYSP_SPEC_SKILL_ORCHESTRATION_CONTRACT
+
+   **Definition:**
+
+   The Subagent variant (``syspilot.orchestration-subagent``) is the
+   synchronous, in-process variant. It requires no session-messaging
+   infrastructure and maps the three generic verbs to ``runSubagent``:
+
+   .. list-table:: Verb Mapping — Subagent Variant
+      :header-rows: 1
+      :widths: 20 30 50
+
+      * - Verb
+        - Syntax
+        - Mapping
+      * - ``SEND``
+        - ``SEND <work> to <agent>``
+        - ``runSubagent("syspilot.<agent>", "<task>")`` — blocks until the
+          callee returns
+      * - ``RECEIVE``
+        - ``RECEIVE``
+        - The task/prompt the agent was started with (the ``runSubagent``
+          argument) — no inbox poll
+      * - ``RESPOND``
+        - ``RESPOND``
+        - The agent's normal output, captured as the ``runSubagent`` return
+          value
+
+   **RESPOND mode (subagent):**
+
+   In the synchronous variant RESPOND is always plain output: the agent emits
+   its structured result as its final message, which the calling
+   ``runSubagent`` captures as the return value. There is no active send-back
+   and no inbox.
+
+   **Mutual Exclusion:** Only one skill with ``group: orchestration`` may
+   be installed at a time. The Subagent variant is the graceful-degradation
+   path for workspaces without session-messaging infrastructure.
 
 
 .. spec:: Orchestration Skill Group Membership
@@ -209,7 +252,7 @@ Design specifications for the agent orchestration skill.
 
    **Definition:**
 
-   The orchestration skill SHALL carry the following frontmatter field:
+   Each orchestration variant SHALL carry the following frontmatter field:
 
    .. code-block:: yaml
 
@@ -219,13 +262,18 @@ Design specifications for the agent orchestration skill.
    with ``group: orchestration`` is installed. If a new variant is installed,
    the previous one is removed.
 
-   **Delivered Variant:** ``syspilot.orchestration-jarvis`` is the variant
-   delivered in this CR. No default assumption is made about which variant
-   is installed — the group mechanism handles substitutability.
+   **Variants:** Two interchangeable variants implement the group contract:
+
+   * ``syspilot.orchestration-jarvis`` — asynchronous, session-messaging
+   * ``syspilot.orchestration-subagent`` — synchronous, in-process
+
+   The Setup Agent installs exactly one, selected by workspace context. No
+   default assumption is made in agent documents — the group mechanism handles
+   substitutability.
 
    **DEFINITIONS:** The ``orchestration`` group uses a DEFINITIONS section
    in the Group Contract Spec (``SYSP_SPEC_SKILL_ORCHESTRATION_CONTRACT``)
-   to declare the four vocabulary terms: INVOKE, SEND, RECEIVE, RESPOND.
+   to declare the three vocabulary terms: SEND, RECEIVE, RESPOND.
 
 
 .. spec:: Agent Workflow Vocabulary Rules
@@ -247,16 +295,13 @@ Design specifications for the agent orchestration skill.
       * - Situation
         - Verb
         - Semantics
-      * - Calling another agent synchronously (caller waits for result)
-        - ``INVOKE``
-        - Same-session synchronous call
-      * - Delivering a message to another session (no wait)
+      * - Passing work to another agent
         - ``SEND``
-        - Cross-session message delivery
-      * - Checking inbox for pending work at workflow start
+        - Work dispatch (async or sync, per installed variant)
+      * - Obtaining the triggering instructions at workflow start
         - ``RECEIVE`` (first step)
-        - Inbox check; returns message or empty
-      * - Returning a result to the caller
+        - Returns the message or task that triggered the run
+      * - Returning a result to the initiator
         - ``RESPOND`` (terminal)
         - Final workflow step; mode-detected delivery
 
@@ -265,24 +310,29 @@ Design specifications for the agent orchestration skill.
    * ``runSubagent()`` — platform-specific invocation mechanism
    * ``jarvis_sendToSession`` — platform-specific messaging tool
    * ``jarvis_readMessage`` — platform-specific inbox mechanism
+   * ``INVOKE`` — retired verb; synchronous dispatch is SEND under the
+     synchronous variant
    * Any other concrete runtime tool name used as an invocation verb
 
    These tool names belong to the orchestration skill implementation
    (``SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL``), not to agent documents.
 
-   **Binding:** INVOKE and SEND in agent workflow prose bind to the
-   installed orchestration skill for runtime resolution. The skill
-   translates these verbs to concrete tool calls at execution time.
+   **Bootstrap exception:** The Setup Bootloader's synchronous call to the
+   Installer is explicitly outside the orchestration contract — it does not
+   use these verbs (see ``SYSP_SPEC_SETUP_WORKFLOW``).
+
+   **Binding:** SEND in agent workflow prose binds to the installed
+   orchestration skill for runtime resolution. The skill translates the verb
+   to concrete tool calls at execution time.
 
    **Scope:** All agent files in ``syspilot/agents/`` (product). Instance
    files in ``.github/agents/`` are updated by the Setup Agent post-release.
 
    **Acceptance Criteria:**
 
-   * AC-1: All agent workflow steps use INVOKE for synchronous same-session calls
-   * AC-2: All agents use SEND for cross-session message delivery
-   * AC-3: Agents that check for pending work include RECEIVE as first step
-   * AC-4: All callee agents have RESPOND as terminal workflow step
-   * AC-5: No agent file in ``syspilot/agents/`` contains
-     ``runSubagent()``, ``jarvis_sendToSession``, or ``jarvis_readMessage``
-     in workflow step prose
+   * AC-1: All agent workflow steps use SEND to pass work to another agent
+   * AC-2: Agents obtaining their assignment include RECEIVE as first step
+   * AC-3: All callee agents have RESPOND as terminal workflow step
+   * AC-4: No agent file in ``syspilot/agents/`` contains
+     ``runSubagent()``, ``jarvis_sendToSession``, ``jarvis_readMessage``, or
+     ``INVOKE`` in workflow step prose

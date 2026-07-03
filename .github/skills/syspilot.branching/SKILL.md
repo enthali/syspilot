@@ -5,16 +5,13 @@ description: "Git branching strategy and commit conventions for syspilot. Develo
 
 # Skill: Git Branching Strategy & Commit Conventions
 
-> **Implements**: SYSP_SPEC_SKILL_BRANCHING_STRATEGY, SYSP_SPEC_SKILL_BRANCHING_PERMISSIONS, SYSP_SPEC_SKILL_BRANCHING_COMMIT_CONVENTIONS
-> **Requirements**: SYSP_REQ_SKILL_BRANCHING_CHAINED, SYSP_REQ_SKILL_BRANCHING_MAIN_PROTECTION, SYSP_REQ_SKILL_BRANCHING_NAMING
-
 ## Instructions
 
 ## HARD RULE
 
 **ONLY `@syspilot.release` may commit to, merge to, or push to `main`. No exceptions.**
 
-If you are on `main` and need to make any change, create `feature/<name>` first.
+If you are on `main` and need to make any change, create `feature/<name>` from `development` first.
 Main always equals the latest release — any non-release commit on main is a violation.
 
 ## Development Branch Strategy
@@ -45,15 +42,6 @@ gitGraph
    merge development id: "v0.2.4" tag: "v0.2.4"
 ```
 
-**Workflow Sequence:**
-
-1. `@syspilot.design` creates `feature/<name>` from `development`
-2. `@syspilot.implement` commits code on the same branch
-3. `@syspilot.verify` commits validation report on the same branch
-4. `@syspilot.docu` commits documentation updates on the same branch
-5. Completed feature branch is squash-merged into `development`
-6. `@syspilot.release` prepares on `development` (archive, version bump, release notes, validate, commit+push), then squash-merges `development` into `main`, tags, and back-merges `main` into `development`
-
 **Key Properties:**
 
 - One branch per change — isolates each change for independent review
@@ -69,8 +57,8 @@ gitGraph
 | Agent | May create | May commit to |
 |-------|-----------|--------------|
 | `@syspilot.release` | (none) | `main` (squash merge from `development` + tag); `development` (prep + back-merge) |
-| `@syspilot.design` | `feature/<name>` | `feature/<name>` (the branch it created) |
-| `@syspilot.setup` | `update/v{version}` | `update/v{version}` (the branch it created) |
+| `@syspilot.pm` | `feature/<name>` | `feature/<name>` (the branch it created) |
+| `@syspilot.installer` | (none) | pre-install and final commit on the branch that was checked out when invoked (no dedicated branch created) |
 | `@syspilot.implement` | (none) | current feature branch |
 | `@syspilot.verify` | (none) | current feature branch |
 | `@syspilot.docu` | (none) | current feature branch |
@@ -83,9 +71,26 @@ gitGraph
 | Pattern | Created by | Purpose |
 |---------|-----------|---------|
 | `development` | (permanent) | Integration branch, all features merge here |
-| `feature/<name>` | `@syspilot.design` | Feature work, fixes, refactors |
-| `update/v{version}` | `@syspilot.setup` | Framework update branches |
+| `feature/<name>` | `@syspilot.pm` | Feature work, fixes, refactors |
 | `main` | (protected) | Release-only, always latest release |
+
+## Feature Branch Retention
+
+After a feature branch is squash-merged into `development` and the release
+that includes it completes, the default policy is to **retain** the branch
+(locally and on remote) rather than delete it.
+
+A project MAY opt into automatic deletion of merged feature branches by
+stating so in `tailoring.md`, e.g.:
+
+> Delete feature branches after they are merged into development and
+> released — do not retain them.
+
+Absent such an override, branches are retained indefinitely; retaining
+them costs nothing and preserves forensic/bisect history.
+
+The Release Engineer applies this policy during its branch-retention
+workflow step.
 
 ## Commit Message Conventions
 

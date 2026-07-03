@@ -50,13 +50,13 @@ Requirements for the Git branching strategy.
    * AC-1: Only ``@syspilot.release`` may commit to ``main``
    * AC-2: Only ``@syspilot.release`` may merge to ``main`` (squash merge from ``development``)
    * AC-3: Only ``@syspilot.release`` may push to ``main``
-   * AC-4: If an agent finds itself on ``main``, it SHALL create a feature branch before making changes
+   * AC-4: If an agent finds itself on ``main``, it SHALL create a feature branch from ``development`` before making changes
    * AC-5: ``development`` → ``main`` merges are squash-merges performed exclusively by ``@syspilot.release``
 
 
 .. req:: Branch Naming Conventions
    :id: SYSP_REQ_SKILL_BRANCHING_NAMING
-   :status: approved
+   :status: draft
    :priority: mandatory
    :tags: agent-v2, skill, branching, workflow
    :links: SYSP_US_SKILL_BRANCHING
@@ -64,8 +64,7 @@ Requirements for the Git branching strategy.
    **Description:**
    Branches SHALL follow these naming conventions:
 
-   * ``feature/<name>`` — for changes created by ``@syspilot.design``
-   * ``update/v{version}`` — for updates created by ``@syspilot.setup``
+   * ``feature/<name>`` — for changes created by ``@syspilot.pm``
    * ``development`` — permanent integration branch
    * ``main`` — releases only, managed by ``@syspilot.release``
 
@@ -76,6 +75,38 @@ Requirements for the Git branching strategy.
    **Acceptance Criteria:**
 
    * AC-1: Change branches use the ``feature/<name>`` pattern
-   * AC-2: Update branches use the ``update/v{version}`` pattern
-   * AC-3: No other branch patterns are used
-   * AC-4: Branch names use lowercase with hyphens (no underscores or spaces)
+   * AC-2: No other branch patterns are used
+   * AC-3: Branch names use lowercase with hyphens (no underscores or spaces)
+
+
+.. req:: Feature Branch Retention Policy
+   :id: SYSP_REQ_SKILL_BRANCHING_RETENTION
+   :status: draft
+   :priority: mandatory
+   :tags: agent-v2, skill, branching, workflow, tailoring
+   :links: SYSP_US_SKILL_BRANCHING; SYSP_REQ_SKILL_ARCH_TAILORING
+
+   **Description:**
+   After a feature branch is squash-merged into ``development`` and a
+   release completes, the branching skill SHALL default to retaining the
+   branch (not deleting it). Deletion is an explicit per-project opt-in,
+   configured via the skill's ``tailoring.md`` per
+   SYSP_REQ_SKILL_ARCH_TAILORING — never the default.
+
+   **Rationale:**
+   Retained branches are harmless — they cost nothing and preserve
+   forensic/bisect history. Silent deletion is a destructive default that
+   could surprise a project relying on those branches for reference. This
+   mirrors the product's established caution around not destroying
+   customer artifacts without explicit configuration.
+
+   **Acceptance Criteria:**
+
+   * AC-1: Absent a tailoring override, feature branches merged into
+     ``development`` are retained (not deleted) after a release
+   * AC-2: A project MAY opt into deletion of merged feature branches via
+     the branching skill's ``tailoring.md``
+   * AC-3: The Release Engineer applies this policy at release time — the
+     policy itself is owned and defined by the branching skill, not by the
+     Release Engineer
+

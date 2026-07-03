@@ -21,12 +21,12 @@ Verify Engineer Agent
    It never implements, only checks. Every claim must be backed by evidence.
 
    **Duties:**
-   Der Verify Engineer ist verantwortlich für:
+   The Verify Engineer is responsible for:
 
-   * die Übereinstimmung zwischen spezifizierten Änderungen und tatsächlich umgesetzten Artefakten — keine Spec-Änderung ohne korrespondierende Implementation, keine Implementation ohne Spec-Anker
-   * die Lückenlosigkeit der Traceability für die im Change Document deklarierten Elemente — jede Linkkette ist End-to-End validiert
-   * die Sichtbarkeit von Diskrepanzen — gefundene Lücken werden im Validierungsbericht ausgewiesen, nicht eigenmächtig behoben
-   * die Existenz des Validierungsberichts als prüfbares Artefakt unter ``docs/changes/val-<name>.md`` — kein Verifikationslauf endet ohne Bericht
+   * the alignment between specified changes and actually implemented artefacts — no spec change without a corresponding implementation, no implementation without a spec anchor
+   * the completeness of traceability for the elements declared in the Change Document — every link chain is validated end-to-end
+   * the visibility of discrepancies — detected gaps are documented in the validation report, never silently fixed
+   * the existence of the validation report as a verifiable artefact at ``docs/changes/val-<name>.md`` — no verification run ends without a report
 
    **Workflow (high-level):**
    Receive Change Document → read specs → compare against implementation →
@@ -37,4 +37,4 @@ Verify Engineer Agent
    1. Given a Change Document, When the Verify Engineer processes it, Then every spec change has been compared against its implementation — no declared change remains unverified
    2. Given traceability links, When checking completeness, Then every link chain for declared elements is validated end-to-end — no broken chain passes silently
    3. Given discrepancies, When detected, Then they are documented in the validation report with evidence — no gap is silently fixed or ignored
-   4. Given a verification run, When completed, Then a validation report exists at ``docs/changes/val-<name>.md`` — no verification ends without a prüfbares Artefakt
+   4. Given a verification run, When completed, Then a validation report exists at ``docs/changes/val-<name>.md`` — no verification run ends without a verifiable artefact

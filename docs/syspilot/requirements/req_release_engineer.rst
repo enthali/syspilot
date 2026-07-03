@@ -23,7 +23,7 @@ Release Engineer Requirements
 
 .. req:: Release Engineer Duties
    :id: SYSP_REQ_RELEASE_DUTIES
-   :status: approved
+   :status: draft
    :priority: mandatory
    :tags: agent-v2, engineer, release, duties
    :links: SYSP_US_RELEASE
@@ -31,40 +31,45 @@ Release Engineer Requirements
    **Description:**
    The Release Engineer agent SHALL have Duties that guarantee versioned
    identification, validation, traceability, version consistency, clean
-   branch separation, and feature-branch cleanup for every release.
+   branch separation, and tailored branch retention for every release.
 
    **Acceptance Criteria:**
 
    * AC-1: After every successful release, ``main`` carries a tag that uniquely identifies the released state — there is never an untagged release on ``main``
-   * AC-2: Nothing reaches ``main`` that has not passed sphinx-build validation with ``-W`` — a failed validation always blocks the release
+   * AC-2: Nothing reaches ``main`` that has not passed the project's validation suite (defined by tailoring) — a failed validation always blocks the release, checked before any archival or version-bump step
    * AC-3: After every successful release, all change documents from the release cycle are archived in ``docs/changes/<version>/`` and every archived document has a corresponding entry in release notes — no document is missing
-   * AC-4: After every successful release, the version string is identical in the setup agent frontmatter, the Git tag, and the release notes header — there is no version drift
+   * AC-4: After every successful release, the version string is identical across the ``docs/changes`` archive folder name, the Git tag, the release notes header, and the project's own version marker (location defined by tailoring) — there is no version drift
    * AC-5: After every successful release, ``development`` and ``main`` are synchronized — there is no half-state where one branch has content the other lacks
-   * AC-6: After every successful release, all ``feature/*`` branches that have been merged into ``development`` are deleted locally and on remote — feature branches are retained for forensic purposes only until release cleanup
+   * AC-6: After every successful release, the project's tailored branch-retention policy (owned by the ``syspilot.branching`` skill; default: retain) is applied to all ``feature/*`` branches that have been merged into ``development``
 
 
 .. req:: Release Engineer Workflow
    :id: SYSP_REQ_RELEASE_WORKFLOW
-   :status: approved
+   :status: draft
    :priority: mandatory
    :tags: agent-v2, engineer, release, workflow
-   :links: SYSP_US_RELEASE
+   :links: SYSP_US_RELEASE; SYSP_REQ_AGENT_WORKFLOW_BINDING; SYSP_REQ_SKILL_BRANCHING_CHAINED; SYSP_REQ_SKILL_BRANCHING_RETENTION
 
    **Description:**
-   The Release Engineer agent SHALL follow a workflow that prepares the release
-   on ``development`` (archive, version bump, release notes, validation) before
-   squash-merging to ``main``, tagging, and back-merging.
+   The Release Engineer agent SHALL follow a workflow that validates the
+   project first, then prepares the release on ``development`` (archive,
+   version bump, release notes) before squash-merging to ``main``, tagging,
+   and back-merging — with merge mechanics and branch retention delegated
+   to the ``syspilot.branching`` skill. The versioning scheme and the
+   version-write-target are project-specific tailoring decisions per
+   SYSP_REQ_AGENT_WORKFLOW_BINDING — not hardcoded in this requirement or
+   the agent.
 
    **Acceptance Criteria:**
 
-   * AC-1: Workflow starts with release preparation on ``development`` (archive = scan ``docs/changes/*.md``, version bump, release notes from archived docs, validate)
-   * AC-2: Release Engineer reads the current version from the ``version:`` field in ``syspilot/agents/syspilot.setup.agent.md`` and bumps it there
-   * AC-3: Release Engineer squash-merges ``development`` to ``main`` after all prep steps pass
+   * AC-1: Workflow starts with validation on ``development`` using the project's tailored validation suite; only after validation passes does release preparation continue (archive, version bump, release notes from archived docs)
+   * AC-2: Release Engineer reads the current version from the latest existing ``docs/changes/<version>/`` archive folder, computes the next version using the scheme defined in the tailoring file, and writes it to the project-specific version marker location defined by tailoring
+   * AC-3: Release Engineer squash-merges ``development`` to ``main`` after all prep steps pass, per the ``syspilot.branching`` skill's merge mechanics
    * AC-4: Release Engineer tags ``main``, pushes, and creates GitHub Release
-   * AC-5: Release Engineer back-merges ``main`` into ``development`` after tagging
-   * AC-6: If squash-merge produces conflicts, resolve with ``-X theirs`` (development wins)
-   * AC-7: The Document step uses archived change documents in ``docs/changes/<version>/`` as the explicit source
-   * AC-8: After back-merge, Release Engineer deletes all ``feature/*`` branches that are fully merged into ``development`` — locally and on remote
+   * AC-5: Release Engineer back-merges ``main`` into ``development`` after tagging, per the ``syspilot.branching`` skill
+   * AC-6: The Document step uses archived change documents in ``docs/changes/<version>/`` as the explicit source
+   * AC-7: After back-merge, Release Engineer applies the project's tailored branch-retention policy (per SYSP_REQ_SKILL_BRANCHING_RETENTION; default: retain) to ``feature/*`` branches fully merged into ``development``
+   * AC-8: Before determining the next version, Release Engineer reads its tailoring file for the project's versioning scheme and version-write-target; if the tailoring file is missing, it RESPONDs to PM that tailoring is needed rather than assuming either, per SYSP_REQ_AGENT_WORKFLOW_BINDING
 
 
 .. req:: Release Engineer Frontmatter Configuration
