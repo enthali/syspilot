@@ -42,6 +42,7 @@ Quality Manager Requirements
    * AC-5: When triggered by a CM-completion notification, QM focuses exclusively on the elements declared in the Change Document — no scope creep beyond the declared change
    * AC-6: During every audit run, MECE, Trace, and Schema checks are all executed — no check type is omitted
    * AC-7: After every CM-triggered quality check, QM writes all findings directly into the ``## QM Findings`` section of the Change Document — the findings live durably in the contract, not only in a transient message
+   * AC-8: Given a code-level defect is found during any quality check, QM traces the defect upward to the specification layer before classifying it as a pure implementation slip — no code-level finding is closed without spec-layer root-cause assessment
 
 
 .. req:: Quality Manager Workflow

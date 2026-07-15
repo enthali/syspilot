@@ -162,6 +162,8 @@ Field Notes
    experiences/case-study-self-optimizing-agents
    experiences/customizing-agents-without-forking
    experiences/self-learning-agents
+   experiences/lean-personas-rich-skills
+   experiences/which-model-runs-syspilot
 
 
 Indices

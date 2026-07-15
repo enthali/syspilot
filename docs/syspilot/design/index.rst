@@ -41,6 +41,7 @@ This section contains design specifications following Sphinx-Needs methodology.
    spec_uat_branching_naming_fix
    spec_uat_installer_frontmatter_sync
    spec_uat_installer_orchestration_select
+   spec_uat_spec_root_cause_principle
 
    spec_doc_scope
 

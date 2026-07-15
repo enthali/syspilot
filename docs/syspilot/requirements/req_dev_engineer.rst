@@ -39,6 +39,7 @@ Dev Engineer Requirements
    * AC-2: After every implementation run, all tests pass and the build is not broken — no defective state remains after completion
    * AC-3: During any implementation task, no spec content or spec status is modified by the Dev Engineer — specification integrity remains intact throughout
    * AC-4: After every commit, the commit message references the Change Document — no implementation exists without traceability
+   * AC-5: Given a code-level defect implies the approved spec is wrong or incomplete, the Dev Engineer escalates for spec correction rather than patching around the discrepancy — no code change silently diverges from an approved spec
 
 
 .. req:: Dev Engineer Workflow
