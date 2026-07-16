@@ -55,6 +55,13 @@ Design specifications for the ontology-agnostic architecture.
    ``syspilot.toml`` is the project-level entry point. It selects the active
    ontology and provides project-specific tailoring overrides.
 
+   **Authority:**
+
+   Sphinx's ``conf.py`` reads ontology selection and tailoring from
+   ``syspilot.toml`` — it is an adapter/consumer of this configuration, never
+   an independent authority. No other file may claim ontology-selection
+   authority.
+
    **Structural Requirements for the Schema:**
 
    The ontology definition (whether inline or referenced) SHALL contain:
