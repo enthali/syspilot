@@ -25,6 +25,13 @@ Each family defines its own:
 - **Naming conventions** — themes, slug rules, examples
 - **Agent templates** — the product artifacts
 - **Spec tree** — US → REQ → SPEC (or whatever levels the family uses)
+- **Ontology** — which Work-Product types exist and how they relate
+
+> **Ontology note (Phase 0):** The `syspilot` family ships with a built-in
+> default ontology (User Story → Requirement → Design Spec, L0/L1/L2). This
+> is *one* ontology template, not a hard-coded constraint. Per the ontology
+> architecture decision, other ontologies (e.g. ASPICE) are first-class.
+> See [architecture.md — Ontology Architecture](architecture.md#ontology-architecture).
 
 ## Repository Structure
 

@@ -6,6 +6,12 @@ see [../methodology.md](../methodology.md).
 
 ## The Three Levels
 
+> **Note (Phase 0):** The L0/L1/L2 hierarchy below is the **syspilot-default ontology
+> template** — the ontology that ships out-of-the-box. Per the ontology architecture
+> decision, other ontologies are first-class. A project adopting a different ontology
+> (e.g. ASPICE) replaces this template without modifying agents.
+> See [../architecture.md — Ontology Architecture](../architecture.md#ontology-architecture).
+
 ```
 Level 0: User Stories  (WHY)   → Stakeholder perspective
          │ :links:
