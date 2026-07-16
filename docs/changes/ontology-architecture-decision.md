@@ -213,14 +213,30 @@ section are unaffected — the section is additive, never required retroactively
 
 #### Findings
 
-| # | Level | Element ID | Finding | Severity |
-|---|-------|------------|---------|----------|
-| 1 | L1 | SYSP_REQ_ONTOLOGY_SEPARATION | AC-3 ("Each of the four concerns has its own configuration surface") lacks concrete definition. Term "configuration surface" is undefined; testers cannot determine compliance criteria. Compare with AC-1/AC-2 (concrete actions) and CONFIG_AUTHORITY ACs (reference specific files/consumers). | medium |
-| 2 | L0 | SYSP_US_ONTOLOGY_ARCH, SYSP_US_ONTOLOGY_TEMPLATES | Both elements lack `:links:` fields pointing to child requirements. This breaks reverse traceability visibility in sphinx-needs dependency trees. Per specification convention, L0 elements should link to their child requirements (e.g. SYSP_US_ONTOLOGY_ARCH :links: SYSP_REQ_ONTOLOGY_SEPARATION, SYSP_REQ_ONTOLOGY_CONFIG_AUTHORITY, etc.). Note: Build (sphinx-build -W) passes despite this gap, suggesting either reverse links are inferred or not enforced at Phase 0. **Recommend:** clarify whether this is a style convention or a build requirement before deferring. | low |
+| # | Level | Element ID | Finding | Severity | Owner |
+|---|-------|------------|---------|----------|-------|
+| 1 | L1 | SYSP_REQ_ONTOLOGY_SEPARATION | AC-3 ("Each of the four concerns has its own configuration surface") lacks concrete definition. Term "configuration surface" is undefined; testers cannot determine compliance criteria. Compare with AC-1/AC-2 (concrete actions) and CONFIG_AUTHORITY ACs (reference specific files/consumers). | medium | PM / Design |
+| 2 | L0 | SYSP_US_ONTOLOGY_ARCH, SYSP_US_ONTOLOGY_TEMPLATES | Both elements lack `:links:` fields pointing to child requirements. This breaks reverse traceability visibility in sphinx-needs dependency trees. Per specification convention, L0 elements should link to their child requirements (e.g. SYSP_US_ONTOLOGY_ARCH :links: SYSP_REQ_ONTOLOGY_SEPARATION, SYSP_REQ_ONTOLOGY_CONFIG_AUTHORITY, etc.). Note: Build (sphinx-build -W) passes despite this gap, suggesting either reverse links are inferred or not enforced at Phase 0. **Recommend:** clarify whether this is a style convention or a build requirement before deferring. | low | PM / Design |
+| 3 | UAT | us_uat_ontology_arch.rst, spec_uat_ontology_arch.rst | Stale element counts after fix-up round: both files list "all five spec elements" and "six REQ elements" — actual counts are now six SPEC elements and seven REQ elements following addition of SYSP_SPEC_ONTOLOGY_CAPABILITIES and SYSP_REQ_ONTOLOGY_CAPABILITIES. References to artifact lists and counts must be updated. | medium-high | Test Designer |
+| 4 | UAT | spec_uat_ontology_arch.rst (TC-TRACE section) | Same stale counts in expected-outcome test case TC-TRACE (AC-7): references outdated "five SYSP_SPEC_ONTOLOGY_* items" and "six SYSP_REQ_ONTOLOGY_* items." Update to 6 and 7 respectively. | medium-high | Test Designer |
+| 5 | UAT | (coverage gap) | No UAT test case (TC-*) covers SYSP_SPEC_ONTOLOGY_CAPABILITIES or SYSP_REQ_ONTOLOGY_CAPABILITIES — the Capabilities concern added in the CM fix-up round has no acceptance criterion, test data reference, or expected-outcome scenario in the UAT chain. This is a coverage gap, not a broken link (both elements are correctly traced upstream); however, UAT completeness requires at least one TC-* scenario that validates Capabilities concern existence and structure. | medium-high | Test Designer |
 
-#### UAT Element Verification
+#### Trace Audit Results
 
-Note: Trace Engineer initially reported missing SYSP_US_UAT_ONTOLOGY_ARCH, SYSP_REQ_UAT_ONTOLOGY_ARCH, SYSP_SPEC_UAT_ONTOLOGY_ARCH. Verification complete: all three elements exist in separate dedicated files (us_uat_ontology_arch.rst, req_uat_ontology_arch.rst, spec_uat_ontology_arch.rst) and are properly traced in the CD matrix. The separate file structure is correct per project ontology. **Status:** ✅ CLEAN (no finding).
+**Link Integrity (Checks 1–5): ✅ CLEAN**
+- All L0→L1 links present and correct (verified with new CAPABILITIES REQ added)
+- All L1→L2 links present and correct (verified with new CAPABILITIES SPEC added)
+- No broken links (all :links: field references resolve)
+- No orphaned elements (all elements are traced)
+- No circular dependencies
+
+**UAT Chain Completeness: ❌ NOT CLEAN**
+- Trace Engineer identified 3 findings related to UAT staleness after the CM fix-up round added CAPABILITIES elements
+- New elements (SYSP_REQ_ONTOLOGY_CAPABILITIES, SYSP_SPEC_ONTOLOGY_CAPABILITIES) have no corresponding UAT test cases
+- UAT documentation (us_uat_ontology_arch.rst, spec_uat_ontology_arch.rst) lists outdated element counts
+- See Findings #3, #4, #5 above for details
+
+**Summary:** Link structure is sound; UAT chain requires update for completeness and accuracy.
 
 #### CM Round 1 Fix-up Verification
 
@@ -234,6 +250,9 @@ Note: Trace Engineer initially reported missing SYSP_US_UAT_ONTOLOGY_ARCH, SYSP_
 |---|-----------|----------|-----------|
 | 1 | 1 | [fix-now / defer / accept] | |
 | 2 | 2 | [fix-now / defer / accept] | |
+| 3 | 3 | [fix-now / defer / accept] | **Route to Test Designer if fix-now** |
+| 4 | 4 | [fix-now / defer / accept] | **Route to Test Designer if fix-now** |
+| 5 | 5 | [fix-now / defer / accept] | **Route to Test Designer if fix-now** |
 
 ---
 
