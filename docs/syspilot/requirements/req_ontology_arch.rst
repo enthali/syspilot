@@ -125,6 +125,32 @@ Requirements for the ontology-agnostic architecture.
    * AC-3: Tooling can discover the ontology definition by convention (known directory location).
 
 
+.. req:: Capability Vocabulary Declaration
+   :id: SYSP_REQ_ONTOLOGY_CAPABILITIES
+   :status: draft
+   :priority: mandatory
+   :tags: architecture, ontology, phase-0
+   :links: SYSP_US_ONTOLOGY_ARCH
+
+   **Description:**
+   The Capabilities concern SHALL be independently declared. A Capability is a
+   named, type-agnostic operation (e.g. create, modify, review, validate,
+   approve) that Actors may exercise on Work Products. The capability
+   vocabulary SHALL be defined separately from Work-Product types; no
+   Capability declaration depends on a specific type.
+
+   **Rationale:**
+   Decoupling capabilities from types allows the same operation vocabulary to
+   be reused across different ontologies. Type-specific constraints belong to
+   the Actor's ownership entry, not the capability definition itself.
+
+   **Acceptance Criteria:**
+
+   * AC-1: The capability vocabulary is declared independently of the ontology graph.
+   * AC-2: Each capability has a unique identifier and a human-readable description.
+   * AC-3: Capabilities are type-agnostic by default — constraints to specific types are expressed in the Actor's ownership entry, not in the capability declaration.
+
+
 .. req:: Ontology Templates
    :id: SYSP_REQ_ONTOLOGY_TEMPLATES
    :status: draft

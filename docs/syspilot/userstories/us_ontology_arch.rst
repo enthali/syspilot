@@ -43,6 +43,7 @@ Architecture decision: syspilot becomes ontology-agnostic.
    2. Given an active Work-Product type, When I inspect ownership, Then exactly one Actor is its Primary-Actor-Owner.
    3. Given a branching ontology graph, When an Actor processes its types, Then it follows the graph's dependency order — not a hard-coded level numbering.
    4. Given the project configuration, When I look for the single source of truth for ontology selection and tailoring, Then it is ``syspilot.toml`` — not ``conf.py`` or any agent file.
+   5. Given the ontology configuration, When I look for the ontology definition, Then it is stored in a dedicated, discoverable, project-local directory (``.syspilot/``) — not scattered across agent files or ``conf.py``.
 
 
 .. story:: Ontology Templates

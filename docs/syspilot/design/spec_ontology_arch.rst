@@ -79,6 +79,8 @@ Design specifications for the ontology-agnostic architecture.
       * A unique capability identifier
       * A human-readable description
 
+      (Structural definition: see ``SYSP_SPEC_ONTOLOGY_CAPABILITIES``.)
+
    5. **Actor–Capability Bindings** — for each Actor, the set of Capabilities
       it may exercise and on which types.
 
@@ -89,6 +91,41 @@ Design specifications for the ontology-agnostic architecture.
    * The dependency graph SHALL be acyclic (DAG).
    * Every Actor referenced in ownership SHALL exist in the Actor–Capability
      bindings.
+
+
+.. spec:: Capability Vocabulary
+   :id: SYSP_SPEC_ONTOLOGY_CAPABILITIES
+   :status: draft
+   :tags: architecture, ontology, phase-0
+   :links: SYSP_REQ_ONTOLOGY_CAPABILITIES
+
+   **Definition:**
+
+   The capabilities section of the ontology definition declares the vocabulary
+   of operations that Actors may exercise on Work Products.
+
+   **Schema Structure:**
+
+   A list of capability entries, each with:
+
+   * ``id`` — unique string identifier for the capability (e.g. ``create``,
+     ``modify``, ``review``, ``validate``, ``approve``)
+   * ``description`` — human-readable explanation of what the operation does
+
+   **Type-Agnosticism:**
+
+   Capability declarations are type-agnostic. A capability applies to any
+   Work-Product type unless constrained. Type-specific constraints (e.g.
+   "Actor X may only exercise ``approve`` on ``requirement``") are expressed
+   in the Actor–Capability Bindings section, not in the capability
+   declaration itself.
+
+   **Constraints:**
+
+   * Each ``id`` SHALL be unique within the capabilities list.
+   * The capabilities list is independent of the ontology graph — adding or
+     removing a Work-Product type does not require changes to capability
+     declarations.
 
 
 .. spec:: .syspilot/ Directory Structure
