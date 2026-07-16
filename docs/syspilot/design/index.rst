@@ -10,6 +10,7 @@ This section contains design specifications following Sphinx-Needs methodology.
    spec_agent_arch
    spec_skill_arch
    spec_skill_definitions
+   spec_ontology_arch
 
    spec_project_mgr
    spec_change_mgr

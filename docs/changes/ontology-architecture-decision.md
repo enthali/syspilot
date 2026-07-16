@@ -39,112 +39,114 @@ syspilot currently embeds its default ontology (User Story → Requirement → D
 
 ## Level 0: User Stories
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted User Stories
 
-| ID | Title | Impact | Notes |
-|----|-------|--------|-------|
-| US_abc | ... | modified | ... |
+None — greenfield addition.
 
 ### New User Stories
 
 | ID | Title | Priority |
 |----|-------|----------|
-| US_xxx | As a..., I want..., so that... | mandatory |
+| SYSP_US_ONTOLOGY_ARCH | Ontology-Agnostic Architecture | mandatory |
+| SYSP_US_ONTOLOGY_TEMPLATES | Ontology Templates | mandatory |
 
 ### Decisions
 
-- Decision 1: ...
-- Decision 2: ...
+- Single US for the architecture decision (no split by sub-concern); the four concerns are one indivisible promise.
+- Templates added as a separate US discovered during design — different WHY (adoptability vs. agnosticism).
+- Process concern acknowledged as future-phase candidate for per-project workflow definitions; not in scope here.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing User Stories
-- [ ] No redundancies
-- [ ] Gaps identified and addressed
+- [x] No contradictions with existing User Stories
+- [x] No redundancies
+- [x] Gaps identified and addressed
 
 ---
 
 ## Level 1: Requirements
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Requirements
 
-Found via links from User Stories above.
-
-| ID | Linked From | Impact | Notes |
-|----|-------------|--------|-------|
-| REQ_abc | US_abc | modified | ... |
+None — greenfield addition.
 
 ### New Requirements
 
 | ID | Title | Links | Priority |
 |----|-------|-------|----------|
-| REQ_xxx | ... | US_xxx | mandatory |
+| SYSP_REQ_ONTOLOGY_SEPARATION | Four-Concern Separation | SYSP_US_ONTOLOGY_ARCH | mandatory |
+| SYSP_REQ_ONTOLOGY_CONFIG_AUTHORITY | Configuration Authority | SYSP_US_ONTOLOGY_ARCH | mandatory |
+| SYSP_REQ_ONTOLOGY_OWNERSHIP | Primary-Actor-Owner Invariant | SYSP_US_ONTOLOGY_ARCH | mandatory |
+| SYSP_REQ_ONTOLOGY_GRAPH_ORDER | Graph-Order Processing | SYSP_US_ONTOLOGY_ARCH | mandatory |
+| SYSP_REQ_ONTOLOGY_DIRECTORY | Ontology Storage | SYSP_US_ONTOLOGY_ARCH | mandatory |
+| SYSP_REQ_ONTOLOGY_TEMPLATES | Ontology Templates | SYSP_US_ONTOLOGY_TEMPLATES | mandatory |
 
 ### Conflicts Detected
 
-- ⚠️ REQ_xxx vs REQ_yyy: {description}
-  - Resolution: {decision}
+None.
 
 ### Decisions
 
-- Decision 1: ...
+- `.syspilot/` path is L2 detail; L1 says "dedicated project-local directory" only.
+- Schema structural requirements (not full TOML syntax) at L2; keeps spec stable across syntax iterations.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Requirements
-- [ ] No redundancies
-- [ ] All new REQs link to User Stories
+- [x] No contradictions with existing Requirements
+- [x] No redundancies
+- [x] All new REQs link to User Stories
 
 ---
 
 ## Level 2: Design
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Design Elements
 
-Found via links from Requirements above.
-
-| ID | Linked From | Impact | Notes |
-|----|-------------|--------|-------|
-| SPEC_abc | REQ_abc | modified | ... |
+None — greenfield addition.
 
 ### New Design Elements
 
 | ID | Title | Links |
 |----|-------|-------|
-| SPEC_xxx | ... | REQ_abc, REQ_xxx |
+| SYSP_SPEC_ONTOLOGY_FOUR_CONCERNS | Four-Concern Model | SYSP_REQ_ONTOLOGY_SEPARATION |
+| SYSP_SPEC_ONTOLOGY_TOML_SCHEMA | syspilot.toml Ontology Configuration | SYSP_REQ_ONTOLOGY_CONFIG_AUTHORITY, SYSP_REQ_ONTOLOGY_OWNERSHIP |
+| SYSP_SPEC_ONTOLOGY_DIRECTORY | .syspilot/ Directory Structure | SYSP_REQ_ONTOLOGY_DIRECTORY |
+| SYSP_SPEC_ONTOLOGY_GRAPH | Ontology Graph & Dependency Order | SYSP_REQ_ONTOLOGY_GRAPH_ORDER |
+| SYSP_SPEC_ONTOLOGY_DEFAULT_TEMPLATE | Syspilot-Default Ontology Template | SYSP_REQ_ONTOLOGY_TEMPLATES |
 
 ### Conflicts Detected
 
-- ⚠️ SPEC_xxx vs SPEC_yyy: {description}
-  - Resolution: {decision}
+None.
 
 ### Decisions
 
-- Decision 1: ...
+- Schema spec defines structural requirements (sections, keys, constraints), not concrete TOML syntax — allows iteration without spec changes.
+- Default template serves dual purpose: adoption starting point + schema validation proof.
+- `.syspilot/templates/` reserved for future additional templates (ASPICE, V-model, etc.).
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Designs
-- [ ] All new SPECs link to Requirements
+- [x] No contradictions with existing Designs
+- [x] All new SPECs link to Requirements
 
 ---
 
 ## Final Consistency Check
 
-**Status**: ⏳ not started | ✅ passed | ❌ failed
+**Status**: ✅ passed
 
 ### Traceability Verification
 
 | User Story | Requirements | Design | Complete? |
 |------------|--------------|--------|-----------|
-| US_xxx | REQ_xxx | SPEC_xxx | ✅ |
-...
+| SYSP_US_ONTOLOGY_ARCH | SYSP_REQ_ONTOLOGY_SEPARATION, SYSP_REQ_ONTOLOGY_CONFIG_AUTHORITY, SYSP_REQ_ONTOLOGY_OWNERSHIP, SYSP_REQ_ONTOLOGY_GRAPH_ORDER, SYSP_REQ_ONTOLOGY_DIRECTORY | SYSP_SPEC_ONTOLOGY_FOUR_CONCERNS, SYSP_SPEC_ONTOLOGY_TOML_SCHEMA, SYSP_SPEC_ONTOLOGY_DIRECTORY, SYSP_SPEC_ONTOLOGY_GRAPH | ✅ |
+| SYSP_US_ONTOLOGY_TEMPLATES | SYSP_REQ_ONTOLOGY_TEMPLATES | SYSP_SPEC_ONTOLOGY_DEFAULT_TEMPLATE | ✅ |
 
 ### Artefakt-Removal-Check
 

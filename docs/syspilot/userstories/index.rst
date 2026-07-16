@@ -10,6 +10,7 @@ This section contains user stories that drive the requirements.
    us_agent_arch
    us_skill_arch
    us_custom_agent_workflows
+   us_ontology_arch
 
    us_project_mgr
    us_change_mgr
