@@ -1,6 +1,6 @@
 # Change Document: ontology-architecture-decision
 
-**Status**: in-progress
+**Status**: ready-for-merge
 **Branch**: feature/ontology-architecture-decision
 **Created**: 2026-07-16
 **Author**: PM + User
@@ -152,33 +152,26 @@ None.
 | SYSP_US_ONTOLOGY_ARCH | SYSP_REQ_ONTOLOGY_SEPARATION, SYSP_REQ_ONTOLOGY_CONFIG_AUTHORITY, SYSP_REQ_ONTOLOGY_OWNERSHIP, SYSP_REQ_ONTOLOGY_GRAPH_ORDER, SYSP_REQ_ONTOLOGY_DIRECTORY, SYSP_REQ_ONTOLOGY_CAPABILITIES | SYSP_SPEC_ONTOLOGY_FOUR_CONCERNS, SYSP_SPEC_ONTOLOGY_TOML_SCHEMA, SYSP_SPEC_ONTOLOGY_DIRECTORY, SYSP_SPEC_ONTOLOGY_GRAPH, SYSP_SPEC_ONTOLOGY_CAPABILITIES | ✅ |
 | SYSP_US_ONTOLOGY_TEMPLATES | SYSP_REQ_ONTOLOGY_TEMPLATES | SYSP_SPEC_ONTOLOGY_DEFAULT_TEMPLATE | ✅ |
 | SYSP_US_UAT_ONTOLOGY_ARCH | SYSP_REQ_UAT_ONTOLOGY_ARCH | SYSP_SPEC_UAT_ONTOLOGY_ARCH | ✅ |
-| SYSP_US_UAT_ONTOLOGY_ARCH | SYSP_REQ_UAT_ONTOLOGY_ARCH | SYSP_SPEC_UAT_ONTOLOGY_ARCH | ✅ |
 
 ### Artefakt-Removal-Check
 
-*Fill in only when this CR removes an artefact (file, field, configuration key, REQ-ID).*
-
-For each removed artefact, run a project-wide grep on all plausible name variants and classify results:
-
-| Removed Artefact | Class (a): Code/Workflow refs | Class (b): Doc refs | Class (c): Historic Change Docs |
-|------------------|-------------------------------|---------------------|---------------------------------|
-| `{artefact name}` | {files + lines fixed / none} | {files + lines fixed / none} | {count — acceptable historic stranding} |
-
-- [ ] All class (a) active code/workflow references fixed in this CR
-- [ ] All class (b) active documentation references fixed in this CR
-- [ ] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
+Not applicable — this CR is a greenfield addition. No artefacts removed.
 
 ### Issues Found
 
-- [ ] Issue 1: ...
-- [ ] Issue 2: ...
+None outstanding. Three QM MECE findings were all resolved in fix-up rounds:
+- Finding #1 (high): TC-CONFIG-AUTH untestable — resolved: `conf.py` adapter/consumer authority clause added to `SYSP_SPEC_ONTOLOGY_TOML_SCHEMA`.
+- Finding #2 (medium-high): Capabilities concern had no dedicated REQ/SPEC — resolved: `SYSP_REQ_ONTOLOGY_CAPABILITIES` + `SYSP_SPEC_ONTOLOGY_CAPABILITIES` added.
+- Finding #3 (low): `SYSP_REQ_ONTOLOGY_DIRECTORY` had no explicit parent AC — resolved: AC-5 added to `SYSP_US_ONTOLOGY_ARCH`.
+
+Trace Engineer: Clean. No broken links, no orphans.
 
 ### Sign-off
 
-- [ ] All levels completed (no ⚠️ DEPRECATED markers remaining)
-- [ ] All conflicts resolved
-- [ ] Traceability verified
-- [ ] Ready for implementation
+- [x] All levels completed (no ⚠️ DEPRECATED markers remaining)
+- [x] All conflicts resolved
+- [x] Traceability verified
+- [x] Ready for merge (Phase 0: no implementation; Dev Engineer step is not applicable)
 
 ---
 
@@ -191,28 +184,26 @@ section are unaffected — the section is additive, never required retroactively
 
 ### Round 1
 
-**Reviewed by:** QM
-**Review date:** {DATE}
+**Reviewed by:** MECE Engineer + Trace Engineer
+**Review date:** 2026-07-16
 
 #### Findings
 
 | # | Level | Element ID | Finding | Severity |
 |---|-------|------------|---------|----------|
-| 1 | L? | {ID} | {description} | high / medium / low |
+| 1 | L2/UAT | SYSP_SPEC_UAT_ONTOLOGY_ARCH (TC-CONFIG-AUTH) | conf.py adapter/consumer text absent from SYSP_SPEC_ONTOLOGY_TOML_SCHEMA — test untestable as written | high |
+| 2 | L1/L2 | (missing) | Capabilities concern has no dedicated REQ/SPEC despite US AC-1 requiring all four concerns independently defined | medium-high |
+| 3 | L1 | SYSP_REQ_ONTOLOGY_DIRECTORY | No explicit parent AC in SYSP_US_ONTOLOGY_ARCH — grounded in prose only | low |
 
-#### PM Decisions
+#### CM Fix-up Decisions
 
 | # | Finding # | Decision | Rationale |
 |---|-----------|----------|-----------|
-| 1 | 1 | fix-now / defer / accept-as-is | {rationale} |
+| 1 | 1 | fix-now | Add authority clause to SYSP_SPEC_ONTOLOGY_TOML_SCHEMA naming conf.py as adapter/consumer. |
+| 2 | 2 | fix-now | Add SYSP_REQ_ONTOLOGY_CAPABILITIES + SYSP_SPEC_ONTOLOGY_CAPABILITIES. |
+| 3 | 3 | fix-now | Add AC-5 to SYSP_US_ONTOLOGY_ARCH (directory discoverability). |
 
 ---
-
-## Appendix: Link Discovery Results
-
-```
-{paste output from get_need_links.py as needed}
-```
 
 ---
 
