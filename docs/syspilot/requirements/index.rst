@@ -10,6 +10,7 @@ This section contains system requirements following Sphinx-Needs methodology.
    req_agent_arch
    req_skill_arch
    req_skill_definitions
+   req_ontology_arch
 
    req_project_mgr
    req_change_mgr
@@ -41,6 +42,7 @@ This section contains system requirements following Sphinx-Needs methodology.
    req_uat_installer_frontmatter_sync
    req_uat_installer_orchestration_select
    req_uat_spec_root_cause_principle
+   req_uat_ontology_arch
 
    req_documentation
 

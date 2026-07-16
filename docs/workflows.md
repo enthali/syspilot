@@ -38,6 +38,11 @@ agent to call next.
 The Change Workflow is the primary development loop. Every change — from a new
 feature to a bug fix — follows this sequence:
 
+> **Ontology note (Phase 0):** The design → implement → uat → verify → docu sequence
+> reflects the **syspilot-default ontology** (L0/L1/L2). Per the ontology architecture
+> decision, actor processing order is derived from the ontology graph, not a fixed loop.
+> A project using a different ontology will see a different actor sequence here.
+
 ```{mermaid}
 flowchart LR
     design --> implement --> uat --> verify --> docu

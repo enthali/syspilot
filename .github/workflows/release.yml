@@ -48,7 +48,7 @@ jobs:
             exit 1
           fi
           
-          VERSION=$(grep '^version:' "$AGENT_FILE" | head -1 | sed 's/version:[[:space:]]*//')
+          VERSION=$(grep '^version:' "$AGENT_FILE" | head -1 | sed 's/version:[[:space:]]*//' | sed 's/^v//')
           TAG="${{ steps.tag_version.outputs.version }}"
           
           echo "Setup Agent version: $VERSION"

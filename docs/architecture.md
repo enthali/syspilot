@@ -198,5 +198,50 @@ are always preserved, regardless of whether they appear in the current release.
 
 ---
 
+## Ontology Architecture *(Phase 0 — spec only, no runtime implementation)*
+
+syspilot separates four concerns cleanly so that the default L0/L1/L2 hierarchy
+can be replaced by any project ontology (e.g. ASPICE) without rewriting agents.
+
+| Concern | What it defines |
+|---------|----------------|
+| **Ontology** | Work-Product types, typed relations, lifecycle states, ownership |
+| **Capabilities** | Type-agnostic operations (create, modify, check, validate) |
+| **Actors** | Which Capabilities and Work-Product types each Actor owns |
+| **Process** | Execution order derived from the ontology graph; gate conditions |
+
+### Key Invariants
+
+- **`syspilot.toml` is the single authority** for ontology selection and tailoring.
+  `conf.py` is an adapter/consumer of `syspilot.toml`, never an independent authority.
+- Every active Work-Product type has exactly **one Primary-Actor-Owner**
+  (1:N ownership is forbidden; read access is unrestricted).
+- An Actor processes *all and only* its own affected types in the **dependency order
+  of the ontology graph** — not a fixed L0/L1/L2 loop.
+- Branching graphs are first-class. "Dependency order" means graph order.
+
+### `.syspilot/` Directory Structure
+
+The per-project `.syspilot/` directory holds all ontology and capability files:
+
+```
+.syspilot/
+├── syspilot.toml           # Single authority: active ontology + tailoring
+├── ontologies/
+│   └── <name>/
+│       └── ontology.toml  # Ontology definition (types, relations, graph)
+└── capabilities/
+    └── <name>.toml        # Capability declarations (optional overrides)
+```
+
+The **syspilot-default** ontology (`us → req → spec`, L0/L1/L2) ships as a
+built-in template. Other ontology templates are first-class; selecting one
+does not require agent changes.
+
+*Spec elements:* `SYSP_SPEC_ONTOLOGY_FOUR_CONCERNS`, `SYSP_SPEC_ONTOLOGY_TOML_SCHEMA`,
+`SYSP_SPEC_ONTOLOGY_DIRECTORY`, `SYSP_SPEC_ONTOLOGY_GRAPH`, `SYSP_SPEC_ONTOLOGY_CAPABILITIES`.
+
+---
+
 *For file organization details, see [methodology.md](methodology.md).
 For the development process, see [workflows.md](workflows.md).*
