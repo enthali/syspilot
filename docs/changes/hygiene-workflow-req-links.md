@@ -1,6 +1,6 @@
 # Change Document: hygiene-workflow-req-links
 
-**Status**: in-progress
+**Status**: ready-for-merge
 **Branch**: feature/hygiene-workflow-req-links
 **Created**: 2026-07-17
 **Author**: PM + User
@@ -127,15 +127,17 @@ Not applicable — no artefacts removed.
 
 ### Issues Found
 
-- [ ] Issue 1: ...
-- [ ] Issue 2: ...
+None. MECE and Trace checks both clean on first review round.
 
 ### Sign-off
 
-- [ ] All levels completed (no ⚠️ DEPRECATED markers remaining)
-- [ ] All conflicts resolved
-- [ ] Traceability verified
-- [ ] Ready for implementation
+- [x] All levels completed (no ⚠️ DEPRECATED markers remaining)
+- [x] All conflicts resolved
+- [x] Traceability verified
+- [x] Ready for merge
+- [x] Test Designer: not applicable (no new behavior; only AC is sphinx-build -W, already confirmed clean)
+- [x] Dev Engineer: not applicable (no code changes)
+- [x] Documentation Engineer: not applicable (internal spec hygiene, no user-facing doc impact)
 
 ---
 
@@ -148,28 +150,14 @@ section are unaffected — the section is additive, never required retroactively
 
 ### Round 1
 
-**Reviewed by:** QM
-**Review date:** {DATE}
+**Reviewed by:** MECE Engineer + Trace Engineer
+**Review date:** 2026-07-17
 
 #### Findings
 
-| # | Level | Element ID | Finding | Severity |
-|---|-------|------------|---------|----------|
-| 1 | L? | {ID} | {description} | high / medium / low |
-
-#### PM Decisions
-
-| # | Finding # | Decision | Rationale |
-|---|-----------|----------|-----------|
-| 1 | 1 | fix-now / defer / accept-as-is | {rationale} |
+None. All 12 per-agent workflow REQs accounted for, exclusion list correct, no redundancy, no broken links.
 
 ---
-
-## Appendix: Link Discovery Results
-
-```
-{paste output from get_need_links.py as needed}
-```
 
 ---
 
