@@ -29,126 +29,113 @@ Acceptance criteria:
 
 ## Level 0: User Stories
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted User Stories
 
 | ID | Title | Impact | Notes |
 |----|-------|--------|-------|
-| US_abc | ... | modified | ... |
+| SYSP_US_SKILL_ORCHESTRATION | Orchestration Skill Architecture | context only | No text change; US is abstract enough to cover simplified skill |
 
 ### New User Stories
 
-| ID | Title | Priority |
-|----|-------|----------|
-| US_xxx | As a..., I want..., so that... | mandatory |
+None.
 
 ### Decisions
 
-- Decision 1: ...
-- Decision 2: ...
+- No L0 changes needed — the US already says "exchangeable skill variants" without prescribing mode-detection logic.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing User Stories
-- [ ] No redundancies
-- [ ] Gaps identified and addressed
+- [x] No contradictions with existing User Stories
+- [x] No redundancies
+- [x] Gaps identified and addressed
 
 ---
 
 ## Level 1: Requirements
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Requirements
 
-Found via links from User Stories above.
-
 | ID | Linked From | Impact | Notes |
 |----|-------------|--------|-------|
-| REQ_abc | US_abc | modified | ... |
+| SYSP_REQ_SKILL_ORCHESTRATION_VERBS | SYSP_US_SKILL_ORCHESTRATION | no change needed | RESPOND defined as "deliver result to initiator, variant routes appropriately" — already abstract enough; no mode-detection prescribed at L1 |
 
 ### New Requirements
 
-| ID | Title | Links | Priority |
-|----|-------|-------|----------|
-| REQ_xxx | ... | US_xxx | mandatory |
+None.
 
 ### Conflicts Detected
 
-- ⚠️ REQ_xxx vs REQ_yyy: {description}
-  - Resolution: {decision}
+None.
 
 ### Decisions
 
-- Decision 1: ...
+- SYSP_REQ_SKILL_ORCHESTRATION_VERBS AC-6 says "only RESPOND is mode-dependent" — this means it differs *between variants* (Jarvis vs Subagent), not within a single variant at runtime. The requirement text is already correct and does not prescribe runtime mode-detection. No change.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Requirements
-- [ ] No redundancies
-- [ ] All new REQs link to User Stories
+- [x] No contradictions with existing Requirements
+- [x] No redundancies
+- [x] All new REQs link to User Stories
 
 ---
 
 ## Level 2: Design
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Design Elements
 
-Found via links from Requirements above.
-
 | ID | Linked From | Impact | Notes |
 |----|-------------|--------|-------|
-| SPEC_abc | REQ_abc | modified | ... |
+| SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL | SYSP_REQ_SKILL_ORCHESTRATION_VERBS | modified | RESPOND row updated; mode-detection subsection removed |
+| SYSP_SPEC_SKILL_ORCHESTRATION_MATRIX | SYSP_REQ_SKILL_ORCHESTRATION_VERBS | modified | Removed `agents:` frontmatter bullets |
 
 ### New Design Elements
 
-| ID | Title | Links |
-|----|-------|-------|
-| SPEC_xxx | ... | REQ_abc, REQ_xxx |
+None.
 
 ### Conflicts Detected
 
-- ⚠️ SPEC_xxx vs SPEC_yyy: {description}
-  - Resolution: {decision}
+None.
 
 ### Decisions
 
-- Decision 1: ...
+- RESPOND in Jarvis variant is now simply "SEND result back to originating sender via `jarvis_sendToSession`" — no runtime mode-detection.
+- `agents:` / `runSubagent` carve-out removed from shared orchestration spec — belongs in Setup Bootloader's own spec (`spec_setup_engineer.rst`), which already documents it.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Designs
-- [ ] All new SPECs link to Requirements
+- [x] No contradictions with existing Designs
+- [x] All new SPECs link to Requirements
 
 ---
 
 ## Final Consistency Check
 
-**Status**: ⏳ not started | ✅ passed | ❌ failed
+**Status**: ✅ passed
 
 ### Traceability Verification
 
 | User Story | Requirements | Design | Complete? |
 |------------|--------------|--------|-----------|
-| US_xxx | REQ_xxx | SPEC_xxx | ✅ |
-...
+| SYSP_US_SKILL_ORCHESTRATION | SYSP_REQ_SKILL_ORCHESTRATION_VERBS (unchanged) | SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL (modified), SYSP_SPEC_SKILL_ORCHESTRATION_MATRIX (modified) | ✅ |
 
 ### Artefakt-Removal-Check
 
-*Fill in only when this CR removes an artefact (file, field, configuration key, REQ-ID).*
-
-For each removed artefact, run a project-wide grep on all plausible name variants and classify results:
+Removed content (prose sections, not IDs):
 
 | Removed Artefact | Class (a): Code/Workflow refs | Class (b): Doc refs | Class (c): Historic Change Docs |
 |------------------|-------------------------------|---------------------|---------------------------------|
-| `{artefact name}` | {files + lines fixed / none} | {files + lines fixed / none} | {count — acceptable historic stranding} |
+| RESPOND mode-detection subsection | Fixed in SYSP_SPEC_SKILL_ORCHESTRATION_VERB_MODEL | none | 1 — acceptable (uat-skill-orchestration-vocab CD mentions it historically) |
+| `agents:` frontmatter bullets | Fixed in SYSP_SPEC_SKILL_ORCHESTRATION_MATRIX | `spec_setup_engineer.rst` already documents its own `runSubagent` — no fix needed | 1 — acceptable |
 
-- [ ] All class (a) active code/workflow references fixed in this CR
-- [ ] All class (b) active documentation references fixed in this CR
-- [ ] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
+- [x] All class (a) active code/workflow references fixed in this CR
+- [x] All class (b) active documentation references fixed in this CR
+- [x] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
 
 ### Issues Found
 

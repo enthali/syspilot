@@ -72,12 +72,6 @@ Design specifications for the agent orchestration skill.
    * An agent may SEND work to another agent
    * An agent RESPONDs to its initiator regardless of any frontmatter field —
      RESPOND is always permitted
-   * The ``agents:`` frontmatter field is **optional documentation** of typical
-     SEND targets; it does not constrain which sessions an agent may SEND to at
-     runtime
-   * The ``agents:`` field is retained only on the Setup Bootloader (which lists
-     ``syspilot.installer`` — a real synchronous ``runSubagent`` call outside
-     the orchestration contract)
 
    **Prohibited:**
 
@@ -181,20 +175,8 @@ Design specifications for the agent orchestration skill.
         - ``jarvis_readMessage()`` — returns the triggering message or empty
       * - ``RESPOND``
         - ``RESPOND``
-        - Mode-detection logic (see below)
-
-   **RESPOND mode-detection:**
-
-   At workflow start, the agent calls RECEIVE (``jarvis_readMessage()``) to
-   determine its invocation mode. This determines how RESPOND delivers:
-
-   * If a triggering message was found at workflow start: route the result
-     back to the sender via ``jarvis_sendToSession``
-   * If no triggering message was found: output the result directly as
-     structured final message (captured by ``runSubagent()`` return value)
-
-   RESPOND does NOT call ``jarvis_readMessage()`` again. The invocation mode
-   is already known from the RECEIVE call at workflow start.
+        - Deliver result to the initiator: SEND result back to the
+          originating sender via ``jarvis_sendToSession``
 
    **Mutual Exclusion:** Only one skill with ``group: orchestration`` may
    be installed at a time.
