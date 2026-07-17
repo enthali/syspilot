@@ -50,7 +50,7 @@ Quality Manager Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, qm, workflow
-   :links: SYSP_US_QM
+   :links: SYSP_US_QM; SYSP_REQ_AGENT_ARCH_WORKFLOW
 
    **Description:**
    The Quality Manager is the final quality gate for a completed change. CM

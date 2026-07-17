@@ -46,7 +46,7 @@ Quality Engineer Trace Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, engineer, trace, workflow
-   :links: SYSP_US_TRACE
+   :links: SYSP_US_TRACE; SYSP_REQ_AGENT_ARCH_WORKFLOW
 
    **Description:**
    The Quality Engineer Trace agent SHALL follow a workflow from receiving an

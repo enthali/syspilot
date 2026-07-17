@@ -47,7 +47,7 @@ Dev Engineer Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, engineer, implement, workflow
-   :links: SYSP_US_IMPLEMENT
+   :links: SYSP_US_IMPLEMENT; SYSP_REQ_AGENT_ARCH_WORKFLOW
 
    **Description:**
    The Dev Engineer agent SHALL follow a workflow from reading specs through

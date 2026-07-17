@@ -48,7 +48,7 @@ Release Engineer Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, engineer, release, workflow
-   :links: SYSP_US_RELEASE; SYSP_REQ_AGENT_WORKFLOW_BINDING; SYSP_REQ_SKILL_BRANCHING_CHAINED; SYSP_REQ_SKILL_BRANCHING_RETENTION
+   :links: SYSP_US_RELEASE; SYSP_REQ_AGENT_ARCH_WORKFLOW; SYSP_REQ_AGENT_WORKFLOW_BINDING; SYSP_REQ_SKILL_BRANCHING_CHAINED; SYSP_REQ_SKILL_BRANCHING_RETENTION
 
    **Description:**
    The Release Engineer agent SHALL follow a workflow that validates the

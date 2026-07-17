@@ -50,7 +50,7 @@ Change Manager Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, manager, cm, workflow
-   :links: SYSP_US_CM
+   :links: SYSP_US_CM; SYSP_REQ_AGENT_ARCH_WORKFLOW
 
    **Description:**
    The Change Manager drives a change through the engineering gates and reports

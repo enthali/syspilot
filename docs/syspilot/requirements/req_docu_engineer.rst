@@ -47,7 +47,7 @@ Documentation Engineer Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, engineer, docu, workflow
-   :links: SYSP_US_DOCU
+   :links: SYSP_US_DOCU; SYSP_REQ_AGENT_ARCH_WORKFLOW
 
    **Description:**
    The Documentation Engineer agent SHALL follow a workflow from gathering
