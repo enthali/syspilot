@@ -182,6 +182,15 @@ None. AC-6 interpretation verified correct (mode-dependent = variant differs, no
 
 **Note:** This is CR-adjacent, not CR-introduced by intent — the RESPOND row was rewritten by this CR and still used the stale name, so the defect is touched by this CR's own diff. Recommend fix-now (small, mechanical rename) rather than defer, since the skill is actively used by every orchestrating agent including QM itself.
 
+#### PM Decisions
+
+| # | Finding # | Decision | Rationale |
+|---|-----------|----------|-----------|
+| 1 | 1 | fix-now | Live wrong tool names in active spec; every orchestrating agent depends on this skill |
+| 2 | 2 | fix-now | Same rationale — SKILL.md copies are the implementation agents actually read |
+
+**Fix-up routing:** Both findings → CM (spec + SKILL.md rename). Mechanical change, autonomous mode.
+
 ---
 
 ---
