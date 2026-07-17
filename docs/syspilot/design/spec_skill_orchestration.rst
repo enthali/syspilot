@@ -139,7 +139,7 @@ Design specifications for the agent orchestration skill.
    * No agent names appear in the group contract
    * No orchestration matrix (who-calls-whom) appears in the group contract
    * Each definition is tool-agnostic — no runtime API names (e.g.
-     ``runSubagent``, ``jarvis_sendToSession``) appear in DEFINITIONS
+     ``runSubagent``, ``jarvis_sendMessage``) appear in DEFINITIONS
 
    **Acceptance Criteria:**
 
@@ -169,14 +169,14 @@ Design specifications for the agent orchestration skill.
         - Mapping
       * - ``SEND``
         - ``SEND <work> to <agent>``
-        - ``jarvis_sendToSession("<session>", "<message>")``
+        - ``jarvis_sendMessage("<session>", "<message>", "<senderSession>")``
       * - ``RECEIVE``
         - ``RECEIVE``
-        - ``jarvis_readMessage()`` — returns the triggering message or empty
+        - ``jarvis_receiveMessage("<destination>")`` — returns the triggering message or empty
       * - ``RESPOND``
         - ``RESPOND``
         - Deliver result to the initiator: SEND result back to the
-          originating sender via ``jarvis_sendToSession``
+          originating sender via ``jarvis_sendMessage``
 
    **Mutual Exclusion:** Only one skill with ``group: orchestration`` may
    be installed at a time.
@@ -290,8 +290,8 @@ Design specifications for the agent orchestration skill.
    **Prohibited patterns in workflow step prose:**
 
    * ``runSubagent()`` — platform-specific invocation mechanism
-   * ``jarvis_sendToSession`` — platform-specific messaging tool
-   * ``jarvis_readMessage`` — platform-specific inbox mechanism
+   * ``jarvis_sendMessage`` — platform-specific messaging tool
+   * ``jarvis_receiveMessage`` — platform-specific inbox mechanism
    * ``INVOKE`` — retired verb; synchronous dispatch is SEND under the
      synchronous variant
    * Any other concrete runtime tool name used as an invocation verb
@@ -316,5 +316,5 @@ Design specifications for the agent orchestration skill.
    * AC-2: Agents obtaining their assignment include RECEIVE as first step
    * AC-3: All callee agents have RESPOND as terminal workflow step
    * AC-4: No agent file in ``syspilot/agents/`` contains
-     ``runSubagent()``, ``jarvis_sendToSession``, ``jarvis_readMessage``, or
+     ``runSubagent()``, ``jarvis_sendMessage``, ``jarvis_receiveMessage``, or
      ``INVOKE`` in workflow step prose
