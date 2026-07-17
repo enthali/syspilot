@@ -66,7 +66,7 @@ Setup Manager Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, installer, workflow
-   :links: SYSP_US_INSTALLER
+   :links: SYSP_US_INSTALLER; SYSP_REQ_AGENT_ARCH_WORKFLOW
 
    **Description:**
    The Installer agent SHALL follow a workflow from source fetch through

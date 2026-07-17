@@ -21,126 +21,109 @@ Acceptance criteria: every per-agent `SYSP_REQ_*_WORKFLOW` requirement links to 
 
 ## Level 0: User Stories
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted User Stories
 
-| ID | Title | Impact | Notes |
-|----|-------|--------|-------|
-| US_abc | ... | modified | ... |
+No User Stories modified. The following existing US are related context (their per-agent workflow REQs now properly trace to the architecture contract):
+
+SYSP_US_AGENT_ARCH, SYSP_US_CM, SYSP_US_IMPLEMENT, SYSP_US_DOCU, SYSP_US_MECE, SYSP_US_QM, SYSP_US_TRACE, SYSP_US_RELEASE, SYSP_US_SETUP, SYSP_US_DESIGN, SYSP_US_UAT, SYSP_US_VERIFY
 
 ### New User Stories
 
-| ID | Title | Priority |
-|----|-------|----------|
-| US_xxx | As a..., I want..., so that... | mandatory |
+None.
 
 ### Decisions
 
-- Decision 1: ...
-- Decision 2: ...
+- No L0 changes needed — this is a pure traceability hygiene fix at L1.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing User Stories
-- [ ] No redundancies
-- [ ] Gaps identified and addressed
+- [x] No contradictions with existing User Stories
+- [x] No redundancies
+- [x] Gaps identified and addressed
 
 ---
 
 ## Level 1: Requirements
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Requirements
 
-Found via links from User Stories above.
-
 | ID | Linked From | Impact | Notes |
 |----|-------------|--------|-------|
-| REQ_abc | US_abc | modified | ... |
+| SYSP_REQ_CM_WORKFLOW | SYSP_US_CM | :links: added | Added `SYSP_REQ_AGENT_ARCH_WORKFLOW` |
+| SYSP_REQ_IMPLEMENT_WORKFLOW | SYSP_US_IMPLEMENT | :links: added | Added `SYSP_REQ_AGENT_ARCH_WORKFLOW` |
+| SYSP_REQ_DOCU_WORKFLOW | SYSP_US_DOCU | :links: added | Added `SYSP_REQ_AGENT_ARCH_WORKFLOW` |
+| SYSP_REQ_MECE_WORKFLOW | SYSP_US_MECE | :links: added | Added `SYSP_REQ_AGENT_ARCH_WORKFLOW` |
+| SYSP_REQ_QM_WORKFLOW | SYSP_US_QM | :links: added | Added `SYSP_REQ_AGENT_ARCH_WORKFLOW` |
+| SYSP_REQ_TRACE_WORKFLOW | SYSP_US_TRACE | :links: added | Added `SYSP_REQ_AGENT_ARCH_WORKFLOW` |
+| SYSP_REQ_RELEASE_WORKFLOW | SYSP_US_RELEASE | :links: added | Added `SYSP_REQ_AGENT_ARCH_WORKFLOW` |
+| SYSP_REQ_INSTALLER_WORKFLOW | SYSP_US_INSTALLER | :links: added | Added `SYSP_REQ_AGENT_ARCH_WORKFLOW` |
+| SYSP_REQ_DESIGN_WORKFLOW | SYSP_US_DESIGN | :links: added | Added `SYSP_REQ_AGENT_ARCH_WORKFLOW` |
+| SYSP_REQ_UAT_WORKFLOW | SYSP_US_UAT | :links: added | Added `SYSP_REQ_AGENT_ARCH_WORKFLOW` |
+| SYSP_REQ_VERIFY_WORKFLOW | SYSP_US_VERIFY | :links: added | Added `SYSP_REQ_AGENT_ARCH_WORKFLOW` |
 
 ### New Requirements
 
-| ID | Title | Links | Priority |
-|----|-------|-------|----------|
-| REQ_xxx | ... | US_xxx | mandatory |
+None.
 
 ### Conflicts Detected
 
-- ⚠️ REQ_xxx vs REQ_yyy: {description}
-  - Resolution: {decision}
+None.
 
 ### Decisions
 
-- Decision 1: ...
+- SYSP_REQ_PM_WORKFLOW already had the link — confirmed, no change needed.
+- SYSP_REQ_DOC_WORKFLOWS excluded — it is a documentation REQ, not a per-agent workflow REQ.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Requirements
-- [ ] No redundancies
-- [ ] All new REQs link to User Stories
+- [x] No contradictions with existing Requirements
+- [x] No redundancies
+- [x] All new REQs link to User Stories
 
 ---
 
 ## Level 2: Design
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Design Elements
 
-Found via links from Requirements above.
-
-| ID | Linked From | Impact | Notes |
-|----|-------------|--------|-------|
-| SPEC_abc | REQ_abc | modified | ... |
+None — this CR only adds `:links:` at L1.
 
 ### New Design Elements
 
-| ID | Title | Links |
-|----|-------|-------|
-| SPEC_xxx | ... | REQ_abc, REQ_xxx |
+None.
 
 ### Conflicts Detected
 
-- ⚠️ SPEC_xxx vs SPEC_yyy: {description}
-  - Resolution: {decision}
+None.
 
 ### Decisions
 
-- Decision 1: ...
+- No L2 changes needed — traceability links are an L1 concern.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Designs
-- [ ] All new SPECs link to Requirements
+- [x] No contradictions with existing Designs
+- [x] All new SPECs link to Requirements
 
 ---
 
 ## Final Consistency Check
 
-**Status**: ⏳ not started | ✅ passed | ❌ failed
+**Status**: ✅ passed
 
 ### Traceability Verification
 
-| User Story | Requirements | Design | Complete? |
-|------------|--------------|--------|-----------|
-| US_xxx | REQ_xxx | SPEC_xxx | ✅ |
-...
+All 11 per-agent `SYSP_REQ_*_WORKFLOW` requirements now link to `SYSP_REQ_AGENT_ARCH_WORKFLOW`. Combined with the pre-existing `SYSP_REQ_PM_WORKFLOW` link, all 12 per-agent workflow REQs are traceable to the architecture contract.
 
 ### Artefakt-Removal-Check
 
-*Fill in only when this CR removes an artefact (file, field, configuration key, REQ-ID).*
-
-For each removed artefact, run a project-wide grep on all plausible name variants and classify results:
-
-| Removed Artefact | Class (a): Code/Workflow refs | Class (b): Doc refs | Class (c): Historic Change Docs |
-|------------------|-------------------------------|---------------------|---------------------------------|
-| `{artefact name}` | {files + lines fixed / none} | {files + lines fixed / none} | {count — acceptable historic stranding} |
-
-- [ ] All class (a) active code/workflow references fixed in this CR
-- [ ] All class (b) active documentation references fixed in this CR
-- [ ] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
+Not applicable — no artefacts removed.
 
 ### Issues Found
 

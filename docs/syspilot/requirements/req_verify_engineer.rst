@@ -46,7 +46,7 @@ Verify Engineer Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, engineer, verify, workflow
-   :links: SYSP_US_VERIFY
+   :links: SYSP_US_VERIFY; SYSP_REQ_AGENT_ARCH_WORKFLOW
 
    **Description:**
    The Verify Engineer agent SHALL follow a workflow from receiving the Change

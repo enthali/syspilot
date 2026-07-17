@@ -48,7 +48,7 @@ System Designer Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, engineer, change, workflow
-   :links: SYSP_US_DESIGN
+   :links: SYSP_US_DESIGN; SYSP_REQ_AGENT_ARCH_WORKFLOW
 
    **Description:**
    The System Designer agent SHALL follow an iterative level-by-level workflow
