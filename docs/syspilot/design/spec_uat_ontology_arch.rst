@@ -67,7 +67,7 @@ This document is the per-scenario verification checklist a human tester runs.
      ``syspilot.toml`` as the configuration authority for ontology selection
 
    *Testability note:* The absence of contradictory authority claims is
-   verifiable by reading all five SPEC elements in the file; it cannot be
+   verifiable by reading all six SPEC elements in the file; it cannot be
    confirmed by automated tooling alone at Phase 0.
 
    *Traces to:* ``SYSP_US_ONTOLOGY_ARCH`` AC-4, ``SYSP_REQ_ONTOLOGY_CONFIG_AUTHORITY`` AC-1, AC-2
@@ -167,6 +167,37 @@ This document is the per-scenario verification checklist a human tester runs.
 
    ---
 
+   **TC-CAPABILITIES — Capability vocabulary is independently declared (AC-8)**
+
+   *Precondition:* Fixture ``F-SPEC-BRANCH`` active; open
+   ``docs/syspilot/design/spec_ontology_arch.rst``.
+
+   *Action:* Locate ``SYSP_SPEC_ONTOLOGY_CAPABILITIES``. Read the Schema
+   Structure, Type-Agnosticism, and Constraints sections.
+
+   *Expected result:*
+
+   * [ ] A "Schema Structure" section defines capability entries with exactly
+     two required fields: ``id`` (unique string) and ``description``
+     (human-readable)
+   * [ ] A "Type-Agnosticism" section explicitly states that capability
+     declarations are independent of Work-Product types
+   * [ ] The "Type-Agnosticism" section states that type-specific constraints
+     belong in the Actor–Capability Bindings section — not in the capability
+     declaration itself
+   * [ ] A "Constraints" section states that each ``id`` SHALL be unique within
+     the capabilities list
+   * [ ] A "Constraints" section states that the capabilities list is
+     independent of the ontology graph (adding/removing a type does not
+     require changes to capability declarations)
+   * [ ] ``SYSP_SPEC_ONTOLOGY_CAPABILITIES`` carries ``:links:
+     SYSP_REQ_ONTOLOGY_CAPABILITIES``
+
+   *Traces to:* ``SYSP_US_ONTOLOGY_ARCH`` AC-8,
+   ``SYSP_REQ_ONTOLOGY_CAPABILITIES`` AC-1, AC-2, AC-3
+
+   ---
+
    **TC-TRACE — Traceability chain and clean build (AC-7)**
 
    *Precondition:* Fixture ``F-BUILD-CLEAN`` — branch checked out, docs
@@ -186,9 +217,9 @@ This document is the per-scenario verification checklist a human tester runs.
    * [ ] The build completes with exit code 0
    * [ ] Zero ``WARNING:`` lines appear in build output
    * [ ] ``schema_violations.json`` reports zero violations
-   * [ ] Every new L2 spec element (five SYSP_SPEC_ONTOLOGY_* items) carries
+   * [ ] Every new L2 spec element (six SYSP_SPEC_ONTOLOGY_* items) carries
      a ``:links:`` pointing to an existing L1 req in this CR
-   * [ ] Every new L1 req element (six SYSP_REQ_ONTOLOGY_* items) carries a
+   * [ ] Every new L1 req element (seven SYSP_REQ_ONTOLOGY_* items) carries a
      ``:links:`` pointing to an existing L0 user story in this CR
    * [ ] No new spec element is referenced from an index file that does not
      include its RST file in a ``toctree``

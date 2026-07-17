@@ -29,10 +29,10 @@ Test data requirements for ``SYSP_US_UAT_ONTOLOGY_ARCH``.
         - Relevance
       * - ``spec_ontology_arch.rst``
         - ``docs/syspilot/design/``
-        - All five SPEC elements (AC-1 through AC-6)
+        - All six SPEC elements (AC-1 through AC-6, AC-8)
       * - ``req_ontology_arch.rst``
         - ``docs/syspilot/requirements/``
-        - Six REQ elements (AC-7 traceability)
+        - Seven REQ elements (AC-7 traceability)
       * - ``us_ontology_arch.rst``
         - ``docs/syspilot/userstories/``
         - Two US elements (AC-7 traceability)
@@ -49,7 +49,7 @@ Test data requirements for ``SYSP_US_UAT_ONTOLOGY_ARCH``.
       * - ``F-SPEC-BRANCH``
         - Branch ``feature/ontology-architecture-decision`` checked out
           locally; ``spec_ontology_arch.rst`` present and readable
-        - AC-1 through AC-6
+        - AC-1 through AC-6, AC-8
       * - ``F-BUILD-CLEAN``
         - Running ``cd docs && uv run python docs-build.py clean``
           from the repo root returns exit code 0 with no ``WARNING``
@@ -67,6 +67,7 @@ Test data requirements for ``SYSP_US_UAT_ONTOLOGY_ARCH``.
      * AC-4: "Dependency Order" and "Branching Support" paragraphs inside ``SYSP_SPEC_ONTOLOGY_GRAPH``
      * AC-5: "Layout" code block and "Discovery Convention" paragraph inside ``SYSP_SPEC_ONTOLOGY_DIRECTORY``
      * AC-6: "Work-Product Types", "Dependency Edges", and "Validation" paragraphs inside ``SYSP_SPEC_ONTOLOGY_DEFAULT_TEMPLATE``
+     * AC-8: "Schema Structure", "Type-Agnosticism", and "Constraints" sections inside ``SYSP_SPEC_ONTOLOGY_CAPABILITIES``
 
    **Build Command (AC-7):**
 
