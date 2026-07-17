@@ -1,6 +1,6 @@
 # Change Document: simplify-orchestration-jarvis-skill
 
-**Status**: in-progress
+**Status**: ready-for-merge
 **Branch**: feature/simplify-orchestration-jarvis-skill
 **Created**: 2026-07-17
 **Author**: PM + User
@@ -139,15 +139,14 @@ Removed content (prose sections, not IDs):
 
 ### Issues Found
 
-- [ ] Issue 1: ...
-- [ ] Issue 2: ...
+None. MECE and Trace checks both clean on first review round.
 
 ### Sign-off
 
-- [ ] All levels completed (no ⚠️ DEPRECATED markers remaining)
-- [ ] All conflicts resolved
-- [ ] Traceability verified
-- [ ] Ready for implementation
+- [x] All levels completed (no ⚠️ DEPRECATED markers remaining)
+- [x] All conflicts resolved
+- [x] Traceability verified
+- [x] Ready for merge
 
 ---
 
@@ -160,28 +159,14 @@ section are unaffected — the section is additive, never required retroactively
 
 ### Round 1
 
-**Reviewed by:** QM
-**Review date:** {DATE}
+**Reviewed by:** MECE Engineer + Trace Engineer
+**Review date:** 2026-07-17
 
 #### Findings
 
-| # | Level | Element ID | Finding | Severity |
-|---|-------|------------|---------|----------|
-| 1 | L? | {ID} | {description} | high / medium / low |
-
-#### PM Decisions
-
-| # | Finding # | Decision | Rationale |
-|---|-----------|----------|-----------|
-| 1 | 1 | fix-now / defer / accept-as-is | {rationale} |
+None. AC-6 interpretation verified correct (mode-dependent = variant differs, not runtime branching). Setup Bootloader spec covers removed `agents:` content. No active class (a)/(b) references unaddressed.
 
 ---
-
-## Appendix: Link Discovery Results
-
-```
-{paste output from get_need_links.py as needed}
-```
 
 ---
 
