@@ -30,11 +30,11 @@ internally consistent, and correctly linked before any implementation begins.
 
    **Artifacts Under Test:**
 
-   * ``docs/syspilot/design/spec_ontology_arch.rst`` — all five spec elements:
+   * ``docs/syspilot/design/spec_ontology_arch.rst`` — all six spec elements:
      ``SYSP_SPEC_ONTOLOGY_FOUR_CONCERNS``, ``SYSP_SPEC_ONTOLOGY_TOML_SCHEMA``,
-     ``SYSP_SPEC_ONTOLOGY_DIRECTORY``, ``SYSP_SPEC_ONTOLOGY_GRAPH``,
-     ``SYSP_SPEC_ONTOLOGY_DEFAULT_TEMPLATE``
-   * ``docs/syspilot/requirements/req_ontology_arch.rst`` — six REQ elements
+     ``SYSP_SPEC_ONTOLOGY_CAPABILITIES``, ``SYSP_SPEC_ONTOLOGY_DIRECTORY``,
+     ``SYSP_SPEC_ONTOLOGY_GRAPH``, ``SYSP_SPEC_ONTOLOGY_DEFAULT_TEMPLATE``
+   * ``docs/syspilot/requirements/req_ontology_arch.rst`` — seven REQ elements
    * ``docs/syspilot/userstories/us_ontology_arch.rst`` — two US elements
    * sphinx-build -W output — traceability and build gate
 
@@ -47,6 +47,7 @@ internally consistent, and correctly linked before any implementation begins.
    5. Given the spec element ``SYSP_SPEC_ONTOLOGY_DIRECTORY``, When I read the Layout and Discovery Convention sections, Then the directory path ``.syspilot/`` is named, ``ontology.toml`` is the file inside it, and discovery is described as resolving ``.syspilot/ontology.toml`` relative to the project root (anchored by ``syspilot.toml``).
    6. Given the spec element ``SYSP_SPEC_ONTOLOGY_DEFAULT_TEMPLATE``, When I inspect it, Then it declares three Work-Product types (user_story, requirement, design_spec), defines the dependency-edge chain design_spec → requirement → user_story, and explicitly states that this template SHALL pass all schema validation constraints in ``SYSP_SPEC_ONTOLOGY_TOML_SCHEMA``.
    7. Given all new spec elements (L0, L1, L2), When I check traceability links and run ``sphinx-build -W``, Then every L2 spec links to at least one L1 req, every L1 req links to at least one L0 US, and the build completes with zero warnings.
+   8. Given the spec element ``SYSP_SPEC_ONTOLOGY_CAPABILITIES``, When I inspect it, Then it declares a type-agnostic capability vocabulary with ``id`` and ``description`` per entry, states that capability declarations are independent of the ontology graph, and specifies that type-specific constraints belong in Actor bindings — not in the capability declaration itself.
 
    **Testability Note:**
 

@@ -26,7 +26,7 @@ Requirements for the ontology-agnostic architecture.
 
    * AC-1: Changing the set of Work-Product types does not require modifying Actor definitions or Process definitions.
    * AC-2: Changing which Actor owns a Work-Product type does not require modifying the Ontology definition or Process definition.
-   * AC-3: Each of the four concerns has its own configuration surface.
+   * AC-3: Each concern's configuration is isolated in its own section of ``syspilot.toml`` — Ontology, Capabilities, Actors, and Process sections do not interdepend.
 
 
 .. req:: Configuration Authority
