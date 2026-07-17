@@ -1,7 +1,7 @@
 # Change Document: ontology-architecture-decision
 
-**Status**: in-progress
-**Branch**: feature/ontology-architecture-decision
+**Status**: ready-for-merge
+**Branch**: feature/ontology-arch-qm-fixup (fix-up of feature/ontology-architecture-decision)
 **Created**: 2026-07-16
 **Author**: PM + User
 **GH Issue**: #49
@@ -84,6 +84,7 @@ None — greenfield addition.
 | SYSP_REQ_ONTOLOGY_GRAPH_ORDER | Graph-Order Processing | SYSP_US_ONTOLOGY_ARCH | mandatory |
 | SYSP_REQ_ONTOLOGY_DIRECTORY | Ontology Storage | SYSP_US_ONTOLOGY_ARCH | mandatory |
 | SYSP_REQ_ONTOLOGY_TEMPLATES | Ontology Templates | SYSP_US_ONTOLOGY_TEMPLATES | mandatory |
+| SYSP_REQ_ONTOLOGY_CAPABILITIES | Capability Vocabulary Declaration | SYSP_US_ONTOLOGY_ARCH | mandatory |
 | SYSP_REQ_UAT_ONTOLOGY_ARCH | UAT Test Data: Ontology Arch | SYSP_US_UAT_ONTOLOGY_ARCH | mandatory |
 
 ### Conflicts Detected
@@ -120,6 +121,7 @@ None — greenfield addition.
 | SYSP_SPEC_ONTOLOGY_DIRECTORY | .syspilot/ Directory Structure | SYSP_REQ_ONTOLOGY_DIRECTORY |
 | SYSP_SPEC_ONTOLOGY_GRAPH | Ontology Graph & Dependency Order | SYSP_REQ_ONTOLOGY_GRAPH_ORDER |
 | SYSP_SPEC_ONTOLOGY_DEFAULT_TEMPLATE | Syspilot-Default Ontology Template | SYSP_REQ_ONTOLOGY_TEMPLATES |
+| SYSP_SPEC_ONTOLOGY_CAPABILITIES | Capability Vocabulary | SYSP_REQ_ONTOLOGY_CAPABILITIES |
 | SYSP_SPEC_UAT_ONTOLOGY_ARCH | UAT Expected Outcomes: Ontology Arch | SYSP_REQ_UAT_ONTOLOGY_ARCH |
 
 ### Conflicts Detected
@@ -147,36 +149,26 @@ None.
 
 | User Story | Requirements | Design | Complete? |
 |------------|--------------|--------|-----------|
-| SYSP_US_ONTOLOGY_ARCH | SYSP_REQ_ONTOLOGY_SEPARATION, SYSP_REQ_ONTOLOGY_CONFIG_AUTHORITY, SYSP_REQ_ONTOLOGY_OWNERSHIP, SYSP_REQ_ONTOLOGY_GRAPH_ORDER, SYSP_REQ_ONTOLOGY_DIRECTORY | SYSP_SPEC_ONTOLOGY_FOUR_CONCERNS, SYSP_SPEC_ONTOLOGY_TOML_SCHEMA, SYSP_SPEC_ONTOLOGY_DIRECTORY, SYSP_SPEC_ONTOLOGY_GRAPH | ✅ |
+| SYSP_US_ONTOLOGY_ARCH | SYSP_REQ_ONTOLOGY_SEPARATION, SYSP_REQ_ONTOLOGY_CONFIG_AUTHORITY, SYSP_REQ_ONTOLOGY_OWNERSHIP, SYSP_REQ_ONTOLOGY_GRAPH_ORDER, SYSP_REQ_ONTOLOGY_DIRECTORY, SYSP_REQ_ONTOLOGY_CAPABILITIES | SYSP_SPEC_ONTOLOGY_FOUR_CONCERNS, SYSP_SPEC_ONTOLOGY_TOML_SCHEMA, SYSP_SPEC_ONTOLOGY_DIRECTORY, SYSP_SPEC_ONTOLOGY_GRAPH, SYSP_SPEC_ONTOLOGY_CAPABILITIES | ✅ |
 | SYSP_US_ONTOLOGY_TEMPLATES | SYSP_REQ_ONTOLOGY_TEMPLATES | SYSP_SPEC_ONTOLOGY_DEFAULT_TEMPLATE | ✅ |
-| SYSP_US_UAT_ONTOLOGY_ARCH | SYSP_REQ_UAT_ONTOLOGY_ARCH | SYSP_SPEC_UAT_ONTOLOGY_ARCH | ✅ |
 | SYSP_US_UAT_ONTOLOGY_ARCH | SYSP_REQ_UAT_ONTOLOGY_ARCH | SYSP_SPEC_UAT_ONTOLOGY_ARCH | ✅ |
 
 ### Artefakt-Removal-Check
 
-*Fill in only when this CR removes an artefact (file, field, configuration key, REQ-ID).*
-
-For each removed artefact, run a project-wide grep on all plausible name variants and classify results:
-
-| Removed Artefact | Class (a): Code/Workflow refs | Class (b): Doc refs | Class (c): Historic Change Docs |
-|------------------|-------------------------------|---------------------|---------------------------------|
-| `{artefact name}` | {files + lines fixed / none} | {files + lines fixed / none} | {count — acceptable historic stranding} |
-
-- [ ] All class (a) active code/workflow references fixed in this CR
-- [ ] All class (b) active documentation references fixed in this CR
-- [ ] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
+Not applicable — this CR is a greenfield addition. No artefacts removed.
 
 ### Issues Found
 
-- [ ] Issue 1: ...
-- [ ] Issue 2: ...
+All QM findings resolved across two review rounds:
+- Round 1 (MECE+Trace): 3 findings — all fixed-now.
+- Round 2 (MECE+Trace): 5 findings — 4 fixed-now (#1, #3, #4, #5), 1 deferred (#2: missing `:links:` convention in L0 stories, deferred to Phase 1).
 
 ### Sign-off
 
-- [ ] All levels completed (no ⚠️ DEPRECATED markers remaining)
-- [ ] All conflicts resolved
-- [ ] Traceability verified
-- [ ] Ready for implementation
+- [x] All levels completed (no ⚠️ DEPRECATED markers remaining)
+- [x] All conflicts resolved
+- [x] Traceability verified
+- [x] Ready for merge (Phase 0: no implementation; Dev Engineer step not applicable)
 
 ---
 
@@ -217,12 +209,6 @@ section are unaffected — the section is additive, never required retroactively
 **Note:** Branch was merged before Round 2 findings arrived (CM declared ready-for-merge before Trace Engineer audit completed). Fix-up proceeds on a new branch off `development`.
 
 ---
-
-## Appendix: Link Discovery Results
-
-```
-{paste output from get_need_links.py as needed}
-```
 
 ---
 
