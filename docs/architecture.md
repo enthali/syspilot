@@ -198,6 +198,7 @@ are always preserved, regardless of whether they appear in the current release.
 
 ---
 
+(ontology-architecture)=
 ## Ontology Architecture *(Phase 0 — spec only, no runtime implementation)*
 
 syspilot separates four concerns cleanly so that the default L0/L1/L2 hierarchy
