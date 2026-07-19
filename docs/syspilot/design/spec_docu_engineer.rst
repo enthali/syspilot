@@ -43,8 +43,7 @@ Documentation Engineer Design
 
    4. **README** — Keep installation, usage, and overview current
    5. **Methodology** — Update methodology docs when framework evolves
-   6. **Release Notes** — Ensure release notes reflect actual changes
-   7. **Architecture** — Update architecture docs when structure changes
+   6. **Architecture** — Update architecture docs when structure changes
 
    **Principle:** If it changes every commit, don't document it. If another
    file already says it, link don't copy.
@@ -65,8 +64,8 @@ Documentation Engineer Design
    3. **Identify Gaps** — Find missing, outdated, or redundant documentation
    4. **Update Internal Docs** — Update copilot-instructions.md, context.md,
       naming conventions
-   5. **Update External Docs** — Update README, methodology, architecture,
-      release notes as needed
+   5. **Update External Docs** — Update README, methodology, architecture
+      as needed
    6. **Remove Stale Content** — Delete sections that became redundant
    7. **Verify** — Ensure consistency across all documentation
    8. **RESPOND** — Report the result (updated files, commit, issues) back to the initiator

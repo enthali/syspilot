@@ -1,6 +1,6 @@
 # Change Document: releasenotes-ownership
 
-**Status**: draft
+**Status**: in-progress
 **Branch**: feature/releasenotes-ownership
 **Created**: 2026-07-19
 **Author**: Project Manager (triage), Change Manager (engineering)
@@ -43,125 +43,118 @@ Workflow Step 5, mirrored in `spec_docu_engineer.rst`, `req_docu_engineer.rst`,
 
 ## Level 0: User Stories
 
-**Status**: ⏳ not started
+**Status**: ✅ completed
 
 ### Impacted User Stories
 
 | ID | Title | Impact | Notes |
 |----|-------|--------|-------|
-| US_abc | ... | modified | ... |
+| SYSP_US_DOCU | Documentation Engineer | modified | Removed "release notes" from External docs bullet in Context |
 
 ### New User Stories
 
-| ID | Title | Priority |
-|----|-------|----------|
-| US_xxx | As a..., I want..., so that... | mandatory |
+None.
 
 ### Decisions
 
-- Decision 1: ...
-- Decision 2: ...
+- No new US needed — existing US SYSP_US_DOCU and SYSP_US_RELEASE cover the ownership split.
+- SYSP_US_DOC_RELEASE_NOTES (artifact US) stays unchanged — it defines the artifact, not who writes it.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing User Stories
-- [ ] No redundancies
-- [ ] Gaps identified and addressed
+- [x] No contradictions with existing User Stories
+- [x] No redundancies
+- [x] Gaps identified and addressed
 
 ---
 
 ## Level 1: Requirements
 
-**Status**: ⏳ not started
+**Status**: ✅ completed
 
 ### Impacted Requirements
 
-Found via links from User Stories above.
-
 | ID | Linked From | Impact | Notes |
 |----|-------------|--------|-------|
-| REQ_abc | US_abc | modified | ... |
+| SYSP_REQ_DOCU_DUTIES | SYSP_US_DOCU | modified | Removed "release notes" from external doc list and AC-4 |
+| SYSP_REQ_DOC_RELEASENOTES | SYSP_US_DOC_RELEASE_NOTES | modified | Added explicit sole-ownership statement for Release Engineer |
 
 ### New Requirements
 
-| ID | Title | Links | Priority |
-|----|-------|-------|----------|
-| REQ_xxx | ... | US_xxx | mandatory |
+None.
 
 ### Conflicts Detected
 
-- ⚠️ REQ_xxx vs REQ_yyy: {description}
-  - Resolution: {decision}
+None — this CR resolves the pre-existing contradiction.
 
 ### Decisions
 
-- Decision 1: ...
+- SYSP_REQ_DOC_RELEASENOTES now explicitly states Release Engineer sole ownership and excludes Doc Engineer during change pipeline runs.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Requirements
-- [ ] No redundancies
-- [ ] All new REQs link to User Stories
+- [x] No contradictions with existing Requirements
+- [x] No redundancies
+- [x] All new REQs link to User Stories
 
 ---
 
 ## Level 2: Design
 
-**Status**: ⏳ not started
+**Status**: ✅ completed
 
 ### Impacted Design Elements
 
-Found via links from Requirements above.
-
 | ID | Linked From | Impact | Notes |
 |----|-------------|--------|-------|
-| SPEC_abc | REQ_abc | modified | ... |
+| SYSP_SPEC_DOCU_DUTIES | SYSP_REQ_DOCU_DUTIES | modified | Removed Duty #6 "Release Notes"; renumbered Architecture to #6 |
+| SYSP_SPEC_DOCU_WORKFLOW | SYSP_REQ_DOCU_WORKFLOW | modified | Removed "release notes" from Step 5 "Update External Docs" |
+| SYSP_SPEC_DOC_RELEASENOTES | SYSP_REQ_DOC_RELEASENOTES | modified | Added sole-writer statement in Status Notes |
+| SYSP_SPEC_RELEASE_DUTIES | SYSP_REQ_RELEASE_DUTIES | modified | Added "sole writer of docs/releasenotes.md" to Complete Traceability duty |
 
 ### New Design Elements
 
-| ID | Title | Links |
-|----|-------|-------|
-| SPEC_xxx | ... | REQ_abc, REQ_xxx |
+None.
 
 ### Conflicts Detected
 
-- ⚠️ SPEC_xxx vs SPEC_yyy: {description}
-  - Resolution: {decision}
+None.
 
 ### Decisions
 
-- Decision 1: ...
+- Release Engineer's "Complete Traceability" duty now explicitly states sole writer status.
+- Doc Engineer Duty #7 "Architecture" renumbered to #6 after Release Notes duty removal.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Designs
-- [ ] All new SPECs link to Requirements
+- [x] No contradictions with existing Designs
+- [x] All new SPECs link to Requirements
 
 ---
 
 ## Final Consistency Check
 
-**Status**: ⏳ not started
+**Status**: ✅ passed
 
 ### Traceability Verification
 
 | User Story | Requirements | Design | Complete? |
 |------------|--------------|--------|-----------|
-| US_xxx | REQ_xxx | SPEC_xxx | ✅ |
+| SYSP_US_DOCU | SYSP_REQ_DOCU_DUTIES | SYSP_SPEC_DOCU_DUTIES, SYSP_SPEC_DOCU_WORKFLOW | ✅ |
+| SYSP_US_DOC_RELEASE_NOTES | SYSP_REQ_DOC_RELEASENOTES | SYSP_SPEC_DOC_RELEASENOTES | ✅ |
+| SYSP_US_RELEASE | SYSP_REQ_RELEASE_DUTIES | SYSP_SPEC_RELEASE_DUTIES | ✅ |
 
 ### Artefakt-Removal-Check
 
-*Fill in only when this CR removes an artefact (file, field, configuration key, REQ-ID).*
-
-For each removed artefact, run a project-wide grep on all plausible name variants and classify results:
+Removed "release notes" from Doc Engineer scope (us/req/spec).
 
 | Removed Artefact | Class (a): Code/Workflow refs | Class (b): Doc refs | Class (c): Historic Change Docs |
 |------------------|-------------------------------|---------------------|---------------------------------|
-| `{artefact name}` | {files + lines fixed / none} | {files + lines fixed / none} | {count — acceptable historic stranding} |
+| "release notes" in Doc Engineer scope | Fixed: us_docu_engineer.rst, req_docu_engineer.rst, spec_docu_engineer.rst | none remaining | acceptable — earlier CDs may reference Doc Engineer + release notes historically |
 
-- [ ] All class (a) active code/workflow references fixed in this CR
-- [ ] All class (b) active documentation references fixed in this CR
-- [ ] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
+- [x] All class (a) active code/workflow references fixed in this CR
+- [x] All class (b) active documentation references fixed in this CR
+- [x] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
 
 ### Issues Found
 

@@ -21,7 +21,7 @@ Documentation Engineer Agent
    duty areas:
 
    * **Internal docs**: copilot-instructions.md, context.md, naming conventions
-   * **External docs**: README, methodology, release notes, architecture, workflows
+   * **External docs**: README, methodology, architecture, workflows
 
    Same soul ("keep docs in sync with reality"), different duties.
 
