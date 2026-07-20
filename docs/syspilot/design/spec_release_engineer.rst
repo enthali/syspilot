@@ -38,7 +38,8 @@ Release Engineer Design
    * **Complete Traceability** — Every change document from the
      release cycle is archived in ``docs/changes/<version>/`` and every
      archived document has a corresponding release notes entry — no document
-     is missing or omitted.
+     is missing or omitted. The Release Engineer is the sole writer of
+     ``docs/releasenotes.md``.
    * **Consistent Version Identity** — The version string is identical
      across the ``docs/changes`` archive folder name, the Git tag, the
      release notes header, and the project's own version marker (location

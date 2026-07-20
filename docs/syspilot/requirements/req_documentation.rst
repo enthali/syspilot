@@ -173,6 +173,10 @@ Requirements for external and internal documentation artifacts.
    Release notes are the definitive record of what shipped. They allow users
    to assess upgrade impact and developers to trace changes back to specs.
 
+   The Release Engineer is the sole writer of ``docs/releasenotes.md``. The
+   Documentation Engineer does not write release note entries during a change
+   pipeline run.
+
    **Acceptance Criteria:**
 
    * AC-1: Each release entry has a version number and date

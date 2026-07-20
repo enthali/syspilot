@@ -197,7 +197,9 @@ Design specifications defining the structure and content of each documentation f
    **Status Notes:**
    Release notes follow a consistent pattern. The format is established
    and does not require structural changes. Content will be added by the
-   Release Engineer agent per release.
+   Release Engineer agent per release. The Release Engineer is the sole
+   writer of release note entries. The Documentation Engineer does not
+   write release note entries during a change pipeline run.
 
 
 .. spec:: Copilot Instructions Template Guidance
