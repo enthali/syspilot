@@ -201,6 +201,7 @@ section are unaffected — the section is additive, never required retroactively
 
 | # | Finding # | Decision | Rationale |
 |---|-----------|----------|-----------|
+| 1 | 1 | fix-now | One-line table cell, core rename this CR exists for — must not ship with stale tool names in the reference table. |
 
 ---
 
