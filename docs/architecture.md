@@ -199,7 +199,7 @@ are always preserved, regardless of whether they appear in the current release.
 ---
 
 (ontology-architecture)=
-## Ontology Architecture *(Phase 0: spec · Phase 1: generator infrastructure)*
+## Ontology Architecture *(Phase 0: spec · Phase 1: flat-master)*
 
 syspilot separates four concerns cleanly so that the default L0/L1/L2 hierarchy
 can be replaced by any project ontology (e.g. ASPICE) without rewriting agents.
