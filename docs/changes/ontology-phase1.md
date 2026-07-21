@@ -1,6 +1,6 @@
 # Change Document: ontology-phase1
 
-**Status**: draft
+**Status**: in-progress
 **Branch**: feature/ontology-phase1
 **Created**: 2026-07-21
 **Author**: Project Manager (triage), Change Manager (engineering)
@@ -62,131 +62,124 @@ CI gate on main is explicitly **not** used — too late, broken version already 
 
 ## Level 0: User Stories
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted User Stories
 
-| ID | Title | Impact | Notes |
-|----|-------|--------|-------|
-| US_abc | ... | modified | ... |
+None — greenfield addition. Phase 0 elements (SYSP_US_ONTOLOGY_ARCH, SYSP_US_ONTOLOGY_TEMPLATES) are read-only context.
 
 ### New User Stories
 
 | ID | Title | Priority |
 |----|-------|----------|
-| US_xxx | As a..., I want..., so that... | mandatory |
+| SYSP_US_ONTOLOGY_GENERATOR | Ontology Generator | mandatory |
+| SYSP_US_ONTOLOGY_GOVERNANCE | Ontology Governance | mandatory |
+| SYSP_US_ONTOLOGY_SKILL | Ontology Skill | mandatory |
 
 ### Decisions
 
-- Decision 1: ...
-- Decision 2: ...
+- Three separate US for generator, governance, and skill — each has a distinct WHY.
+- Added to existing us_ontology_arch.rst (same file family, not a new RST file).
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing User Stories
-- [ ] No redundancies
-- [ ] Gaps identified and addressed
+- [x] No contradictions with existing User Stories
+- [x] No redundancies
+- [x] Gaps identified and addressed
 
 ---
 
 ## Level 1: Requirements
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Requirements
 
-Found via links from User Stories above.
-
-| ID | Linked From | Impact | Notes |
-|----|-------------|--------|-------|
-| REQ_abc | US_abc | modified | ... |
+None.
 
 ### New Requirements
 
 | ID | Title | Links | Priority |
 |----|-------|-------|----------|
-| REQ_xxx | ... | US_xxx | mandatory |
+| SYSP_REQ_ONTOLOGY_GENERATOR | Ontology Generator | SYSP_US_ONTOLOGY_GENERATOR | mandatory |
+| SYSP_REQ_ONTOLOGY_GOVERNANCE | Ontology Governance | SYSP_US_ONTOLOGY_GOVERNANCE | mandatory |
+| SYSP_REQ_ONTOLOGY_SKILL | Ontology Skill Content | SYSP_US_ONTOLOGY_SKILL | mandatory |
+| SYSP_REQ_RELEASE_ONTOLOGY_CHECK | Release Ontology Freshness Check | SYSP_US_ONTOLOGY_GENERATOR, SYSP_US_ONTOLOGY_GOVERNANCE | mandatory |
 
 ### Conflicts Detected
 
-- ⚠️ REQ_xxx vs REQ_yyy: {description}
-  - Resolution: {decision}
+None.
 
 ### Decisions
 
-- Decision 1: ...
+- SYSP_REQ_RELEASE_ONTOLOGY_CHECK links to both GENERATOR and GOVERNANCE US — it straddles both concerns (tooling + process).
+- Added to existing req_ontology_arch.rst.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Requirements
-- [ ] No redundancies
-- [ ] All new REQs link to User Stories
+- [x] No contradictions with existing Requirements
+- [x] No redundancies
+- [x] All new REQs link to User Stories
 
 ---
 
 ## Level 2: Design
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Design Elements
 
-Found via links from Requirements above.
-
 | ID | Linked From | Impact | Notes |
 |----|-------------|--------|-------|
-| SPEC_abc | REQ_abc | modified | ... |
+| SYSP_SPEC_ONTOLOGY_DIRECTORY | SYSP_REQ_ONTOLOGY_DIRECTORY | modified | Updated layout to show generator; added generator reference |
 
 ### New Design Elements
 
 | ID | Title | Links |
 |----|-------|-------|
-| SPEC_xxx | ... | REQ_abc, REQ_xxx |
+| SYSP_SPEC_ONTOLOGY_SCHEMA | ontology.toml Concrete Schema | SYSP_REQ_ONTOLOGY_GENERATOR, SYSP_REQ_ONTOLOGY_CONFIG_AUTHORITY |
+| SYSP_SPEC_ONTOLOGY_GENERATOR | Ontology Generator Behaviour | SYSP_REQ_ONTOLOGY_GENERATOR |
+| SYSP_SPEC_ONTOLOGY_GOVERNANCE | Ontology Governance Rules | SYSP_REQ_ONTOLOGY_GOVERNANCE |
+| SYSP_SPEC_ONTOLOGY_SKILL_CONTENT | Ontology Skill Content | SYSP_REQ_ONTOLOGY_SKILL |
 
 ### Conflicts Detected
 
-- ⚠️ SPEC_xxx vs SPEC_yyy: {description}
-  - Resolution: {decision}
+None.
 
 ### Decisions
 
-- Decision 1: ...
+- ontology.toml uses `[needs]` as the ubCode pass-through key and `[syspilot]` for syspilot-only metadata. Generator strips everything not under `needs`.
+- Phase 1 minimal syspilot content: just `schema_version = "1.0"` — actors/capabilities/process deferred to Phase 2+.
+- Generator works on raw text (not parsed TOML) to preserve comments and formatting.
+- Generator exit codes: 0 = match, 1 = diff, 2 = input error.
+- Skill file created at syspilot/skills/syspilot.ontology/SKILL.md.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Designs
-- [ ] All new SPECs link to Requirements
+- [x] No contradictions with existing Designs
+- [x] All new SPECs link to Requirements
 
 ---
 
 ## Final Consistency Check
 
-**Status**: ⏳ not started | ✅ passed | ❌ failed
+**Status**: ✅ passed
 
 ### Traceability Verification
 
 | User Story | Requirements | Design | Complete? |
 |------------|--------------|--------|-----------|
-| US_xxx | REQ_xxx | SPEC_xxx | ✅ |
-...
+| SYSP_US_ONTOLOGY_GENERATOR | SYSP_REQ_ONTOLOGY_GENERATOR, SYSP_REQ_RELEASE_ONTOLOGY_CHECK | SYSP_SPEC_ONTOLOGY_SCHEMA, SYSP_SPEC_ONTOLOGY_GENERATOR | ✅ |
+| SYSP_US_ONTOLOGY_GOVERNANCE | SYSP_REQ_ONTOLOGY_GOVERNANCE, SYSP_REQ_RELEASE_ONTOLOGY_CHECK | SYSP_SPEC_ONTOLOGY_GOVERNANCE | ✅ |
+| SYSP_US_ONTOLOGY_SKILL | SYSP_REQ_ONTOLOGY_SKILL | SYSP_SPEC_ONTOLOGY_SKILL_CONTENT | ✅ |
 
 ### Artefakt-Removal-Check
 
-*Fill in only when this CR removes an artefact (file, field, configuration key, REQ-ID).*
-
-For each removed artefact, run a project-wide grep on all plausible name variants and classify results:
-
-| Removed Artefact | Class (a): Code/Workflow refs | Class (b): Doc refs | Class (c): Historic Change Docs |
-|------------------|-------------------------------|---------------------|---------------------------------|
-| `{artefact name}` | {files + lines fixed / none} | {files + lines fixed / none} | {count — acceptable historic stranding} |
-
-- [ ] All class (a) active code/workflow references fixed in this CR
-- [ ] All class (b) active documentation references fixed in this CR
-- [ ] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
+Not applicable — no artefacts removed.
 
 ### Issues Found
 
-- [ ] Issue 1: ...
-- [ ] Issue 2: ...
+- `.github/agents/syspilot.setup.agent.md` had a stray modification (added name/agent frontmatter fields + changed tools list) in the working tree on checkout. Discarded by CM via `git checkout --`. Not part of this CR.
 
 ### Sign-off
 

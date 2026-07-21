@@ -70,3 +70,79 @@ Architecture decision: syspilot becomes ontology-agnostic.
    1. Given the ontology framework, When I look for templates, Then at least one ready-made ontology template is available.
    2. Given the syspilot-default template, When I inspect it, Then it expresses the current L0/L1/L2 ontology (User Story → Requirement → Design Spec) as a reusable configuration.
    3. Given any ontology template, When I apply it to a project, Then it provides a complete, valid ontology definition that requires no additional design effort to start working.
+
+
+.. story:: Ontology Generator
+   :id: SYSP_US_ONTOLOGY_GENERATOR
+   :status: draft
+   :priority: mandatory
+   :tags: architecture, ontology, phase-1
+
+   **As a** syspilot developer,
+   **I want** a generator that produces ``docs/ubproject.toml`` from
+   ``.syspilot/ontology.toml`` automatically,
+   **so that** the ubCode/sphinx-needs projection always reflects the canonical
+   ontology without manual synchronisation.
+
+   **Context:**
+
+   ``.syspilot/ontology.toml`` is the canonical master (Phase 0 decision). It
+   is a superset containing both ubCode-understood sections and syspilot-only
+   metadata. A generator strips the syspilot-only sections to produce the
+   ubCode projection (``docs/ubproject.toml``). A compare mode lets the
+   Release Engineer verify freshness before squash-merge.
+
+   **Acceptance Criteria:**
+
+   1. Given a valid ``.syspilot/ontology.toml``, When I run the generator, Then ``docs/ubproject.toml`` is produced containing only ubCode-understood content.
+   2. Given an up-to-date ``docs/ubproject.toml``, When I run the generator in compare mode, Then it exits successfully.
+   3. Given a stale ``docs/ubproject.toml``, When I run the generator in compare mode, Then it exits with a non-zero code and reports the difference.
+
+
+.. story:: Ontology Governance
+   :id: SYSP_US_ONTOLOGY_GOVERNANCE
+   :status: draft
+   :priority: mandatory
+   :tags: architecture, ontology, phase-1
+
+   **As a** syspilot adopter,
+   **I want** ``ontology.toml`` to be a governed artifact with
+   additive/breaking change classification,
+   **so that** accidental breaking changes are caught before they reach main.
+
+   **Context:**
+
+   The ontology defines the vocabulary that all specs, agents, and tools depend
+   on. Removing or renaming a type, status, or link is a breaking change that
+   can silently invalidate existing specs. Governance rules classify changes and
+   require a migration CR for breaking ones.
+
+   **Acceptance Criteria:**
+
+   1. Given a proposed ontology change, When I inspect the governance rules, Then I can classify it as additive or breaking.
+   2. Given a breaking ontology change, When I attempt to merge it, Then a migration CR is required before the change can proceed.
+   3. Given the release process, When the Release Engineer runs the compare-mode check, Then a stale ubproject.toml blocks the release.
+
+
+.. story:: Ontology Skill
+   :id: SYSP_US_ONTOLOGY_SKILL
+   :status: draft
+   :priority: mandatory
+   :tags: architecture, ontology, phase-1
+
+   **As a** System Designer,
+   **I want** a skill that explains how to edit ``ontology.toml``,
+   **so that** I can evolve the ontology correctly without reading
+   implementation details.
+
+   **Context:**
+
+   The ``syspilot.ontology`` skill is loaded by any agent that needs to
+   understand or modify the ontology. It documents the schema, the generator
+   invocation, and the governance guardrails.
+
+   **Acceptance Criteria:**
+
+   1. Given the skill, When I read it, Then it documents the ontology.toml schema structure.
+   2. Given the skill, When I need to regenerate ubproject.toml, Then it tells me the exact command.
+   3. Given the skill, When I propose an ontology change, Then it tells me how to classify it and what approvals are needed.
