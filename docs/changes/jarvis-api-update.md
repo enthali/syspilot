@@ -1,6 +1,6 @@
 # Change Document: jarvis-api-update
 
-**Status**: in-progress
+**Status**: ready-for-merge
 **Branch**: feature/jarvis-api-update
 **Created**: 2026-07-21
 **Author**: Project Manager
@@ -166,7 +166,8 @@ Renamed tool APIs (`jarvis_sendToSession`, `jarvis_readMessage`) — grep in `do
 
 ### Issues Found
 
-None.
+- **enthali.jarvis-syspilot group:** PM CR mentioned this group; Dev Engineer omitted it (no evidence of registration). CM aligned spec with implementation and added a disclosure note in SYSP_SPEC_SETUP_FRONTMATTER.
+- **stale session.yaml reference in architecture.md:** Fixed by Documentation Engineer (commit 4c0cdbc).
 
 ### Sign-off
 
@@ -174,7 +175,7 @@ None.
 - [x] All conflicts resolved
 - [x] Traceability verified
 - [x] Artefakt-removal verified
-- [x] Ready for implementation
+- [x] Ready for merge
 
 ---
 
@@ -187,28 +188,14 @@ section are unaffected — the section is additive, never required retroactively
 
 ### Round 1
 
-**Reviewed by:** QM
-**Review date:** {DATE}
+**Reviewed by:** MECE Engineer + Trace Engineer
+**Review date:** 2026-07-21
 
 #### Findings
 
-| # | Level | Element ID | Finding | Severity |
-|---|-------|------------|---------|----------|
-| 1 | L? | {ID} | {description} | high / medium / low |
-
-#### PM Decisions
-
-| # | Finding # | Decision | Rationale |
-|---|-----------|----------|-----------|
-| 1 | 1 | fix-now / defer / accept-as-is | {rationale} |
+None. All 5 MECE focus areas clean. Trace: 0 stale tool names in active specs, all :links: intact.
 
 ---
-
-## Appendix: Link Discovery Results
-
-```
-{paste output from get_need_links.py as needed}
-```
 
 ---
 
