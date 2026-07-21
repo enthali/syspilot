@@ -72,31 +72,30 @@ Architecture decision: syspilot becomes ontology-agnostic.
    3. Given any ontology template, When I apply it to a project, Then it provides a complete, valid ontology definition that requires no additional design effort to start working.
 
 
-.. story:: Ontology Generator
-   :id: SYSP_US_ONTOLOGY_GENERATOR
+.. story:: Single Ontology Master
+   :id: SYSP_US_ONTOLOGY_SINGLE_MASTER
    :status: draft
    :priority: mandatory
    :tags: architecture, ontology, phase-1
 
    **As a** syspilot developer,
-   **I want** a generator that produces ``docs/ubproject.toml`` from
-   ``.syspilot/ontology.toml`` automatically,
-   **so that** the ubCode/sphinx-needs projection always reflects the canonical
-   ontology without manual synchronisation.
+   **I want** ``.syspilot/ontology.toml`` to be the single canonical ontology
+   source read directly by sphinx-needs,
+   **so that** there is no dual-file drift risk and no synchronisation step.
 
    **Context:**
 
-   ``.syspilot/ontology.toml`` is the canonical master (Phase 0 decision). It
-   is a superset containing both ubCode-understood sections and syspilot-only
-   metadata. A generator strips the syspilot-only sections to produce the
-   ubCode projection (``docs/ubproject.toml``). A compare mode lets the
-   Release Engineer verify freshness before squash-merge.
+   Phase 0 established ``.syspilot/ontology.toml`` as the canonical master.
+   Phase 1 eliminates any intermediate projection file — sphinx-needs reads
+   the master directly via ``needs_from_toml``. The file contains both
+   ``[needs]`` sections (sphinx-needs vocabulary) and ``[syspilot.*]`` sections
+   (syspilot-only metadata, ignored by sphinx-needs).
 
    **Acceptance Criteria:**
 
-   1. Given a valid ``.syspilot/ontology.toml``, When I run the generator, Then ``docs/ubproject.toml`` is produced containing only ubCode-understood content.
-   2. Given an up-to-date ``docs/ubproject.toml``, When I run the generator in compare mode, Then it exits successfully.
-   3. Given a stale ``docs/ubproject.toml``, When I run the generator in compare mode, Then it exits with a non-zero code and reports the difference.
+   1. Given the sphinx-needs configuration, When I inspect ``docs/conf.py``, Then it points ``needs_from_toml`` directly at ``.syspilot/ontology.toml``.
+   2. Given ``.syspilot/ontology.toml``, When sphinx-needs reads it, Then only the ``[needs]`` sections are consumed; ``[syspilot.*]`` sections are ignored.
+   3. Given the project, When I search for an intermediate generated ontology file, Then none exists.
 
 
 .. story:: Ontology Governance
@@ -121,7 +120,7 @@ Architecture decision: syspilot becomes ontology-agnostic.
 
    1. Given a proposed ontology change, When I inspect the governance rules, Then I can classify it as additive or breaking.
    2. Given a breaking ontology change, When I attempt to merge it, Then a migration CR is required before the change can proceed.
-   3. Given the release process, When the Release Engineer runs the compare-mode check, Then a stale ubproject.toml blocks the release.
+   3. Given any ontology change, When the CR runs sphinx-build -W, Then type/link mismatches are caught immediately.
 
 
 .. story:: Ontology Skill
@@ -138,11 +137,11 @@ Architecture decision: syspilot becomes ontology-agnostic.
    **Context:**
 
    The ``syspilot.ontology`` skill is loaded by any agent that needs to
-   understand or modify the ontology. It documents the schema, the generator
-   invocation, and the governance guardrails.
+   understand or modify the ontology. It documents the schema and the
+   governance guardrails.
 
    **Acceptance Criteria:**
 
    1. Given the skill, When I read it, Then it documents the ontology.toml schema structure.
-   2. Given the skill, When I need to regenerate ubproject.toml, Then it tells me the exact command.
-   3. Given the skill, When I propose an ontology change, Then it tells me how to classify it and what approvals are needed.
+   2. Given the skill, When I propose an ontology change, Then it tells me how to classify it and what approvals are needed.
+   3. Given the skill, When I need to add a new type, Then it shows me where to place the entry and how to verify it.

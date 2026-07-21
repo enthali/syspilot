@@ -133,5 +133,5 @@ A breaking change triggers a **migration CR** that must:
 
 ### Safety Net
 
-**`sphinx-build -W`** (every CR) — catches type/link mismatches immediately.
-3. **Governance classification** (process) — catches intent before implementation.
+1. **`sphinx-build -W`** (every CR) — catches type/link mismatches immediately.
+2. **Governance classification** (process) — catches intent before implementation.

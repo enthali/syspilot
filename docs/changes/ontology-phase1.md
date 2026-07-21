@@ -69,58 +69,66 @@ project's tailoring**, not syspilot core.
 
 ## Level 0: User Stories
 
-**Status**: ✅ completed
+**Status**: ✅ completed (reworked)
 
 ### Impacted User Stories
 
-None — greenfield addition. Phase 0 elements (SYSP_US_ONTOLOGY_ARCH, SYSP_US_ONTOLOGY_TEMPLATES) are read-only context.
+| ID | Impact | Notes |
+|----|--------|-------|
+| SYSP_US_ONTOLOGY_GOVERNANCE | AC-3 reworded | Removed generator --compare; now references sphinx-build -W |
+| SYSP_US_ONTOLOGY_SKILL | AC-2 reworded | Removed generator docs; now references verification docs |
 
 ### New User Stories
 
 | ID | Title | Priority |
 |----|-------|----------|
-| SYSP_US_ONTOLOGY_GENERATOR | Ontology Generator | mandatory |
+| SYSP_US_ONTOLOGY_SINGLE_MASTER | Single-Master Ontology | mandatory |
 | SYSP_US_ONTOLOGY_GOVERNANCE | Ontology Governance | mandatory |
 | SYSP_US_ONTOLOGY_SKILL | Ontology Skill | mandatory |
 
+### Removed (rescope)
+
+| ID | Title | Reason |
+|----|-------|--------|
+| SYSP_US_ONTOLOGY_GENERATOR | Ontology Generator | Generator architecture removed; replaced by SYSP_US_ONTOLOGY_SINGLE_MASTER |
+
 ### Decisions
 
-- Three separate US for generator, governance, and skill — each has a distinct WHY.
-- Added to existing us_ontology_arch.rst (same file family, not a new RST file).
-
-### Horizontal Check (MECE)
-
-- [x] No contradictions with existing User Stories
-- [x] No redundancies
-- [x] Gaps identified and addressed
+- Replaced GENERATOR US with SINGLE_MASTER US — the WHY is "one file, no projection" not "run a generator".
+- GOVERNANCE and SKILL US reworded for flat-master safety model.
 
 ---
 
 ## Level 1: Requirements
 
-**Status**: ✅ completed
+**Status**: ✅ completed (reworked)
 
 ### Impacted Requirements
 
-None.
+| ID | Impact | Notes |
+|----|--------|-------|
+| SYSP_REQ_ONTOLOGY_GOVERNANCE | AC-4 removed | Compare-mode gate no longer exists |
+| SYSP_REQ_ONTOLOGY_SKILL | ACs reworded | Removed generator docs; now documents schema + governance only |
 
 ### New Requirements
 
 | ID | Title | Links | Priority |
 |----|-------|-------|----------|
-| SYSP_REQ_ONTOLOGY_GENERATOR | Ontology Generator | SYSP_US_ONTOLOGY_GENERATOR | mandatory |
+| SYSP_REQ_ONTOLOGY_SINGLE_MASTER | Single-Master Ontology | SYSP_US_ONTOLOGY_SINGLE_MASTER | mandatory |
 | SYSP_REQ_ONTOLOGY_GOVERNANCE | Ontology Governance | SYSP_US_ONTOLOGY_GOVERNANCE | mandatory |
 | SYSP_REQ_ONTOLOGY_SKILL | Ontology Skill Content | SYSP_US_ONTOLOGY_SKILL | mandatory |
-| SYSP_REQ_RELEASE_ONTOLOGY_CHECK | Release Ontology Freshness Check | SYSP_US_ONTOLOGY_GENERATOR, SYSP_US_ONTOLOGY_GOVERNANCE, SYSP_US_RELEASE | mandatory |
 
-### Conflicts Detected
+### Removed (rescope)
 
-None.
+| ID | Title | Reason |
+|----|-------|--------|
+| SYSP_REQ_ONTOLOGY_GENERATOR | Ontology Generator | Replaced by SYSP_REQ_ONTOLOGY_SINGLE_MASTER |
+| SYSP_REQ_RELEASE_ONTOLOGY_CHECK | Release Ontology Freshness Check | Compare-gate guarded two-file drift; drift eliminated by construction |
 
 ### Decisions
 
-- SYSP_REQ_RELEASE_ONTOLOGY_CHECK links to both GENERATOR and GOVERNANCE US — it straddles both concerns (tooling + process).
-- Added to existing req_ontology_arch.rst.
+- SINGLE_MASTER replaces GENERATOR — the WHAT is "conf.py reads ontology.toml directly" not "run a generator".
+- RELEASE_CHECK deleted entirely — it guarded a failure mode (stale projection) that no longer exists.
 
 ### Horizontal Check (MECE)
 
@@ -132,34 +140,35 @@ None.
 
 ## Level 2: Design
 
-**Status**: ✅ completed
+**Status**: ✅ completed (reworked)
 
 ### Impacted Design Elements
 
-| ID | Linked From | Impact | Notes |
-|----|-------------|--------|-------|
-| SYSP_SPEC_ONTOLOGY_DIRECTORY | SYSP_REQ_ONTOLOGY_DIRECTORY | modified | Updated layout to show generator; added generator reference |
+| ID | Impact | Notes |
+|----|--------|-------|
+| SYSP_SPEC_ONTOLOGY_SCHEMA | Rewritten | Flat master, no stripping/projection language |
+| SYSP_SPEC_ONTOLOGY_DIRECTORY | Modified | Removed generator reference; added needs_from_toml note |
+| SYSP_SPEC_ONTOLOGY_GOVERNANCE | Modified | Removed "Generator --compare" from Safety Nets |
+| SYSP_SPEC_ONTOLOGY_SKILL_CONTENT | Modified | Removed Generator Invocation section; reduced to 5 sections |
 
 ### New Design Elements
 
 | ID | Title | Links |
 |----|-------|-------|
-| SYSP_SPEC_ONTOLOGY_SCHEMA | ontology.toml Concrete Schema | SYSP_REQ_ONTOLOGY_GENERATOR, SYSP_REQ_ONTOLOGY_CONFIG_AUTHORITY, SYSP_SPEC_ONTOLOGY_TOML_SCHEMA |
-| SYSP_SPEC_ONTOLOGY_GENERATOR | Ontology Generator Behaviour | SYSP_REQ_ONTOLOGY_GENERATOR |
-| SYSP_SPEC_ONTOLOGY_GOVERNANCE | Ontology Governance Rules | SYSP_REQ_ONTOLOGY_GOVERNANCE |
-| SYSP_SPEC_ONTOLOGY_SKILL_CONTENT | Ontology Skill Content | SYSP_REQ_ONTOLOGY_SKILL |
+| SYSP_SPEC_ONTOLOGY_CONF | conf.py Ontology Configuration | SYSP_REQ_ONTOLOGY_SINGLE_MASTER |
 
-### Conflicts Detected
+### Removed (rescope)
 
-None.
+| ID | Title | Reason |
+|----|-------|--------|
+| SYSP_SPEC_ONTOLOGY_GENERATOR | Ontology Generator Behaviour | No generator in flat-master architecture |
 
 ### Decisions
 
-- ontology.toml uses `[needs]` as the ubCode pass-through key and `[syspilot]` for syspilot-only metadata. Generator strips everything not under `needs`.
-- Phase 1 minimal syspilot content: just `schema_version = "1.0"` — actors/capabilities/process deferred to Phase 2+.
-- Generator works on raw text (not parsed TOML) to preserve comments and formatting.
-- Generator exit codes: 0 = match, 1 = diff, 2 = input error.
-- Skill file created at syspilot/skills/syspilot.ontology/SKILL.md.
+- SCHEMA spec rewritten: sphinx-needs reads the superset directly, no stripping.
+- New SPEC_ONTOLOGY_CONF describes the `needs_from_toml` setting.
+- SKILL_CONTENT reduced from 6 to 5 required sections (no Generator Invocation).
+- GOVERNANCE Safety Nets reduced from 3 to 2 (sphinx-build -W + process).
 
 ### Horizontal Check (MECE)
 
@@ -176,24 +185,31 @@ None.
 
 | User Story | Requirements | Design | Complete? |
 |------------|--------------|--------|-----------|
-| SYSP_US_ONTOLOGY_GENERATOR | SYSP_REQ_ONTOLOGY_GENERATOR, SYSP_REQ_RELEASE_ONTOLOGY_CHECK | SYSP_SPEC_ONTOLOGY_SCHEMA, SYSP_SPEC_ONTOLOGY_GENERATOR | ✅ |
-| SYSP_US_ONTOLOGY_GOVERNANCE | SYSP_REQ_ONTOLOGY_GOVERNANCE, SYSP_REQ_RELEASE_ONTOLOGY_CHECK | SYSP_SPEC_ONTOLOGY_GOVERNANCE | ✅ |
+| SYSP_US_ONTOLOGY_SINGLE_MASTER | SYSP_REQ_ONTOLOGY_SINGLE_MASTER | SYSP_SPEC_ONTOLOGY_SCHEMA, SYSP_SPEC_ONTOLOGY_CONF | ✅ |
+| SYSP_US_ONTOLOGY_GOVERNANCE | SYSP_REQ_ONTOLOGY_GOVERNANCE | SYSP_SPEC_ONTOLOGY_GOVERNANCE | ✅ |
 | SYSP_US_ONTOLOGY_SKILL | SYSP_REQ_ONTOLOGY_SKILL | SYSP_SPEC_ONTOLOGY_SKILL_CONTENT | ✅ |
 
 ### Artefakt-Removal-Check
 
-Not applicable — no artefacts removed.
+Grep for removed IDs in spec tree — **clean**, no stale references remain in RST files:
+
+- `SYSP_US_ONTOLOGY_GENERATOR` — 0 hits in docs/syspilot/
+- `SYSP_REQ_ONTOLOGY_GENERATOR` — 0 hits in docs/syspilot/
+- `SYSP_SPEC_ONTOLOGY_GENERATOR` — 0 hits in docs/syspilot/
+- `SYSP_REQ_RELEASE_ONTOLOGY_CHECK` — 0 hits in docs/syspilot/
+
+(Change Document itself contains historical references in QM Findings — acceptable.)
 
 ### Issues Found
 
-- **Stray working-tree change (discarded):** `.github/agents/syspilot.setup.agent.md` had an unrelated modification (added name/agent frontmatter fields + changed tools list) when CM checked out the branch. Discarded via `git checkout --`. Not part of this CR.
-- **Installer template (scoped out):** CD Summary listed as "proposed, CM to decide." CM decision: deferred to Phase 2 — see Summary Out of Scope section.
+- None.
 
 ### Sign-off
 
-- [x] All levels completed (no ⚠️ DEPRECATED markers remaining)
+- [x] All levels completed
 - [x] All conflicts resolved
 - [x] Traceability verified
+- [x] Artefakt-removal verified
 - [x] Ready for merge
 
 ---

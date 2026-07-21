@@ -151,12 +151,12 @@ Design specifications for the ontology-agnostic architecture.
    ::
 
       .syspilot/
-      ├── ontology.toml       # Canonical ontology master (ubCode + syspilot sections)
+      ├── ontology.toml       # Canonical ontology master ([needs] + [syspilot.*])
       └── templates/          # (future) Additional ontology templates
 
-   The generator ``syspilot/sphinx/generate_ubproject.py`` reads
-   ``.syspilot/ontology.toml`` and produces ``docs/ubproject.toml``
-   (the ubCode projection).
+   ``docs/conf.py`` reads ``.syspilot/ontology.toml`` directly via
+   ``needs_from_toml = "../.syspilot/ontology.toml"``. No intermediate file
+   is generated or committed.
 
    **Discovery Convention:**
 
@@ -271,18 +271,15 @@ Design specifications for the ontology-agnostic architecture.
    :id: SYSP_SPEC_ONTOLOGY_SCHEMA
    :status: draft
    :tags: architecture, ontology, phase-1
-   :links: SYSP_REQ_ONTOLOGY_GENERATOR; SYSP_REQ_ONTOLOGY_CONFIG_AUTHORITY; SYSP_SPEC_ONTOLOGY_TOML_SCHEMA
+   :links: SYSP_REQ_ONTOLOGY_SINGLE_MASTER; SYSP_REQ_ONTOLOGY_CONFIG_AUTHORITY; SYSP_SPEC_ONTOLOGY_TOML_SCHEMA
 
    **Definition:**
 
-   ``.syspilot/ontology.toml`` is a valid TOML file structured as a superset
-   of ``docs/ubproject.toml``. It contains two kinds of sections:
+   ``.syspilot/ontology.toml`` is a valid TOML file — the single canonical
+   ontology master. Sphinx-needs reads it directly via ``needs_from_toml``.
+   It contains two kinds of top-level tables:
 
-   **ubCode Sections** (passed through to ``docs/ubproject.toml``):
-
-   All top-level keys and tables under ``[needs]`` — these are understood by
-   sphinx-needs / ubCode. The content is identical to what appears in
-   ``docs/ubproject.toml`` today:
+   **``[needs]`` sections** (consumed by sphinx-needs):
 
    * ``[needs]`` — global settings (``id_required``, ``build_json``, etc.)
    * ``[[needs.types]]`` — Work-Product type declarations
@@ -290,9 +287,7 @@ Design specifications for the ontology-agnostic architecture.
    * ``[[needs.extra_links]]`` — typed link declarations
    * ``needs.extra_options`` — additional fields on all directives
 
-   **syspilot Sections** (stripped by the generator):
-
-   All top-level keys and tables NOT under ``[needs]``. Phase 1 defines:
+   **``[syspilot.*]`` sections** (ignored by sphinx-needs):
 
    * ``[syspilot]`` — metadata header with ``schema_version`` (string)
 
@@ -301,61 +296,44 @@ Design specifications for the ontology-agnostic architecture.
 
    **Separator Convention:**
 
-   The generator strips all content whose top-level key is not ``needs``.
-   This means any new syspilot-specific metadata must use a top-level key
-   other than ``needs`` (e.g. ``syspilot``, ``syspilot.actors``).
+   Sphinx-needs reads only keys under the ``needs`` top-level table. All
+   other top-level keys (e.g. ``syspilot``) are ignored. This means any
+   syspilot-specific metadata must use a top-level key other than ``needs``.
 
-   **Phase 1 Minimal Content:**
+   **Phase 1 Content:**
 
    ::
 
       # syspilot ontology master — canonical source of truth
-      # Generator: python syspilot/sphinx/generate_ubproject.py
 
       [syspilot]
       schema_version = "1.0"
 
       [needs]
-      # ... (identical to current docs/ubproject.toml [needs] content)
+      # ... (sphinx-needs vocabulary: types, statuses, links)
 
 
-.. spec:: Ontology Generator Behaviour
-   :id: SYSP_SPEC_ONTOLOGY_GENERATOR
+.. spec:: conf.py Ontology Configuration
+   :id: SYSP_SPEC_ONTOLOGY_CONF
    :status: draft
    :tags: architecture, ontology, phase-1
-   :links: SYSP_REQ_ONTOLOGY_GENERATOR
+   :links: SYSP_REQ_ONTOLOGY_SINGLE_MASTER
 
    **Definition:**
 
-   The generator is a Python script at
-   ``syspilot/sphinx/generate_ubproject.py``.
+   ``docs/conf.py`` configures sphinx-needs to read the ontology directly:
 
-   **Input:** ``.syspilot/ontology.toml``
-   **Output:** ``docs/ubproject.toml``
+   ::
 
-   **Normal Mode** (no flags):
+      needs_from_toml = "../.syspilot/ontology.toml"
 
-   1. Read ``.syspilot/ontology.toml`` as raw text (not parsed TOML — to
-      preserve comments and formatting).
-   2. Extract all lines belonging to ``[needs]``-prefixed sections: from the
-      first ``[needs]`` header through to the next non-``[needs]`` top-level
-      header or end of file.
-   3. Prepend a generation header comment (source file, timestamp, warning
-      not to edit manually).
-   4. Write the result to ``docs/ubproject.toml``.
+   The relative path resolves from the ``docs/`` directory (where ``conf.py``
+   lives) to the project root's ``.syspilot/`` directory.
 
-   **Compare Mode** (``--compare``):
+   **Constraints:**
 
-   1. Generate the output to a temporary buffer (same logic as normal mode).
-   2. Read the existing ``docs/ubproject.toml``.
-   3. Compare byte-for-byte (ignoring the generation header if present).
-   4. If identical: exit 0.
-   5. If different: print a diff summary to stderr, exit 1.
-
-   **Error Handling:**
-
-   * If ``.syspilot/ontology.toml`` does not exist: exit 2 with error message.
-   * If ``.syspilot/ontology.toml`` contains no ``[needs]`` section: exit 2.
+   * No intermediate generated file is produced or committed.
+   * ``docs/ubproject.toml`` no longer exists in the project.
 
 
 .. spec:: Ontology Governance Rules
@@ -417,8 +395,7 @@ Design specifications for the ontology-agnostic architecture.
    **Safety Nets:**
 
    1. ``sphinx-build -W`` (every CR) — catches type/link mismatches immediately
-   2. Generator ``--compare`` (release gate) — catches stale projections
-   3. Governance classification (process) — catches intent before implementation
+   2. Governance classification (process) — catches intent before implementation
 
 
 .. spec:: Ontology Skill Content
@@ -437,14 +414,12 @@ Design specifications for the ontology-agnostic architecture.
    1. **YAML Frontmatter** — ``name``, ``description``
    2. **USE FOR** — when to load this skill (ontology editing, type addition,
       governance questions)
-   3. **Schema Documentation** — the ontology.toml structure: ubCode sections
-      (``[needs]``) vs. syspilot sections (``[syspilot]``), separator convention
+   3. **Schema Documentation** — the ontology.toml structure: ``[needs]``
+      sections (sphinx-needs vocabulary) vs. ``[syspilot.*]`` sections
+      (metadata), separator convention
    4. **How to Edit** — adding new types, statuses, link types; where to place
-      new entries; how to run the generator after editing
-   5. **Generator Invocation** — exact command
-      (``python syspilot/sphinx/generate_ubproject.py``), ``--compare`` mode,
-      expected exit codes
-   6. **Governance Guardrails** — additive/breaking classification table,
+      new entries; run ``sphinx-build -W`` to verify
+   5. **Governance Guardrails** — additive/breaking classification table,
       migration-CR requirement, safety net overview
 
    **Constraints:**

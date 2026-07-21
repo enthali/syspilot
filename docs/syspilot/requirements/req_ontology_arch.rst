@@ -176,31 +176,28 @@ Requirements for the ontology-agnostic architecture.
    * AC-3: A template is a complete, valid ontology definition — applying it requires no additional design effort.
 
 
-.. req:: Ontology Generator
-   :id: SYSP_REQ_ONTOLOGY_GENERATOR
+.. req:: Single Ontology Master
+   :id: SYSP_REQ_ONTOLOGY_SINGLE_MASTER
    :status: draft
    :priority: mandatory
    :tags: architecture, ontology, phase-1
-   :links: SYSP_US_ONTOLOGY_GENERATOR
+   :links: SYSP_US_ONTOLOGY_SINGLE_MASTER
 
    **Description:**
-   The system SHALL provide a generator that reads ``.syspilot/ontology.toml``
-   and produces ``docs/ubproject.toml`` by stripping all non-``[needs]``
-   sections. The generator SHALL support a ``--compare`` mode that exits
-   non-zero when the committed ``docs/ubproject.toml`` differs from a fresh
-   generation.
+   The sphinx-needs ``needs_from_toml`` setting SHALL point directly at
+   ``.syspilot/ontology.toml``. No intermediate generated file is used.
+   Sphinx-needs reads only the ``[needs]`` sections; ``[syspilot.*]`` sections
+   are ignored.
 
    **Rationale:**
-   The generator ensures the ubCode projection is always derivable from the
-   canonical master. The compare mode provides an automated freshness check
-   for the release process.
+   A single-file architecture eliminates dual-file drift. There is no
+   synchronisation step to forget, no stale projection to detect.
 
    **Acceptance Criteria:**
 
-   * AC-1: The generator reads ``.syspilot/ontology.toml`` and writes ``docs/ubproject.toml`` containing only ``[needs]``-prefixed content.
-   * AC-2: The generator preserves comments and formatting within the ``[needs]`` sections.
-   * AC-3: In ``--compare`` mode, the generator exits 0 if ``docs/ubproject.toml`` matches a fresh generation, non-zero otherwise.
-   * AC-4: The generator reports which sections were stripped (informational output).
+   * AC-1: ``docs/conf.py`` sets ``needs_from_toml`` to a path resolving to ``.syspilot/ontology.toml``.
+   * AC-2: No intermediate generated file (e.g. ``docs/ubproject.toml``) exists in the project.
+   * AC-3: sphinx-needs ignores ``[syspilot.*]`` sections when reading the file.
 
 
 .. req:: Ontology Governance
@@ -225,7 +222,6 @@ Requirements for the ontology-agnostic architecture.
    * AC-1: The governance rules define a classification table for additive vs. breaking changes.
    * AC-2: Breaking changes require an explicit migration CR before merge.
    * AC-3: ``sphinx-build -W`` catches type/link mismatches immediately during any CR.
-   * AC-4: The Release Engineer's compare-mode check blocks release if ``docs/ubproject.toml`` is stale.
 
 
 .. req:: Ontology Skill Content
@@ -237,38 +233,15 @@ Requirements for the ontology-agnostic architecture.
 
    **Description:**
    The ``syspilot.ontology`` skill SHALL document the ``ontology.toml`` schema
-   structure, the generator invocation command, and the governance guardrails.
+   structure and the governance guardrails.
 
    **Rationale:**
-   Agents that edit the ontology need a single reference for schema, tooling,
-   and process rules. The skill provides this without requiring agents to read
+   Agents that edit the ontology need a single reference for schema and
+   process rules. The skill provides this without requiring agents to read
    implementation code.
 
    **Acceptance Criteria:**
 
-   * AC-1: The skill documents the ontology.toml schema (ubCode sections, syspilot sections, separator convention).
-   * AC-2: The skill documents the generator command and its ``--compare`` mode.
+   * AC-1: The skill documents the ontology.toml schema (``[needs]`` sections, ``[syspilot.*]`` sections, separator convention).
+   * AC-2: The skill documents how to add new types, statuses, and link types.
    * AC-3: The skill documents the additive/breaking change classification and migration-CR requirement.
-
-
-.. req:: Release Ontology Freshness Check
-   :id: SYSP_REQ_RELEASE_ONTOLOGY_CHECK
-   :status: draft
-   :priority: mandatory
-   :tags: architecture, ontology, phase-1
-   :links: SYSP_US_ONTOLOGY_GENERATOR; SYSP_US_ONTOLOGY_GOVERNANCE; SYSP_US_RELEASE
-
-   **Description:**
-   The Release Engineer SHALL run the generator in ``--compare`` mode before
-   squash-merge to main. If ``docs/ubproject.toml`` is stale relative to
-   ``.syspilot/ontology.toml``, the release SHALL fail.
-
-   **Rationale:**
-   This is the last automated checkpoint before a release. It prevents
-   shipping a ubCode projection that does not match the canonical ontology.
-
-   **Acceptance Criteria:**
-
-   * AC-1: The Release Engineer's workflow includes a compare-mode generator check before squash-merge.
-   * AC-2: A stale ``docs/ubproject.toml`` causes the release to fail with a clear error message.
-   * AC-3: The check runs after validation but before any merge operation.
