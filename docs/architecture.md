@@ -199,7 +199,7 @@ are always preserved, regardless of whether they appear in the current release.
 ---
 
 (ontology-architecture)=
-## Ontology Architecture *(Phase 0 — spec only, no runtime implementation)*
+## Ontology Architecture *(Phase 0: spec · Phase 1: generator infrastructure)*
 
 syspilot separates four concerns cleanly so that the default L0/L1/L2 hierarchy
 can be replaced by any project ontology (e.g. ASPICE) without rewriting agents.
@@ -227,10 +227,10 @@ The per-project `.syspilot/` directory holds all ontology and capability files:
 
 ```
 .syspilot/
-├── syspilot.toml           # Single authority: active ontology + tailoring
+├── ontology.toml           # Canonical ontology master (superset of ubproject.toml)
 ├── ontologies/
 │   └── <name>/
-│       └── ontology.toml  # Ontology definition (types, relations, graph)
+│       └── ontology.toml  # Ontology template definition
 └── capabilities/
     └── <name>.toml        # Capability declarations (optional overrides)
 ```
@@ -241,6 +241,26 @@ does not require agent changes.
 
 *Spec elements:* `SYSP_SPEC_ONTOLOGY_FOUR_CONCERNS`, `SYSP_SPEC_ONTOLOGY_TOML_SCHEMA`,
 `SYSP_SPEC_ONTOLOGY_DIRECTORY`, `SYSP_SPEC_ONTOLOGY_GRAPH`, `SYSP_SPEC_ONTOLOGY_CAPABILITIES`.
+
+### Phase 1: Generator Infrastructure
+
+**Delivered:** `.syspilot/ontology.toml` is the canonical ontology master — a
+superset of `docs/ubproject.toml`. `docs/ubproject.toml` is **generated** from it
+and must not be edited directly (it carries a header comment to that effect).
+
+**Generator:** `syspilot/sphinx/generate_ubproject.py` strips non-`[needs]` sections
+and writes `docs/ubproject.toml`. Run it after any ontology change:
+
+```bash
+python syspilot/sphinx/generate_ubproject.py
+```
+
+**Freshness check:** Pass `--compare` to verify `docs/ubproject.toml` is up-to-date
+without writing. The Release Agent runs this check automatically before squash-merge
+(exits non-zero if stale).
+
+**Skill:** `syspilot.ontology` encapsulates ontology management operations
+(generate, compare, validate).
 
 ---
 

@@ -188,9 +188,10 @@ flowchart LR
 
 1. **Version bump** — Determine the next version per the project's tailored scheme (e.g. semver or CalVer), sourced from the latest `docs/changes/` archive — not syspilot's own framework version
 2. **Validate** — Run Sphinx build, check for broken links and schema violations
-3. **Release notes** — Generate `docs/releasenotes.md` from Change Documents
-4. **Archive** — Move Change Documents to `docs/changes/archive/<version>/`
-5. **Publish** — Create Git tag and GitHub Release
+3. **Ontology freshness check** — Verify `docs/ubproject.toml` is current by running `generate_ubproject.py --compare`; fail-fast if stale (edit `.syspilot/ontology.toml` and regenerate before proceeding)
+4. **Release notes** — Generate `docs/releasenotes.md` from Change Documents
+5. **Archive** — Move Change Documents to `docs/changes/archive/<version>/`
+6. **Publish** — Create Git tag and GitHub Release
 
 **When to use:** After all planned changes for a version are merged and verified.
 
