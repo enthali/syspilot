@@ -1,6 +1,6 @@
 ---
 name: syspilot.ontology
-description: "Ontology management for syspilot. Schema documentation for ontology.toml, generator invocation, and governance guardrails. USE FOR: adding or modifying Work-Product types, statuses, link types; running the ubproject.toml generator; classifying ontology changes as additive or breaking."
+description: "Ontology management for syspilot. Schema documentation for ontology.toml and governance guardrails. USE FOR: adding or modifying Work-Product types, statuses, link types; classifying ontology changes as additive or breaking."
 implements: [SYSP_SPEC_ONTOLOGY_SKILL_CONTENT]
 requirements: [SYSP_REQ_ONTOLOGY_SKILL]
 ---
@@ -11,26 +11,22 @@ requirements: [SYSP_REQ_ONTOLOGY_SKILL]
 
 - Adding, modifying, or removing Work-Product types, statuses, or link types
 - Understanding the ontology.toml schema structure
-- Running the generator to produce docs/ubproject.toml
 - Classifying ontology changes (additive vs. breaking)
 - Understanding governance rules for ontology changes
 
 ## Schema: .syspilot/ontology.toml
 
-The canonical ontology master lives at `.syspilot/ontology.toml`. It is a
-superset of `docs/ubproject.toml` — containing both ubCode-understood sections
-and syspilot-specific metadata.
+The canonical ontology lives at `.syspilot/ontology.toml`. Sphinx-needs reads
+it directly via `needs_from_toml` in `docs/conf.py`.
 
 ### Section Separator Convention
 
 The file has two kinds of top-level sections:
 
-1. **`[needs]` sections** — passed through to `docs/ubproject.toml` verbatim.
-   These are understood by sphinx-needs / ubCode.
-2. **Non-`[needs]` sections** (e.g. `[syspilot]`) — stripped by the generator.
-   These contain syspilot-specific metadata.
-
-The generator strips everything whose top-level key is NOT `needs`.
+1. **`[needs]` sections** — understood by sphinx-needs / ubCode.
+   Sphinx-needs reads only `[needs]` and ignores sibling keys.
+2. **Non-`[needs]` sections** (e.g. `[syspilot]`) — syspilot-specific metadata,
+   ignored by sphinx-needs.
 
 ### ubCode Sections (under `[needs]`)
 
@@ -88,8 +84,7 @@ schema_version = "1.0"
    color = "#AABBCC"
    style = "node"
    ```
-2. Run the generator (see below).
-3. Verify with `sphinx-build -W`.
+2. Verify with `sphinx-build -W`.
 
 ### Adding a New Status
 
@@ -109,34 +104,6 @@ option = "mylink"
 incoming = "is linked by"
 outgoing = "links to"
 ```
-
-## Generator
-
-**Location:** `syspilot/sphinx/generate_ubproject.py`
-
-### Normal Mode
-
-```shell
-python syspilot/sphinx/generate_ubproject.py
-```
-
-Reads `.syspilot/ontology.toml`, strips non-`[needs]` sections, writes
-`docs/ubproject.toml`.
-
-### Compare Mode
-
-```shell
-python syspilot/sphinx/generate_ubproject.py --compare
-```
-
-Compares a fresh generation against the committed `docs/ubproject.toml`.
-
-- **Exit 0:** up-to-date (no changes needed)
-- **Exit 1:** stale (diff printed to stderr)
-- **Exit 2:** input file missing or invalid
-
-The Release Engineer runs `--compare` before squash-merge. A non-zero exit
-blocks the release.
 
 ## Governance Guardrails
 
@@ -164,8 +131,7 @@ A breaking change triggers a **migration CR** that must:
 2. Verify `sphinx-build -W` passes after migration.
 3. Be merged before or atomically with the ontology change.
 
-### Safety Nets
+### Safety Net
 
-1. **`sphinx-build -W`** (every CR) — catches type/link mismatches immediately.
-2. **Generator `--compare`** (release gate) — catches stale projections.
+**`sphinx-build -W`** (every CR) — catches type/link mismatches immediately.
 3. **Governance classification** (process) — catches intent before implementation.
