@@ -1,9 +1,9 @@
 # Change Document: ontology-phase1
 
-**Status**: ready-for-merge
+**Status**: in-progress
 **Branch**: feature/ontology-phase1
 **Created**: 2026-07-21
-**Author**: Project Manager (triage), Change Manager (engineering)
+**Author**: Project Manager (triage + rescope), Change Manager (engineering)
 **Operation Mode**: autonomous
 
 ---
@@ -11,51 +11,57 @@
 ## Summary
 
 Phase 1 of the ontology-architecture-decision ADR (CR #49, merged). Phase 0
-established the principle that `.syspilot/ontology.toml` is the canonical,
-tooling-agnostic ontology master and that sphinx-needs/ubCode is just one
-consumer, accessed via an adapter/generator. Phase 1 delivers the **capability**
-— the infrastructure to make that real — without yet populating syspilot's own
-`ontology.toml` (that is a follow-up CR).
+established that `.syspilot/ontology.toml` is the canonical, tooling-agnostic
+ontology master and that sphinx-needs/ubCode is just one consumer. Phase 1
+delivers the **capability**: a single canonical ontology file that feeds both
+sphinx-needs and (in later phases) the agents — without yet populating the
+syspilot-specific sections (that is Phase 2, #54).
+
+**Architecture: one flat master, no projection.** `.syspilot/ontology.toml` is a
+superset holding both the `[needs]` table (the sphinx-needs / ubProject schema)
+and `[syspilot.*]` sections (syspilot-only metadata: actors/ownership, lifecycle,
+V&V — populated from Phase 2 on). sphinx-needs is pointed at this file directly
+and reads only `[needs]`, ignoring the `[syspilot.*]` siblings. There is no
+generated `docs/ubproject.toml`, no generator, and no projection step.
 
 **Deliverables:**
 
-1. **`syspilot.ontology` skill** (read by the System Designer): how to edit
-   `ontology.toml`, how to invoke the generator, governance guardrail
-   (guarded artifact + additive/breaking change classification +
-   migration-CR requirement), and schema documentation for the superset sections.
-   The schema itself is to be defined interactively by the System Designer
-   during this CR, subject to one constraint: syspilot-only sections must be
-   cleanly separable from ubCode-understood sections.
+1. **Single ontology master** — `.syspilot/ontology.toml` as the one canonical
+   source read by both sphinx-needs and (later) the agents.
+2. **sphinx-needs pointed directly at the master** — no intermediate projection file.
+3. **`syspilot.ontology` skill** (read by the System Designer) — schema
+   documentation, the "sphinx-needs reads only `[needs]`, ignores siblings"
+   convention, and the governance guardrail (guarded artifact + additive/breaking
+   change classification + migration-CR requirement). Slimmed: no generator, no
+   compare mode, no staging.
+4. **Governance Guardrail** at spec level — `ontology.toml` as a guarded artifact,
+   additive vs. breaking change classification, migration-CR requirement.
 
-2. **Generator Python script** (proposed location:
-   `syspilot/sphinx/generate_ubproject.py`): strips syspilot-only sections from
-   `.syspilot/ontology.toml` → produces `docs/ubproject.toml` (the ubCode
-   projection). Must include a `--compare` mode that exits non-zero when the
-   committed `docs/ubproject.toml` differs from a fresh generation (used by the
-   Release Agent).
+**Safety architecture (two nets):**
+- `sphinx-build -W` (every CR, already enforced) — now validates the master
+  **directly**: a malformed ontology, or a spec referencing a missing type/link,
+  cannot pass the CM pipeline. Earlier and stronger than a release-time gate.
+- Governance Guardrail (process lock) — spec-level, enforced by process.
 
-3. **Release Agent extension**: add a compare-mode generator check in the Release
-   Agent's early steps, before squash-merge to main. Fails the release if
-   `docs/ubproject.toml` is stale relative to `ontology.toml`.
+**Rescope note (2026-07-21, PM review before merge).** This CR originally
+delivered a *staged* ontology — a superset master projected by a generator down
+to a stripped `docs/ubproject.toml`, guarded by a Release Agent compare-gate.
+Review established that the staging solved a consumer-intolerance problem that
+does not exist here: sphinx-needs reads a single configured table (`[needs]`) and
+ignores siblings, so the superset can be consumed directly; and ubCode — the only
+other candidate consumer — is not in use in this project. The generator, the
+projection file, and the release compare-gate were therefore removed as
+over-engineering. Safety is preserved: the removed gate guarded *two-file drift*,
+a failure mode now eliminated by construction, while `sphinx-build -W` already
+validates the single master every CR. Should a future consuming project run a
+strict ubCode needing a stripped projection, that generator becomes **that
+project's tailoring**, not syspilot core.
 
-4. **Governance Guardrail** at spec level: `ontology.toml` as a guarded artifact,
-   additive vs. breaking change classification documented, migration-CR requirement.
-
-5. **Installer template** (proposed, CM to decide final scope):
-   `syspilot.ontology.template.toml` offered at install time as a starter file.
-
-**Safety architecture (three nets):**
-- `sphinx-build -W` (every CR run, already enforced): catches any type/link
-  mismatch immediately; provides incremental blast-radius reporting for free.
-  A spec that doesn't match the ontology cannot pass the CM pipeline.
-- Release Agent compare-mode (before squash-merge): last automated checkpoint.
-- Governance Guardrail (process lock): spec-level, enforced by process.
-CI gate on main is explicitly **not** used — too late, broken version already pushed.
-
-**Out of scope:**
-- Populating syspilot's own `ontology.toml` (follow-up CR).
-- Blast-radius diff tool (separate later CR — sphinx-build -W covers the safety need).
-- Installer template (`syspilot.ontology.template.toml`) — CM decision: **deferred to Phase 2** (no syspilot ontology.toml content exists yet to template from; a template without content provides no value and risks being out of date on Phase 2 delivery).
+**Out of scope (unchanged / clarified):**
+- Populating `[syspilot.*]` (actors/ownership, capabilities, process, V&V) → Phase 2 (#54).
+- Agents consuming the ontology → Phase 3 (#57).
+- Blast-radius diff tool → Phase 4 (#55).
+- Installer template — deferred (no syspilot ontology content to template yet).
 
 **GitHub Issue:** #53
 
