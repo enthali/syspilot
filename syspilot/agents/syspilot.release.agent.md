@@ -63,18 +63,23 @@ PM that tailoring is needed. If empty, proceed generic.
    entry. Do NOT rely on session context; use the directory listing as the
    authoritative source. Commit and push these prep changes (archive move,
    version bump, release notes) to `development`.
-7. **Squash Merge** — Squash-merge `development` into `main` per the
+7. **Ontology freshness check** — Run
+   `python syspilot/sphinx/generate_ubproject.py --compare`; if it exits
+   non-zero, stop and report "BLOCKED: docs/ubproject.toml is stale —
+   regenerate by running generate_ubproject.py without --compare, verify
+   the diff, commit the updated file, then re-run the release pipeline."
+8. **Squash Merge** — Squash-merge `development` into `main` per the
    `syspilot.branching` skill — mechanics and conflict resolution are
    owned by the skill, not restated here.
-8. **Tag** — Create Git tag `v{version}`, push `main` + tag to remote.
-9. **Back-Merge** — Back-merge `main` into `development` per the
+9. **Tag** — Create Git tag `v{version}`, push `main` + tag to remote.
+10. **Back-Merge** — Back-merge `main` into `development` per the
    `syspilot.branching` skill.
-10. **Branch Retention** — Apply the project's tailored feature-branch
+11. **Branch Retention** — Apply the project's tailored feature-branch
     retention policy per the `syspilot.branching` skill (default: retain —
     feature branches are NOT deleted unless the project's tailoring
     explicitly opts into deletion).
-11. **Publish** — Create GitHub Release.
-12. **RESPOND** — Report the release result (version, tag, archived docs)
+12. **Publish** — Create GitHub Release.
+13. **RESPOND** — Report the release result (version, tag, archived docs)
     back to PM.
 
 **Input:** Release trigger from PM (after all changes merged and QM-signed-off)

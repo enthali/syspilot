@@ -1,12 +1,29 @@
-# Generated from .syspilot/ontology.toml — do not edit directly
-# Run: python syspilot/sphinx/generate_ubproject.py
+[syspilot]
+schema_version = "1.0"
+description = "syspilot ontology definition — syspilot sections are stripped by generate_ubproject.py"
+
+# ---------------------------------------------------------------------------
+# sphinx-needs configuration (projected to docs/ubproject.toml by generator)
+# ---------------------------------------------------------------------------
 
 [needs]
+
+# Require explicit IDs on every need directive
 id_required = true
+
+# Build needs.json and per-ID JSON files for tooling (ubCode, impact scripts)
 build_json = true
 build_json_per_id = true
+
+# Use Graphviz for needflow diagrams
 flow_engine = "graphviz"
+
+# Extra option fields available on all need directives
 extra_options = ["priority", "rationale", "acceptance_criteria"]
+
+# ---------------------------------------------------------------------------
+# Need Types
+# ---------------------------------------------------------------------------
 
 [[needs.types]]
 directive = "story"
@@ -50,6 +67,10 @@ prefix = "TEST_"
 color = "#DCB239"
 style = "node"
 
+# ---------------------------------------------------------------------------
+# Statuses
+# ---------------------------------------------------------------------------
+
 [[needs.statuses]]
 name = "draft"
 description = "Draft - Work in progress"
@@ -74,6 +95,12 @@ description = "Verified - Tested and validated"
 name = "deprecated"
 description = "Deprecated - No longer used"
 
+# ---------------------------------------------------------------------------
+# Extra Link Types
+# ---------------------------------------------------------------------------
+
+# "defines": used on Group Contract Specs to list the DEFINITIONS of their group.
+# Agents and Skills link to the Group Contract Spec (not directly to def needs).
 [[needs.extra_links]]
 option = "defines"
 incoming = "is defined by"
