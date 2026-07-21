@@ -58,8 +58,9 @@ GitHub Issues are PM-owned end-to-end — no other agent opens, edits, or closes
 - Priority field ID: `PVTSSF_lAHOAFDYiM4Bdr-CzhYLwvw`
 - Priority options: P0=`79628723`, P1=`0a877460`, P2=`da944a9c`
 - Status options: Backlog=`f75ad846`, Ready=`61e4505c`, In progress=`47fc9ee4`, In review=`df73e18b`, Merged=`d5c9819d`, Done=`98236657`
-- **WIP limit on "In progress": 1** — if a second item needs to go "In progress", something is wrong; resolve the active CR first. Epics are never set to "In progress" — use Backlog as their standing status (progress is visible via sub-issues #54, #55).
-- Merged=`d5c9819d`
+- **WIP limit on "In progress": 1 CR** — if a second *CR* needs to go "In progress", something is wrong; resolve the active CR first. Epics are exempt from this limit: an Epic may coexist on "In progress" alongside 1 active CR, because an Epic is a container ticket, not a work item. The signal to watch is: two *CRs* both showing "In progress" → stop and resolve.
+- **Epic status convention:** Epics sit on "In progress" while any of their sub-issues are active, and move to "Done" (auto, via close) when all sub-issues are closed. Epics never go to "Ready", "In review", or "Merged".
+- **Ready definition:** A non-Epic issue is "Ready" when all design decisions are resolved and PM could write the CR Summary immediately without further clarification. PM populates the issue body with the intended scope before setting Ready. This is the pull queue: when "In progress" becomes free, PM picks the next "Ready" item.
 
 ## Infrastructure Changes
 
