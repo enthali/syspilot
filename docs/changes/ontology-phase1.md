@@ -329,6 +329,7 @@ Round 2 is historical record only.
 
 | # | Finding # | Decision | Rationale |
 |---|-----------|----------|-----------|
+| 1 | 1 | fix-now | One-line heading in architecture.md is self-contradictory (says "generator infrastructure" while the body below correctly describes the flat-master design). A misleading heading in a published doc is not acceptable at merge; the fix is trivial. |
 
 ---
 
