@@ -203,6 +203,24 @@ section are unaffected — the section is additive, never required retroactively
 |---|-----------|----------|-----------|
 | 1 | 1 | fix-now | One-line table cell, core rename this CR exists for — must not ship with stale tool names in the reference table. |
 
+### Round 2
+
+**Reviewed by:** MECE Engineer + Trace Engineer
+**Review date:** 2026-07-21
+**Verification of Round 1 fix:** commit c3e1543
+
+#### Findings
+
+None. All AC targets verified:
+- **AC-1:** conventions.md table cell now reads `jarvis_sendMessage()`, `jarvis_receiveMessage()`. Grep confirms zero stray sendToSession / readMessage in active specs/code/agents.
+- **AC-2:** Setup Bootloader tools group notation confirmed (`enthali.jarvis-core` present).
+- **AC-3:** Installer Step 9 idempotency check (actors/ → sessions/ → create) correct.
+- **AC-4:** sphinx-build -W exit 0.
+
+All 5 MECE focus areas clean. Trace: all `:links:` intact, no broken references.
+
+**Status:** ✅ CLEAN — Ready for merge.
+
 ---
 
 ---
