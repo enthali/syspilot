@@ -193,7 +193,14 @@ section are unaffected — the section is additive, never required retroactively
 
 #### Findings
 
-None. All 5 MECE focus areas clean. Trace: 0 stale tool names in active specs, all :links: intact.
+| # | Severity | Level | Element | Issue |
+|---|----------|-------|---------|-------|
+| 1 | MEDIUM | prose | docs/syspilot/conventions.md line 133 | Table row "orchestration" variant still documents old tool names: `jarvis_sendToSession()`, `jarvis_readMessage()`, `mode-detected` RESPOND. Should be: `jarvis_sendMessage()`, `jarvis_receiveMessage()`, mode logic removed (flat-master, no mode detection). |
+
+#### PM Decisions
+
+| # | Finding # | Decision | Rationale |
+|---|-----------|----------|-----------|
 
 ---
 
