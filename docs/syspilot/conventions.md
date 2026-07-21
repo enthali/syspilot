@@ -130,7 +130,7 @@ Multiple variants can exist for the same group. Examples:
 
 | Group | Variant | Description |
 |-------|---------|-------------|
-| `orchestration` | `syspilot.orchestration-jarvis` | `INVOKE` → `runSubagent()`, `SEND` → `jarvis_sendToSession()`, `RECEIVE` → `jarvis_readMessage()`, `RESPOND` → mode-detected |
+| `orchestration` | `syspilot.orchestration-jarvis` | `INVOKE` → `runSubagent()`, `SEND` → `jarvis_sendMessage()`, `RECEIVE` → `jarvis_receiveMessage()`, `RESPOND` → mode-detected |
 | `impact` | `syspilot.impact-python` | Impact analysis via Python script |
 | `impact` | `syspilot.impact-ubcode` | Impact analysis via ubCode MCP *(planned)* |
 | `release` | `syspilot.release-syspilot` | Release skill for this syspilot repository |
