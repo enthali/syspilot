@@ -1,6 +1,8 @@
 ---
 name: syspilot.ontology
 description: "Ontology management for syspilot. Schema documentation for ontology.toml, generator invocation, and governance guardrails. USE FOR: adding or modifying Work-Product types, statuses, link types; running the ubproject.toml generator; classifying ontology changes as additive or breaking."
+implements: [SYSP_SPEC_ONTOLOGY_SKILL_CONTENT]
+requirements: [SYSP_REQ_ONTOLOGY_SKILL]
 ---
 
 # Skill: Ontology Management

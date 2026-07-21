@@ -256,7 +256,7 @@ Requirements for the ontology-agnostic architecture.
    :status: draft
    :priority: mandatory
    :tags: architecture, ontology, phase-1
-   :links: SYSP_US_ONTOLOGY_GENERATOR; SYSP_US_ONTOLOGY_GOVERNANCE
+   :links: SYSP_US_ONTOLOGY_GENERATOR; SYSP_US_ONTOLOGY_GOVERNANCE; SYSP_US_RELEASE
 
    **Description:**
    The Release Engineer SHALL run the generator in ``--compare`` mode before

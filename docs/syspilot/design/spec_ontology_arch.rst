@@ -271,7 +271,7 @@ Design specifications for the ontology-agnostic architecture.
    :id: SYSP_SPEC_ONTOLOGY_SCHEMA
    :status: draft
    :tags: architecture, ontology, phase-1
-   :links: SYSP_REQ_ONTOLOGY_GENERATOR; SYSP_REQ_ONTOLOGY_CONFIG_AUTHORITY
+   :links: SYSP_REQ_ONTOLOGY_GENERATOR; SYSP_REQ_ONTOLOGY_CONFIG_AUTHORITY; SYSP_SPEC_ONTOLOGY_TOML_SCHEMA
 
    **Definition:**
 

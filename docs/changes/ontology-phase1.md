@@ -1,6 +1,6 @@
 # Change Document: ontology-phase1
 
-**Status**: in-progress
+**Status**: ready-for-merge
 **Branch**: feature/ontology-phase1
 **Created**: 2026-07-21
 **Author**: Project Manager (triage), Change Manager (engineering)
@@ -55,6 +55,7 @@ CI gate on main is explicitly **not** used — too late, broken version already 
 **Out of scope:**
 - Populating syspilot's own `ontology.toml` (follow-up CR).
 - Blast-radius diff tool (separate later CR — sphinx-build -W covers the safety need).
+- Installer template (`syspilot.ontology.template.toml`) — CM decision: **deferred to Phase 2** (no syspilot ontology.toml content exists yet to template from; a template without content provides no value and risks being out of date on Phase 2 delivery).
 
 **GitHub Issue:** #53
 
@@ -104,7 +105,7 @@ None.
 | SYSP_REQ_ONTOLOGY_GENERATOR | Ontology Generator | SYSP_US_ONTOLOGY_GENERATOR | mandatory |
 | SYSP_REQ_ONTOLOGY_GOVERNANCE | Ontology Governance | SYSP_US_ONTOLOGY_GOVERNANCE | mandatory |
 | SYSP_REQ_ONTOLOGY_SKILL | Ontology Skill Content | SYSP_US_ONTOLOGY_SKILL | mandatory |
-| SYSP_REQ_RELEASE_ONTOLOGY_CHECK | Release Ontology Freshness Check | SYSP_US_ONTOLOGY_GENERATOR, SYSP_US_ONTOLOGY_GOVERNANCE | mandatory |
+| SYSP_REQ_RELEASE_ONTOLOGY_CHECK | Release Ontology Freshness Check | SYSP_US_ONTOLOGY_GENERATOR, SYSP_US_ONTOLOGY_GOVERNANCE, SYSP_US_RELEASE | mandatory |
 
 ### Conflicts Detected
 
@@ -137,7 +138,7 @@ None.
 
 | ID | Title | Links |
 |----|-------|-------|
-| SYSP_SPEC_ONTOLOGY_SCHEMA | ontology.toml Concrete Schema | SYSP_REQ_ONTOLOGY_GENERATOR, SYSP_REQ_ONTOLOGY_CONFIG_AUTHORITY |
+| SYSP_SPEC_ONTOLOGY_SCHEMA | ontology.toml Concrete Schema | SYSP_REQ_ONTOLOGY_GENERATOR, SYSP_REQ_ONTOLOGY_CONFIG_AUTHORITY, SYSP_SPEC_ONTOLOGY_TOML_SCHEMA |
 | SYSP_SPEC_ONTOLOGY_GENERATOR | Ontology Generator Behaviour | SYSP_REQ_ONTOLOGY_GENERATOR |
 | SYSP_SPEC_ONTOLOGY_GOVERNANCE | Ontology Governance Rules | SYSP_REQ_ONTOLOGY_GOVERNANCE |
 | SYSP_SPEC_ONTOLOGY_SKILL_CONTENT | Ontology Skill Content | SYSP_REQ_ONTOLOGY_SKILL |
@@ -179,14 +180,15 @@ Not applicable — no artefacts removed.
 
 ### Issues Found
 
-- `.github/agents/syspilot.setup.agent.md` had a stray modification (added name/agent frontmatter fields + changed tools list) in the working tree on checkout. Discarded by CM via `git checkout --`. Not part of this CR.
+- **Stray working-tree change (discarded):** `.github/agents/syspilot.setup.agent.md` had an unrelated modification (added name/agent frontmatter fields + changed tools list) when CM checked out the branch. Discarded via `git checkout --`. Not part of this CR.
+- **Installer template (scoped out):** CD Summary listed as "proposed, CM to decide." CM decision: deferred to Phase 2 — see Summary Out of Scope section.
 
 ### Sign-off
 
-- [ ] All levels completed (no ⚠️ DEPRECATED markers remaining)
-- [ ] All conflicts resolved
-- [ ] Traceability verified
-- [ ] Ready for implementation
+- [x] All levels completed (no ⚠️ DEPRECATED markers remaining)
+- [x] All conflicts resolved
+- [x] Traceability verified
+- [x] Ready for merge
 
 ---
 
@@ -199,28 +201,26 @@ section are unaffected — the section is additive, never required retroactively
 
 ### Round 1
 
-**Reviewed by:** QM
-**Review date:** {DATE}
+**Reviewed by:** MECE Engineer + Trace Engineer
+**Review date:** 2026-07-21
 
 #### Findings
 
 | # | Level | Element ID | Finding | Severity |
 |---|-------|------------|---------|----------|
-| 1 | L? | {ID} | {description} | high / medium / low |
+| 1 | SKILL | syspilot.ontology/SKILL.md | Missing `implements`/`requirements` frontmatter (traceability convention) | low |
+| 2 | L1 | SYSP_REQ_RELEASE_ONTOLOGY_CHECK | Missing `SYSP_US_RELEASE` in :links: | medium-low |
+| 3 | - | (installer template) | Deliverable #5 neither implemented nor scoped out in CD | medium-low |
+| 4 | L2 | SYSP_SPEC_ONTOLOGY_SCHEMA | No explicit link to SYSP_SPEC_ONTOLOGY_TOML_SCHEMA (Phase 0 continuity) | low |
 
-#### PM Decisions
+#### CM Decisions
 
 | # | Finding # | Decision | Rationale |
 |---|-----------|----------|-----------|
-| 1 | 1 | fix-now / defer / accept-as-is | {rationale} |
-
----
-
-## Appendix: Link Discovery Results
-
-```
-{paste output from get_need_links.py as needed}
-```
+| 1 | 1 | fix-now | Added `implements`/`requirements` frontmatter to SKILL.md |
+| 2 | 2 | fix-now | Added `SYSP_US_RELEASE` to SYSP_REQ_RELEASE_ONTOLOGY_CHECK :links: |
+| 3 | 3 | defer (Phase 2) | Installer template has no value without syspilot ontology.toml content; explicit scope-out added to CD |
+| 4 | 4 | fix-now | Added `SYSP_SPEC_ONTOLOGY_TOML_SCHEMA` to SYSP_SPEC_ONTOLOGY_SCHEMA :links: |
 
 ---
 
