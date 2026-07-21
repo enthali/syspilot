@@ -81,7 +81,7 @@ Setup Manager Design
    **Frontmatter Configuration:**
 
    * **description:** ``"Setup Bootloader for syspilot. Fetches the current Installer from upstream and invokes it. User-invocable entry point for syspilot installation."``
-   * **tools:** ``[read, edit, search, execute, todo, agent/runSubagent, vscode/askQuestions]`` — the Setup Bootloader's only per-agent exception, needed for its synchronous invocation of the Installer
+   * **tools:** ``[vscode, execute, read, edit, search, web, browser, agent, todo, context7, enthali.jarvis-core, enthali.jarvis-syspilot]`` — group-based notation; includes Jarvis tool groups for session-messaging infrastructure access
    * **user-invocable:** ``true``
    * **agents:** ``["syspilot.installer"]``
    * **version:** ``0.5.3``

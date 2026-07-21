@@ -260,8 +260,8 @@ Installer Design
       sphinx-build). On failure: execute ``git reset --hard <pre-install-commit>``
       from Step 3 and report the failure to the invoking agent.
 
-   9. **Session Scaffolds** — When the asynchronous orchestration variant was
-      selected, create session scaffolds per SYSP_SPEC_INSTALLER_SESSION_SCAFFOLD
+   9. **Actor Creation** — When the asynchronous orchestration variant was
+      selected, create actors per SYSP_SPEC_INSTALLER_SESSION_SCAFFOLD
       as the final step before commit. When the synchronous variant was selected,
       skip this step.
 
@@ -271,7 +271,7 @@ Installer Design
    **Failure Handling:**
 
    On any failure during Steps 4–9 (Install/Update, Configure, Orphan
-   Cleanup, Summary, Session Scaffolds), the Installer SHALL execute
+   Cleanup, Summary, Actor Creation), the Installer SHALL execute
    ``git reset --hard <pre-install-commit>`` from Step 3 and report the
    failure to the invoking agent — identical to the rollback already
    documented for Step 8 Validate failure. See
@@ -306,7 +306,7 @@ Installer Design
    **Output:** Exactly one orchestration-group Skill installed
 
 
-.. spec:: Installer Session Scaffold Creation
+.. spec:: Installer Actor Creation
    :id: SYSP_SPEC_INSTALLER_SESSION_SCAFFOLD
    :status: draft
    :tags: agent-v2, installer, session, scaffold
@@ -315,31 +315,33 @@ Installer Design
    **Behavior:**
 
    When the asynchronous orchestration variant was selected, the Installer
-   creates a session scaffold for every installed agent except
+   creates a Jarvis actor for every installed agent except
    ``syspilot.setup`` (Bootloader) and ``syspilot.installer``:
 
    1. **Enumerate eligible agents** — List ``.github/agents/*.agent.md`` excluding
       the Bootloader and Installer.
    2. **Read identity** — For each eligible agent, read the ``name:`` and
       ``agent:`` fields from its frontmatter.
-   3. **Create scaffold** — Ensure the directory
-      ``.jarvis/sessions/<name>/`` exists and contains a ``session.yaml`` with:
+   3. **Three-way idempotency check** — For each eligible agent:
 
-      .. code-block:: yaml
+      a. ``.jarvis/actors/<name>/`` exists → **skip** (actor already created;
+         ``jarvis_createActor`` is idempotent but explicit skip is cleaner)
+      b. ``.jarvis/sessions/<name>/`` exists → **skip + warn user** (legacy
+         session format detected; syspilot will not create a duplicate;
+         manual Jarvis migration may be needed if Jarvis no longer reads
+         sessions/)
+      c. Neither exists → **call** ``jarvis_createActor(name, summary, agent)``
 
-         name: <name>      # human-readable session name, from agent frontmatter
-         agent: <agent>    # agent identifier, from agent frontmatter
-
-   4. **Preserve on update** — If a scaffold directory or its ``session.yaml``
-      already exists, leave it and any agent-owned ``context.md`` untouched.
-      Only create what is missing.
+   4. **Preserve on update** — If an actor directory already exists, leave it
+      and any agent-owned ``context.md`` untouched. Only create what is
+      missing.
 
    **Input:** Installed agent files (frontmatter ``name:`` / ``agent:``)
-   **Output:** ``.jarvis/sessions/<name>/session.yaml`` per eligible agent;
-   existing scaffolds and ``context.md`` preserved
+   **Output:** ``.jarvis/actors/<name>/actor.yaml`` per eligible agent;
+   existing actors and ``context.md`` preserved
 
    **Known limitation:** Parallel change pipelines (e.g. git worktrees) share
-   the session namespace and may collide on session names. This is documented
+   the actor namespace and may collide on actor names. This is documented
    and not solved by this design.
 
 

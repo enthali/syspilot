@@ -53,138 +53,128 @@ tool API:
 
 ## Level 0: User Stories
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted User Stories
 
 | ID | Title | Impact | Notes |
 |----|-------|--------|-------|
-| US_abc | ... | modified | ... |
+| SYSP_US_UAT_SKILL_ORCHESTRATION_VOCAB | UAT: Skill Orchestration Vocabulary | text update | Updated tool names in AC example list |
 
 ### New User Stories
 
-| ID | Title | Priority |
-|----|-------|----------|
-| US_xxx | As a..., I want..., so that... | mandatory |
+None.
 
 ### Decisions
 
-- Decision 1: ...
-- Decision 2: ...
+- No new US needed — this is a patch syncing existing specs with API renames.
+- US impact is cosmetic (example tool names in AC text).
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing User Stories
-- [ ] No redundancies
-- [ ] Gaps identified and addressed
+- [x] No contradictions with existing User Stories
+- [x] No redundancies
+- [x] No gaps
 
 ---
 
 ## Level 1: Requirements
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Requirements
 
-Found via links from User Stories above.
-
-| ID | Linked From | Impact | Notes |
-|----|-------------|--------|-------|
-| REQ_abc | US_abc | modified | ... |
+| ID | Title | Impact | Notes |
+|----|-------|--------|-------|
+| SYSP_REQ_UAT_SKILL_ORCHESTRATION_VOCAB | UAT: Orchestration Vocab | text update | Updated tool names in prohibited-pattern list |
+| SYSP_REQ_INSTALLER_SESSION_SCAFFOLD | Installer Actor Creation | rewritten | Renamed from "Session Scaffold"; three-way idempotency with jarvis_createActor |
 
 ### New Requirements
 
-| ID | Title | Links | Priority |
-|----|-------|-------|----------|
-| REQ_xxx | ... | US_xxx | mandatory |
-
-### Conflicts Detected
-
-- ⚠️ REQ_xxx vs REQ_yyy: {description}
-  - Resolution: {decision}
+None.
 
 ### Decisions
 
-- Decision 1: ...
+- SYSP_REQ_INSTALLER_SESSION_SCAFFOLD retains its ID for traceability continuity but is rewritten to describe actor creation via `jarvis_createActor` with three-way idempotency.
+- AC count increased from 5 to 6 (new AC-4 for legacy session warning, AC-5 for create call).
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Requirements
-- [ ] No redundancies
-- [ ] All new REQs link to User Stories
+- [x] No contradictions with existing Requirements
+- [x] No redundancies
+- [x] All REQs still link to User Stories
 
 ---
 
 ## Level 2: Design
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Design Elements
 
-Found via links from Requirements above.
-
-| ID | Linked From | Impact | Notes |
-|----|-------------|--------|-------|
-| SPEC_abc | REQ_abc | modified | ... |
+| ID | Title | Impact | Notes |
+|----|-------|--------|-------|
+| SYSP_SPEC_SKILL_DEFINITIONS_TABLE | Skill Definitions Table | text update | `jarvis_sendToSession` → `jarvis_sendMessage` |
+| SYSP_SPEC_UAT_SKILL_ORCHESTRATION_VOCAB | UAT: Orchestration Vocab Test | text update | Tool names in expected results |
+| SYSP_SPEC_UAT_PRODUCT_OWNS_TOOL_LISTS | UAT: Product Owns Tool Lists | text update | Tool names in expected results |
+| SYSP_SPEC_SETUP_FRONTMATTER | Setup Manager Frontmatter | modified | tools: list → group notation with enthali.jarvis-core/syspilot |
+| SYSP_SPEC_INSTALLER_SESSION_SCAFFOLD | Installer Actor Creation | rewritten | session.yaml scaffolding → jarvis_createActor with three-way idempotency |
+| SYSP_SPEC_INSTALLER_WORKFLOW (Step 9) | Installer Workflow | text update | "Session Scaffolds" → "Actor Creation" |
 
 ### New Design Elements
 
-| ID | Title | Links |
-|----|-------|-------|
-| SPEC_xxx | ... | REQ_abc, REQ_xxx |
-
-### Conflicts Detected
-
-- ⚠️ SPEC_xxx vs SPEC_yyy: {description}
-  - Resolution: {decision}
+None.
 
 ### Decisions
 
-- Decision 1: ...
+- SYSP_SPEC_INSTALLER_SESSION_SCAFFOLD title changed to "Installer Actor Creation" but ID preserved.
+- Setup Bootloader tools: switched from per-tool allowlist to group notation (`enthali.jarvis-core`, `enthali.jarvis-syspilot`).
+- SYSP_SPEC_SKILL_ORCHESTRATION_AGENT_VOCAB already had correct names (previously updated) — no change needed.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Designs
-- [ ] All new SPECs link to Requirements
+- [x] No contradictions with existing Designs
+- [x] All SPECs still link to Requirements
 
 ---
 
 ## Final Consistency Check
 
-**Status**: ⏳ not started | ✅ passed | ❌ failed
+**Status**: ✅ passed
 
 ### Traceability Verification
 
 | User Story | Requirements | Design | Complete? |
 |------------|--------------|--------|-----------|
-| US_xxx | REQ_xxx | SPEC_xxx | ✅ |
-...
+| SYSP_US_UAT_SKILL_ORCHESTRATION_VOCAB | SYSP_REQ_UAT_SKILL_ORCHESTRATION_VOCAB | SYSP_SPEC_UAT_SKILL_ORCHESTRATION_VOCAB | ✅ |
+| SYSP_US_INSTALLER | SYSP_REQ_INSTALLER_SESSION_SCAFFOLD | SYSP_SPEC_INSTALLER_SESSION_SCAFFOLD | ✅ |
+| SYSP_US_SETUP | (via SYSP_REQ_SETUP_FRONTMATTER) | SYSP_SPEC_SETUP_FRONTMATTER | ✅ |
 
 ### Artefakt-Removal-Check
 
-*Fill in only when this CR removes an artefact (file, field, configuration key, REQ-ID).*
-
-For each removed artefact, run a project-wide grep on all plausible name variants and classify results:
+Renamed tool APIs (`jarvis_sendToSession`, `jarvis_readMessage`) — grep in `docs/syspilot/`:
 
 | Removed Artefact | Class (a): Code/Workflow refs | Class (b): Doc refs | Class (c): Historic Change Docs |
 |------------------|-------------------------------|---------------------|---------------------------------|
-| `{artefact name}` | {files + lines fixed / none} | {files + lines fixed / none} | {count — acceptable historic stranding} |
+| `jarvis_sendToSession` | none (0 hits in docs/syspilot/) | none | acceptable (historic CDs) |
+| `jarvis_readMessage` | none (0 hits in docs/syspilot/) | none | acceptable (historic CDs) |
+| `session.yaml` scaffolding | spec rewritten | spec rewritten | acceptable (historic CDs) |
 
-- [ ] All class (a) active code/workflow references fixed in this CR
-- [ ] All class (b) active documentation references fixed in this CR
-- [ ] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
+- [x] All class (a) active code/workflow references fixed in this CR
+- [x] All class (b) active documentation references fixed in this CR
+- [x] Class (c) historical Change Documents accepted as "acceptable historic stranding"
 
 ### Issues Found
 
-- [ ] Issue 1: ...
-- [ ] Issue 2: ...
+None.
 
 ### Sign-off
 
-- [ ] All levels completed (no ⚠️ DEPRECATED markers remaining)
-- [ ] All conflicts resolved
-- [ ] Traceability verified
-- [ ] Ready for implementation
+- [x] All levels completed
+- [x] All conflicts resolved
+- [x] Traceability verified
+- [x] Artefakt-removal verified
+- [x] Ready for implementation
 
 ---
 

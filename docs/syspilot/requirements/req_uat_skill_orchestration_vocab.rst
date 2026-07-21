@@ -92,8 +92,8 @@ Test data requirements for ``SYSP_US_UAT_SKILL_ORCHESTRATION_VOCAB``.
    step prose of any agent file:
 
    * ``runSubagent()``
-   * ``jarvis_sendToSession``
-   * ``jarvis_readMessage``
+   * ``jarvis_sendMessage``
+   * ``jarvis_receiveMessage``
    * ``via Jarvis``
    * ``via Jarvis message queue``
 

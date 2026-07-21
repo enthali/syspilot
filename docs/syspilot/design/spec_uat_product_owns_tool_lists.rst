@@ -211,7 +211,7 @@ transfer and the Agent base-toolset uniformity acceptance criteria.
      file.
    * [ ] The spec lists the Jarvis session-messaging tools using the
      ``jarvis-core_`` prefix (e.g. ``jarvis-core_createSession``,
-     ``jarvis-core_sendToSession``, ``jarvis-core_readMessage``).
+     ``jarvis-core_sendMessage``, ``jarvis-core_receiveMessage``).
    * [ ] The search for ``enthali.jarvis/`` returns zero matches in the spec
      node body.
    * [ ] The spec explicitly states that ``vscode/resolveMemoryFileUri`` is

@@ -66,7 +66,7 @@ Single source of truth for all Skill DEFINITIONS.
       * - ``orchestration``
         - no
         - Generic verbs map directly to tools (``runSubagent`` /
-          ``jarvis_sendToSession``); no project-specific config required
+          ``jarvis_sendMessage``); no project-specific config required
       * - ``impact``
         - no
         - Fixed interface (Need ID + options → dependency tree)
