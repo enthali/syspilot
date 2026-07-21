@@ -101,7 +101,7 @@ peer-to-peer three-verb model
       *Precondition:* The tester has the prohibited-pattern reference set
       from ``SYSP_REQ_UAT_SKILL_ORCHESTRATION_VOCAB``.
       *Action:* Search each agent's workflow prose for runtime tool names
-      (e.g. ``runSubagent()``, ``jarvis_sendToSession``, ``jarvis_readMessage``,
+      (e.g. ``runSubagent()``, ``jarvis_sendMessage``, ``jarvis_receiveMessage``,
       "via Jarvis").
       *Expected result:* Zero matches in workflow prose; tool mapping is left
       entirely to the installed orchestration skill — traces to

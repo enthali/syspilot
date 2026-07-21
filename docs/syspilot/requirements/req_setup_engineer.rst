@@ -461,7 +461,7 @@ Setup Manager Requirements
    * AC-4: Given the variant is chosen, When the Installer writes it, Then exactly one orchestration-group Skill is present afterward (mutual exclusion via replacement)
 
 
-.. req:: Installer Session Scaffold Creation
+.. req:: Installer Actor Creation
    :id: SYSP_REQ_INSTALLER_SESSION_SCAFFOLD
    :status: draft
    :priority: mandatory
@@ -470,23 +470,27 @@ Setup Manager Requirements
 
    **Description:**
    When the asynchronous orchestration variant is selected, the Installer SHALL,
-   as the final installation step, create a session scaffold for every installed
-   agent except the Setup Bootloader and the Installer. Each scaffold declares
-   the agent's session identity, derived from the agent file's frontmatter. The
-   Installer SHALL preserve any existing scaffold and its agent-owned context on
-   update — only missing scaffolds are created.
+   as the final installation step, create a Jarvis actor for every installed
+   agent except the Setup Bootloader and the Installer. Each actor declares
+   the agent's identity, derived from the agent file's frontmatter. The
+   Installer SHALL use a three-way idempotency check: skip if an actor already
+   exists, skip with a warning if a legacy session scaffold exists, and create
+   only when neither exists. Existing actors and their agent-owned context
+   SHALL be preserved on update.
 
    **Rationale:**
    The asynchronous variant runs each orchestrating agent as its own persistent
-   session. Pre-declaring a scaffold per agent gives every agent a stable session
+   session. Pre-declaring an actor per agent gives every agent a stable session
    identity and a place to accumulate its own context across changes, without the
-   Installer ever overwriting accumulated context.
+   Installer ever overwriting accumulated context. The three-way check handles
+   both fresh installs and workspaces migrating from the legacy session format.
 
    **Acceptance Criteria:**
 
-   * AC-1: Given the asynchronous variant is selected, When the Installer finishes, Then a session scaffold exists for every installed agent except the Setup Bootloader and the Installer
-   * AC-2: Given an agent file with session-identity frontmatter, When the Installer creates that agent's scaffold, Then the scaffold's identity is taken from the agent file's frontmatter
-   * AC-3: Given an update where a scaffold already exists, When the Installer runs, Then the existing scaffold and its agent-owned context are left untouched
-   * AC-4: Given an update where a scaffold is missing, When the Installer runs, Then the missing scaffold is created
-   * AC-5: Given the synchronous variant is selected, When the Installer finishes, Then no session scaffolds are created
+   * AC-1: Given the asynchronous variant is selected, When the Installer finishes, Then an actor exists for every installed agent except the Setup Bootloader and the Installer
+   * AC-2: Given an agent file with identity frontmatter, When the Installer creates that agent's actor, Then the actor's identity is taken from the agent file's frontmatter
+   * AC-3: Given an update where an actor already exists, When the Installer runs, Then the existing actor and its agent-owned context are left untouched
+   * AC-4: Given an update where a legacy session scaffold exists, When the Installer runs, Then the actor is not created and a warning is emitted
+   * AC-5: Given neither actor nor legacy session exists, When the Installer runs, Then jarvis_createActor is called
+   * AC-6: Given the synchronous variant is selected, When the Installer finishes, Then no actors are created
 

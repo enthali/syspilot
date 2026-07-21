@@ -85,8 +85,8 @@ syspilot/                          # The Product
   from `.jarvis/` presence, asks the user to confirm or override, and installs
   exactly one — the same mutex mechanism applies to any future Skill that
   declares a `group:` field. When the async variant is chosen, the Setup Agent
-  also creates a `.jarvis/sessions/<name>/session.yaml` scaffold for every
-  eligible agent.
+  also calls `jarvis_createActor` for every eligible agent, creating a
+  `.jarvis/actors/<name>/` actor entry (idempotent — skipped if already exists).
 
 
 ## How Installation Works

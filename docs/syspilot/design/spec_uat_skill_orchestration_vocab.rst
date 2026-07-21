@@ -112,8 +112,8 @@ This document is the per-agent verification checklist a human tester runs.
 
    * [ ] ``runSubagent()`` — zero matches in workflow prose (frontmatter
      ``tools:`` / ``agents:`` occurrences are out of scope)
-   * [ ] ``jarvis_sendToSession`` — zero matches in workflow prose
-   * [ ] ``jarvis_readMessage`` — zero matches in workflow prose
+   * [ ] ``jarvis_sendMessage`` — zero matches in workflow prose
+   * [ ] ``jarvis_receiveMessage`` — zero matches in workflow prose
    * [ ] "via Jarvis" (any form) — zero matches in workflow prose
 
    *Traces to:* ``SYSP_US_UAT_SKILL_ORCHESTRATION_VOCAB`` AC-5
