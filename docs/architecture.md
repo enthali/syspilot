@@ -227,7 +227,7 @@ The per-project `.syspilot/` directory holds all ontology and capability files:
 
 ```
 .syspilot/
-├── ontology.toml           # Canonical ontology master (superset of ubproject.toml)
+├── ontology.toml           # Canonical ontology master; sphinx-needs reads [needs] directly
 ├── ontologies/
 │   └── <name>/
 │       └── ontology.toml  # Ontology template definition
@@ -242,25 +242,24 @@ does not require agent changes.
 *Spec elements:* `SYSP_SPEC_ONTOLOGY_FOUR_CONCERNS`, `SYSP_SPEC_ONTOLOGY_TOML_SCHEMA`,
 `SYSP_SPEC_ONTOLOGY_DIRECTORY`, `SYSP_SPEC_ONTOLOGY_GRAPH`, `SYSP_SPEC_ONTOLOGY_CAPABILITIES`.
 
-### Phase 1: Generator Infrastructure
+### Phase 1: Flat-Master Architecture
 
-**Delivered:** `.syspilot/ontology.toml` is the canonical ontology master — a
-superset of `docs/ubproject.toml`. `docs/ubproject.toml` is **generated** from it
-and must not be edited directly (it carries a header comment to that effect).
+**Delivered:** `.syspilot/ontology.toml` is the single canonical ontology file.
+There is no intermediate projection or generated file. `docs/conf.py` points
+sphinx-needs directly at it via:
 
-**Generator:** `syspilot/sphinx/generate_ubproject.py` strips non-`[needs]` sections
-and writes `docs/ubproject.toml`. Run it after any ontology change:
-
-```bash
-python syspilot/sphinx/generate_ubproject.py
+```python
+needs_from_toml = "../.syspilot/ontology.toml"
 ```
 
-**Freshness check:** Pass `--compare` to verify `docs/ubproject.toml` is up-to-date
-without writing. The Release Agent runs this check automatically before squash-merge
-(exits non-zero if stale).
+sphinx-needs consumes the `[needs]` section; `[syspilot.*]` sections are
+ignored by the build tool (reserved for syspilot agents, Phase 2+).
 
-**Skill:** `syspilot.ontology` encapsulates ontology management operations
-(generate, compare, validate).
+**Safety net:** `sphinx-build -W` validates the master directly — a malformed
+or stale ontology breaks the build immediately.
+
+**Skill:** `syspilot.ontology` encapsulates ontology governance operations
+(schema documentation, validation guardrails).
 
 ---
 

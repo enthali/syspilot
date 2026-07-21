@@ -1,9 +1,9 @@
 [syspilot]
 schema_version = "1.0"
-description = "syspilot ontology definition — syspilot sections are stripped by generate_ubproject.py"
+description = "syspilot ontology definition — sphinx-needs reads [needs] directly; [syspilot.*] sections reserved for Phase 2+"
 
 # ---------------------------------------------------------------------------
-# sphinx-needs configuration (projected to docs/ubproject.toml by generator)
+# sphinx-needs configuration (read directly by sphinx-needs via needs_from_toml)
 # ---------------------------------------------------------------------------
 
 [needs]
