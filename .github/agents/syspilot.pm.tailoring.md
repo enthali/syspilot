@@ -57,8 +57,9 @@ GitHub Issues are PM-owned end-to-end — no other agent opens, edits, or closes
 - Status field ID: `PVTSSF_lAHOAFDYiM4Bdr-CzhYLwvE`
 - Priority field ID: `PVTSSF_lAHOAFDYiM4Bdr-CzhYLwvw`
 - Priority options: P0=`79628723`, P1=`0a877460`, P2=`da944a9c`
-- Status options: Backlog=`f75ad846`, Ready=`61e4505c`, In progress=`47fc9ee4`, In review=`df73e18b`, Done=`98236657`
-- *(Add Merged option ID here once created on the board)*
+- Status options: Backlog=`f75ad846`, Ready=`61e4505c`, In progress=`47fc9ee4`, In review=`df73e18b`, Merged=`d5c9819d`, Done=`98236657`
+- **WIP limit on "In progress": 1** — if a second item needs to go "In progress", something is wrong; resolve the active CR first. Epics are never set to "In progress" — use Backlog as their standing status (progress is visible via sub-issues #54, #55).
+- Merged=`d5c9819d`
 
 ## Infrastructure Changes
 
