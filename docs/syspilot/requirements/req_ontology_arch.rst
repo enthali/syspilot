@@ -174,3 +174,74 @@ Requirements for the ontology-agnostic architecture.
    * AC-1: At least one ontology template is provided with the framework.
    * AC-2: The syspilot-default template expresses all Work-Product types, dependency edges, ownership assignments, and lifecycle states of the current ontology.
    * AC-3: A template is a complete, valid ontology definition — applying it requires no additional design effort.
+
+
+.. req:: Single Ontology Master
+   :id: SYSP_REQ_ONTOLOGY_SINGLE_MASTER
+   :status: draft
+   :priority: mandatory
+   :tags: architecture, ontology, phase-1
+   :links: SYSP_US_ONTOLOGY_SINGLE_MASTER
+
+   **Description:**
+   The sphinx-needs ``needs_from_toml`` setting SHALL point directly at
+   ``.syspilot/ontology.toml``. No intermediate generated file is used.
+   Sphinx-needs reads only the ``[needs]`` sections; ``[syspilot.*]`` sections
+   are ignored.
+
+   **Rationale:**
+   A single-file architecture eliminates dual-file drift. There is no
+   synchronisation step to forget, no stale projection to detect.
+
+   **Acceptance Criteria:**
+
+   * AC-1: ``docs/conf.py`` sets ``needs_from_toml`` to a path resolving to ``.syspilot/ontology.toml``.
+   * AC-2: No intermediate generated file (e.g. ``docs/ubproject.toml``) exists in the project.
+   * AC-3: sphinx-needs ignores ``[syspilot.*]`` sections when reading the file.
+
+
+.. req:: Ontology Governance
+   :id: SYSP_REQ_ONTOLOGY_GOVERNANCE
+   :status: draft
+   :priority: mandatory
+   :tags: architecture, ontology, phase-1
+   :links: SYSP_US_ONTOLOGY_GOVERNANCE
+
+   **Description:**
+   ``ontology.toml`` SHALL be a guarded artifact. Every change to it SHALL be
+   classified as additive or breaking. Breaking changes SHALL require a
+   migration CR before they can be merged.
+
+   **Rationale:**
+   The ontology defines the vocabulary that all specs depend on. An
+   uncontrolled breaking change (removing a type, renaming a status) silently
+   invalidates existing specs. Classification and gate control prevent this.
+
+   **Acceptance Criteria:**
+
+   * AC-1: The governance rules define a classification table for additive vs. breaking changes.
+   * AC-2: Breaking changes require an explicit migration CR before merge.
+   * AC-3: ``sphinx-build -W`` catches type/link mismatches immediately during any CR.
+
+
+.. req:: Ontology Skill Content
+   :id: SYSP_REQ_ONTOLOGY_SKILL
+   :status: draft
+   :priority: mandatory
+   :tags: architecture, ontology, phase-1
+   :links: SYSP_US_ONTOLOGY_SKILL
+
+   **Description:**
+   The ``syspilot.ontology`` skill SHALL document the ``ontology.toml`` schema
+   structure and the governance guardrails.
+
+   **Rationale:**
+   Agents that edit the ontology need a single reference for schema and
+   process rules. The skill provides this without requiring agents to read
+   implementation code.
+
+   **Acceptance Criteria:**
+
+   * AC-1: The skill documents the ontology.toml schema (``[needs]`` sections, ``[syspilot.*]`` sections, separator convention).
+   * AC-2: The skill documents how to add new types, statuses, and link types.
+   * AC-3: The skill documents the additive/breaking change classification and migration-CR requirement.

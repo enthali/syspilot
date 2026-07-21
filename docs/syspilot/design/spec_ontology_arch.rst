@@ -151,8 +151,12 @@ Design specifications for the ontology-agnostic architecture.
    ::
 
       .syspilot/
-      ├── ontology.toml       # Ontology definition (types, edges, lifecycle)
+      ├── ontology.toml       # Canonical ontology master ([needs] + [syspilot.*])
       └── templates/          # (future) Additional ontology templates
+
+   ``docs/conf.py`` reads ``.syspilot/ontology.toml`` directly via
+   ``needs_from_toml = "../.syspilot/ontology.toml"``. No intermediate file
+   is generated or committed.
 
    **Discovery Convention:**
 
@@ -261,3 +265,165 @@ Design specifications for the ontology-agnostic architecture.
    This template, when loaded, SHALL pass all schema validation constraints
    defined in ``SYSP_SPEC_ONTOLOGY_TOML_SCHEMA`` — it is the proof that the
    schema can express a real ontology.
+
+
+.. spec:: ontology.toml Concrete Schema
+   :id: SYSP_SPEC_ONTOLOGY_SCHEMA
+   :status: draft
+   :tags: architecture, ontology, phase-1
+   :links: SYSP_REQ_ONTOLOGY_SINGLE_MASTER; SYSP_REQ_ONTOLOGY_CONFIG_AUTHORITY; SYSP_SPEC_ONTOLOGY_TOML_SCHEMA
+
+   **Definition:**
+
+   ``.syspilot/ontology.toml`` is a valid TOML file — the single canonical
+   ontology master. Sphinx-needs reads it directly via ``needs_from_toml``.
+   It contains two kinds of top-level tables:
+
+   **``[needs]`` sections** (consumed by sphinx-needs):
+
+   * ``[needs]`` — global settings (``id_required``, ``build_json``, etc.)
+   * ``[[needs.types]]`` — Work-Product type declarations
+   * ``[[needs.statuses]]`` — lifecycle status declarations
+   * ``[[needs.extra_links]]`` — typed link declarations
+   * ``needs.extra_options`` — additional fields on all directives
+
+   **``[syspilot.*]`` sections** (ignored by sphinx-needs):
+
+   * ``[syspilot]`` — metadata header with ``schema_version`` (string)
+
+   Future phases may add ``[syspilot.actors]``, ``[syspilot.capabilities]``,
+   ``[syspilot.process]`` sections.
+
+   **Separator Convention:**
+
+   Sphinx-needs reads only keys under the ``needs`` top-level table. All
+   other top-level keys (e.g. ``syspilot``) are ignored. This means any
+   syspilot-specific metadata must use a top-level key other than ``needs``.
+
+   **Phase 1 Content:**
+
+   ::
+
+      # syspilot ontology master — canonical source of truth
+
+      [syspilot]
+      schema_version = "1.0"
+
+      [needs]
+      # ... (sphinx-needs vocabulary: types, statuses, links)
+
+
+.. spec:: conf.py Ontology Configuration
+   :id: SYSP_SPEC_ONTOLOGY_CONF
+   :status: draft
+   :tags: architecture, ontology, phase-1
+   :links: SYSP_REQ_ONTOLOGY_SINGLE_MASTER
+
+   **Definition:**
+
+   ``docs/conf.py`` configures sphinx-needs to read the ontology directly:
+
+   ::
+
+      needs_from_toml = "../.syspilot/ontology.toml"
+
+   The relative path resolves from the ``docs/`` directory (where ``conf.py``
+   lives) to the project root's ``.syspilot/`` directory.
+
+   **Constraints:**
+
+   * No intermediate generated file is produced or committed.
+   * ``docs/ubproject.toml`` no longer exists in the project.
+
+
+.. spec:: Ontology Governance Rules
+   :id: SYSP_SPEC_ONTOLOGY_GOVERNANCE
+   :status: draft
+   :tags: architecture, ontology, phase-1
+   :links: SYSP_REQ_ONTOLOGY_GOVERNANCE
+
+   **Definition:**
+
+   ``ontology.toml`` is a **guarded artifact**. Changes to it follow strict
+   classification rules.
+
+   **Change Classification:**
+
+   .. list-table:: Additive vs. Breaking Changes
+      :header-rows: 1
+      :widths: 50 25 25
+
+      * - Change
+        - Classification
+        - Gate
+      * - Add a new ``[[needs.types]]`` entry
+        - Additive
+        - Normal CR
+      * - Add a new ``[[needs.statuses]]`` entry
+        - Additive
+        - Normal CR
+      * - Add a new ``[[needs.extra_links]]`` entry
+        - Additive
+        - Normal CR
+      * - Add a new ``needs.extra_options`` entry
+        - Additive
+        - Normal CR
+      * - Add/modify ``[syspilot]`` metadata
+        - Additive
+        - Normal CR
+      * - Remove or rename a type
+        - **Breaking**
+        - Migration CR required
+      * - Remove or rename a status
+        - **Breaking**
+        - Migration CR required
+      * - Remove or rename an extra_link
+        - **Breaking**
+        - Migration CR required
+      * - Change a type's directive or prefix
+        - **Breaking**
+        - Migration CR required
+
+   **Migration CR Requirement:**
+
+   A breaking change triggers a migration CR that must:
+
+   1. Update all existing specs that reference the affected type/status/link
+   2. Verify ``sphinx-build -W`` passes after migration
+   3. Be merged before or atomically with the ontology change
+
+   **Safety Nets:**
+
+   1. ``sphinx-build -W`` (every CR) — catches type/link mismatches immediately
+   2. Governance classification (process) — catches intent before implementation
+
+
+.. spec:: Ontology Skill Content
+   :id: SYSP_SPEC_ONTOLOGY_SKILL_CONTENT
+   :status: draft
+   :tags: architecture, ontology, phase-1
+   :links: SYSP_REQ_ONTOLOGY_SKILL
+
+   **Definition:**
+
+   The ``syspilot.ontology`` skill file
+   (``syspilot/skills/syspilot.ontology/SKILL.md``) SHALL contain:
+
+   **Required Sections:**
+
+   1. **YAML Frontmatter** — ``name``, ``description``
+   2. **USE FOR** — when to load this skill (ontology editing, type addition,
+      governance questions)
+   3. **Schema Documentation** — the ontology.toml structure: ``[needs]``
+      sections (sphinx-needs vocabulary) vs. ``[syspilot.*]`` sections
+      (metadata), separator convention
+   4. **How to Edit** — adding new types, statuses, link types; where to place
+      new entries; run ``sphinx-build -W`` to verify
+   5. **Governance Guardrails** — additive/breaking classification table,
+      migration-CR requirement, safety net overview
+
+   **Constraints:**
+
+   * No agent names in the skill (project-neutral)
+   * No spec IDs in the skill body (IDs belong in ``:links:`` fields only)
+   * Concrete file paths are permitted (this is an L2 implementation skill)

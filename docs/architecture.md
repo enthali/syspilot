@@ -199,7 +199,7 @@ are always preserved, regardless of whether they appear in the current release.
 ---
 
 (ontology-architecture)=
-## Ontology Architecture *(Phase 0 — spec only, no runtime implementation)*
+## Ontology Architecture *(Phase 0: spec · Phase 1: flat-master)*
 
 syspilot separates four concerns cleanly so that the default L0/L1/L2 hierarchy
 can be replaced by any project ontology (e.g. ASPICE) without rewriting agents.
@@ -227,10 +227,10 @@ The per-project `.syspilot/` directory holds all ontology and capability files:
 
 ```
 .syspilot/
-├── syspilot.toml           # Single authority: active ontology + tailoring
+├── ontology.toml           # Canonical ontology master; sphinx-needs reads [needs] directly
 ├── ontologies/
 │   └── <name>/
-│       └── ontology.toml  # Ontology definition (types, relations, graph)
+│       └── ontology.toml  # Ontology template definition
 └── capabilities/
     └── <name>.toml        # Capability declarations (optional overrides)
 ```
@@ -241,6 +241,25 @@ does not require agent changes.
 
 *Spec elements:* `SYSP_SPEC_ONTOLOGY_FOUR_CONCERNS`, `SYSP_SPEC_ONTOLOGY_TOML_SCHEMA`,
 `SYSP_SPEC_ONTOLOGY_DIRECTORY`, `SYSP_SPEC_ONTOLOGY_GRAPH`, `SYSP_SPEC_ONTOLOGY_CAPABILITIES`.
+
+### Phase 1: Flat-Master Architecture
+
+**Delivered:** `.syspilot/ontology.toml` is the single canonical ontology file.
+There is no intermediate projection or generated file. `docs/conf.py` points
+sphinx-needs directly at it via:
+
+```python
+needs_from_toml = "../.syspilot/ontology.toml"
+```
+
+sphinx-needs consumes the `[needs]` section; `[syspilot.*]` sections are
+ignored by the build tool (reserved for syspilot agents, Phase 2+).
+
+**Safety net:** `sphinx-build -W` validates the master directly — a malformed
+or stale ontology breaks the build immediately.
+
+**Skill:** `syspilot.ontology` encapsulates ontology governance operations
+(schema documentation, validation guardrails).
 
 ---
 
