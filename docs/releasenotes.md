@@ -6,6 +6,57 @@
 > consistent; CalVer was a brief interlude, reverted per the Release Agent
 > Tailoring Workflow (see `release-agent-tailoring-semver`).
 
+## v0.8.1 - 2026-07-22
+
+### Summary
+
+Patch release delivering Jarvis API compatibility (tool renames, actor scaffolding), the ontology infrastructure foundation (Phase 0 ADR + Phase 1 flat single-master), strict release-notes ownership separation, and several traceability and spec hygiene fixes. No breaking changes; no agent contract changes.
+
+### 🔧 Fixes & Compatibility
+
+- **Jarvis API sync** (`jarvis-api-update`, #58)
+  - Renamed `jarvis_sendToSession` → `jarvis_sendMessage` and `jarvis_readMessage` → `jarvis_receiveMessage` across all specs, skills, and docs
+  - Setup Bootloader `tools:` frontmatter switched to compact group-based notation (`enthali.jarvis-core`, `enthali.jarvis-syspilot`)
+  - Installer Step 9 now calls `jarvis_createActor` with three-way idempotency check instead of manual session.yaml file scaffolding; legacy `.jarvis/sessions/` detection with user warning
+
+### 🏗️ Ontology Infrastructure
+
+- **Ontology-Agnostic Architecture ADR** (`ontology-architecture-decision`, #49)
+  - Phase 0 architecture decision: syspilot separates Ontology / Capabilities / Actors / Process as four clean concerns
+  - `syspilot.toml` established as single source of truth for ontology selection; `conf.py` is an adapter/consumer, not an authority
+  - New spec elements: `SYSP_US_ONTOLOGY_ARCH`, `SYSP_US_ONTOLOGY_TEMPLATES` and full L1/L2 chain anchoring `.syspilot/` directory structure and `ontology.toml` schema
+  - Pure architecture documentation; no agent or code changes
+
+- **Ontology Phase 1 — flat single-master** (`ontology-phase1`, #53)
+  - `.syspilot/ontology.toml` established as the single canonical master read directly by sphinx-needs (no generated projection file, no intermediate step)
+  - `syspilot.ontology` skill added for System Designer: schema documentation, consumer convention (sphinx-needs reads `[needs]` table, ignores `[syspilot.*]` siblings), and governance guardrail (guarded artifact, additive/breaking change classification, migration-CR requirement)
+  - Generator and projection step removed as over-engineering: the failure mode they guarded (two-file drift) is eliminated by construction
+  - `sphinx-build -W` now validates the master directly every CR — earlier and stronger gate than release-time
+
+### 📐 Spec & Process
+
+- **Spec-Root-Cause Principle** (`spec-root-cause-principle`, `val-spec-root-cause-principle`, #46)
+  - Formalizes: code-level defects are spec-layer gaps first — agents must trace upward before classifying as implementation slip
+  - QM gains a verification duty: trace defect to spec layer before classification
+  - Dev Engineer gains an escalation guardrail: reject patches that diverge from an approved spec; escalate for spec correction instead
+  - Verified by Verify Engineer; traceability chain complete end-to-end
+
+- **Release Notes ownership separation** (`releasenotes-ownership`, #50)
+  - Documentation Engineer no longer writes to `docs/releasenotes.md` during a change pipeline
+  - Release Engineer is now the sole writer; eliminates the mid-change speculative version-number problem
+  - `SYSP_SPEC_DOC_RELEASENOTES` ownership made unambiguous
+
+### 🧹 Hygiene
+
+- **Workflow-REQ traceability links** (`hygiene-workflow-req-links`, #41)
+  - All per-agent `SYSP_REQ_*_WORKFLOW` requirements now carry `:links:` to `SYSP_REQ_AGENT_ARCH_WORKFLOW`
+  - Closes gap discovered during `generic-agent-workflow-pattern` CR; consistent with frontmatter REQs fixed earlier
+
+- **Orchestration-Jarvis skill simplified** (`simplify-orchestration-jarvis-skill`, #47)
+  - Removed runtime RESPOND mode-detection logic from `syspilot.orchestration-jarvis` SKILL.md (variant determines mode statically at install time)
+  - Removed `agents:`/`runSubagent` exception section (belongs in Setup Bootloader's own spec, not a shared skill)
+  - Traceability header prose moved to YAML frontmatter; skill body now contains only SEND/RECEIVE/RESPOND definitions and tool-call syntax
+
 ## v0.8.0 - 2026-07-03
 
 ### Summary
