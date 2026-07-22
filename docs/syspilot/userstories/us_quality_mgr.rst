@@ -31,6 +31,7 @@ Quality Manager Agent
    * the precision of the CR-triggered targeted check — on a CM-completion notification, QM focuses exclusively on the elements declared in the change
    * the complete quality-check coverage — MECE, Trace, and Schema are executed on every audit, no check type is omitted
    * the durability of findings — after every QM review, all findings are recorded directly in the ``## QM Findings`` section of the Change Document; messages alone are not sufficient
+   * the spec-layer root-cause attribution of code-level defects — before classifying a defect as a pure implementation slip, QM traces it upward to verify whether wrong or missing spec text, or a missing cross-link, is the actual root cause
 
    **Workflow (high-level):**
    Trigger → Plan scope → SEND to MECE (per level) + Trace → Collect findings →
@@ -46,3 +47,4 @@ Quality Manager Agent
    6. Given QM SENDs to the MECE Engineer, When checking a level, Then each SEND targets exactly one specification level (L0, L1, or L2) — never combined
    7. Given any audit run, When QM executes checks, Then MECE, Trace, and Schema checks are all executed — no check type is omitted
    8. Given QM produces findings for a CM-triggered check, When findings exist, Then QM writes them into the ``## QM Findings`` section of the Change Document in addition to the notification — no CM-triggered findings exist only as ephemeral messages
+   9. Given a code-level defect is found, When QM evaluates it, Then QM traces the defect upward to the spec layer before classifying it as a pure implementation slip — no code-level finding is closed without spec-layer root-cause assessment

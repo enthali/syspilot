@@ -31,6 +31,7 @@ create CRs.
 - **Targeted Check Precision** — After every CM-triggered check, the scope of the assessment is limited to the elements declared in the Change Document — no element outside the declared scope appears in the Findings Report.
 - **Quality Check Coverage** — After every audit run, MECE, Trace, and Schema checks are all executed — no check type is omitted.
 - **Findings Durability** — After every CM-triggered quality check, all findings are written directly into the ``## QM Findings`` section of the Change Document (in addition to the Jarvis notification) — no CM-triggered finding exists only as an ephemeral Jarvis message.
+- **Spec-Layer Root-Cause Attribution** — Given a code-level defect is found, QM traces the defect upward to the specification layer before classifying it as a pure implementation slip — no code-level finding is closed without verifying whether wrong or missing spec text, or a missing cross-link, is the actual root cause.
 
 ## Workflow
 

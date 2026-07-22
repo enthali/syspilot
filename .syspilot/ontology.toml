@@ -1,10 +1,10 @@
-# syspilot Ontology
-#
-# Single Source of Truth for sphinx-needs configuration.
-# Read by: sphinx-needs (via needs_from_toml in conf.py) and ubCode.
-#
-# To add a new need type, status, or extra link: edit this file.
-# Sphinx-needs picks up changes on the next build.
+[syspilot]
+schema_version = "1.0"
+description = "syspilot ontology definition — sphinx-needs reads [needs] directly; [syspilot.*] sections reserved for Phase 2+"
+
+# ---------------------------------------------------------------------------
+# sphinx-needs configuration (read directly by sphinx-needs via needs_from_toml)
+# ---------------------------------------------------------------------------
 
 [needs]
 

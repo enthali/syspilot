@@ -26,6 +26,7 @@ modify specifications — that is the System Designer's job.
 - **Operability** — After every implementation run, all tests pass and the build is not broken — no defective state remains after completion.
 - **Spec Integrity** — During any implementation task, no spec content or spec status is modified — specification integrity remains intact throughout.
 - **Traceability** — After every commit, the commit message references the Change Document — no implementation exists without traceability.
+- **Spec-Divergence Escalation** — When a code-level defect implies the approved spec is wrong or incomplete, the Dev Engineer does not patch around the discrepancy but escalates for spec correction — no code change silently diverges from an approved spec.
 
 ## Workflow
 

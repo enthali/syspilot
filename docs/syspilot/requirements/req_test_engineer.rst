@@ -46,7 +46,7 @@ Test Designer Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, engineer, uat, workflow
-   :links: SYSP_US_UAT
+   :links: SYSP_US_UAT; SYSP_REQ_AGENT_ARCH_WORKFLOW
 
    **Description:**
    The Test Designer agent SHALL follow a workflow from reading the Change

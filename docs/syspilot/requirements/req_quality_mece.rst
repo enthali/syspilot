@@ -45,7 +45,7 @@ Quality Engineer MECE Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, engineer, mece, workflow
-   :links: SYSP_US_MECE
+   :links: SYSP_US_MECE; SYSP_REQ_AGENT_ARCH_WORKFLOW
 
    **Description:**
    The Quality Engineer MECE agent SHALL follow a workflow from reading items

@@ -52,6 +52,11 @@ Quality Manager Design
      are written directly into the ``## QM Findings`` section of the Change Document
      (in addition to the Jarvis notification) — no CM-triggered finding exists only
      as an ephemeral Jarvis message.
+   * **Spec-Layer Root-Cause Attribution** — Given a code-level defect is found,
+     QM traces the defect upward to the specification layer before classifying it
+     as a pure implementation slip — no code-level finding is closed without
+     verifying whether wrong or missing spec text, or a missing cross-link, is
+     the actual root cause.
 
 
 .. spec:: Quality Manager Workflow

@@ -1,10 +1,10 @@
 ---
 description: "Setup Bootloader for syspilot. Fetches the current Installer from upstream and runs it via direct runSubagent. User-invocable entry point for syspilot installation."
-tools: [vscode/installExtension, vscode/newWorkspace, vscode/runCommand, vscode/vscodeAPI, vscode/extensions, vscode/askQuestions, vscode/toolSearch, execute/getTerminalOutput, execute/killTerminal, execute/sendToTerminal, execute/runTask, execute/createAndRunTask, execute/runTests, execute/testFailure, execute/runInTerminal, execute/runNotebookCell, read/terminalSelection, read/terminalLastCommand, read/getTaskOutput, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, read/readNotebookCellOutput, browser/openBrowserPage, browser/readPage, browser/screenshotPage, browser/navigatePage, browser/clickElement, browser/dragElement, browser/hoverElement, browser/typeInPage, browser/runPlaywrightCode, browser/handleDialog, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/codebase, search/fileSearch, search/listDirectory, search/textSearch, search/usages, web/fetch, web/githubRepo, web/githubTextSearch, todo, context7, enthali.jarvis-core/createSession, enthali.jarvis-core/sendToSession, enthali.jarvis-core/listSessions, enthali.jarvis-core/listChatSessions, enthali.jarvis-core/readMessage, enthali.jarvis-core/registerJob, enthali.jarvis-core/unregisterJob, enthali.jarvis-core/listJobs, enthali.jarvis-core/setReminder, enthali.jarvis-core/listReminders, enthali.jarvis-core/cancelReminder, agent/runSubagent]
+tools: [vscode, execute, read, edit, search, web, browser, agent, todo, context7, enthali.jarvis-core]
 model: Claude Sonnet 4.6 (copilot)
 user-invocable: true
 agents: ["syspilot.installer"]
-version: v0.8.0
+version: v0.8.1
 ---
 
 # syspilot Setup Bootloader

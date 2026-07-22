@@ -85,8 +85,8 @@ syspilot/                          # The Product
   from `.jarvis/` presence, asks the user to confirm or override, and installs
   exactly one — the same mutex mechanism applies to any future Skill that
   declares a `group:` field. When the async variant is chosen, the Setup Agent
-  also creates a `.jarvis/sessions/<name>/session.yaml` scaffold for every
-  eligible agent.
+  also calls `jarvis_createActor` for every eligible agent, creating a
+  `.jarvis/actors/<name>/` actor entry (idempotent — skipped if already exists).
 
 
 ## How Installation Works
@@ -195,6 +195,71 @@ are always preserved, regardless of whether they appear in the current release.
 4. **Transactional rollback** — Before writing any files, the Installer creates a
    pre-install Git commit. On failure, it executes `git reset --hard` to restore the
    exact pre-install state. No partial installs persist.
+
+---
+
+(ontology-architecture)=
+## Ontology Architecture *(Phase 0: spec · Phase 1: flat-master)*
+
+syspilot separates four concerns cleanly so that the default L0/L1/L2 hierarchy
+can be replaced by any project ontology (e.g. ASPICE) without rewriting agents.
+
+| Concern | What it defines |
+|---------|----------------|
+| **Ontology** | Work-Product types, typed relations, lifecycle states, ownership |
+| **Capabilities** | Type-agnostic operations (create, modify, check, validate) |
+| **Actors** | Which Capabilities and Work-Product types each Actor owns |
+| **Process** | Execution order derived from the ontology graph; gate conditions |
+
+### Key Invariants
+
+- **`syspilot.toml` is the single authority** for ontology selection and tailoring.
+  `conf.py` is an adapter/consumer of `syspilot.toml`, never an independent authority.
+- Every active Work-Product type has exactly **one Primary-Actor-Owner**
+  (1:N ownership is forbidden; read access is unrestricted).
+- An Actor processes *all and only* its own affected types in the **dependency order
+  of the ontology graph** — not a fixed L0/L1/L2 loop.
+- Branching graphs are first-class. "Dependency order" means graph order.
+
+### `.syspilot/` Directory Structure
+
+The per-project `.syspilot/` directory holds all ontology and capability files:
+
+```
+.syspilot/
+├── ontology.toml           # Canonical ontology master; sphinx-needs reads [needs] directly
+├── ontologies/
+│   └── <name>/
+│       └── ontology.toml  # Ontology template definition
+└── capabilities/
+    └── <name>.toml        # Capability declarations (optional overrides)
+```
+
+The **syspilot-default** ontology (`us → req → spec`, L0/L1/L2) ships as a
+built-in template. Other ontology templates are first-class; selecting one
+does not require agent changes.
+
+*Spec elements:* `SYSP_SPEC_ONTOLOGY_FOUR_CONCERNS`, `SYSP_SPEC_ONTOLOGY_TOML_SCHEMA`,
+`SYSP_SPEC_ONTOLOGY_DIRECTORY`, `SYSP_SPEC_ONTOLOGY_GRAPH`, `SYSP_SPEC_ONTOLOGY_CAPABILITIES`.
+
+### Phase 1: Flat-Master Architecture
+
+**Delivered:** `.syspilot/ontology.toml` is the single canonical ontology file.
+There is no intermediate projection or generated file. `docs/conf.py` points
+sphinx-needs directly at it via:
+
+```python
+needs_from_toml = "../.syspilot/ontology.toml"
+```
+
+sphinx-needs consumes the `[needs]` section; `[syspilot.*]` sections are
+ignored by the build tool (reserved for syspilot agents, Phase 2+).
+
+**Safety net:** `sphinx-build -W` validates the master directly — a malformed
+or stale ontology breaks the build immediately.
+
+**Skill:** `syspilot.ontology` encapsulates ontology governance operations
+(schema documentation, validation guardrails).
 
 ---
 

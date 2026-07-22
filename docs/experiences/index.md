@@ -12,6 +12,8 @@ Each note captures a specific situation: what I tried, what worked, what I'd wat
 
 | Note | Date | Context | Tags |
 |------|------|---------|------|
+| [Which Model Runs syspilot?](which-model-runs-syspilot.md) | 2026-07-06 | syspilot 0.8.0, Jarvis 0.8.x | models, cost, local-first, benchmark |
+| [Lean Personas, Rich Skills](lean-personas-rich-skills.md) | 2026-07-06 | syspilot 0.8.0, Jarvis 0.8.x | personas, prompts, PRISM, agent-design |
 | [Beyond Agent Memory](beyond-agent-memory.md) | 2026-07-02 | syspilot 0.5.x, Jarvis 0.5.x | actors, organization, thesis |
 | [Auto Agent Messaging with Jarvis Sessions](auto-agent-messaging.md) | 2026-05-20 | syspilot 0.5.5, Jarvis 0.5.11 | async, sessions, orchestration |
 | [Customizing Agents Without Forking](customizing-agents-without-forking.md) | 2026-05-20 | syspilot 0.5.5, Jarvis 0.5.11 | context.md, customization, updates |

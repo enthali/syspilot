@@ -71,9 +71,9 @@ html_sidebars = {
 # https://sphinx-needs.readthedocs.io/
 #
 # The syspilot ontology (types, statuses, extra links, etc.) lives in
-# ubproject.toml — the single source of truth for both Sphinx and ubCode.
+# .syspilot/ontology.toml — the single source of truth for both Sphinx and ubCode.
 
-needs_from_toml = "ubproject.toml"
+needs_from_toml = "../.syspilot/ontology.toml"
 
 # Suppress known deprecation warnings from sphinx-needs config migration
 suppress_warnings = ["needs.deprecated"]

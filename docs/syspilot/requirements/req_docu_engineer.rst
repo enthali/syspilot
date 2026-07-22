@@ -31,14 +31,14 @@ Documentation Engineer Requirements
    **Description:**
    The Documentation Engineer agent SHALL have Duties covering two areas:
    internal documentation (copilot-instructions.md, context.md, naming conventions)
-   and external documentation (README, methodology, release notes, architecture).
+   and external documentation (README, methodology, architecture).
 
    **Acceptance Criteria:**
 
    * AC-1: Documentation Engineer can update copilot-instructions.md
    * AC-2: Documentation Engineer can update manager context.md files
    * AC-3: Documentation Engineer can update README and methodology docs
-   * AC-4: Documentation Engineer can update release notes and architecture docs
+   * AC-4: Documentation Engineer can update architecture docs
    * AC-5: Documentation Engineer can detect and remove stale documentation
 
 
@@ -47,7 +47,7 @@ Documentation Engineer Requirements
    :status: draft
    :priority: mandatory
    :tags: agent-v2, engineer, docu, workflow
-   :links: SYSP_US_DOCU
+   :links: SYSP_US_DOCU; SYSP_REQ_AGENT_ARCH_WORKFLOW
 
    **Description:**
    The Documentation Engineer agent SHALL follow a workflow from gathering
