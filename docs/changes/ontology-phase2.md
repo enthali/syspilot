@@ -34,137 +34,132 @@ not merely so humans get a reference page.
 
 ## Level 0: User Stories
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted User Stories
 
-| ID | Title | Impact | Notes |
-|----|-------|--------|-------|
-| US_abc | ... | modified | ... |
+None — greenfield additions building on Phase 1 baseline.
 
 ### New User Stories
 
 | ID | Title | Priority |
 |----|-------|----------|
-| US_xxx | As a..., I want..., so that... | mandatory |
+| SYSP_US_ONTOLOGY_ACTOR_CATALOG | Actor Catalogue in Ontology | mandatory |
+| SYSP_US_ONTOLOGY_TYPE_LINKS | Type Link Relationships in Ontology | mandatory |
+| SYSP_US_ONTOLOGY_LIFECYCLE | Lifecycle State Machine in Ontology | mandatory |
+| SYSP_US_ONTOLOGY_REF_PAGE | Ontology Reference Page | mandatory |
+| SYSP_US_ONTOLOGY_TYPE_SPLIT | TEST Type Split | mandatory |
 
 ### Decisions
 
-- Decision 1: ...
-- Decision 2: ...
+- Five separate US — each deliverable has a distinct WHY and distinct actor perspective.
+- ACTOR_CATALOG framed from agent perspective (routing), not human-readable reference.
+- REF_PAGE framed from developer perspective (documentation maintenance).
+- TYPE_SPLIT framed from developer perspective (distinct ownership/lifecycle).
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing User Stories
-- [ ] No redundancies
-- [ ] Gaps identified and addressed
+- [x] No contradictions with existing User Stories
+- [x] No redundancies (Phase 1 US cover single-master, governance, skill — no overlap)
+- [x] No gaps identified
 
 ---
 
 ## Level 1: Requirements
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Requirements
 
-Found via links from User Stories above.
-
-| ID | Linked From | Impact | Notes |
-|----|-------------|--------|-------|
-| REQ_abc | US_abc | modified | ... |
+None.
 
 ### New Requirements
 
 | ID | Title | Links | Priority |
 |----|-------|-------|----------|
-| REQ_xxx | ... | US_xxx | mandatory |
-
-### Conflicts Detected
-
-- ⚠️ REQ_xxx vs REQ_yyy: {description}
-  - Resolution: {decision}
+| SYSP_REQ_ONTOLOGY_ACTOR_CATALOG | Actor Catalogue in Ontology | SYSP_US_ONTOLOGY_ACTOR_CATALOG | mandatory |
+| SYSP_REQ_ONTOLOGY_TYPE_LINKS | Type Link Relationships | SYSP_US_ONTOLOGY_TYPE_LINKS | mandatory |
+| SYSP_REQ_ONTOLOGY_LIFECYCLE | Lifecycle Status Transitions | SYSP_US_ONTOLOGY_LIFECYCLE | mandatory |
+| SYSP_REQ_ONTOLOGY_REF_PAGE | Ontology Reference Page Generation | SYSP_US_ONTOLOGY_REF_PAGE | mandatory |
+| SYSP_REQ_ONTOLOGY_TYPE_SPLIT | TEST Type Split | SYSP_US_ONTOLOGY_TYPE_SPLIT | mandatory |
 
 ### Decisions
 
-- Decision 1: ...
+- LIFECYCLE REQ uses "universal fallback + type-specific override" pattern (AC-3).
+- REF_PAGE REQ specifies three output sections: type table, relationship diagram, lifecycle diagram.
+- TYPE_SPLIT REQ mandates deprecated alias (AC-3) — no forced migration.
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Requirements
-- [ ] No redundancies
-- [ ] All new REQs link to User Stories
+- [x] No contradictions with existing Requirements
+- [x] No redundancies
+- [x] All new REQs link to User Stories
 
 ---
 
 ## Level 2: Design
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Design Elements
 
-Found via links from Requirements above.
-
-| ID | Linked From | Impact | Notes |
-|----|-------------|--------|-------|
-| SPEC_abc | REQ_abc | modified | ... |
+None.
 
 ### New Design Elements
 
 | ID | Title | Links |
 |----|-------|-------|
-| SPEC_xxx | ... | REQ_abc, REQ_xxx |
-
-### Conflicts Detected
-
-- ⚠️ SPEC_xxx vs SPEC_yyy: {description}
-  - Resolution: {decision}
+| SYSP_SPEC_ONTOLOGY_ACTOR_CATALOG | Actor Catalogue Schema | SYSP_REQ_ONTOLOGY_ACTOR_CATALOG |
+| SYSP_SPEC_ONTOLOGY_TYPE_LINKS | Type Link Relationships Schema | SYSP_REQ_ONTOLOGY_TYPE_LINKS |
+| SYSP_SPEC_ONTOLOGY_LIFECYCLE | Lifecycle Status Transitions Schema | SYSP_REQ_ONTOLOGY_LIFECYCLE |
+| SYSP_SPEC_ONTOLOGY_REF_PAGE | Ontology Reference Page Hook | SYSP_REQ_ONTOLOGY_REF_PAGE |
+| SYSP_SPEC_ONTOLOGY_TYPE_SPLIT | TEST Type Split | SYSP_REQ_ONTOLOGY_TYPE_SPLIT |
 
 ### Decisions
 
-- Decision 1: ...
+- **Actor catalogue:** flat key=value map (directive→actor name). Consumer contract: agent finds its own name, collects all keys.
+- **Type links:** array-of-tables `[[syspilot.type_links]]` with `from`/`to`/`rel` fields. Direction is always bottom-up (child→parent).
+- **Lifecycle:** `[syspilot.status_transitions]` with `universal` array + `universal_exit` + per-type `overrides` (override replaces, not merges).
+- **Stories skip "implemented"** — go draft→approved→verified directly.
+- **Definitions:** only draft↔approved (no implementation/verification lifecycle).
+- **Ref page:** Sphinx extension hook on builder-inited; generates RST with `.. mermaid::` directives; output gitignored.
+- **Type split colours:** uat=#A8E6CF (green), test=#DCB239 (kept), unit_test=#FFD3B6 (peach).
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Designs
-- [ ] All new SPECs link to Requirements
+- [x] No contradictions with existing Designs
+- [x] All new SPECs link to Requirements
 
 ---
 
 ## Final Consistency Check
 
-**Status**: ⏳ not started | ✅ passed | ❌ failed
+**Status**: ✅ passed
 
 ### Traceability Verification
 
 | User Story | Requirements | Design | Complete? |
 |------------|--------------|--------|-----------|
-| US_xxx | REQ_xxx | SPEC_xxx | ✅ |
+| SYSP_US_ONTOLOGY_ACTOR_CATALOG | SYSP_REQ_ONTOLOGY_ACTOR_CATALOG | SYSP_SPEC_ONTOLOGY_ACTOR_CATALOG | ✅ |
+| SYSP_US_ONTOLOGY_TYPE_LINKS | SYSP_REQ_ONTOLOGY_TYPE_LINKS | SYSP_SPEC_ONTOLOGY_TYPE_LINKS | ✅ |
+| SYSP_US_ONTOLOGY_LIFECYCLE | SYSP_REQ_ONTOLOGY_LIFECYCLE | SYSP_SPEC_ONTOLOGY_LIFECYCLE | ✅ |
+| SYSP_US_ONTOLOGY_REF_PAGE | SYSP_REQ_ONTOLOGY_REF_PAGE | SYSP_SPEC_ONTOLOGY_REF_PAGE | ✅ |
+| SYSP_US_ONTOLOGY_TYPE_SPLIT | SYSP_REQ_ONTOLOGY_TYPE_SPLIT | SYSP_SPEC_ONTOLOGY_TYPE_SPLIT | ✅ |
 
 ### Artefakt-Removal-Check
 
-*Fill in only when this CR removes an artefact (file, field, configuration key, REQ-ID).*
-
-For each removed artefact, run a project-wide grep on all plausible name variants and classify results:
-
-| Removed Artefact | Class (a): Code/Workflow refs | Class (b): Doc refs | Class (c): Historic Change Docs |
-|------------------|-------------------------------|---------------------|---------------------------------|
-| `{artefact name}` | {files + lines fixed / none} | {files + lines fixed / none} | {count — acceptable historic stranding} |
-
-- [ ] All class (a) active code/workflow references fixed in this CR
-- [ ] All class (b) active documentation references fixed in this CR
-- [ ] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
+Not applicable — no artefacts removed. (TEST_ kept as deprecated alias.)
 
 ### Issues Found
 
-- [ ] Issue 1: ...
-- [ ] Issue 2: ...
+None.
 
 ### Sign-off
 
-- [ ] All levels completed (no ⚠️ DEPRECATED markers remaining)
-- [ ] All conflicts resolved
-- [ ] Traceability verified
-- [ ] Ready for implementation
+- [x] All levels completed
+- [x] All conflicts resolved
+- [x] Traceability verified
+- [x] Ready for implementation (user-guided checkpoint — awaiting user approval before Dev Engineer)
 
 ---
 

@@ -105,3 +105,93 @@ description = "Deprecated - No longer used"
 option = "defines"
 incoming = "is defined by"
 outgoing = "defines"
+
+# ===========================================================================
+# syspilot-specific sections (ignored by sphinx-needs, read by agents/tooling)
+# ===========================================================================
+
+# ---------------------------------------------------------------------------
+# Actor Catalogue — maps each Need type to its primary owning actor
+# ---------------------------------------------------------------------------
+
+[syspilot.actors]
+story     = "System Designer"
+req       = "System Designer"
+spec      = "System Designer"
+def       = "System Designer"
+impl      = "Dev Engineer"
+test      = "Test Designer"
+uat       = "Test Designer"
+unit_test = "Dev Engineer"
+
+# ---------------------------------------------------------------------------
+# Type Link Relationships — directed, bottom-up relationships between types
+# ---------------------------------------------------------------------------
+
+[[syspilot.type_links]]
+from = "req"
+to   = "story"
+rel  = "refines"
+
+[[syspilot.type_links]]
+from = "spec"
+to   = "req"
+rel  = "implements"
+
+[[syspilot.type_links]]
+from = "impl"
+to   = "spec"
+rel  = "implements"
+
+[[syspilot.type_links]]
+from = "test"
+to   = "req"
+rel  = "verifies"
+
+[[syspilot.type_links]]
+from = "uat"
+to   = "req"
+rel  = "validates"
+
+[[syspilot.type_links]]
+from = "unit_test"
+to   = "spec"
+rel  = "verifies"
+
+[[syspilot.type_links]]
+from = "def"
+to   = "spec"
+rel  = "defines"
+
+# ---------------------------------------------------------------------------
+# Status Transitions — lifecycle state machine
+# ---------------------------------------------------------------------------
+
+[syspilot.status_transitions]
+# Universal transitions (apply to all types unless overridden)
+universal = [
+  { from = "draft",       to = "approved" },
+  { from = "draft",       to = "open" },
+  { from = "open",        to = "draft" },
+  { from = "open",        to = "approved" },
+  { from = "approved",    to = "implemented" },
+  { from = "implemented", to = "verified" },
+  { from = "approved",    to = "draft" },
+]
+
+# deprecated is a universal exit — reachable from any status
+universal_exit = ["deprecated"]
+
+# Type-specific overrides (replace universal for that type)
+[syspilot.status_transitions.overrides.story]
+transitions = [
+  { from = "draft",    to = "approved" },
+  { from = "approved", to = "verified" },
+  { from = "approved", to = "draft" },
+]
+
+[syspilot.status_transitions.overrides.def]
+transitions = [
+  { from = "draft",    to = "approved" },
+  { from = "approved", to = "draft" },
+]
