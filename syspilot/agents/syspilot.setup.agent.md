@@ -4,7 +4,7 @@ tools: [vscode, execute, read, edit, search, web, browser, agent, todo, context7
 model: Claude Sonnet 4.6 (copilot)
 user-invocable: true
 agents: ["syspilot.installer"]
-version: v0.8.1
+version: v0.8.2
 ---
 
 # syspilot Setup Bootloader
