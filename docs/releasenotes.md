@@ -6,6 +6,16 @@
 > consistent; CalVer was a brief interlude, reverted per the Release Agent
 > Tailoring Workflow (see `release-agent-tailoring-semver`).
 
+## v0.8.2 - 2026-07-23
+
+### Summary
+
+Minimal patch adding `enthali.jarvis-syspilot` to the Setup Bootloader `tools:` frontmatter. Enables Jarvis-syspilot integration tools (automated update notifications, skip/delay) for the Setup Bootloader session. No spec changes, no API changes, no breaking changes.
+
+### 🔧 Infrastructure
+
+- **Setup Bootloader tools group** — Added `enthali.jarvis-syspilot` to the `tools:` list in `syspilot/agents/syspilot.setup.agent.md`. Infrastructure change, QM-cleared, no tracked issue.
+
 ## v0.8.1 - 2026-07-22
 
 ### Summary

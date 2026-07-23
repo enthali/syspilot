@@ -1,10 +1,10 @@
 ---
 description: "Setup Bootloader for syspilot. Fetches the current Installer from upstream and runs it via direct runSubagent. User-invocable entry point for syspilot installation."
-tools: [vscode, execute, read, edit, search, web, browser, agent, todo, context7, enthali.jarvis-core]
+tools: [vscode, execute, read, edit, search, web, browser, agent, todo, context7, enthali.jarvis-core, enthali.jarvis-syspilot]
 model: Claude Sonnet 4.6 (copilot)
 user-invocable: true
 agents: ["syspilot.installer"]
-version: v0.8.1
+version: v0.8.2
 ---
 
 # syspilot Setup Bootloader

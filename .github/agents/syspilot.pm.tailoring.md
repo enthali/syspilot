@@ -49,8 +49,13 @@ GitHub Issues are PM-owned end-to-end — no other agent opens, edits, or closes
 
 **At reminder delivery:**
 - Run `gh run list --repo enthali/syspilot --branch main --limit 5` and verify the latest workflow run concluded successfully.
-- If green: close each tracked issue with a comment referencing the GitHub Release URL and the `docs/releasenotes.md` version anchor. Closing triggers the board's "Item closed" automation → Status flips to **Done** automatically.
+- If green: set each tracked issue's board Status to **Done** directly (`singleSelectOptionId: 98236657`). The "Status updated to Done" automation closes the issue automatically. **Do not close first and rely on the reverse automation** — if the issue is at "Merged" status, the "Item closed → Done" automation may not fire (GitHub automation does not reliably override a custom pre-existing status). Setting Done first is the reliable direction.
 - If red: do not close. Escalate to the user.
+
+**Board automation (bidirectional — verified 2026-07-22):**
+- "When an item is closed" → sets Status: Done (unreliable if current status is not a default state)
+- "When Status is updated to Done" → closes the issue (reliable in all states)
+→ **Preferred post-release action: set Status → Done. Auto-close follows.**
 
 **Board field IDs for reference (do not re-query unless project is rebuilt):**
 - Project node ID: `PVT_kwHOAFDYiM4Bdr-C`
