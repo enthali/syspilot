@@ -1,6 +1,6 @@
 # Change Document: ontology-phase2
 
-**Status**: draft
+**Status**: ready-for-merge
 **Branch**: feature/ontology-phase2
 **Created**: 2026-07-23
 **Author**: Project Manager
@@ -152,14 +152,15 @@ Not applicable — no artefacts removed. (TEST_ kept as deprecated alias.)
 
 ### Issues Found
 
-None.
+- **Stray working-tree change (discarded):** `syspilot/agents/syspilot.setup.agent.md` had an unrelated modification on checkout — discarded. Not part of this CR.
+- **User-guided L2 checkpoint:** 2 PM corrections (req→story label, uat target) applied before implementation.
 
 ### Sign-off
 
 - [x] All levels completed
 - [x] All conflicts resolved
 - [x] Traceability verified
-- [x] Ready for implementation (user-guided checkpoint — awaiting user approval before Dev Engineer)
+- [x] Ready for merge
 
 ---
 
@@ -172,28 +173,30 @@ section are unaffected — the section is additive, never required retroactively
 
 ### Round 1
 
-**Reviewed by:** QM
-**Review date:** {DATE}
+**Reviewed by:** MECE Engineer + Trace Engineer
+**Review date:** 2026-07-24
 
 #### Findings
 
 | # | Level | Element ID | Finding | Severity |
 |---|-------|------------|---------|----------|
-| 1 | L? | {ID} | {description} | high / medium / low |
+| 1 | L1 | SYSP_REQ_ONTOLOGY_TYPE_LINKS | REQ example used "refines"; spec defines 5 semantics without refines | medium-low |
+| 2 | L2 | SYSP_SPEC_ONTOLOGY_TYPE_SPLIT | Organic migration path unspecified in AC-3 | medium |
+| 3 | L2 | SYSP_SPEC_ONTOLOGY_REF_PAGE | Output path/type mismatch vs implementation; gitignore unset | medium |
+| 4 | L2 | SYSP_SPEC_ONTOLOGY_SKILL_CONTENT | Not updated for Phase 2 sections | medium |
+| 5 | SKILL | syspilot.ontology/SKILL.md | Body still referenced "Future phases" placeholder | medium |
 
-#### PM Decisions
+#### CM Decisions
 
 | # | Finding # | Decision | Rationale |
 |---|-----------|----------|-----------|
-| 1 | 1 | fix-now / defer / accept-as-is | {rationale} |
+| 1 | 1 | fix-now | REQ example corrected to "provides" |
+| 2 | 2 | fix-now | Organic migration defined as per-CR manual reclassification; lint Phase 3 |
+| 3 | 3 | fix-now (Option A) | Spec updated to Markdown at docs/ontology-reference.md; .gitignore entry added |
+| 4 | 4 | fix-now | SPEC expanded to include actors, type_links, lifecycle sections |
+| 5 | 5 | fix-now | SKILL.md Phase 2 sections documented |
 
 ---
-
-## Appendix: Link Discovery Results
-
-```
-{paste output from get_need_links.py as needed}
-```
 
 ---
 
