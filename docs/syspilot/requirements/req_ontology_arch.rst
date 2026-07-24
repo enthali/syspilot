@@ -245,3 +245,126 @@ Requirements for the ontology-agnostic architecture.
    * AC-1: The skill documents the ontology.toml schema (``[needs]`` sections, ``[syspilot.*]`` sections, separator convention).
    * AC-2: The skill documents how to add new types, statuses, and link types.
    * AC-3: The skill documents the additive/breaking change classification and migration-CR requirement.
+
+
+.. req:: Actor Catalogue in Ontology
+   :id: SYSP_REQ_ONTOLOGY_ACTOR_CATALOG
+   :status: draft
+   :priority: mandatory
+   :tags: architecture, ontology, phase-2
+   :links: SYSP_US_ONTOLOGY_ACTOR_CATALOG
+
+   **Description:**
+   The ontology SHALL declare a ``[syspilot.actors]`` section that maps every
+   Need type directive to its primary owning actor. A generic agent SHALL be
+   able to determine which types it owns by reading this section alone.
+
+   **Rationale:**
+   Explicit actor-to-type mapping removes hardcoded role knowledge from agent
+   code and enables runtime routing decisions based on the canonical ontology.
+
+   **Acceptance Criteria:**
+
+   * AC-1: A ``[syspilot.actors]`` section exists in ``ontology.toml`` with one entry per Need type.
+   * AC-2: Each entry maps a directive name to its primary owning actor.
+   * AC-3: Adding a new type without a corresponding actor entry causes a governance violation (documented in skill).
+
+
+.. req:: Type Link Relationships
+   :id: SYSP_REQ_ONTOLOGY_TYPE_LINKS
+   :status: draft
+   :priority: mandatory
+   :tags: architecture, ontology, phase-2
+   :links: SYSP_US_ONTOLOGY_TYPE_LINKS
+
+   **Description:**
+   The ontology SHALL declare a ``[syspilot.type_links]`` section that defines
+   the directed, typed relationships between Need types (e.g. ``req`` provides
+   ``story``, ``spec`` implements ``req``).
+
+   **Rationale:**
+   The specification hierarchy is implicit in naming conventions today. An
+   explicit declaration lets agents and tooling traverse the hierarchy and
+   validate traceability completeness.
+
+   **Acceptance Criteria:**
+
+   * AC-1: A ``[syspilot.type_links]`` section exists with one entry per directed type relationship.
+   * AC-2: Each entry specifies source type, target type, and relationship semantics.
+   * AC-3: The declared relationships form a DAG (no cycles).
+
+
+.. req:: Lifecycle Status Transitions
+   :id: SYSP_REQ_ONTOLOGY_LIFECYCLE
+   :status: draft
+   :priority: mandatory
+   :tags: architecture, ontology, phase-2
+   :links: SYSP_US_ONTOLOGY_LIFECYCLE
+
+   **Description:**
+   The ontology SHALL declare a ``[syspilot.status_transitions]`` section that
+   defines the allowed status transitions for each Need type. Transitions not
+   explicitly listed SHALL be considered invalid.
+
+   **Rationale:**
+   Implicit lifecycle rules lead to inconsistent status progressions. A
+   machine-readable state machine enables both agent self-validation and CI
+   enforcement.
+
+   **Acceptance Criteria:**
+
+   * AC-1: A ``[syspilot.status_transitions]`` section exists with allowed transitions declared per type.
+   * AC-2: Each transition entry specifies the source status, target status, and applicable type(s).
+   * AC-3: A universal fallback set applies to types without type-specific overrides.
+   * AC-4: The ``deprecated`` status is reachable from any other status (universal exit).
+
+
+.. req:: Ontology Reference Page Generation
+   :id: SYSP_REQ_ONTOLOGY_REF_PAGE
+   :status: draft
+   :priority: mandatory
+   :tags: architecture, ontology, phase-2
+   :links: SYSP_US_ONTOLOGY_REF_PAGE
+
+   **Description:**
+   The documentation build SHALL generate an ontology reference page from
+   ``ontology.toml`` at build time. The page SHALL include a type catalogue
+   table, a type-relationship diagram, and a lifecycle state diagram.
+
+   **Rationale:**
+   A generated page is always in sync with the canonical ontology and
+   eliminates manual maintenance drift.
+
+   **Acceptance Criteria:**
+
+   * AC-1: The reference page is generated from ``ontology.toml`` during ``sphinx-build``.
+   * AC-2: The page includes a table of all Need types with their prefix, colour, and owning actor.
+   * AC-3: The page includes a Mermaid diagram showing type relationships.
+   * AC-4: The page includes a Mermaid diagram showing the lifecycle state machine.
+   * AC-5: Changing ``ontology.toml`` and rebuilding updates the reference page without manual edits.
+
+
+.. req:: TEST Type Split
+   :id: SYSP_REQ_ONTOLOGY_TYPE_SPLIT
+   :status: draft
+   :priority: mandatory
+   :tags: architecture, ontology, phase-2
+   :links: SYSP_US_ONTOLOGY_TYPE_SPLIT
+
+   **Description:**
+   The ontology SHALL split the single ``test`` type (``TEST_``) into three
+   distinct types: ``uat`` (``UAT_``), ``test`` (``TEST_``), and ``unit_test``
+   (``UNIT_``). The original ``TEST_`` prefix SHALL be kept as a deprecated
+   alias to allow organic migration.
+
+   **Rationale:**
+   Different test granularities have different owners, workflows, and lifecycle
+   expectations. Distinct types enable precise ownership, filtering, and
+   reporting.
+
+   **Acceptance Criteria:**
+
+   * AC-1: Three distinct types exist: ``uat`` (``UAT_``), ``test`` (``TEST_``), ``unit_test`` (``UNIT_``).
+   * AC-2: Each new type has a distinct colour and owning actor.
+   * AC-3: ``TEST_`` is kept as a deprecated alias (existing needs continue to build without error).
+   * AC-4: The actor catalogue maps ``uat`` to Test Designer, ``test`` to Test Designer, ``unit_test`` to Dev Engineer.
