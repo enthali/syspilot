@@ -487,7 +487,7 @@ Design specifications for the ontology-agnostic architecture.
       [[syspilot.type_links]]
       from = "req"
       to   = "story"
-      rel  = "refines"
+      rel  = "provides"
 
       [[syspilot.type_links]]
       from = "spec"
@@ -506,7 +506,7 @@ Design specifications for the ontology-agnostic architecture.
 
       [[syspilot.type_links]]
       from = "uat"
-      to   = "req"
+      to   = "story"
       rel  = "validates"
 
       [[syspilot.type_links]]
@@ -519,7 +519,7 @@ Design specifications for the ontology-agnostic architecture.
       to   = "spec"
       rel  = "defines"
 
-   **Allowed relationship semantics:** ``refines``, ``implements``,
+   **Allowed relationship semantics:** ``provides``, ``implements``,
    ``validates``, ``verifies``, ``defines``.
 
    **Constraints:**

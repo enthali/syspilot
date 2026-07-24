@@ -131,7 +131,7 @@ unit_test = "Dev Engineer"
 [[syspilot.type_links]]
 from = "req"
 to   = "story"
-rel  = "refines"
+rel  = "provides"
 
 [[syspilot.type_links]]
 from = "spec"
@@ -150,7 +150,7 @@ rel  = "verifies"
 
 [[syspilot.type_links]]
 from = "uat"
-to   = "req"
+to   = "story"
 rel  = "validates"
 
 [[syspilot.type_links]]
