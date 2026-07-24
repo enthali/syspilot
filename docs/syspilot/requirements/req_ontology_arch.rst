@@ -279,7 +279,7 @@ Requirements for the ontology-agnostic architecture.
 
    **Description:**
    The ontology SHALL declare a ``[syspilot.type_links]`` section that defines
-   the directed, typed relationships between Need types (e.g. ``req`` refines
+   the directed, typed relationships between Need types (e.g. ``req`` provides
    ``story``, ``spec`` implements ``req``).
 
    **Rationale:**

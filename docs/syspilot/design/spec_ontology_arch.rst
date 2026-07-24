@@ -417,9 +417,15 @@ Design specifications for the ontology-agnostic architecture.
    3. **Schema Documentation** — the ontology.toml structure: ``[needs]``
       sections (sphinx-needs vocabulary) vs. ``[syspilot.*]`` sections
       (metadata), separator convention
-   4. **How to Edit** — adding new types, statuses, link types; where to place
+   4. **Actor Catalogue** — the ``[syspilot.actors]`` section: type-to-actor
+      ownership map, consumer contract (agent reads actors, finds its types)
+   5. **Type Link Relationships** — the ``[[syspilot.type_links]]`` section:
+      bottom-up directed relationships (provides/implements/validates/verifies/defines)
+   6. **Lifecycle State Machine** — the ``[syspilot.status_transitions]``
+      section: universal transitions, universal_exit, per-type overrides
+   7. **How to Edit** — adding new types, statuses, link types; where to place
       new entries; run ``sphinx-build -W`` to verify
-   5. **Governance Guardrails** — additive/breaking classification table,
+   8. **Governance Guardrails** — additive/breaking classification table,
       migration-CR requirement, safety net overview
 
    **Constraints:**
@@ -604,8 +610,8 @@ Design specifications for the ontology-agnostic architecture.
    **Definition:**
 
    A Sphinx extension hook (in ``docs/conf.py`` or a dedicated extension
-   module) reads ``ontology.toml`` at build time and generates an RST page
-   at ``docs/syspilot/ontology_reference.rst``.
+   module) reads ``ontology.toml`` at build time and generates a Markdown page
+   at ``docs/ontology-reference.md``.
 
    **Generated Content:**
 
@@ -616,11 +622,11 @@ Design specifications for the ontology-agnostic architecture.
    3. **Lifecycle State Diagram** — Mermaid state diagram showing the
       universal transitions and ``universal_exit``.
 
-   **Output Format:** The hook writes a valid RST file with ``.. mermaid::``
-   directives (requires ``sphinxcontrib-mermaid``).
+   **Output Format:** The hook writes a Markdown file with fenced Mermaid
+   code blocks. The file is auto-generated on every build; it is gitignored
+   and not committed to the repository.
 
-   **Trigger:** Runs during ``sphinx-build`` (builder-inited event). The
-   generated file is listed in ``.gitignore`` (never committed).
+   **Trigger:** Runs during ``sphinx-build`` (builder-inited event).
 
    **Constraints:**
 
@@ -677,6 +683,9 @@ Design specifications for the ontology-agnostic architecture.
    * ``unit_test`` → Dev Engineer
 
    **Migration:** Organic. Existing ``TEST_`` needs are not force-migrated.
-   New UATs use ``.. uat::``; new unit tests use ``.. unit_test::``.
+   New UATs use ``.. uat::``; new unit tests use ``.. unit_test::``.  Organic
+   migration means authors reclassify existing ``TEST_`` needs manually on a
+   per-CR basis when they touch the need — no batch migration is required.
+   Migration tooling (lint helper) is Phase 3 scope.
    A future lint may warn on ``TEST_`` needs that semantically belong to
    ``UAT_`` or ``UNIT_``.
