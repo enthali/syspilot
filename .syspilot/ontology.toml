@@ -62,9 +62,23 @@ style = "node"
 
 [[needs.types]]
 directive = "test"
-title = "Test Case"
+title = "Test Case (deprecated — use uat, unit_test, or test)"
 prefix = "TEST_"
 color = "#DCB239"
+style = "node"
+
+[[needs.types]]
+directive = "uat"
+title = "UAT Test Case"
+prefix = "UAT_"
+color = "#A8E6CF"
+style = "node"
+
+[[needs.types]]
+directive = "unit_test"
+title = "Unit Test"
+prefix = "UNIT_"
+color = "#FFD3B6"
 style = "node"
 
 # ---------------------------------------------------------------------------
@@ -98,6 +112,31 @@ description = "Deprecated - No longer used"
 # ---------------------------------------------------------------------------
 # Extra Link Types
 # ---------------------------------------------------------------------------
+
+[[needs.extra_links]]
+option = "provides"
+incoming = "is provided by"
+outgoing = "provides"
+
+[[needs.extra_links]]
+option = "refines"
+incoming = "is refined by"
+outgoing = "refines"
+
+[[needs.extra_links]]
+option = "implements"
+incoming = "is implemented by"
+outgoing = "implements"
+
+[[needs.extra_links]]
+option = "validates"
+incoming = "is validated by"
+outgoing = "validates"
+
+[[needs.extra_links]]
+option = "verifies"
+incoming = "is verified by"
+outgoing = "verifies"
 
 # "defines": used on Group Contract Specs to list the DEFINITIONS of their group.
 # Agents and Skills link to the Group Contract Spec (not directly to def needs).

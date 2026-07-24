@@ -5,6 +5,80 @@
 
 import os
 import sys
+import tomllib
+from pathlib import Path
+
+
+# -- Ontology reference page generator ----------------------------------------
+# Generates docs/ontology-reference.md from .syspilot/ontology.toml on each build.
+
+def _generate_ontology_reference(app):
+    """builder-inited hook: generate ontology-reference.md from ontology.toml."""
+    ontology_path = Path(app.srcdir).parent / ".syspilot" / "ontology.toml"
+    output_path = Path(app.srcdir) / "ontology-reference.md"
+
+    if not ontology_path.exists():
+        return
+
+    with ontology_path.open("rb") as f:
+        data = tomllib.load(f)
+
+    needs = data.get("needs", {})
+    syspilot = data.get("syspilot", {})
+
+    lines = [
+        "<!-- AUTO-GENERATED — do not edit manually. Regenerated on every sphinx-build. -->",
+        "",
+        "# Ontology Reference",
+        "",
+    ]
+
+    # --- Type Catalogue ---
+    types = needs.get("types", [])
+    if types:
+        lines.append("## Type Catalogue")
+        lines.append("")
+        lines.append("| Directive | Title | Prefix | Color |")
+        lines.append("|-----------|-------|--------|-------|")
+        for t in types:
+            lines.append(
+                f"| `{t['directive']}` | {t['title']} | {t['prefix']} | {t['color']} |"
+            )
+        lines.append("")
+
+    # --- Type Relationship Diagram ---
+    type_links = syspilot.get("type_links", [])
+    if type_links:
+        lines.append("## Type Relationships")
+        lines.append("")
+        lines.append("```{mermaid}")
+        lines.append("flowchart BT")
+        for link in type_links:
+            lines.append(f"    {link['from']} -->|{link['rel']}| {link['to']}")
+        lines.append("```")
+        lines.append("")
+
+    # --- Lifecycle Diagram ---
+    transitions = syspilot.get("status_transitions", {})
+    universal = transitions.get("universal", [])
+    universal_exit = transitions.get("universal_exit", [])
+    if universal:
+        lines.append("## Status Lifecycle")
+        lines.append("")
+        lines.append("```{mermaid}")
+        lines.append("stateDiagram-v2")
+        for tr in universal:
+            lines.append(f"    {tr['from']} --> {tr['to']}")
+        for exit_status in universal_exit:
+            lines.append(f"    [*] --> {exit_status} : from any")
+        lines.append("```")
+        lines.append("")
+
+    output_path.write_text("\n".join(lines), encoding="utf-8")
+
+
+def setup(app):
+    app.connect("builder-inited", _generate_ontology_reference)
 
 # -- Project information -----------------------------------------------------
 
