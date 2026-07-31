@@ -142,21 +142,21 @@ installation, update, configuration, and validation work.
 
 8. **Validate** — Run sphinx-build to verify sphinx-needs works on the project. On failure: execute `git reset --hard <pre-install-commit>` from Step 3 and report the failure to the invoking agent. On rollback, the workspace is restored to its exact pre-install state — no partial files remain.
 
-9. **Session Scaffolds** — When the asynchronous orchestration variant was
+9. **Actor Scaffolding** — When the asynchronous orchestration variant was
    selected in Step 5: for every agent file in `.github/agents/` except
    `syspilot.setup.agent.md` (Bootloader) and `syspilot.installer.agent.md`,
-   ensure `.jarvis/sessions/<name>/` exists and contains a `session.yaml`
-   with:
+   apply the following three-way check:
 
-   ```yaml
-   name: <name>      # from the agent's name: frontmatter field
-   agent: <agent>    # from the agent's agent: frontmatter field
-   ```
+   a. If `.jarvis/actors/<name>/` already exists: skip (idempotent).
+   b. If `.jarvis/sessions/<name>/` already exists: skip and warn the user:
+      "Legacy session format detected for `<name>`. syspilot will not create
+      a duplicate. If Jarvis no longer reads sessions/, manual migration to
+      actors/ may be needed."
+   c. If neither exists: call `jarvis_createActor(name, summary, agent)` where
+      `name` is the agent's `name:` frontmatter field, `summary` is the
+      agent's `description:` field, and `agent` is the agent's `agent:` field.
 
-   If a scaffold directory or its `session.yaml` already exists, leave it
-   and any agent-owned `context.md` untouched — only create what is
-   missing. When the synchronous variant was selected, skip this step
-   entirely.
+   When the synchronous variant was selected, skip this step entirely.
 
 10. **Commit** — On successful validation, replace the pre-install commit with the final post-install commit documenting the installation (via `git commit --amend` or equivalent). Then return to Setup Bootloader: installation result, updated files list, any errors.
 

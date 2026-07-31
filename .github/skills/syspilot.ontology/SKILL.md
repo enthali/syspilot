@@ -64,66 +64,11 @@ outgoing = "defines"
 ```toml
 [syspilot]
 schema_version = "1.0"
-```
 
-#### `[syspilot.actors]`
-
-Flat mapping of Need type directive to its primary owning actor. Each agent
-reads its own name to discover which types it owns.
-
-```toml
-[syspilot.actors]
-story     = "System Designer"
-req       = "System Designer"
-spec      = "System Designer"
-def       = "System Designer"
-impl      = "Dev Engineer"
-test      = "Test Designer"
-uat       = "Test Designer"
-unit_test = "Dev Engineer"
-```
-
-#### `[[syspilot.type_links]]`
-
-Array of directed, bottom-up relationships between Need types. Each entry
-has `from`, `to`, and `rel` fields.
-
-```toml
-[[syspilot.type_links]]
-from = "req"
-to   = "story"
-rel  = "provides"
-
-[[syspilot.type_links]]
-from = "spec"
-to   = "req"
-rel  = "implements"
-
-# ... more entries ...
-```
-
-#### `[syspilot.status_transitions]`
-
-Lifecycle state machine. `universal` transitions apply to all types unless
-overridden. `universal_exit` lists statuses reachable from any state.
-Per-type overrides replace the universal set for that type.
-
-```toml
-[syspilot.status_transitions]
-universal = [
-  { from = "draft",       to = "approved" },
-  { from = "draft",       to = "open" },
-  { from = "open",        to = "approved" },
-  { from = "approved",    to = "implemented" },
-  { from = "implemented", to = "verified" },
-]
-universal_exit = ["deprecated"]
-
-[syspilot.status_transitions.overrides.story]
-transitions = [
-  { from = "draft",    to = "approved" },
-  { from = "approved", to = "verified" },
-]
+# Future phases will add:
+# [syspilot.actors]
+# [syspilot.capabilities]
+# [syspilot.process]
 ```
 
 ## How to Edit

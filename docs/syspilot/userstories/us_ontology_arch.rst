@@ -145,3 +145,126 @@ Architecture decision: syspilot becomes ontology-agnostic.
    1. Given the skill, When I read it, Then it documents the ontology.toml schema structure.
    2. Given the skill, When I propose an ontology change, Then it tells me how to classify it and what approvals are needed.
    3. Given the skill, When I need to add a new type, Then it shows me where to place the entry and how to verify it.
+
+
+.. story:: Actor Catalogue in Ontology
+   :id: SYSP_US_ONTOLOGY_ACTOR_CATALOG
+   :status: draft
+   :priority: mandatory
+   :tags: architecture, ontology, phase-2
+
+   **As a** syspilot agent,
+   **I want** to read which actor owns each Work-Product type from the
+   ontology,
+   **so that** I can route work correctly without hardcoding role assignments.
+
+   **Context:**
+
+   Today, actor-to-type assignments are implicit knowledge. Making them
+   explicit in ``ontology.toml`` lets any agent discover its responsibilities
+   by reading a single file.
+
+   **Acceptance Criteria:**
+
+   1. Given the ontology, When I read it, Then each Need type has a declared owning actor.
+   2. Given the actor catalogue, When a new type is added, Then a primary actor owner must be declared.
+   3. Given the actor catalogue, When I am an agent, Then I can determine which types I am responsible for without hardcoded assumptions.
+
+
+.. story:: Type Link Relationships in Ontology
+   :id: SYSP_US_ONTOLOGY_TYPE_LINKS
+   :status: draft
+   :priority: mandatory
+   :tags: architecture, ontology, phase-2
+
+   **As a** syspilot agent,
+   **I want** the ontology to declare the directed relationships between
+   Need types (e.g. req refines story, spec implements req),
+   **so that** I can navigate the specification hierarchy programmatically.
+
+   **Context:**
+
+   The hierarchy (US → REQ → SPEC) is documented in methodology but not
+   machine-readable in the ontology itself. Explicit type link declarations
+   allow tooling and agents to traverse the hierarchy.
+
+   **Acceptance Criteria:**
+
+   1. Given the ontology, When I read it, Then the directed relationships between Need types are declared.
+   2. Given two types in a parent-child relationship, When I look up the link, Then the semantics (refines/implements/etc.) are stated.
+   3. Given the type links, When I navigate from a story, Then I can discover all downstream types programmatically.
+
+
+.. story:: Lifecycle State Machine in Ontology
+   :id: SYSP_US_ONTOLOGY_LIFECYCLE
+   :status: draft
+   :priority: mandatory
+   :tags: architecture, ontology, phase-2
+
+   **As a** syspilot agent,
+   **I want** the ontology to define allowed status transitions for each
+   Work-Product type,
+   **so that** I never set an illegal status and can validate transitions
+   before applying them.
+
+   **Context:**
+
+   Status values exist in the ontology but transition rules are implicit.
+   A state machine definition lets agents and CI validate that specs move
+   through the lifecycle correctly.
+
+   **Acceptance Criteria:**
+
+   1. Given the ontology, When I read it, Then each status transition is explicitly allowed or disallowed per type.
+   2. Given a Need in status X, When I attempt to move it to status Y, Then the ontology tells me whether that transition is valid.
+   3. Given the lifecycle rules, When a transition is invalid, Then I receive a clear reason why.
+
+
+.. story:: Ontology Reference Page
+   :id: SYSP_US_ONTOLOGY_REF_PAGE
+   :status: draft
+   :priority: mandatory
+   :tags: architecture, ontology, phase-2
+
+   **As a** syspilot developer,
+   **I want** an always-in-sync ontology reference page generated at build
+   time,
+   **so that** the type catalogue, relationships, and lifecycle are always
+   accurate without manual documentation maintenance.
+
+   **Context:**
+
+   With all ontology metadata in ``ontology.toml``, a build-time hook can
+   generate a human-readable reference page with tables and diagrams. This
+   replaces manually maintained documentation that drifts.
+
+   **Acceptance Criteria:**
+
+   1. Given the built documentation, When I open the ontology reference page, Then it reflects the current state of ``ontology.toml``.
+   2. Given a change to ``ontology.toml``, When I rebuild, Then the reference page updates automatically.
+   3. Given the reference page, When I read it, Then it shows the type catalogue, relationships, and lifecycle diagrams.
+
+
+.. story:: TEST Type Split
+   :id: SYSP_US_ONTOLOGY_TYPE_SPLIT
+   :status: draft
+   :priority: mandatory
+   :tags: architecture, ontology, phase-2
+
+   **As a** syspilot developer,
+   **I want** the single ``TEST_`` type split into ``UAT_``, ``TEST_``, and
+   ``UNIT_`` types,
+   **so that** different test granularities have distinct ownership, colour
+   coding, and lifecycle rules.
+
+   **Context:**
+
+   Currently all test artefacts share one type regardless of whether they are
+   user acceptance tests, functional tests, or unit tests. Splitting allows
+   distinct actors (Test Designer vs Dev Engineer) and distinct workflow rules.
+
+   **Acceptance Criteria:**
+
+   1. Given the ontology, When I read the types, Then ``uat``, ``test``, and ``unit_test`` are distinct types with distinct prefixes.
+   2. Given the split, When existing ``TEST_`` prefixed needs exist, Then ``TEST_`` is kept as a deprecated alias allowing organic migration.
+   3. Given the new types, When I create a UAT, Then it uses the ``UAT_`` prefix and is owned by the Test Designer.

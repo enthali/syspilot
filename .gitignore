@@ -18,6 +18,9 @@ __pycache__/
 .pytest_cache/
 *.egg-info/
 dist/
+
+# Auto-generated docs
+docs/ontology-reference.md
 build/
 .eggs/
 
@@ -55,4 +58,7 @@ temp_messages.txt
 
 # jarvis runtime hooks (installed/generated locally, not product content)
 .github/hooks/
+
+# installed instructions (not yet shared in the public MIT repo)
+.github/instructions/
 

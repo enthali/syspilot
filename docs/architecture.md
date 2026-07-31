@@ -63,6 +63,7 @@ syspilot/                          # The Product
 ├── skills/                        # Shared skills (folder-based)
 │   ├── syspilot.ask-questions/    #   Each skill has SKILL.md with YAML frontmatter
 │   ├── syspilot.branching/
+│   ├── syspilot.change-launcher/  #   Automates branch + CD creation for new CRs
 │   ├── syspilot.impact-python/
 │   ├── syspilot.orchestration-jarvis/     #   Async variant (mutex pair)
 │   └── syspilot.orchestration-subagent/   #   Sync variant (mutex pair)

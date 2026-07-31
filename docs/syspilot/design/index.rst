@@ -31,6 +31,7 @@ This section contains design specifications following Sphinx-Needs methodology.
    spec_skill_orchestration
    spec_skill_branching
    spec_skill_impact
+   spec_skill_chg_launcher
 
    spec_uat_skill_orchestration_vocab
    spec_uat_installer_spec_rewrite
@@ -44,6 +45,7 @@ This section contains design specifications following Sphinx-Needs methodology.
    spec_uat_installer_orchestration_select
    spec_uat_spec_root_cause_principle
    spec_uat_ontology_arch
+   spec_uat_chg_launcher
 
    spec_doc_scope
 
