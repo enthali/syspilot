@@ -44,14 +44,25 @@ responsible for it. This one fact answers the question "who does this next?" wit
 any process description. It already existed in syspilot's ontology (Ontology Phase 2);
 it turns out to be doing more work than we credited it for.
 
-**2. The Change Document.** Intent and Goal are change-specific — they don't belong in
-a governed spec at all, they belong in *this* change's document. The document's
-*structure* — which sections exist, which must be filled before merge — carries the
-process implicitly. A QM Findings section that must be completed before merge doesn't
-need a sentence telling anyone to get it reviewed; the document enforces it by existing.
-Different change sizes (a one-line infra fix vs. a multi-level spec change) don't need
-different workflows — they need different *document shapes*. The process is tailorable
-simply by tailoring the document.
+**2. The Contract Document.** Intent and Goal are instance-specific — they don't belong
+in a governed spec at all, they belong in *this instance's* document. The document's
+*structure* — which sections exist, which must be filled before the process is
+considered done — carries the process implicitly. A QM Findings section that must be
+completed before merge doesn't need a sentence telling anyone to get it reviewed; the
+document enforces it by existing. Different instance sizes (a one-line infra fix vs. a
+multi-level spec change) don't need different workflows — they need different
+*document shapes*. The process is tailorable simply by tailoring the document.
+
+The Change Document was the first instance of this, but it isn't special — it's one
+member of a general pattern: **a Contract Document is a checklist owned by exactly one
+actor, whose fields are the process.** Release is the second instance: a Release
+Document, owned by the Release Agent, whose fields are things like "build check run",
+"squash-merge to main executed", "tag pushed" — filled in by the owner as the release
+actually happens, not prescribed as prose steps in a spec somewhere else. The pattern
+generalizes to any workflow that has a single responsible owner and a checkable
+end-state: onboarding, incident response, whatever comes next. *How* the checklist gets
+filled — in what order, with what side reasoning — is left entirely to the actor's
+judgment. The document only fixes *what* must end up true, not *how* it gets there.
 
 **3. Guardrails, with a defined action at the edge.** What genuinely needs governance is
 not the happy path — it's the boundary. What happens when an actor hits a decision it
@@ -122,6 +133,18 @@ Escalation's *behavior* (respond upward, don't improvise) is kernel. Escalation'
 personal-assistant setting) is method. Mixing the two accidentally hardcodes one
 project's shape into a supposedly generic primitive.
 
+## Adaptability: Ship the Pattern, Not the Prescribed Process
+
+If the Contract Document is the real mechanism, syspilot's own value to a new project
+isn't "do these steps in this order" — it's "here is how to build the Contract
+Document for your own process, with one owner and a checkable end-state." Concretely:
+syspilot ships its own Release Document as a worked example, and an adopting project's
+first real task with syspilot is writing *its own* — not adopting syspilot's verbatim.
+The method (how to shape an ownership + checklist document) travels; the specific
+document (syspilot's own release checklist) does not have to. This is the same
+kernel-vs-method split from the previous section, applied one level down: the Contract
+Document *pattern* is method: the filled-out instance is project-specific content.
+
 ## What to Watch Out For
 
 - **The bootstrap isn't optional.** The agent-file-less experiment didn't start from a
@@ -138,10 +161,19 @@ project's shape into a supposedly generic primitive.
   health, not drift — as long as decision gates (sign-off, merge) stay on the defined
   path. The two are easy to conflate if "let the actors self-organize" is taken too
   literally.
+- **Not every change earns a Contract Document.** The pattern is for workflows with
+  real ownership ambiguity or a multi-step checkable end-state. A one-line, low-risk
+  fix doesn't need a checklist invented for it — that's just re-introducing prescribed
+  process for something too small to need one. Judgment about *when* a Contract
+  Document is warranted is itself left to the actor, not mandated by the pattern.
 
-## Open Question
+## Open Questions
 
-How far can an actor's Workflow section shrink before the judgment it protects starts
-leaking out with it? We don't have the answer yet — the next experiment is to try
-stripping one real syspilot agent file down to guardrails-plus-ontology-reference and
-see whether it still holds.
+- How far can an actor's Workflow section shrink before the judgment it protects
+  starts leaking out with it? We don't have the answer yet — the next experiment is to
+  try stripping one real syspilot agent file down to guardrails-plus-ontology-reference
+  and see whether it still holds.
+- Does the Contract Document pattern hold up for a second real instance? The next test
+  is reframing syspilot's own Release process as a Release Document owned by the
+  Release Agent, and checking whether the release workflow prose becomes as
+  dispensable as the CR workflow prose did.
