@@ -16,138 +16,114 @@ Introduce a `syspilot.change-launcher` skill that automates the four mechanical 
 
 ## Level 0: User Stories
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted User Stories
 
-| ID | Title | Impact | Notes |
-|----|-------|--------|-------|
-| US_abc | ... | modified | ... |
+None.
 
 ### New User Stories
 
 | ID | Title | Priority |
 |----|-------|----------|
-| US_xxx | As a..., I want..., so that... | mandatory |
+| SYSP_US_CHG_LAUNCHER | Change Launcher Automation | mandatory |
 
 ### Decisions
 
-- Decision 1: ...
-- Decision 2: ...
+- Single US — one coherent automation capability.
+- Links to SYSP_US_PM (PM is the consumer).
+- Branch-exists case: warn + continue (not a failure).
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing User Stories
-- [ ] No redundancies
-- [ ] Gaps identified and addressed
+- [x] No contradictions with existing User Stories
+- [x] No redundancies
+- [x] No gaps
 
 ---
 
 ## Level 1: Requirements
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Requirements
 
-Found via links from User Stories above.
-
-| ID | Linked From | Impact | Notes |
-|----|-------------|--------|-------|
-| REQ_abc | US_abc | modified | ... |
+None.
 
 ### New Requirements
 
 | ID | Title | Links | Priority |
 |----|-------|-------|----------|
-| REQ_xxx | ... | US_xxx | mandatory |
-
-### Conflicts Detected
-
-- ⚠️ REQ_xxx vs REQ_yyy: {description}
-  - Resolution: {decision}
+| SYSP_REQ_CHG_LAUNCHER | Change Launcher Automation | SYSP_US_CHG_LAUNCHER | mandatory |
 
 ### Decisions
 
-- Decision 1: ...
+- 9 ACs covering the full script contract (inputs, outputs, errors, SKILL.md).
+- Branch-exists = warn + continue (AC-3), CD-exists = hard error (AC-7).
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Requirements
-- [ ] No redundancies
-- [ ] All new REQs link to User Stories
+- [x] No contradictions with existing Requirements
+- [x] No redundancies
+- [x] All new REQs link to User Stories
 
 ---
 
 ## Level 2: Design
 
-**Status**: ⏳ not started | 🔄 in progress | ✅ completed
+**Status**: ✅ completed
 
 ### Impacted Design Elements
 
-Found via links from Requirements above.
-
-| ID | Linked From | Impact | Notes |
-|----|-------------|--------|-------|
-| SPEC_abc | REQ_abc | modified | ... |
+| ID | Impact | Notes |
+|----|--------|-------|
+| SYSP_SPEC_PM_WORKFLOW | text update | Added launcher cross-reference note at steps 7–8 |
 
 ### New Design Elements
 
 | ID | Title | Links |
 |----|-------|-------|
-| SPEC_xxx | ... | REQ_abc, REQ_xxx |
-
-### Conflicts Detected
-
-- ⚠️ SPEC_xxx vs SPEC_yyy: {description}
-  - Resolution: {decision}
+| SYSP_SPEC_CHG_LAUNCHER | Change Launcher Script | SYSP_REQ_CHG_LAUNCHER |
 
 ### Decisions
 
-- Decision 1: ...
+- Script name: `launch_change.py`
+- Three required args: `--name`, `--author`, `--mode`
+- Exit codes: 0 = success, 1 = precondition failure
+- SKILL.md: description + parameters + error conditions (no example section)
+- PM_WORKFLOW gets informational note, not a hard dependency
 
 ### Horizontal Check (MECE)
 
-- [ ] No contradictions with existing Designs
-- [ ] All new SPECs link to Requirements
+- [x] No contradictions with existing Designs
+- [x] All new SPECs link to Requirements
 
 ---
 
 ## Final Consistency Check
 
-**Status**: ⏳ not started | ✅ passed | ❌ failed
+**Status**: ✅ passed
 
 ### Traceability Verification
 
 | User Story | Requirements | Design | Complete? |
 |------------|--------------|--------|-----------|
-| US_xxx | REQ_xxx | SPEC_xxx | ✅ |
-...
+| SYSP_US_CHG_LAUNCHER | SYSP_REQ_CHG_LAUNCHER | SYSP_SPEC_CHG_LAUNCHER | ✅ |
 
 ### Artefakt-Removal-Check
 
-*Fill in only when this CR removes an artefact (file, field, configuration key, REQ-ID).*
-
-For each removed artefact, run a project-wide grep on all plausible name variants and classify results:
-
-| Removed Artefact | Class (a): Code/Workflow refs | Class (b): Doc refs | Class (c): Historic Change Docs |
-|------------------|-------------------------------|---------------------|---------------------------------|
-| `{artefact name}` | {files + lines fixed / none} | {files + lines fixed / none} | {count — acceptable historic stranding} |
-
-- [ ] All class (a) active code/workflow references fixed in this CR
-- [ ] All class (b) active documentation references fixed in this CR
-- [ ] Class (c) historical Change Documents accepted as "acceptable historic stranding" and disclosed above
+Not applicable — no artefacts removed.
 
 ### Issues Found
 
-- [ ] Issue 1: ...
-- [ ] Issue 2: ...
+None.
 
 ### Sign-off
 
-- [ ] All levels completed (no ⚠️ DEPRECATED markers remaining)
-- [ ] All conflicts resolved
-- [ ] Traceability verified
-- [ ] Ready for implementation
+- [x] All levels completed
+- [x] All conflicts resolved
+- [x] Traceability verified
+- [x] Ready for implementation
 
 ---
 
