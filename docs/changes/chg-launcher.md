@@ -127,6 +127,24 @@ None.
 
 ---
 
+## Documentation
+
+**Status**: ✅ completed
+
+### Changes Made
+
+| File | Change |
+|------|--------|
+| `docs/architecture.md` | Added `syspilot.change-launcher/` to skills inventory in the Product directory tree |
+
+### No Changes Needed
+
+- `docs/workflows.md` — no PM step 7–8 or launcher references; skill usage is documented in SKILL.md
+- `docs/methodology.md` — not affected
+- `README.md` — not affected
+
+---
+
 ## QM Findings
 
 *QM writes findings directly into this section after each review round. PM records
