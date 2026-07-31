@@ -97,6 +97,13 @@ Project Manager Design
       the change directory and rename it ``<name>.md``. Then open the new file
       and fill **only**:
 
+      .. note::
+
+         Steps 7–8 (branch creation, template copy, header pre-fill, initial
+         commit) are automated by the ``syspilot.change-launcher`` skill
+         (see ``SYSP_SPEC_CHG_LAUNCHER``). The PM invokes the launcher, then
+         writes the Summary manually.
+
       - the header fields (``Status`` = ``in-progress``, ``Branch`` = feature branch,
         ``Created`` = today's date, ``Author`` = ``PM``,
         ``Operation Mode`` = ``autonomous`` | ``user-guided``)

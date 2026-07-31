@@ -30,6 +30,7 @@ This section contains system requirements following Sphinx-Needs methodology.
    req_skill_orchestration
    req_skill_branching
    req_skill_impact
+   req_skill_chg_launcher
 
    req_uat_skill_orchestration_vocab
    req_uat_installer_spec_rewrite
@@ -43,6 +44,7 @@ This section contains system requirements following Sphinx-Needs methodology.
    req_uat_installer_orchestration_select
    req_uat_spec_root_cause_principle
    req_uat_ontology_arch
+   req_uat_chg_launcher
 
    req_documentation
 

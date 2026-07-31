@@ -30,6 +30,7 @@ This section contains user stories that drive the requirements.
    us_skill_orchestration
    us_skill_branching
    us_skill_impact
+   us_skill_chg_launcher
 
    us_uat_skill_orchestration_vocab
    us_uat_installer_spec_rewrite
@@ -45,6 +46,7 @@ This section contains user stories that drive the requirements.
    us_uat_installer_orchestration_select
    us_uat_spec_root_cause_principle
    us_uat_ontology_arch
+   us_uat_chg_launcher
 
    us_documentation
 
