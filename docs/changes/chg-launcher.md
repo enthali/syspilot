@@ -10,7 +10,7 @@
 
 ## Summary
 
-{One paragraph describing the change}
+Introduce a `syspilot.change-launcher` skill that automates the four mechanical steps at the start of every change initiative: create the feature branch from `development`, copy the change-document template, and pre-fill the five header fields (Status, Branch, Created, Author, Operation Mode) before making the initial commit. These steps are deterministic and require no judgment, but they are a recurring source of errors (wrong fields touched, Operation Mode forgotten, CM territory inadvertently modified). Offloading them to a script lets the PM focus immediately on the Summary — the one part that genuinely requires human intent. The skill is delivered as a Python script under `syspilot/skills/syspilot.change-launcher/`, installed by the Setup Agent, and backed by new spec elements `SYSP_US_CHG_LAUNCHER` / `SYSP_REQ_CHG_LAUNCHER` / `SYSP_SPEC_CHG_LAUNCHER`.
 
 ---
 
