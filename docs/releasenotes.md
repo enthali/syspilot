@@ -6,6 +6,29 @@
 > consistent; CalVer was a brief interlude, reverted per the Release Agent
 > Tailoring Workflow (see `release-agent-tailoring-semver`).
 
+## v0.9.0 - 2026-07-31
+
+### Summary
+
+Minor release delivering two new capabilities: Ontology Phase 2 enriches the single-master `.syspilot/ontology.toml` with actor catalogue, typed link relationships, lifecycle state machine, TEST-type split, and a build-time ontology reference page; the Change Launcher skill automates the four mechanical PM steps at the start of every change initiative (branch creation, CD template copy, header pre-fill, initial commit).
+
+### 🏗️ Ontology Phase 2 (`ontology-phase2`, #54)
+
+- **Actor catalogue** — `[syspilot.actors]` maps each Need type to its owning actor; framed for agent-readable routing, not only human reference
+- **Typed link relationships** — `[syspilot.type_links]` defines explicit bottom-up relationships (provides / refines / implements / validates / verifies / defines); `[[needs.extra_links]]` adds typed link fields additively with `:links:` kept as a generic fallback — no breaking change, no forced migration
+- **TEST type split** — single `TEST_` type split into `uat` (UAT\_), `test` (TEST\_), `unit_test` (UNIT\_); `TEST_` kept as a deprecated alias for organic migration
+- **Lifecycle state machine** — `[syspilot.status_transitions]` captures allowed state transitions, owned by System Designer
+- **Ontology reference page** — generated at sphinx build time by a `conf.py` hook: type catalogue table + Mermaid type-relationship diagram + Mermaid lifecycle diagram, always in sync with the master; generated file gitignored
+- New US: `SYSP_US_ONTOLOGY_ACTOR_CATALOG`, `SYSP_US_ONTOLOGY_TYPE_LINKS`, `SYSP_US_ONTOLOGY_LIFECYCLE`, `SYSP_US_ONTOLOGY_REF_PAGE`, `SYSP_US_ONTOLOGY_TYPE_SPLIT`
+
+### 🚀 Change Launcher Skill (`chg-launcher`, #61)
+
+- **`syspilot.change-launcher` skill** — Python script (`launch_change.py`) + `SKILL.md` under `syspilot/skills/syspilot.change-launcher/`, installed by the Setup Agent
+- Automates the four deterministic PM steps: create feature branch from `development`, copy CD template, pre-fill five header fields (Status, Branch, Created, Author, Operation Mode), make initial commit
+- Preconditions validated with clear exit codes: branch-already-exists → warn + continue (not a failure); CD already exists or template missing → exit 1
+- PM can immediately focus on the Summary section — the only part requiring human judgment
+- New spec chain: `SYSP_US_CHG_LAUNCHER` → `SYSP_REQ_CHG_LAUNCHER` → `SYSP_SPEC_CHG_LAUNCHER`; UAT chain with 5 scenarios covering all 9 ACs
+
 ## v0.8.2 - 2026-07-23
 
 ### Summary
