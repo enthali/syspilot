@@ -74,3 +74,12 @@ Tooling, CI, Sphinx config, and release pipeline changes are **not spec-driven**
 - PM implements directly (does not send to CM)
 - QM review is still performed
 - PM merges to `experimental` after QM sign-off
+
+## Feature Branch Retention (override)
+
+Overrides the `syspilot.branching` skill's default retention policy for this
+project: **delete feature branches on `origin` after they are squash-merged
+into `development` and the containing release has shipped.** Local branches
+may still be kept for a while but are not load-bearing — `development`/`main`
+history is authoritative. Applied retroactively 2026-08-01 as a one-time
+cleanup of stale remote branches accumulated before this override existed.
