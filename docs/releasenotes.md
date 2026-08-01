@@ -6,6 +6,22 @@
 > consistent; CalVer was a brief interlude, reverted per the Release Agent
 > Tailoring Workflow (see `release-agent-tailoring-semver`).
 
+## v0.9.1 - 2026-08-01
+
+### Summary
+
+Patch release: dark-mode fix for sphinx-needs panels, PM branch-retention policy update, and two field notes (North Star workflow-less actors, Contract Document pattern generalization).
+
+### 🔧 Fixes
+
+- **Dark mode panels** (#36) — sphinx-needs panel styling now readable in dark VS Code themes
+
+### 📝 Docs & Process
+
+- **PM branch retention override** — project tailoring updated to delete merged feature branches from origin after release (retroactive cleanup of 19 stale remote branches performed 2026-08-01)
+- **North Star field note** — captures the workflow-less actor architecture direction (`docs/experiences/north-star-workflow-less-actors.md`)
+- **Contract Document pattern** — generalizes the Change Document concept; field note updated
+
 ## v0.9.0 - 2026-07-31
 
 ### Summary
