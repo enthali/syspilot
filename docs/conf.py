@@ -115,7 +115,8 @@ exclude_patterns = [
 # -- Options for HTML output -------------------------------------------------
 
 html_theme = 'furo'
-html_static_path = []
+html_static_path = ['_static']
+html_css_files = ['needs-dark-mode.css']
 html_title = 'syspilot'
 html_logo = '../assets/syspilot-logo.svg'
 
