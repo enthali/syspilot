@@ -73,4 +73,26 @@ Tooling, CI, Sphinx config, and release pipeline changes are **not spec-driven**
 - PM creates a feature branch + lightweight change document (L0-L2 sections marked "N/A — infrastructure change")
 - PM implements directly (does not send to CM)
 - QM review is still performed
-- PM merges to `experimental` after QM sign-off
+- PM merges to `development` after QM sign-off
+
+## `experimental` Branch Purpose (updated 2026-08-01)
+
+`experimental` is no longer the infra-change staging branch (that role folded
+into `development` above, see "Infrastructure Changes"). It now hosts the
+"syspilot v2" exploration — a from-scratch rethink of the architecture,
+parked in the PM actor's `idea-syspilot-v2-greenfield.md` memory file. It was
+force-synced to `development`'s tip on 2026-08-01 as the starting point.
+
+v1 (`development`/`main`) is NOT frozen — this is exploration, not a decided
+fork. No freeze/maintenance-mode rule applies yet. If v2 is ever adopted as
+the project's future direction (e.g. targeting a `0.11.0`), define the v1
+freeze rule at that point, not before.
+
+## Feature Branch Retention (override)
+
+Overrides the `syspilot.branching` skill's default retention policy for this
+project: **delete feature branches on `origin` after they are squash-merged
+into `development` and the containing release has shipped.** Local branches
+may still be kept for a while but are not load-bearing — `development`/`main`
+history is authoritative. Applied retroactively 2026-08-01 as a one-time
+cleanup of stale remote branches accumulated before this override existed.

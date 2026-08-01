@@ -12,6 +12,7 @@ Each note captures a specific situation: what I tried, what worked, what I'd wat
 
 | Note | Date | Context | Tags |
 |------|------|---------|------|
+| [The Workflow-less Actor: A North Star](north-star-workflow-less-actors.md) | 2026-07-31 | syspilot 0.9.0, Jarvis async | actors, ontology, guardrails, north-star |
 | [Which Model Runs syspilot?](which-model-runs-syspilot.md) | 2026-07-06 | syspilot 0.8.0, Jarvis 0.8.x | models, cost, local-first, benchmark |
 | [Lean Personas, Rich Skills](lean-personas-rich-skills.md) | 2026-07-06 | syspilot 0.8.0, Jarvis 0.8.x | personas, prompts, PRISM, agent-design |
 | [Beyond Agent Memory](beyond-agent-memory.md) | 2026-07-02 | syspilot 0.5.x, Jarvis 0.5.x | actors, organization, thesis |

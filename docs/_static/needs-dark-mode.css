@@ -1,0 +1,21 @@
+/* sphinx-needs panels use fixed light-mode colors by default; override with
+   furo's theme variables so they stay readable in dark mode too. */
+
+.need {
+  background-color: var(--color-background-secondary);
+  border-color: var(--color-background-border);
+  color: var(--color-foreground-primary);
+}
+
+.need .need_head {
+  background-color: var(--color-background-hover);
+  color: var(--color-foreground-primary);
+}
+
+.need .need_part, .need .need_meta {
+  color: var(--color-foreground-primary);
+}
+
+.need a {
+  color: var(--color-link);
+}

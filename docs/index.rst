@@ -158,6 +158,7 @@ Field Notes
    :caption: Field Notes
 
    experiences/index
+   experiences/north-star-workflow-less-actors
    experiences/beyond-agent-memory
    experiences/auto-agent-messaging
    experiences/case-study-self-optimizing-agents
