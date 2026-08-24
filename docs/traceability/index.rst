@@ -1,3 +1,5 @@
+.. warning:: **V2 STATUS: TO BE UPDATED** - This document still assumes the v1 specification hierarchy and identifiers.
+
 Traceability
 ============
 

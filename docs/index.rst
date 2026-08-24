@@ -1,3 +1,5 @@
+.. warning:: **V2 STATUS: TO BE UPDATED** - This document still describes the v1 product architecture.
+
 Welcome to your system pilot documentation!
 ===========================================
 
@@ -16,28 +18,14 @@ The result? **O(affected), not O(total).** That's what makes it scale.
 Getting Started
 ---------------
 
-**1. Download the setup agent** into your project:
+.. note::
 
-.. code-block:: bash
+   The v2 bootstrap is being defined. The v1 setup-agent download has been
+   removed. V2 will start from a README prompt pasted into a new Copilot
+   session; that prompt creates the Syspilot Setup actor, which performs
+   installation or update through a Setup Contract.
 
-   # Linux / Mac
-   mkdir -p .github/agents && curl -fsSL \
-     "https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/agents/syspilot.setup.agent.md" \
-     -o .github/agents/syspilot.setup.agent.md
-
-.. code-block:: powershell
-
-   # Windows (PowerShell)
-   New-Item -ItemType Directory -Force -Path .github/agents | Out-Null
-   Invoke-WebRequest `
-     -Uri "https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/agents/syspilot.setup.agent.md" `
-     -OutFile ".github/agents/syspilot.setup.agent.md"
-
-**2. Open VS Code Copilot Chat** and type ``@syspilot.setup`` — the agent does the rest.
-
-That's it. Dependencies, config, validation — all handled automatically.
-
-Prerequisites: **VS Code + GitHub Copilot**, **Python 3.10+**
+Prerequisites: **VS Code + GitHub Copilot + Jarvis**, **Python 3.10+**
 
 
 How It Works
@@ -102,7 +90,7 @@ FAQ
 
 **Is this only for automotive / A-SPICE?**
    No. The spec hierarchy (User Stories → Requirements → Design) is universal.
-   The A-SPICE alignment is optional and documented under :doc:`syspilot/process/index`.
+   The A-SPICE alignment is optional.
 
 **How is this different from just using Copilot?**
    Copilot is great at writing code. But it doesn't know *which* of your 500 requirements
@@ -110,16 +98,24 @@ FAQ
    does what it does best.
 
 
-Specification Reference
------------------------
+syspilot Actors & Processes (v2)
+---------------------------------
 
 .. toctree::
    :maxdepth: 2
-   :caption: syspilot Family
+   :caption: syspilot v2
 
-   syspilot/userstories/index
-   syspilot/requirements/index
-   syspilot/design/index
+   syspilot/index
+   Syspilot Actors/index
+   Syspilot Actors/Syspilot Project Manager
+   Syspilot Actors/Syspilot Architect
+   Syspilot Actors/Syspilot Developer
+   Syspilot Actors/Syspilot Tester
+   Syspilot Actors/Syspilot Quality
+   Syspilot Actors/Syspilot Setup
+   Syspilot Actors/Syspilot Release
+   Syspilot Actors/Syspilot Research
+   Syspilot Processes/index
 
 
 Traceability
@@ -143,9 +139,6 @@ Guides & Process
    architecture
    workflows
    namingconventions
-   syspilot/methodology
-   syspilot/namingconventions
-   syspilot/process/index
    releasenotes
    ontology-reference
 

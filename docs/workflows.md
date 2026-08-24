@@ -1,3 +1,5 @@
+> **V2 STATUS: REQUIRES REVIEW** - Review this document against the v2 architecture before relying on it.
+
 # Workflows: The syspilot Process
 
 ## Overview

@@ -1,3 +1,5 @@
+> **V2 STATUS: REQUIRES REVIEW** - Review this document against the v2 architecture before relying on it.
+
 # Methodology: Agent Family Framework
 
 ## Overview
@@ -31,7 +33,7 @@ Each family defines its own:
 > default ontology (User Story → Requirement → Design Spec, L0/L1/L2). This
 > is *one* ontology template, not a hard-coded constraint. Per the ontology
 > architecture decision, other ontologies (e.g. ASPICE) are first-class.
-> See [architecture.md — Ontology Architecture](architecture.md#ontology-architecture).
+> See {ref}`Ontology Architecture <ontology-architecture>`.
 
 ## Repository Structure
 

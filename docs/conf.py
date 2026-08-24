@@ -109,7 +109,6 @@ exclude_patterns = [
     '.venv',
     'venv',
     'changes/*',
-    'syspilot/conventions.md',
 ]
 
 # -- Options for HTML output -------------------------------------------------
@@ -149,6 +148,19 @@ html_sidebars = {
 # .syspilot/ontology.toml — the single source of truth for both Sphinx and ubCode.
 
 needs_from_toml = "../.syspilot/ontology.toml"
+
+# ac/vc needs are fine-grained (one per Given/When/Then) — start them
+# collapsed by default (clean layout) so only title/ID show until clicked;
+# CSS below indents/narrows them to read as sub-items of their parent.
+needs_global_options = {
+    "collapse": {
+        "predicates": [
+            ("type == 'ac'", "True"),
+            ("type == 'vc'", "True"),
+        ],
+        "default": "False",
+    },
+}
 
 # Suppress known deprecation warnings from sphinx-needs config migration
 suppress_warnings = ["needs.deprecated"]

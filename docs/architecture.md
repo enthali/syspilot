@@ -1,3 +1,6 @@
+> **HISTORICAL V1 ARCHITECTURE** - This document describes the removed v1
+> product-copy model. Its paths and installation flow do not apply to v2.
+
 # Architecture: Product & Installation
 
 ## Overview

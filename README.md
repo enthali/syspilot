@@ -1,3 +1,5 @@
+> **V2 STATUS: TO BE UPDATED** - This document still describes the v1 product architecture.
+
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/syspilot-logo-dark.svg">
@@ -16,24 +18,10 @@ Cover 100% of your specs with 6x less tokens. Links are deterministic — search
 
 ## Quick Start
 
-**Linux / Mac / GitHub Codespaces:**
-```bash
-mkdir -p .github/agents && curl -fsSL \
-  "https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/agents/syspilot.setup.agent.md" \
-  -o .github/agents/syspilot.setup.agent.md
-```
-
-**Windows (PowerShell):**
-```powershell
-New-Item -ItemType Directory -Force -Path .github/agents | Out-Null
-Invoke-WebRequest `
-  -Uri "https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/agents/syspilot.setup.agent.md" `
-  -OutFile ".github/agents/syspilot.setup.agent.md"
-```
-
-Then open VS Code Copilot Chat and run `@syspilot.setup`.
-
-That's it. The setup agent handles dependencies, configuration, and validation automatically.
+> **V2 bootstrap is being defined.** The v1 setup-agent download has been
+> removed. V2 will start from a README prompt pasted into a new Copilot session;
+> that prompt creates the Syspilot Setup actor, which performs installation or
+> update through a Setup Contract.
 
 ## What You Get
 

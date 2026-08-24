@@ -19,3 +19,11 @@
 .need a {
   color: var(--color-link);
 }
+
+/* ac/vc are fine-grained, one-per-criterion needs — indent and narrow them
+   so they read as sub-items of their parent story/req, not peers. */
+.need.needs_type_ac,
+.need.needs_type_vc {
+  margin-left: 2em;
+  max-width: calc(100% - 2em);
+}

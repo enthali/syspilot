@@ -1,6 +1,6 @@
 [syspilot]
-schema_version = "1.0"
-description = "syspilot ontology definition — sphinx-needs reads [needs] directly; [syspilot.*] sections reserved for Phase 2+"
+schema_version = "2.0"
+description = "syspilot v2 ontology — sphinx-needs reads [needs] directly; [syspilot.*] sections are syspilot-specific metadata."
 
 # ---------------------------------------------------------------------------
 # sphinx-needs configuration (read directly by sphinx-needs via needs_from_toml)
@@ -18,12 +18,26 @@ build_json_per_id = true
 # Use Graphviz for needflow diagrams
 flow_engine = "graphviz"
 
-# Extra option fields available on all need directives
-extra_options = ["priority", "rationale", "acceptance_criteria"]
+# Extra option fields available on all need directives.
+# "realized_by" holds a plain path reference (not a need link) to the file
+# that IS the HOW — an agent file, skill file, or code location. There is no
+# separate SPEC type in v2: a written HOW would duplicate the file verbatim.
+extra_options = ["priority", "rationale", "realized_by"]
 
 # ---------------------------------------------------------------------------
 # Need Types
 # ---------------------------------------------------------------------------
+
+# The single graph root. Exactly one instance per project. Every User Story
+# self-declares membership via :tracked_by:, so impact analysis and orphan
+# detection can start from one deterministic node instead of a "type == story"
+# convention.
+[[needs.types]]
+directive = "root"
+title = "Graph Root"
+prefix = "ROOT_"
+color = "#4A4A4A"
+style = "node"
 
 [[needs.types]]
 directive = "story"
@@ -39,45 +53,21 @@ prefix = "REQ_"
 color = "#BFD8D2"
 style = "node"
 
+# Validation — did we build the right thing. User-facing, human-judged.
+# One per Given/When/Then, linked to the User Story it validates.
 [[needs.types]]
-directive = "spec"
-title = "Design Specification"
-prefix = "SPEC_"
-color = "#FEDCD2"
-style = "node"
-
-[[needs.types]]
-directive = "def"
-title = "DEFINITION"
-prefix = "DEF_"
-color = "#C8A4D4"
-style = "node"
-
-[[needs.types]]
-directive = "impl"
-title = "Implementation"
-prefix = "IMPL_"
-color = "#DF744A"
-style = "node"
-
-[[needs.types]]
-directive = "test"
-title = "Test Case (deprecated — use uat, unit_test, or test)"
-prefix = "TEST_"
-color = "#DCB239"
-style = "node"
-
-[[needs.types]]
-directive = "uat"
-title = "UAT Test Case"
-prefix = "UAT_"
+directive = "ac"
+title = "Acceptance Criterion"
+prefix = "AC_"
 color = "#A8E6CF"
 style = "node"
 
+# Verification — did we build it right. Testable, linked to the Requirement
+# it verifies.
 [[needs.types]]
-directive = "unit_test"
-title = "Unit Test"
-prefix = "UNIT_"
+directive = "vc"
+title = "Verification Criterion"
+prefix = "VC_"
 color = "#FFD3B6"
 style = "node"
 
@@ -113,94 +103,76 @@ description = "Deprecated - No longer used"
 # Extra Link Types
 # ---------------------------------------------------------------------------
 
+# US -> root. Self-declared entry-point membership (see [[syspilot.type_links]]).
 [[needs.extra_links]]
-option = "provides"
-incoming = "is provided by"
-outgoing = "provides"
+option = "tracked_by"
+incoming = "tracks"
+outgoing = "tracked_by"
 
-[[needs.extra_links]]
-option = "refines"
-incoming = "is refined by"
-outgoing = "refines"
-
+# REQ -> US. A requirement implements the user story's WHY.
 [[needs.extra_links]]
 option = "implements"
 incoming = "is implemented by"
 outgoing = "implements"
 
+# REQ -> REQ. A concrete requirement applies a more general one.
+# Direction is always concrete -> general; never sideways between two
+# unrelated concrete requirements.
+[[needs.extra_links]]
+option = "specializes"
+incoming = "is specialized by"
+outgoing = "specializes"
+
+# AC -> US. Validates that the user story's intent is satisfied.
 [[needs.extra_links]]
 option = "validates"
 incoming = "is validated by"
 outgoing = "validates"
 
+# VC -> REQ. Verifies that the requirement is correctly implemented.
 [[needs.extra_links]]
 option = "verifies"
 incoming = "is verified by"
 outgoing = "verifies"
 
-# "defines": used on Group Contract Specs to list the DEFINITIONS of their group.
-# Agents and Skills link to the Group Contract Spec (not directly to def needs).
-[[needs.extra_links]]
-option = "defines"
-incoming = "is defined by"
-outgoing = "defines"
-
 # ===========================================================================
 # syspilot-specific sections (ignored by sphinx-needs, read by agents/tooling)
 # ===========================================================================
-
-# ---------------------------------------------------------------------------
-# Actor Catalogue — maps each Need type to its primary owning actor
-# ---------------------------------------------------------------------------
-
-[syspilot.actors]
-story     = "System Designer"
-req       = "System Designer"
-spec      = "System Designer"
-def       = "System Designer"
-impl      = "Dev Engineer"
-test      = "Test Designer"
-uat       = "Test Designer"
-unit_test = "Dev Engineer"
+#
+# NOTE: no [syspilot.actors] ownership table in v2. Per AD-6, artifact
+# ownership is declared per process/checklist (see docs/Syspilot Processes/),
+# not centrally in the ontology. A type can legitimately have different
+# owners in different processes (e.g. a REQ owned by the Architect in one
+# process, by the PM in an emergency-patch process).
 
 # ---------------------------------------------------------------------------
 # Type Link Relationships — directed, bottom-up relationships between types
 # ---------------------------------------------------------------------------
 
 [[syspilot.type_links]]
+from = "story"
+to   = "root"
+rel  = "tracked_by"
+
+[[syspilot.type_links]]
 from = "req"
 to   = "story"
-rel  = "provides"
-
-[[syspilot.type_links]]
-from = "spec"
-to   = "req"
 rel  = "implements"
 
 [[syspilot.type_links]]
-from = "impl"
-to   = "spec"
-rel  = "implements"
-
-[[syspilot.type_links]]
-from = "test"
+from = "req"
 to   = "req"
-rel  = "verifies"
+rel  = "specializes"
 
 [[syspilot.type_links]]
-from = "uat"
+from = "ac"
 to   = "story"
 rel  = "validates"
 
 [[syspilot.type_links]]
-from = "unit_test"
-to   = "spec"
+from = "vc"
+to   = "req"
 rel  = "verifies"
-
-[[syspilot.type_links]]
-from = "def"
-to   = "spec"
-rel  = "defines"
 
 # ---------------------------------------------------------------------------
 # Status Transitions — lifecycle state machine
@@ -229,8 +201,8 @@ transitions = [
   { from = "approved", to = "draft" },
 ]
 
-[syspilot.status_transitions.overrides.def]
+# The root is a stable anchor, not a work item in progress.
+[syspilot.status_transitions.overrides.root]
 transitions = [
-  { from = "draft",    to = "approved" },
-  { from = "approved", to = "draft" },
+  { from = "draft", to = "approved" },
 ]

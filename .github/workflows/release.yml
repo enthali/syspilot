@@ -39,30 +39,6 @@ jobs:
           echo "version=$TAG" >> $GITHUB_OUTPUT
           echo "Tag version: $TAG"
       
-      - name: Validate Setup Agent version
-        run: |
-          AGENT_FILE="syspilot/agents/syspilot.setup.agent.md"
-          
-          if [ ! -f "$AGENT_FILE" ]; then
-            echo "ERROR: $AGENT_FILE not found"
-            exit 1
-          fi
-          
-          VERSION=$(grep '^version:' "$AGENT_FILE" | head -1 | sed 's/version:[[:space:]]*//' | sed 's/^v//')
-          TAG="${{ steps.tag_version.outputs.version }}"
-          
-          echo "Setup Agent version: $VERSION"
-          echo "Git tag: $TAG"
-          
-          if [ "$VERSION" != "$TAG" ]; then
-            echo "ERROR: Version mismatch!"
-            echo "  Setup Agent frontmatter version = $VERSION"
-            echo "  tag = $TAG"
-            exit 1
-          fi
-          
-          echo "✅ Version matches tag"
-      
       - name: Validate release notes exist
         run: |
           if [ ! -f docs/releasenotes.md ]; then
