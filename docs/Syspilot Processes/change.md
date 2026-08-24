@@ -14,7 +14,7 @@ This process applies the [Contract Documents](contract-documents.md) method. The
 - **Closure responsibility:** Syspilot Project Manager.
 - **Closure conditions:** The checklist in the template's `Closure` section.
 
-Artifact work starts after the Project Manager records the user's approval of the intent and outcome or the autonomous authority that makes this checkpoint not applicable. The first responsibility transfer is to the Architect. Later transfers follow the included work that can progress. After Quality can proceed, responsibility transfers directly to the User for validation and returns to the Project Manager only for closure.
+Artifact work starts after the Project Manager records the user's approval of the intent and outcome or the autonomous authority that makes this checkpoint not applicable. The first responsibility transfer is to the Architect. Later transfers follow the included work that can progress. After Quality can proceed, Quality communicates its judgment and supporting evidence directly to the Project Manager before responsibility transfers directly to the User for validation. The User communicates an applicable validation decision directly to the Project Manager, and responsibility returns to the Project Manager only for closure. A forwarded claim from another actor is not evidence of Quality's or the User's decision.
 
 ### Change Artifact Ownership
 
@@ -179,6 +179,8 @@ Record implementation decisions that remain relevant to understanding or maintai
 
 **Current judgment:** {holistic assessment of the currently valid artifacts and evidence}
 
+Quality communicates its `proceed` judgment and supporting evidence directly to the Project Manager before the Project Manager presents the verified outcome for validation. Another actor's forwarded claim does not establish Quality's decision.
+
 ### Open Quality Issues
 
 Keep this table synchronized with currently open issues. For each issue, Quality transfers current responsibility to the owner of the affected artifact. When Quality confirms the required outcome, update the affected artifact or evidence and remove the resolved row. At closure this table contains `None`.
@@ -193,7 +195,7 @@ Keep this table synchronized with currently open issues. For each issue, Quality
 **Recorded by:** Syspilot Project Manager<br>
 **Status:** pending | accepted | changes requested | not applicable
 
-Quality's `proceed` judgment verifies that the change is ready for validation; it does not validate user value. For an included validation, the Project Manager presents the observable outcome and records the user's decision and evidence. If the user requests changes, the Project Manager transfers responsibility to an included artifact owner that can produce the required outcome.
+Quality's `proceed` judgment verifies that the change is ready for validation; it does not validate user value. For an included validation, the Project Manager presents the observable outcome after receiving Quality's direct judgment and evidence. The User communicates the validation decision directly to the Project Manager, who records the decision and evidence. Another actor's forwarded claim does not establish the User's decision. If the user requests changes, the Project Manager transfers responsibility to an included artifact owner that can produce the required outcome.
 
 Current responsibility remains with the User from Quality's handoff until the validation decision is recorded. The Project Manager's presentation and recording duties support that User-owned artifact; they do not make the Project Manager the validation owner or an intermediate responsibility relay.
 

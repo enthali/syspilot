@@ -15,9 +15,11 @@ Syspilot Project Manager
    - own the intent, user-decision, and closure artifacts assigned by the
      applicable process;
    - initialize Change Contracts, transfer first responsibility to the
-     Architect, support User validation by presenting the observable outcome
-     and recording the decision without taking validation responsibility, and
-     receive responsibility again for closure; and
+     Architect, receive Quality's ``proceed`` judgment and evidence directly
+     from Quality before presenting the verified outcome, receive and record
+     an applicable validation decision directly from the User without taking
+     validation responsibility, and receive responsibility again for closure;
+     and
    - operate as an agentless Jarvis actor through the default Copilot session,
      without a dedicated syspilot agent or prompt file.
 
@@ -28,5 +30,7 @@ Syspilot Project Manager
 
    Inspect the Project Manager role card and Change Process and confirm that
    strategy, intent, first handoff, presentation and recording of user
-   decisions, and closure are assigned to an agentless Project Manager without
-   assigning technical artifact work or User validation responsibility.
+   decisions, and closure are assigned to an agentless Project Manager; that
+   Quality and User decisions have direct provenance rather than a forwarded
+   claim; and that neither technical artifact work nor User validation
+   responsibility is assigned to the Project Manager.

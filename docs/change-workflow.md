@@ -67,6 +67,11 @@ Quality records one current judgment:
 - `proceed` when the evidence supports validation; or
 - `blocked` with a concrete required outcome for each open issue.
 
+When Quality can proceed, it sends that judgment and its supporting evidence
+directly to the Project Manager. A forwarded summary from another actor does
+not establish Quality's decision. The Project Manager can then present the
+verified outcome while responsibility moves directly from Quality to the User.
+
 Resolved issues leave the open-issues table. The Contract is a dashboard, not
 an attic.
 
@@ -78,6 +83,11 @@ Change. After Quality can proceed, the User owns validation responsibility. The
 Project Manager supports validation by presenting the observable outcome and
 recording the user's decision and evidence, without becoming the validation
 owner or responsibility relay.
+
+The User communicates that decision directly to the Project Manager. A
+forwarded claim does not establish the User's decision. Responsibility remains
+with the User until the direct decision is recorded, then returns to the
+Project Manager only for Closure.
 
 If the user requests changes, responsibility returns to an artifact owner who
 can produce the missing outcome. In autonomous work, validation may be marked

@@ -43,9 +43,16 @@ Change Contract
    - records Quality's current verification judgment and only currently open
      quality issues, with responsibility for correction transferred to the
      affected artifact's owner;
+   - requires Quality to communicate its ``proceed`` judgment and supporting
+     evidence directly to the Project Manager before the outcome is presented
+     for validation, without accepting another actor's forwarded claim as
+     evidence of Quality's decision;
    - assigns validation of the observable outcome to the User after Quality can
      proceed, while allowing autonomous authority to make that validation not
      applicable without claiming that user validation occurred;
+   - requires the User to communicate an applicable validation decision
+     directly to the Project Manager before it is recorded, without accepting
+     another actor's forwarded claim as evidence of the User's decision;
    - keeps unattended user checkpoints pending until the user returns; and
    - closes through the Project Manager only when all included artifacts have
      terminal status and completion evidence, Quality can proceed, the intended
@@ -60,4 +67,6 @@ Change Contract
    Inspect the realized Change Process and confirm that it defines branch and
    contract initialization, collaboration-mode approval handling, first
    handoff to the Architect, owner-decided applicability, artifact status,
-   evidence, and checkable closure for every included artifact.
+   direct Quality and User decision provenance, autonomous and unattended
+   validation handling, evidence, and checkable closure for every included
+   artifact.
