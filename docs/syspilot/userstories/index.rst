@@ -17,5 +17,6 @@ capability. Every story links back to :doc:`../root` via ``:tracked_by:``.
    us_setup
    us_release
    us_research
+   us_technical_writer
    us_contract_documents
    us_change_contract

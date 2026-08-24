@@ -13,5 +13,6 @@ Requirements
    req_setup
    req_release
    req_research
+   req_technical_writer
    req_contract_documents
    req_change_contract

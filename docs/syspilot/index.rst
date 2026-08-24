@@ -12,3 +12,4 @@ referenced via ``:realized_by:`` on the Requirement (see
    root
    userstories/index
    requirements/index
+   documentation/index

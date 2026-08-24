@@ -23,6 +23,18 @@ Change Contract
      current status;
    - lets each artifact owner determine the applicability and completeness of
      that owner's artifact;
+   - includes user-facing documentation as an optional artifact owned by the
+     Technical Writer when a change must add or update derived explanations,
+     with completion evidence covering the agreed documentation surface,
+     coherent user-oriented structure, relevant factual-owner review, updated
+     ``doc`` Needs and ``includes`` links, and a clean documentation build;
+   - uses incoming ``included_in`` links on changed requirements to identify
+     documentation surfaces that require Technical Writer impact review;
+   - distinguishes user-facing documentation from authoritative textual product
+     artifacts by purpose and authority rather than by path or file format;
+   - permits direct consultation between the Technical Writer and factual
+     artifact owners without treating consultation as a transfer of Contract
+     responsibility, artifact ownership, or factual authority;
    - uses the open applicable artifacts and their dependencies to determine
      which owner can progress next rather than prescribing an actor sequence;
    - records durable architecture and implementation decisions with their
@@ -47,6 +59,5 @@ Change Contract
 
    Inspect the realized Change Process and confirm that it defines branch and
    contract initialization, collaboration-mode approval handling, first
-   handoff to the Architect, owner-decided applicability, artifact status and
-   evidence, autonomous later-owner selection, durable decisions, Quality
-   verification, User validation, and checkable closure.
+   handoff to the Architect, owner-decided applicability, artifact status,
+   evidence, and checkable closure for every included artifact.

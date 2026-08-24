@@ -20,3 +20,4 @@ Processes assign artifact ownership, and each Contract Document records current 
 | [Syspilot Setup](Syspilot%20Setup.md) | Installation, updates |
 | [Syspilot Release](Syspilot%20Release.md) | Packaging, release delivery |
 | [Syspilot Research](Syspilot%20Research.md) | Investigation, technical due diligence |
+| [Syspilot Technical Writer](Syspilot%20Technical%20Writer.md) | User-facing product documentation |

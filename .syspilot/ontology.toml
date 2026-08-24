@@ -71,6 +71,16 @@ prefix = "VC_"
 color = "#FFD3B6"
 style = "node"
 
+# A user-facing documentation surface maintained independently by the
+# Technical Writer. The Need remains in the specification graph while
+# "realized_by" points to documentation that contains no Needs markup.
+[[needs.types]]
+directive = "doc"
+title = "User Documentation"
+prefix = "DOC_"
+color = "#C9C2E8"
+style = "node"
+
 # ---------------------------------------------------------------------------
 # Statuses
 # ---------------------------------------------------------------------------
@@ -135,6 +145,13 @@ option = "verifies"
 incoming = "is verified by"
 outgoing = "verifies"
 
+# DOC -> REQ. Declares which requirements a user-facing documentation surface
+# contains in user-oriented form; the incoming relation exposes impact from REQ.
+[[needs.extra_links]]
+option = "includes"
+incoming = "included_in"
+outgoing = "includes"
+
 # ===========================================================================
 # syspilot-specific sections (ignored by sphinx-needs, read by agents/tooling)
 # ===========================================================================
@@ -173,6 +190,11 @@ rel  = "validates"
 from = "vc"
 to   = "req"
 rel  = "verifies"
+
+[[syspilot.type_links]]
+from = "doc"
+to   = "req"
+rel  = "includes"
 
 # ---------------------------------------------------------------------------
 # Status Transitions — lifecycle state machine

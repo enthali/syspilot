@@ -14,7 +14,7 @@ This process applies the [Contract Documents](contract-documents.md) method. The
 - **Closure responsibility:** Syspilot Project Manager.
 - **Closure conditions:** The checklist in the template's `Closure` section.
 
-Artifact work starts after the Project Manager records the user's approval of the intent and outcome or the autonomous authority that makes this checkpoint not applicable. The first responsibility transfer is to the Architect. Later transfers follow the included work that can progress, and responsibility returns to the Project Manager for user validation and closure.
+Artifact work starts after the Project Manager records the user's approval of the intent and outcome or the autonomous authority that makes this checkpoint not applicable. The first responsibility transfer is to the Architect. Later transfers follow the included work that can progress. After Quality can proceed, responsibility transfers directly to the User for validation and returns to the Project Manager only for closure.
 
 ### Change Artifact Ownership
 
@@ -24,11 +24,16 @@ Artifact work starts after the Project Manager records the user's approval of th
 | Change Contract structure and lifecycle | Syspilot Project Manager | Current state, responsibility, and final outcome are explicit |
 | Intent and outcome | Syspilot Project Manager | Goal, value, scope, and observable outcome are explicit and approved |
 | Product specification and architecture decisions | Syspilot Architect | Changed stories, requirements, criteria, architecture, and realized files are linked; relevant checks pass |
+| User-facing documentation | Syspilot Technical Writer | The agreed documentation surface is coherent and user-oriented; relevant factual owners reviewed it; `doc` Needs and `includes` links are current; the documentation build passes |
 | Implementation and unit verification | Syspilot Developer | Changed implementation artifacts, durable technical decisions, and automated verification results are linked |
 | Acceptance test design and results | Syspilot Tester | Black-box scenarios trace to the intended outcome and their results are recorded |
 | Quality review | Syspilot Quality | Current verification judgment is `proceed` and no open quality issue remains |
 | User validation and approval | User | The observable outcome is accepted, changes are requested, or autonomous authority makes validation not applicable |
 | Closure decision | Syspilot Project Manager | Final outcome, validation disposition, and integration state are recorded |
+
+User-facing documentation is optional. The Technical Writer includes it when a change must add or update derived explanations, using incoming `included_in` links on changed requirements to identify documentation surfaces for impact review. Authoritative textual product artifacts remain owned by their declared artifact owners regardless of path or file format.
+
+The Technical Writer may consult factual artifact owners directly for clarification and review of accuracy and understandability. Consultation transfers neither current Contract responsibility, artifact ownership, nor factual authority without an explicit handoff.
 
 ## Tailoring Rules
 
@@ -92,6 +97,7 @@ The Project Manager initializes a change as one consistent version-controlled st
 |---|---|---|---|---|
 | Intent and outcome | yes | Syspilot Project Manager | Goal, value, scope, and observable outcome are explicit and approved | draft / approved |
 | Product specification and architecture decisions | yes / not applicable: {reason} | Syspilot Architect | Changed specification and architecture artifacts are linked and checked | pending / not applicable |
+| User-facing documentation | yes / not applicable: {reason} | Syspilot Technical Writer | Agreed documentation surface is coherent and user-oriented; factual-owner review is recorded; `doc` Needs and `includes` links are current; documentation builds cleanly | pending / complete / not applicable |
 | Implementation and unit verification | yes / not applicable: {reason} | Syspilot Developer | Changed artifacts, durable technical decisions, and automated verification results are linked | pending / not applicable |
 | Acceptance test design and results | yes / not applicable: {reason} | Syspilot Tester | Black-box scenarios and results trace to the intended outcome | pending / not applicable |
 | Quality review | yes | Syspilot Quality | Current verification judgment is `proceed` and no open quality issue remains | pending |
@@ -114,6 +120,29 @@ The Project Manager initializes a change as one consistent version-controlled st
 | Decision or check | Evidence |
 |---|---|
 | {architecture decision, consistency check, or traceability result} | {link or result} |
+
+## User-Facing Documentation
+
+**Owner:** Syspilot Technical Writer<br>
+**Status:** pending | in progress | complete | not applicable
+
+### Documentation Plan And Ownership
+
+| Documentation surface | `doc` Need | Requirements included | Status |
+|---|---|---|---|
+| {path or surface} | {Need ID and `realized_by` path} | {requirement IDs linked through `includes`} | pending / complete |
+
+### Consultations And Factual Reviews
+
+| Documentation surface | Consulted artifact owner | Review question | Evidence and disposition |
+|---|---|---|---|
+| {path or surface} | {owner} | Is this accurate and understandable for the intended user? | {result or link} |
+
+### Changed Documentation And Verification
+
+| Artifact | Change | Verification evidence |
+|---|---|---|
+| {path or `doc` Need} | {what changed} | {review and clean-build result} |
 
 ## Implementation And Unit Verification
 
@@ -165,6 +194,8 @@ Keep this table synchronized with currently open issues. For each issue, Quality
 **Status:** pending | accepted | changes requested | not applicable
 
 Quality's `proceed` judgment verifies that the change is ready for validation; it does not validate user value. For an included validation, the Project Manager presents the observable outcome and records the user's decision and evidence. If the user requests changes, the Project Manager transfers responsibility to an included artifact owner that can produce the required outcome.
+
+Current responsibility remains with the User from Quality's handoff until the validation decision is recorded. The Project Manager's presentation and recording duties support that User-owned artifact; they do not make the Project Manager the validation owner or an intermediate responsibility relay.
 
 In autonomous mode, set this artifact to `not applicable` only when the collaboration agreement explicitly delegates closure authority, and record that authority. In unattended mode, keep it `pending` until the user returns.
 

@@ -1,101 +1,26 @@
-.. warning:: **V2 STATUS: TO BE UPDATED** - This document still describes the v1 product architecture.
+Syspilot
+========
 
-Welcome to your system pilot documentation!
-===========================================
-
-**Your project has 5000 requirements. A change affects 5 of them. Find those 5.**
-
-syspilot is a requirements engineering toolkit that gives AI agents *focused context* —
-not your entire codebase, just the parts that matter. It uses
-`sphinx-needs <https://sphinx-needs.readthedocs.io/>`_ traceability links to navigate
-from a User Story down to exactly the affected Requirements and Design Specs.
-
-The result? **O(affected), not O(total).** That's what makes it scale.
-
-
-.. _getting-started:
-
-Getting Started
----------------
+Syspilot gives AI collaborators a traceable product model and durable process
+state. Needs describe why the product exists and what it must do, realized
+artifacts supply the implementation, and Contract Documents keep intent,
+ownership, evidence, and current responsibility visible while work progresses.
 
 .. note::
 
-   The v2 bootstrap is being defined. The v1 setup-agent download has been
-   removed. V2 will start from a README prompt pasted into a new Copilot
-   session; that prompt creates the Syspilot Setup actor, which performs
-   installation or update through a Setup Contract.
+    Syspilot v2 is an early research project. Its product model and Change
+    process are available for review and development, but the supported customer
+    bootstrap is not implemented yet. Start with the repository preview in
+    :doc:`getting-started`.
 
-Prerequisites: **VS Code + GitHub Copilot + Jarvis**, **Python 3.10+**
+Nine persistent actors contribute through distinct areas of authority. They do
+not follow one fixed relay. The included, open artifacts in a Contract determine
+which owner can make the next useful move, while the Contract always names
+exactly one currently responsible actor.
 
-
-How It Works
-------------
-
-Three levels, connected by traceability links:
-
-.. code-block:: text
-
-   User Story (WHY)  ──links──▶  Requirements (WHAT)  ──links──▶  Design Specs (HOW)
-
-When you request a change, syspilot follows these links to find only the affected
-elements — then hands that focused context to the AI agent. No guessing, no scanning.
-
-
-Your AI Team
-------------
-
-Nine agents, each with a clear job:
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Agent
-     - What it does
-   * - ``@syspilot.design``
-     - Analyzes a change request, creates a Change Document listing all affected specs
-   * - ``@syspilot.implement``
-     - Executes approved changes with full traceability
-   * - ``@syspilot.verify``
-     - Checks implementation against the Change Document
-   * - ``@syspilot.memory``
-     - Keeps project memory (copilot-instructions.md) current
-   * - ``@syspilot.mece``
-     - Finds gaps and redundancies in your specs (one level at a time)
-   * - ``@syspilot.trace``
-     - Traces one item through all levels — up and down
-   * - ``@syspilot.release``
-     - Manages versioning, release notes, and GitHub publishing
-   * - ``@syspilot.setup``
-     - Installs or updates syspilot in your project
-
-The typical workflow: **change** → **implement** → **verify** → **memory**. Done.
-
-
-FAQ
----
-
-**Do I need to know reStructuredText?**
-   Not really. The agents write the RST for you. But it helps to understand the basics —
-   it's just text with some directives.
-
-**Can I use this with an existing project?**
-   Yes. ``@syspilot.setup`` can adopt an existing ``docs/`` folder. You can also start
-   with an empty project and grow from there.
-
-**What about Markdown?**
-   syspilot uses `myst-parser <https://myst-parser.readthedocs.io/>`_ so you can mix
-   Markdown and RST. The specs themselves use RST (because sphinx-needs requires it),
-   but your prose documentation can be Markdown.
-
-**Is this only for automotive / A-SPICE?**
-   No. The spec hierarchy (User Stories → Requirements → Design) is universal.
-   The A-SPICE alignment is optional.
-
-**How is this different from just using Copilot?**
-   Copilot is great at writing code. But it doesn't know *which* of your 500 requirements
-   are affected by a change. syspilot solves that navigation problem — then Copilot
-   does what it does best.
+Start with :doc:`product-model` for the big picture, :doc:`change-workflow` for
+the process in motion, :doc:`customization` for project tailoring, or
+:doc:`operations` for builds and maintenance.
 
 
 syspilot Actors & Processes (v2)
@@ -115,6 +40,7 @@ syspilot Actors & Processes (v2)
    Syspilot Actors/Syspilot Setup
    Syspilot Actors/Syspilot Release
    Syspilot Actors/Syspilot Research
+   Syspilot Actors/Syspilot Technical Writer
    Syspilot Processes/index
 
 
@@ -128,19 +54,46 @@ Traceability
    traceability/index
 
 
-Guides & Process
-----------------
+User Guides
+-----------
 
 .. toctree::
    :maxdepth: 1
-   :caption: Guides
+   :caption: User Guides
+
+   getting-started
+   product-model
+   change-workflow
+   customization
+   operations
+
+
+Reference
+---------
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Reference
+
+   releasenotes
+   ontology-reference
+
+
+Legacy v1 Guides
+----------------
+
+These guides remain available while their durable content is consolidated into
+the v2 user guides. They describe the previous product model and are not
+authoritative for v2 behavior.
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Legacy v1 Guides
 
    methodology
    architecture
    workflows
    namingconventions
-   releasenotes
-   ontology-reference
 
 
 Field Notes
