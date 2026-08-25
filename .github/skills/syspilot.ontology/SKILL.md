@@ -1,192 +1,56 @@
 ---
 name: syspilot.ontology
-description: "Ontology management for syspilot. Schema documentation for ontology.toml and governance guardrails. USE FOR: adding or modifying Work-Product types, statuses, link types; classifying ontology changes as additive or breaking."
-implements: [SYSP_SPEC_ONTOLOGY_SKILL_CONTENT]
-requirements: [SYSP_REQ_ONTOLOGY_SKILL]
+description: "Technical guidance for reading and editing the current Syspilot v2 ontology. USE FOR: Need types, statuses, options, links, type relationships, transitions, and strict ontology validation."
+requirements: [SYSP_REQ_ONTOLOGY_SCHEMA, SYSP_REQ_ONTOLOGY_EDITING]
 ---
 
-# Skill: Ontology Management
+# Ontology Management
 
-## USE FOR
+Use this skill when an applicable Contract includes reading or changing `.syspilot/ontology.toml`. The Contract owns the decision, responsibility, affected artifacts, and evidence; this skill provides the technical schema and validation procedure.
 
-- Adding, modifying, or removing Work-Product types, statuses, or link types
-- Understanding the ontology.toml schema structure
-- Classifying ontology changes (additive vs. breaking)
-- Understanding governance rules for ontology changes
+## Current V2 Schema
 
-## Schema: .syspilot/ontology.toml
+Sphinx-Needs reads `[needs]` directly through `needs_from_toml` in `docs/conf.py`. Syspilot tooling reads the sibling `[syspilot]` metadata. Preserve this separation.
 
-The canonical ontology lives at `.syspilot/ontology.toml`. Sphinx-needs reads
-it directly via `needs_from_toml` in `docs/conf.py`.
+### `[needs]`
 
-### Section Separator Convention
+- Configuration requires explicit IDs, exports combined and per-ID JSON, and uses Graphviz flows.
+- `extra_options` contains `priority`, `rationale`, and `realized_by`.
+- `[[needs.types]]` defines `root`, `story`, `req`, `ac`, `vc`, and `doc`.
+- `[[needs.statuses]]` defines `draft`, `open`, `approved`, `implemented`, `verified`, and `deprecated`.
+- `[[needs.extra_links]]` defines `tracked_by`, `implements`, `specializes`, `validates`, `verifies`, and `includes`, including their incoming and outgoing labels.
 
-The file has two kinds of top-level sections:
+Each type entry has `directive`, `title`, `prefix`, `color`, and `style`. Each status has `name` and `description`. Each extra link has `option`, `incoming`, and `outgoing`.
 
-1. **`[needs]` sections** — understood by sphinx-needs / ubCode.
-   Sphinx-needs reads only `[needs]` and ignores sibling keys.
-2. **Non-`[needs]` sections** (e.g. `[syspilot]`) — syspilot-specific metadata,
-   ignored by sphinx-needs.
+### `[syspilot]`
 
-### ubCode Sections (under `[needs]`)
+- `schema_version` identifies the ontology schema.
+- `[[syspilot.type_links]]` declares valid directed relationships with `from`, `to`, and `rel`.
+- `[syspilot.status_transitions]` declares universal transitions and `universal_exit` statuses.
+- `[syspilot.status_transitions.overrides.<type>]` replaces universal transitions for a specific type.
 
-```toml
-[needs]
-id_required = true
-build_json = true
-build_json_per_id = true
-flow_engine = "graphviz"
-extra_options = ["priority", "rationale", "acceptance_criteria"]
+The ontology has no centralized artifact-owner or actor-name mapping. Applicable Contracts assign artifact ownership and `Current responsibility`.
 
-[[needs.types]]
-directive = "story"
-title = "User Story"
-prefix = "US_"
-color = "#E8D5B7"
-style = "node"
+## Contract-Owned Editing
 
-# ... more types ...
+1. Confirm that the applicable Contract includes the ontology change and records its owner, intended outcome, affected artifacts, and required evidence.
+2. Read the complete current `.syspilot/ontology.toml`; preserve unrelated project-specific content.
+3. Edit only the included current-schema surfaces:
+   - Need types, statuses, or extra options under `[needs]`;
+   - extra links under `[[needs.extra_links]]`;
+   - relationship metadata under `[[syspilot.type_links]]`; or
+   - universal, exit, or per-type transition metadata under `[syspilot.status_transitions]`.
+4. Keep linked definitions coherent. For example, a `type_links.rel` value must name an existing extra link, and transition statuses must exist under `needs.statuses`.
+5. Run the project's strict documentation and schema validation. For Syspilot itself:
 
-[[needs.statuses]]
-name = "draft"
-description = "Draft - Work in progress"
-
-# ... more statuses ...
-
-[[needs.extra_links]]
-option = "defines"
-incoming = "is defined by"
-outgoing = "defines"
-```
-
-### syspilot Sections
-
-```toml
-[syspilot]
-schema_version = "1.0"
-```
-
-#### `[syspilot.actors]`
-
-Flat mapping of Need type directive to its primary owning actor. Each agent
-reads its own name to discover which types it owns.
-
-```toml
-[syspilot.actors]
-story     = "System Designer"
-req       = "System Designer"
-spec      = "System Designer"
-def       = "System Designer"
-impl      = "Dev Engineer"
-test      = "Test Designer"
-uat       = "Test Designer"
-unit_test = "Dev Engineer"
-```
-
-#### `[[syspilot.type_links]]`
-
-Array of directed, bottom-up relationships between Need types. Each entry
-has `from`, `to`, and `rel` fields.
-
-```toml
-[[syspilot.type_links]]
-from = "req"
-to   = "story"
-rel  = "provides"
-
-[[syspilot.type_links]]
-from = "spec"
-to   = "req"
-rel  = "implements"
-
-# ... more entries ...
-```
-
-#### `[syspilot.status_transitions]`
-
-Lifecycle state machine. `universal` transitions apply to all types unless
-overridden. `universal_exit` lists statuses reachable from any state.
-Per-type overrides replace the universal set for that type.
-
-```toml
-[syspilot.status_transitions]
-universal = [
-  { from = "draft",       to = "approved" },
-  { from = "draft",       to = "open" },
-  { from = "open",        to = "approved" },
-  { from = "approved",    to = "implemented" },
-  { from = "implemented", to = "verified" },
-]
-universal_exit = ["deprecated"]
-
-[syspilot.status_transitions.overrides.story]
-transitions = [
-  { from = "draft",    to = "approved" },
-  { from = "approved", to = "verified" },
-]
-```
-
-## How to Edit
-
-### Adding a New Type
-
-1. Add a `[[needs.types]]` entry to `.syspilot/ontology.toml`:
-   ```toml
-   [[needs.types]]
-   directive = "mytype"
-   title = "My Type"
-   prefix = "MT_"
-   color = "#AABBCC"
-   style = "node"
+   ```powershell
+   python docs/docs-build.py clean
+   python docs/test_docs_build.py -v
+   git diff --check
    ```
-2. Verify with `sphinx-build -W`.
 
-### Adding a New Status
+6. Resolve every ontology or Sphinx warning before completion, then record the changed surfaces and verification evidence in the Contract.
 
-Add a `[[needs.statuses]]` entry:
-```toml
-[[needs.statuses]]
-name = "my_status"
-description = "My Status - description"
-```
+## Setup Boundary
 
-### Adding a New Link Type
-
-Add a `[[needs.extra_links]]` entry:
-```toml
-[[needs.extra_links]]
-option = "mylink"
-incoming = "is linked by"
-outgoing = "links to"
-```
-
-## Governance Guardrails
-
-`ontology.toml` is a **guarded artifact**. Every change must be classified.
-
-### Change Classification
-
-| Change | Classification | Gate |
-|--------|---------------|------|
-| Add a new type | Additive | Normal CR |
-| Add a new status | Additive | Normal CR |
-| Add a new link type | Additive | Normal CR |
-| Add a new extra_option | Additive | Normal CR |
-| Add/modify `[syspilot]` metadata | Additive | Normal CR |
-| Remove or rename a type | **Breaking** | Migration CR required |
-| Remove or rename a status | **Breaking** | Migration CR required |
-| Remove or rename a link type | **Breaking** | Migration CR required |
-| Change a type's directive or prefix | **Breaking** | Migration CR required |
-
-### Breaking Change Process
-
-A breaking change triggers a **migration CR** that must:
-
-1. Update all existing specs referencing the affected type/status/link.
-2. Verify `sphinx-build -W` passes after migration.
-3. Be merged before or atomically with the ontology change.
-
-### Safety Net
-
-1. **`sphinx-build -W`** (every CR) — catches type/link mismatches immediately.
-2. **Governance classification** (process) — catches intent before implementation.
+Pristine Setup preserves an existing configured ontology. It copies the release baseline `.syspilot/ontology.toml` only when the target has no ontology. Ontology evaluation or project-specific redesign is separate Contract work; do not overwrite an existing ontology during Setup.

@@ -47,6 +47,17 @@ User documentation is included when users need a new or changed explanation.
 Incoming `included_in` links on changed requirements tell the Technical Writer
 which documentation surfaces deserve an impact review.
 
+The Impact Python CLI queries a built Need by ID and follows standard links plus
+every link option declared by the active project ontology. It supports incoming,
+outgoing, or combined traversal to a chosen depth, so v2 typed relationships and
+customer-defined relationships work without hard-coded link names.
+
+The result is candidate scope and traceability evidence, not an independent
+scope decision. The applicable Contract records the disposition of each
+candidate and remains authoritative for included artifacts, responsibility, and
+scope. A failed or empty query is not evidence until its ontology, built Needs
+data, and other reported prerequisites are valid.
+
 ## 4. Handoff a Consistent State
 
 Before handing off responsibility, an actor updates the owned artifact and the

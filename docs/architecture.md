@@ -1,5 +1,9 @@
 > **HISTORICAL V1 ARCHITECTURE** - This document describes the removed v1
 > product-copy model. Its paths and installation flow do not apply to v2.
+> In particular, v2 does not use `syspilot.toml`, actor assignments in the
+> ontology, or a fixed L0/L1/L2/SPEC hierarchy. Current ontology authority is
+> `.syspilot/ontology.toml`; applicable Contracts declare ownership and Current
+> responsibility. See [Customization](customization.md) for current guidance.
 
 # Architecture: Product & Installation
 

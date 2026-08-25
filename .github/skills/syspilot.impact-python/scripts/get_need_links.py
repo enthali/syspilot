@@ -19,6 +19,7 @@ import argparse
 import json
 import subprocess
 import sys
+import tomllib
 from pathlib import Path
 
 # Find docs directory relative to script location
@@ -28,15 +29,16 @@ SCRIPT_DIR = Path(__file__).parent
 PROJECT_ROOT = SCRIPT_DIR.parent.parent.parent.parent
 DOCS_DIR = PROJECT_ROOT / "docs"
 NEEDS_ID_DIR = DOCS_DIR / "_build" / "html" / "needs_id"
+ONTOLOGY_PATH = PROJECT_ROOT / ".syspilot" / "ontology.toml"
 
 
-def ensure_build() -> bool:
+def ensure_build(needs_dir: Path) -> bool:
     """Run sphinx-build if needs_id directory is missing or empty.
     
     Returns True if build was needed and successful.
     """
-    if NEEDS_ID_DIR.exists() and any(NEEDS_ID_DIR.glob("*.json")):
-        return False
+    if needs_dir.exists() and any(needs_dir.glob("*.json")):
+        return True
     
     print("Building docs (needs_id not found)...", file=sys.stderr)
     
@@ -64,9 +66,38 @@ def ensure_build() -> bool:
     return False
 
 
-def get_need(need_id: str) -> dict | None:
+def load_link_options(ontology_path: Path) -> list[str]:
+    """Load all configured extra-link option names from the active ontology."""
+    try:
+        with ontology_path.open("rb") as ontology_file:
+            ontology = tomllib.load(ontology_file)
+    except (OSError, tomllib.TOMLDecodeError) as error:
+        raise ValueError(f"Cannot read ontology {ontology_path}: {error}") from error
+
+    needs = ontology.get("needs")
+    if not isinstance(needs, dict):
+        raise ValueError(f"Invalid ontology {ontology_path}: [needs] table is missing")
+
+    extra_links = needs.get("extra_links", [])
+    if not isinstance(extra_links, list):
+        raise ValueError(
+            f"Invalid ontology {ontology_path}: [needs] extra_links must be a list"
+        )
+
+    options = []
+    for link in extra_links:
+        option = link.get("option") if isinstance(link, dict) else None
+        if not isinstance(option, str) or not option:
+            raise ValueError(
+                f"Invalid ontology {ontology_path}: every extra link needs an option"
+            )
+        options.append(option)
+    return options
+
+
+def get_need(need_id: str, needs_dir: Path) -> dict | None:
     """Get a single need by ID from its JSON file."""
-    json_file = NEEDS_ID_DIR / f"{need_id}.json"
+    json_file = needs_dir / f"{need_id}.json"
     
     if not json_file.exists():
         return None
@@ -85,7 +116,26 @@ def get_need(need_id: str) -> dict | None:
     return None
 
 
-def get_links(need_id: str, direction: str = "both") -> dict:
+def linked_ids(need: dict, link_options: list[str], direction: str) -> list[str]:
+    """Return de-duplicated linked IDs for standard and configured link fields."""
+    suffix = "_back" if direction == "in" else ""
+    fields = [f"links{suffix}", *(f"{option}{suffix}" for option in link_options)]
+    return sorted(
+        {
+            linked_id
+            for field in fields
+            for linked_id in need.get(field, [])
+            if isinstance(linked_id, str)
+        }
+    )
+
+
+def get_links(
+    need_id: str,
+    needs_dir: Path,
+    link_options: list[str],
+    direction: str = "both",
+) -> dict:
     """Get outgoing and/or incoming links for a need.
     
     Args:
@@ -95,7 +145,7 @@ def get_links(need_id: str, direction: str = "both") -> dict:
     Returns:
         Dict with id, type, title, status, and requested links
     """
-    need = get_need(need_id)
+    need = get_need(need_id, needs_dir)
     
     if not need:
         return {"error": f"Need {need_id} not found"}
@@ -110,15 +160,21 @@ def get_links(need_id: str, direction: str = "both") -> dict:
     }
     
     if direction in ("out", "both"):
-        result["links_outgoing"] = need.get("links", [])
+        result["links_outgoing"] = linked_ids(need, link_options, "out")
     
     if direction in ("in", "both"):
-        result["links_incoming"] = need.get("links_back", [])
+        result["links_incoming"] = linked_ids(need, link_options, "in")
     
     return result
 
 
-def trace_impact(need_id: str, depth: int = 2, direction: str = "out") -> dict:
+def trace_impact(
+    need_id: str,
+    needs_dir: Path,
+    link_options: list[str],
+    depth: int = 2,
+    direction: str = "out",
+) -> dict:
     """Trace impact to given depth.
     
     Args:
@@ -129,14 +185,17 @@ def trace_impact(need_id: str, depth: int = 2, direction: str = "out") -> dict:
     Returns:
         Nested dict showing impact tree
     """
-    visited = set()
+    minimum_depth_by_id: dict[str, int] = {}
     
     def trace(nid: str, current_depth: int) -> dict:
-        if current_depth > depth or nid in visited:
+        previous_depth = minimum_depth_by_id.get(nid)
+        if current_depth > depth or (
+            previous_depth is not None and previous_depth <= current_depth
+        ):
             return {"id": nid, "truncated": True}
         
-        visited.add(nid)
-        need = get_need(nid)
+        minimum_depth_by_id[nid] = current_depth
+        need = get_need(nid, needs_dir)
         
         if not need:
             return {"id": nid, "error": "not found"}
@@ -151,14 +210,14 @@ def trace_impact(need_id: str, depth: int = 2, direction: str = "out") -> dict:
         if current_depth < depth:
             # Get children based on direction
             if direction in ("out", "both"):
-                children_out = need.get("links", [])
+                children_out = linked_ids(need, link_options, "out")
                 if children_out:
                     result["links"] = [
                         trace(c, current_depth + 1) for c in children_out
                     ]
             
             if direction in ("in", "both"):
-                children_in = need.get("links_back", [])
+                children_in = linked_ids(need, link_options, "in")
                 if children_in:
                     result["linked_from"] = [
                         trace(c, current_depth + 1) for c in children_in
@@ -169,12 +228,18 @@ def trace_impact(need_id: str, depth: int = 2, direction: str = "out") -> dict:
     return trace(need_id, 0)
 
 
-def get_all_linked_ids(need_id: str, depth: int = 2, direction: str = "out") -> list[str]:
+def get_all_linked_ids(
+    need_id: str,
+    needs_dir: Path,
+    link_options: list[str],
+    depth: int = 2,
+    direction: str = "out",
+) -> list[str]:
     """Get flat list of all linked IDs within depth.
     
     Useful for quickly getting all impacted elements.
     """
-    result = trace_impact(need_id, depth, direction)
+    result = trace_impact(need_id, needs_dir, link_options, depth, direction)
     
     ids = set()
     
@@ -213,22 +278,63 @@ def main():
         "--simple", "-s", action="store_true",
         help="Simple output: just links for the given ID"
     )
+    parser.add_argument(
+        "--ontology", type=Path, default=ONTOLOGY_PATH,
+        help="Active ontology TOML path (default: .syspilot/ontology.toml)"
+    )
+    parser.add_argument(
+        "--needs-dir", type=Path, default=NEEDS_ID_DIR,
+        help="Built per-ID Needs JSON directory"
+    )
+    parser.add_argument(
+        "--no-build", action="store_true",
+        help="Do not attempt a documentation build when Needs data is missing"
+    )
     
     args = parser.parse_args()
     
-    # Ensure docs are built
-    ensure_build()
+    try:
+        link_options = load_link_options(args.ontology)
+    except ValueError as error:
+        print(f"ERROR: {error}", file=sys.stderr)
+        sys.exit(2)
     
-    if not NEEDS_ID_DIR.exists():
-        print(json.dumps({"error": "needs_id directory not found after build"}))
-        sys.exit(1)
+    if not args.needs_dir.exists() or not any(args.needs_dir.glob("*.json")):
+        build_succeeded = not args.no_build and ensure_build(args.needs_dir)
+        data_available = args.needs_dir.exists() and any(
+            args.needs_dir.glob("*.json")
+        )
+        if not build_succeeded or not data_available:
+            print(
+                f"ERROR: Needs data not available at {args.needs_dir}",
+                file=sys.stderr,
+            )
+            sys.exit(3)
+
+    if get_need(args.need_id, args.needs_dir) is None:
+        print(f"ERROR: Need {args.need_id} not found", file=sys.stderr)
+        sys.exit(4)
     
     if args.simple:
-        result = get_links(args.need_id, args.direction)
+        result = get_links(
+            args.need_id, args.needs_dir, link_options, args.direction
+        )
     elif args.flat:
-        result = get_all_linked_ids(args.need_id, args.depth, args.direction)
+        result = get_all_linked_ids(
+            args.need_id,
+            args.needs_dir,
+            link_options,
+            args.depth,
+            args.direction,
+        )
     else:
-        result = trace_impact(args.need_id, args.depth, args.direction)
+        result = trace_impact(
+            args.need_id,
+            args.needs_dir,
+            link_options,
+            args.depth,
+            args.direction,
+        )
     
     print(json.dumps(result, indent=2))
 

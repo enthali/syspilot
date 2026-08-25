@@ -30,6 +30,19 @@ relationships, and structural rules. Syspilot currently realizes its own
 ontology with Sphinx-Needs and `.syspilot/ontology.toml`. This is the currently
 supported realization.
 
+The file separates Sphinx-Needs configuration under `[needs]` from Syspilot
+metadata under `[syspilot]`. It defines current Need types, statuses, options,
+typed relationships, and status transitions. It does not assign artifacts to
+actors: the applicable Contract declares ownership, Current responsibility,
+decisions, and evidence for each change.
+
+Treat ontology editing as technical Contract work. Preserve unrelated project
+content, change only schema surfaces represented by the current file, and run
+the strict documentation and schema build afterward. Resolve every ontology
+warning before completing the artifact. Pristine Setup preserves an existing
+ontology or installs the baseline when none exists; establishing a tailored
+project ontology immediately afterward remains separate future Contract work.
+
 A project can model different elements within this realization. Backend
 neutrality is an intended direction, but another backend is not currently a
 supported Syspilot capability; a future Change must establish and verify it.

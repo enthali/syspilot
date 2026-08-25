@@ -35,7 +35,7 @@ realized documents remain free of Sphinx-Needs markup.
    :id: SYSP_DOC_CHANGE_WORKFLOW
    :status: verified
    :realized_by: docs/change-workflow.md
-   :includes: SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_CONTRACT_HANDLING, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_PROJECT_MANAGER, SYSP_REQ_ARCHITECT, SYSP_REQ_DEVELOPER, SYSP_REQ_TESTER, SYSP_REQ_QUALITY, SYSP_REQ_TECHNICAL_WRITER
+   :includes: SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_CONTRACT_HANDLING, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_PROJECT_MANAGER, SYSP_REQ_ARCHITECT, SYSP_REQ_DEVELOPER, SYSP_REQ_TESTER, SYSP_REQ_QUALITY, SYSP_REQ_TECHNICAL_WRITER, SYSP_REQ_IMPACT_QUERY
 
    The project lead's journey through a Change, from intent and responsibility
    transfers to validation and closure.
@@ -44,7 +44,7 @@ realized documents remain free of Sphinx-Needs markup.
    :id: SYSP_DOC_CUSTOMIZATION
    :status: verified
    :realized_by: docs/customization.md
-   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_SETUP, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_TECHNICAL_WRITER
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_SETUP, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_TECHNICAL_WRITER, SYSP_REQ_ONTOLOGY_SCHEMA, SYSP_REQ_ONTOLOGY_EDITING
 
    Practical guidance for tailoring project Contracts, ontology, documentation,
    specialist Actors, local memory, and skills without losing clean updates.

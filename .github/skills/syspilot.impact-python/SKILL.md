@@ -2,63 +2,54 @@
 name: syspilot.impact-python
 group: impact
 description: >
-  Impact analysis using sphinx-needs dependency trees.
-  Discovers affected specification elements by traversing
-  traceability links. USE FOR: change scoping, blast radius
-  analysis, element discovery before spec writing.
+  Ontology-driven impact analysis using built Sphinx-Needs data.
+  Discovers candidate affected elements through standard, project-defined,
+  incoming, and outgoing links. USE FOR: Contract scoping, relationship
+  inspection, and evidence before specification or implementation changes.
+requirements: [SYSP_REQ_IMPACT_QUERY]
 ---
 
-# Skill: Impact Analysis (Python)
-
-> **Implements**: SYSP_SPEC_SKILL_IMPACT_QUERY, SYSP_SPEC_SKILL_IMPACT_EXCHANGE, SYSP_SPEC_SKILL_IMPACT_GROUP
-> **Requirements**: SYSP_REQ_SKILL_IMPACT_QUERY, SYSP_REQ_SKILL_IMPACT_EXCHANGE, SYSP_REQ_SKILL_IMPACT_GROUP
-
-## Instructions
+# Impact Analysis
 
 ## Tool
 
-`.github/skills/syspilot.impact-python/scripts/get_need_links.py` — run with `--help` for parameter details.
+Run `.github/skills/syspilot.impact-python/scripts/get_need_links.py --help` for the complete CLI.
 
-Requires `docs/_build/html/needs.json` — run `sphinx-build` first if stale.
+```powershell
+python .github/skills/syspilot.impact-python/scripts/get_need_links.py NEED_ID --direction both --depth 2
+```
 
-## Exchange Contract
+The default inputs are:
 
-To replace this implementation: create a new skill folder, provide the same
-query-by-ID capability, update the `description` for Copilot discovery.
-No agent changes required.
+- active ontology: `.syspilot/ontology.toml`;
+- built per-ID Needs data: `docs/_build/html/needs_id/`.
 
-## Rules
+Use `--ontology` or `--needs-dir` for project-specific paths. The tool attempts a Sphinx HTML build when default Needs data is absent; use `--no-build` when the caller must control that prerequisite.
 
-### Mandatory Execution
+## Traversal
 
-Impact Analysis is mandatory for every change. File lists provided in a Change
-Request are input hints, not the complete scope. This skill MUST be executed
-before any spec changes are made — the result defines the actual scope.
+The tool reads every `option` declared by the active ontology's `[[needs.extra_links]]`. It traverses each `<option>` and `<option>_back` field in addition to standard `links` and `links_back`, so customer-defined link types work without code changes.
 
-### 1. Search from consumer elements, not from new elements
+- `--direction out` follows outgoing fields.
+- `--direction in` follows incoming `*_back` fields.
+- `--direction both` follows both.
+- `--depth N` bounds traversal depth.
+- `--flat` returns sorted unique linked IDs.
+- `--simple` returns direct incoming and/or outgoing IDs plus metadata.
+- Default output is a nested tree with cycle/repeated-node truncation.
 
-A newly created element has no incoming links. Run the query from each **consumer**
-element that the new element satisfies.
+IDs reached through multiple link options are de-duplicated. Cycles do not recurse indefinitely.
 
-**Example:** You created `SYSP_US_SKILL_IMPACT` which `:links:` to `SYSP_US_DESIGN`
-and `SYSP_US_PM`. Run the impact query from `SYSP_US_DESIGN` and `SYSP_US_PM`
-(not from the new US).
+## Contract Use
 
-### 2. Use `--direction in` for level transitions
+Run impact analysis from existing elements whose relationships can expose affected work. Query output supplies candidate scope and traceability evidence to the applicable Contract. The Contract records the disposition of each candidate and remains authoritative for included artifacts, responsibility, and scope decisions.
 
-`in` = "who links to me" = "who implements me at the next level down".
-REQs link upward to USes, SPECs link upward to REQs. So querying a US with
-`--direction in` yields its REQ candidates.
+Do not treat an empty or failed query as authoritative evidence. The command exits non-zero for an unknown Need, missing or invalid ontology, missing built Needs data, or an unusable build prerequisite. Resolve the reported prerequisite before recording impact conclusions.
 
-### 3. Depth strategy
+## Verification
 
-| Transition | Depth | Rationale |
-|---|---|---|
-| Level 0 → Level 1 | 1 | US → REQ, direct links |
-| Level 1 → Level 2 | 1 | REQ → SPEC, direct links |
-| Level 2 cross-check | 2 | Catches second-order consumers (e.g. doc SPECs aggregating workflow SPECs) |
+Run the focused automated suite after changing this skill:
 
-### 4. Raw output at Level 0, assessment at Level 1/2
-
-At Level 0 present candidates to the user **without verdicts**. Assessment
-(affected / not affected) happens when writing the next level.
+```powershell
+python .github/skills/syspilot.impact-python/scripts/test_get_need_links.py -v
+```

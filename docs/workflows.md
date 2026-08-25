@@ -1,4 +1,9 @@
-> **V2 STATUS: REQUIRES REVIEW** - Review this document against the v2 architecture before relying on it.
+> **HISTORICAL V1 WORKFLOWS** - The fixed agents, L0/L1/L2/SPEC sequence, and
+> workflow promises below do not describe v2 operation. Use
+> [Running a Change](change-workflow.md) for current behavior. Impact Python now
+> follows standard and active-ontology link options generically, but its output
+> supplies candidates and evidence to the applicable Contract rather than
+> establishing scope independently.
 
 # Workflows: The syspilot Process
 
@@ -59,9 +64,10 @@ flowchart LR
 **What it does:**
 1. Receives the Change Document prepared by PM and fills the engineering sections
    (L0 User Stories, L1 Requirements, L2 Design Specs, MECE, Traceability, Sign-off)
-2. Analyzes impact **level by level** — at each level, runs **impact analysis**
-   (via `syspilot.impact-python` skill) to discover affected elements through
-   sphinx-needs traceability links before identifying changes:
+2. Historically analyzed impact **level by level** through a fixed hierarchy.
+    The current `syspilot.impact-python` CLI instead follows relationships
+    declared by the active ontology and leaves candidate disposition to the
+    applicable Contract:
    - **Level 0 (User Stories):** Which user goals are affected? New scenarios?
    - **Level 1 (Requirements):** Which requirements change? New acceptance criteria?
    - **Level 2 (Design Specs):** Which technical specs need updating?

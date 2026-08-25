@@ -17,3 +17,5 @@ Requirements
    req_contract_documents
    req_contract_handling
    req_change_contract
+   req_impact_analysis
+   req_ontology_management
