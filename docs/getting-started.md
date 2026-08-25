@@ -1,13 +1,15 @@
 # Getting Started with Your Project
 
 This guide is for project leads who want to apply Syspilot to their own project.
-The eventual path starts with your project's outcomes, Contracts, ontology,
-and documentation needs, then lets Setup install the actors and supporting
-artifacts that realize that model.
+The supported setup model starts with an exact Syspilot release and its
+release-bound Setup Contract. The initiating Copilot session executes that
+Contract as a temporary executor; no persistent Setup actor is installed.
 
-That automated customer bootstrap is not implemented yet. For now, this page
-does two useful things: it describes what a project setup needs to establish
-and gives you a reproducible preview of the current reference implementation.
+The process, inventory, blockers, and verification gates are defined and
+reviewed. End-to-end installation, actor discovery, target build, baseline
+readback, Git integration, and Project Manager handoff have not yet been run in
+an isolated Jarvis or VS Code Extension Host environment. This guide therefore
+explains the supported interface without claiming operational runtime proof.
 
 ## What Your Project Setup Defines
 
@@ -17,7 +19,7 @@ A Syspilot project is not merely an extension installation. Its setup defines:
 - the project ontology: artifact types, statuses, and relationships;
 - the specification and traceability sources that realize that ontology;
 - the documentation matrix for independently maintained user information; and
-- any specialist Actors the project needs beyond Syspilot's nine base roles.
+- any specialist Actors the project needs beyond Syspilot's eight base roles.
 
 The [Customization guide](customization.md) explains these four project-owned
 levels. The [product model](product-model.md) shows how Syspilot applies the
@@ -37,13 +39,29 @@ stack is:
 
 For this reference stack, Sphinx, Sphinx-Needs, and the project ontology are
 part of the supported Change workflow. They are not installed automatically by
-Syspilot today.
+an extension. The Setup Contract preserves an existing Sphinx-Needs environment
+or installs a project-local environment when one is absent.
+
+## Pristine Setup Interface
+
+For a project with no confirmed Syspilot baseline:
+
+1. Select an exact Syspilot SemVer release.
+2. Load that release's Setup Contract and materialize it as
+  `.syspilot/setup-contract.md` in the version-controlled target project.
+3. Execute the materialized Contract in the initiating Copilot session.
+
+The Contract verifies the release's full commit identity, works on a dedicated
+User-approved branch, preserves existing project-owned content, and records the
+release tag and commit in `.syspilot/project.toml`. It may report an actionable
+blocker, but it cannot claim success until every mandatory gate, Git integration,
+and Project Manager handoff has completed.
 
 ## Preview the Reference Implementation
 
-Until customer bootstrap exists, clone this repository and build Syspilot's own
-model as a worked example. Create a virtual environment, explicitly install the
-Python dependencies, and run the clean build:
+Until runtime setup acceptance is completed, clone this repository and build
+Syspilot's own model as a worked example. Create a virtual environment,
+explicitly install the Python dependencies, and run the clean build:
 
 ```powershell
 python -m venv docs/.venv
@@ -78,6 +96,6 @@ human reads them.
 - [Customization](customization.md) shows where project knowledge belongs.
 - [Operations](operations.md) collects build and maintenance guidance.
 
-When the customer bootstrap is implemented, this guide will replace the
-preview with an executable path for defining and installing a new project's
-Contracts, ontology, documentation matrix, and actors.
+Later Syspilot updates are not routine setup work. Each update requires a
+separate project-specific Change that records the old and proposed baselines,
+impact analysis, revalidation scope, authorization, and technical executor.

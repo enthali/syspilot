@@ -16,6 +16,7 @@ The processes below are this project's own. When adopting Syspilot for another p
 
 contract-documents
 change
+setup
 ```
 
 ---

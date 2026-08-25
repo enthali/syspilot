@@ -51,7 +51,6 @@ The current base roster is deliberately compact:
 | Developer | Implementation and unit verification |
 | Tester | Adversarial acceptance testing |
 | Quality | Independent quality judgment |
-| Setup | Installation and updates |
 | Release | Packaging and release delivery |
 | Research | Investigation and technical due diligence |
 | Technical Writer | User-facing product documentation |
@@ -102,9 +101,10 @@ open work, and who currently owes the next state change.
 Product artifacts live in their canonical repository locations: role cards,
 processes, specifications, skills, instructions, and code are developed where
 their owning structures place them. `.github/` contains the installed instance
-used to work on this project. Setup is responsible for installing the relevant
-product artifacts into a customer environment without creating a second source
-of truth in the product repository.
+used to work on this project. For a pristine project, the initiating Copilot
+session executes a release-bound Setup Contract to install the relevant product
+and project-instance artifacts without creating a persistent Setup actor or a
+second source of truth in the product repository.
 
 Keeping that boundary visible makes updates safer. Project knowledge belongs
 in actor memory or declared project customization, not in an accidental fork

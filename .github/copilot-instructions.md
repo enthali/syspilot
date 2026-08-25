@@ -11,7 +11,7 @@ Level 0: User Stories (WHY)     docs/syspilot/userstories/    SYSP_US_*
 Level 1: Requirements (WHAT)    docs/syspilot/requirements/   SYSP_REQ_*
          ▲ :links:
          │
-Level 2: Design Specs (HOW)     docs/syspilot/design/         SYSP_SPEC_*
+Level 2: Design Specs (HOW)     part of the codebase
 ```
 
 ## Product vs. Instance

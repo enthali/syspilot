@@ -12,8 +12,9 @@ state. Instead of asking an agent to rediscover an entire project for every
 change, you give it explicit links, owned artifacts, and a checkable outcome.
 
 > **Early research project:** Syspilot v2 is taking shape in public. The product
-> model and Change process are available for review, but the supported v2
-> bootstrap is not implemented yet. Expect sharp edges and breaking changes.
+> model, Change process, and release-bound Setup Contract are available for
+> review. End-to-end setup has not yet been demonstrated in an isolated target
+> environment. Expect sharp edges and breaking changes.
 
 ## Start Here
 
@@ -38,7 +39,7 @@ Syspilot connects three kinds of truth:
 - **Contract Documents** keep the current intent, ownership, evidence, and
   responsibility of a piece of work visible.
 
-Nine persistent actors contribute through distinct areas of authority. They do
+Eight persistent actors contribute through distinct areas of authority. They do
 not follow one giant scripted relay race. Open artifacts in the current
 Contract determine who can make the next useful move.
 
@@ -64,15 +65,19 @@ preview installs them through `docs/requirements.txt`.
   is highly recommended. It visualizes the message flows between actors, which
   makes a busy collaboration much easier to follow.
 - **[`enthali.jarvis-syspilot`](https://marketplace.visualstudio.com/items?itemName=enthali.jarvis-syspilot)**
-  can automate Syspilot updates. It is genuinely optional; Syspilot works
-  perfectly well without it.
+  may automate the same Contract interfaces. It is optional and does not
+  define a separate installation or update lifecycle.
 
 All three extensions are developed in the
 [`enthali/Jarvis`](https://github.com/enthali/Jarvis) repository.
 
-The Setup actor owns the future supported installation and update path for a
-customer project. Until that bootstrap is delivered, use the repository
-checkout to [preview the reference implementation](docs/getting-started.md#preview-the-reference-implementation).
+Pristine setup starts by loading the Setup Contract from an exact Syspilot
+release, materializing it as `.syspilot/setup-contract.md`, and executing it in
+the initiating Copilot session. That Contract pins the release and commit for
+the project lifetime; it does not install a persistent Setup actor. The process
+is defined and reviewed, but runtime installation remains to be demonstrated
+in an isolated Jarvis or VS Code Extension Host environment. See
+[Getting started](docs/getting-started.md) for the current boundary.
 
 ## License
 

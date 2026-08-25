@@ -50,7 +50,8 @@ project without putting Needs markup into the user-facing prose.
 
 ### 4. Add Specialist Actors
 
-The nine Syspilot actors are a reusable base roster, not a closed cast. Add a
+The eight persistent Syspilot actors are a reusable base roster, not a closed
+cast. Add a
 project-owned specialist Actor when work needs durable expertise, authority,
 memory, and a perspective that none of the base roles should pretend to have.
 
