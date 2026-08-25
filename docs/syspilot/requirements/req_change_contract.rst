@@ -5,7 +5,7 @@ Change Contract
    :id: SYSP_REQ_CHANGE_CONTRACT
    :status: approved
    :implements: SYSP_US_CHANGE_CONTRACT
-   :specializes: SYSP_REQ_CONTRACT_DOCUMENTS
+   :specializes: SYSP_REQ_CONTRACT_HANDLING
    :realized_by: docs/Syspilot Processes/change.md
 
    Every modification to versioned source code or documentation shall use a
@@ -32,11 +32,6 @@ Change Contract
      documentation surfaces that require Technical Writer impact review;
    - distinguishes user-facing documentation from authoritative textual product
      artifacts by purpose and authority rather than by path or file format;
-   - permits direct consultation between the Technical Writer and factual
-     artifact owners without treating consultation as a transfer of Contract
-     responsibility, artifact ownership, or factual authority;
-   - uses the open applicable artifacts and their dependencies to determine
-     which owner can progress next rather than prescribing an actor sequence;
    - records durable architecture and implementation decisions with their
      evidence, changed implementation artifacts and unit verification, and
      applicable acceptance-test results;
@@ -64,9 +59,11 @@ Change Contract
    :status: approved
    :verifies: SYSP_REQ_CHANGE_CONTRACT
 
-   Inspect the realized Change Process and confirm that it defines branch and
-   contract initialization, collaboration-mode approval handling, first
-   handoff to the Architect, owner-decided applicability, artifact status,
+   Inspect the realized Change Process and confirm that its compact pre-template
+   content defines applicability, branch and Contract initialization,
+   collaboration-mode approval handling, tailoring, and the first handoff to
+   the Architect without repeating generic Contract-handling rules; and that
+   the canonical template retains owner-decided applicability, artifact status,
    direct Quality and User decision provenance, autonomous and unattended
-   validation handling, evidence, and checkable closure for every included
+   validation handling, evidence, and checkable Closure for every included
    artifact.

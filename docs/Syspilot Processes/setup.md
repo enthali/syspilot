@@ -39,6 +39,7 @@ The following list is the Contract-owned installation inventory. Directory jobs 
 | Actor registry | generate | Eight-actor list below | `docs/Syspilot Actors/index.md` | generated instance | Registry links exactly the eight installed role cards |
 | Contract processes | copy directory | `docs/Syspilot Processes/` | `docs/Syspilot Processes/` | release-owned | Process registry, Contract Documents, Change Process, and Setup Process exist |
 | Syspilot skills | copy directory | `.github/skills/` | `.github/skills/` | release-owned | Every release skill contains `SKILL.md` and declared supporting files |
+| Syspilot instructions | copy directory | `.github/instructions/` | `.github/instructions/` | release-owned | Every release instruction matches its verified-commit source identity and `syspilot.contract-handling.instructions.md` exists |
 | Setup record | retain materialized file | This runbook | `.syspilot/setup-contract.md` | generated instance | Status, responsibility, blockers, and evidence remain available with the installed project |
 | Documentation build | inspect, then preserve or generate | Existing project build, or verified-commit `docs/docs-build.py` | Existing build paths, or `docs/docs-build.py`, `docs/conf.py`, and `docs/index.rst` | user-owned or generated instance | The recorded target build command succeeds with the configured ontology and zero warnings |
 | Sphinx-Needs environment | preserve or install | Existing project environment, or verified-commit `docs/requirements.txt` | Existing environment, or project-local `.venv/` | user-owned or generated instance | Existing Sphinx-Needs remains unchanged, or `uv venv .venv` and `uv pip install --python .venv -r {verified commit tree}/docs/requirements.txt` succeed |
@@ -118,7 +119,7 @@ On script failure, stop and keep the branch for inspection. Git is the cleanup b
 |---|---|
 | Integrity | Every release-owned destination matches the source identity or verification rule declared by the Contract inventory |
 | Inventory | Compare the script operation log with the inventory; every declared destination exists and every written path is declared or an approved integration edit |
-| Structure | Required Syspilot skill, process, ontology, and documentation integration entry points exist |
+| Structure | Required Syspilot instruction, skill, process, ontology, and documentation integration entry points exist; `syspilot.contract-handling.instructions.md` is installed |
 | Jarvis actor discovery | Compare before/after snapshots: `jarvis_listActors` includes all eight expected Syspilot actors, no Setup actor was generated, and `jarvis_listChatSessions` contains no session opened by Setup |
 | Actor files | Exactly eight expected actor folders contain valid `actor.yaml` and initial `context.md` |
 | Documentation | The target project's documentation builds successfully with its selected ontology and zero warnings |

@@ -14,6 +14,7 @@ Owns user-facing product documentation and its documentation ownership map while
 - Project-specific specialist Actors can already be added without a dedicated product requirement; do not present missing Actor-extension requirements as a documentation blocker.
 - Expect upcoming Changes to focus primarily on release and installation; reassess affected user documentation as those decisions arrive.
 - Explain validation provenance directly: Quality sends its judgment and evidence to the Project Manager, the User sends the validation decision to the Project Manager, and forwarded claims establish neither decision.
+- For every Contract, commit updated responsibility, evidence, and related artifacts before SEND; consultation stays read-only and transfers no responsibility.
 - Review every Change for customer-facing capability and `included_in` documentation impact; use Field Notes only as historical evidence checked against the current model.
 
 ## Next

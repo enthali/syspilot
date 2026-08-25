@@ -51,14 +51,21 @@ which documentation surfaces deserve an impact review.
 
 Before handing off responsibility, an actor updates the owned artifact and the
 Contract, commits them as one consistent state, and then messages the next
-owner. The message is a doorbell; the committed Contract is the package on the
-step.
+owner. The handoff identifies the Contract path, commit, completed outcome, and
+remaining work. The brief gap between commit and notification is intentional:
+the committed Contract stays authoritative and has one writer throughout.
 
 There is no universal middle sequence. Open artifacts and dependencies decide
 which owner receives responsibility next. Independent artifacts may be
 completed in either dependency-permitted order, and bounded consultations can
 happen without a handoff, but the Contract always names exactly one currently
 responsible actor.
+
+A consultant stays read-only for the Contract and versioned work artifacts and
+returns advice or findings. Asking a question or escalating a concern does not
+transfer Current responsibility. When no included artifact owner can make
+progress, the responsible actor records an actionable blocker and escalates
+instead of inventing an undeclared owner or route.
 
 ## 5. Quality Checks the Whole Outcome
 

@@ -26,7 +26,7 @@ realized documents remain free of Sphinx-Needs markup.
    :id: SYSP_DOC_PRODUCT_MODEL
    :status: verified
    :realized_by: docs/product-model.md
-   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_PROJECT_MANAGER, SYSP_REQ_ARCHITECT, SYSP_REQ_DEVELOPER, SYSP_REQ_TESTER, SYSP_REQ_QUALITY, SYSP_REQ_SETUP, SYSP_REQ_RELEASE, SYSP_REQ_RESEARCH, SYSP_REQ_TECHNICAL_WRITER, SYSP_REQ_CONTRACT_DOCUMENTS
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_PROJECT_MANAGER, SYSP_REQ_ARCHITECT, SYSP_REQ_DEVELOPER, SYSP_REQ_TESTER, SYSP_REQ_QUALITY, SYSP_REQ_SETUP, SYSP_REQ_RELEASE, SYSP_REQ_RESEARCH, SYSP_REQ_TECHNICAL_WRITER, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_CONTRACT_HANDLING
 
    A user-oriented explanation of actors, authority, specifications, Contracts,
    memory, and the product-versus-instance boundary.
@@ -35,7 +35,7 @@ realized documents remain free of Sphinx-Needs markup.
    :id: SYSP_DOC_CHANGE_WORKFLOW
    :status: verified
    :realized_by: docs/change-workflow.md
-   :includes: SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_PROJECT_MANAGER, SYSP_REQ_ARCHITECT, SYSP_REQ_DEVELOPER, SYSP_REQ_TESTER, SYSP_REQ_QUALITY, SYSP_REQ_TECHNICAL_WRITER
+   :includes: SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_CONTRACT_HANDLING, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_PROJECT_MANAGER, SYSP_REQ_ARCHITECT, SYSP_REQ_DEVELOPER, SYSP_REQ_TESTER, SYSP_REQ_QUALITY, SYSP_REQ_TECHNICAL_WRITER
 
    The project lead's journey through a Change, from intent and responsibility
    transfers to validation and closure.

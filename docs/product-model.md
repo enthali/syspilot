@@ -70,10 +70,24 @@ who currently holds responsibility, and how the work closes.
 That distinction matters:
 
 - **Ownership** is lasting authority over an artifact type and its content.
-- **Responsibility** is the temporary duty to keep one Contract instance and
-  the currently active work consistent.
+- **Current responsibility** is temporary authority to maintain one Contract
+  instance and keep the currently active work consistent. It does not change
+  durable artifact ownership.
 - **Messaging** gets another actor's attention. It does not replace the
   Contract or silently transfer authority.
+
+After completing work, the responsible actor selects the next included owner
+whose artifact can progress. It first updates and commits the Contract,
+evidence, responsibility, and related artifacts as one consistent state, then
+sends the handoff. This brief notification gap is deliberate: the committed
+Contract remains authoritative and has only one writer.
+
+Consultation is different. Any actor may request advice or review without
+transferring Current responsibility. The consultant remains read-only for the
+Contract and versioned work artifacts and returns findings rather than edits.
+Questions and escalation likewise do not transfer responsibility. If no
+included owner can progress, the responsible actor records an actionable
+blocker and escalates it.
 
 Contracts store current truth, not a transcript. When a blocker is resolved or
 responsibility changes, the current field is replaced. Git already remembers
