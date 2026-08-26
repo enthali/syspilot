@@ -9,7 +9,7 @@ Owns user-facing product documentation and its documentation ownership map while
 - Evolve Getting Started from a Syspilot repository preview into setup guidance for applying Syspilot to a user's own project.
 - Present customization as four project-owned levels: Contracts, ontology, documentation matrix, and specialist Actors added alongside the eight persistent Syspilot base roles.
 - Treat Sphinx/Sphinx-Needs as the currently supported realization and backend neutrality as intended direction requiring a future Change.
-- Explain Pristine Setup as a release-bound Contract executed by the initiating Copilot session: preserve an existing ontology or install the baseline when absent, pin the release and commit, install no Setup actor, and require a separate Change for updates.
+- Explain Pristine Setup as a release-bound Contract executed by the initiating Copilot session: preserve an existing ontology or install the baseline when absent, pin the release and commit, install no Setup actor, then have the Project Manager explain the selected ontology and ask the User whether it fits; acceptance continues intake, while adjustment requires a normal Change before modification.
 - Do not claim operational installation success until a follow-up Change executes the deferred runtime scenarios in an isolated Jarvis or VS Code Extension Host environment.
 - Project-specific specialist Actors can already be added without a dedicated product requirement; do not present missing Actor-extension requirements as a documentation blocker.
 - Expect upcoming Changes to focus primarily on release and installation; reassess affected user documentation as those decisions arrive.

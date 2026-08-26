@@ -56,7 +56,15 @@ Pristine Syspilot Setup
    - obtains User guidance to commit and merge the verified Setup branch into
      the selected target branch, completes that Git integration, and only then
      sends the Project Manager ``Installation complete, welcome to this
-     project`` with the completion summary and first-Change guidance;
+     project`` with the completion summary, the identity of the selected
+     ontology, and first-project guidance that requires the Project Manager to
+     explain its artifact types, statuses, and relationships and ask the User
+     whether it fits the project;
+   - continues normal project intake without an ontology Change when the User
+     accepts the selected ontology, but when the User requests an adjustment,
+     requires the Project Manager to start a normal Change before any ontology
+     modification and uses the existing Ontology skill only as technical
+     guidance within that Change;
    - exposes every unmet mandatory condition as explicit Contract evidence and
      does not produce a successful Project Manager handoff while blocked;
    - does not install or retain a persistent Setup actor; and
@@ -83,6 +91,11 @@ Pristine Syspilot Setup
    infrastructure remain intact; the eight expected persistent Syspilot actors
    are discovered without a Setup actor or Setup-opened sessions; every
    mandatory gate records passing evidence before baseline verification; Git
-   commit and merge complete before the Project Manager handoff; blockers
-   cannot report success; and later updates require an authorized
-   project-specific Change.
+   commit and merge complete before the Project Manager handoff; the handoff
+   identifies the selected ontology and directs the Project Manager to explain
+   its artifact types, statuses, and relationships and ask the User whether it
+   fits; acceptance continues normal intake without an ontology Change, while
+   a requested adjustment starts a normal Change before modification and uses
+   the existing Ontology skill only for technical guidance; blockers cannot
+   report success; and later updates require an authorized project-specific
+   Change.

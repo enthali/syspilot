@@ -44,6 +44,13 @@ Syspilot actors, validates the target build, and completes User-guided Git
 integration before handoff. It records the exact release and commit in
 `.syspilot/project.toml`, permanently pinning the project's approved baseline.
 
+The successful handoff identifies the selected ontology and its configured
+path. The Project Manager explains its artifact types, statuses, and
+relationships and asks the User whether it fits. Acceptance continues normal
+project intake without an ontology Change. A requested adjustment starts a
+normal Change before modification and uses the existing Ontology skill only as
+technical guidance.
+
 These steps define supported behavior, not completed runtime evidence. Until a
 follow-up Change executes the deferred target scenarios, use the repository
 checkout only as the [reference preview](getting-started.md)

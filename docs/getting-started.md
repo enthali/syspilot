@@ -57,6 +57,13 @@ release tag and commit in `.syspilot/project.toml`. It may report an actionable
 blocker, but it cannot claim success until every mandatory gate, Git integration,
 and Project Manager handoff has completed.
 
+That handoff identifies the selected ontology and its configured path. The
+Project Manager explains its artifact types, statuses, and relationships, then
+asks whether it fits the project. If the User accepts it, normal project intake
+continues without an ontology Change. If the User requests an adjustment, the
+Project Manager starts a normal Change before anyone modifies the ontology;
+the existing Ontology skill supplies technical guidance inside that Change.
+
 ## Preview the Reference Implementation
 
 Until runtime setup acceptance is completed, clone this repository and build

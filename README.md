@@ -74,9 +74,12 @@ All three extensions are developed in the
 Pristine setup starts by loading the Setup Contract from an exact Syspilot
 release, materializing it as `.syspilot/setup-contract.md`, and executing it in
 the initiating Copilot session. That Contract pins the release and commit for
-the project lifetime; it does not install a persistent Setup actor. The process
-is defined and reviewed, but runtime installation remains to be demonstrated
-in an isolated Jarvis or VS Code Extension Host environment. See
+the project lifetime; it does not install a persistent Setup actor. At handoff,
+the Project Manager explains the selected ontology and asks whether it fits the
+project. Acceptance continues normal intake; a requested adjustment starts a
+normal Change before the ontology is modified. The process is defined and
+reviewed, but runtime installation remains to be demonstrated in an isolated
+Jarvis or VS Code Extension Host environment. See
 [Getting started](docs/getting-started.md) for the current boundary.
 
 ## License

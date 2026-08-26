@@ -138,9 +138,12 @@ Record each command, exit status, and concise result. One failed mandatory gate 
 
 1. Set current responsibility to `Syspilot Project Manager`, set Contract status to `handed off`, and commit the final Setup record on the target branch.
 2. Send `Installation complete, welcome to this project` to the Syspilot Project Manager with:
-	- the installation completion summary; and
-	- instructions to visualize and evaluate the ontology with the User and, when appropriate, propose updating it as the first Change.
-3. If delivery fails, record the delivery blocker in the durable Setup record without claiming successful receipt and commit that evidence. Keep the verified integrated installation.
+	- the installation completion summary;
+	- the selected ontology and its configured path; and
+	- instructions to explain the selected ontology's artifact types, statuses, and relationships to the User and ask whether it fits the project.
+3. If the User accepts the selected ontology, continue normal project intake without creating an ontology Change.
+4. If the User requests an adjustment, start a normal Change before modifying the ontology. Use the existing `syspilot.ontology` skill only as technical guidance inside that Change.
+5. If delivery fails, record the delivery blocker in the durable Setup record without claiming successful receipt and commit that evidence. Keep the verified integrated installation.
 
 ## Failure And Resume Rules
 

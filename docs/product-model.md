@@ -118,7 +118,10 @@ their owning structures place them. `.github/` contains the installed instance
 used to work on this project. For a pristine project, the initiating Copilot
 session executes a release-bound Setup Contract to install the relevant product
 and project-instance artifacts without creating a persistent Setup actor or a
-second source of truth in the product repository.
+second source of truth in the product repository. After successful Setup, the
+Project Manager presents the selected ontology to the User for an explicit fit
+decision. Acceptance starts normal intake; an adjustment request starts a
+normal Change before ontology modification.
 
 Keeping that boundary visible makes updates safer. Project knowledge belongs
 in actor memory or declared project customization, not in an accidental fork

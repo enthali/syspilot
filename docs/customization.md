@@ -40,8 +40,12 @@ Treat ontology editing as technical Contract work. Preserve unrelated project
 content, change only schema surfaces represented by the current file, and run
 the strict documentation and schema build afterward. Resolve every ontology
 warning before completing the artifact. Pristine Setup preserves an existing
-ontology or installs the baseline when none exists; establishing a tailored
-project ontology immediately afterward remains separate future Contract work.
+ontology or installs the baseline when none exists; it does not evaluate or
+redesign that ontology. At handoff, the Project Manager explains the selected
+ontology's artifact types, statuses, and relationships and asks the User whether
+it fits. Acceptance continues normal intake without an ontology Change. A
+requested adjustment starts a normal Change before modification, with the
+Ontology skill used only as technical guidance inside that Change.
 
 A project can model different elements within this realization. Backend
 neutrality is an intended direction, but another backend is not currently a
