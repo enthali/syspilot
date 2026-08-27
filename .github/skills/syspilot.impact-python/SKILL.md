@@ -36,9 +36,10 @@ The tool reads every `option` declared by the active ontology's `[[needs.extra_l
 - `--depth N` bounds traversal depth.
 - `--flat` returns sorted unique linked IDs.
 - `--simple` returns direct incoming and/or outgoing IDs plus metadata.
+- `--typed` returns relationship pairs with `source`, `target`, `option`, direction, and discovery depth for analyzers such as Trace.
 - Default output is a nested tree with cycle/repeated-node truncation.
 
-IDs reached through multiple link options are de-duplicated. Cycles do not recurse indefinitely.
+Typed output is opt-in; without it, the existing nested, flat, and simple formats are unchanged. IDs reached through multiple link options are de-duplicated. Cycles do not recurse indefinitely.
 
 ## Contract Use
 

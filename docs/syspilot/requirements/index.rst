@@ -19,3 +19,4 @@ Requirements
    req_change_contract
    req_impact_analysis
    req_ontology_management
+   req_quality_methods

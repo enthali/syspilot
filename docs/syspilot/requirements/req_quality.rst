@@ -14,6 +14,9 @@ Syspilot Quality
      producing the artifacts it judges;
    - evaluate the current outcome holistically against its intent,
      specifications, verification, and process contract;
+   - apply horizontal coverage analysis and relationship analysis to the
+     objects the applicable Contract records as impacted, and record the
+     selected scope, evidence, findings, and limits of both methods;
    - record a current ``proceed`` or ``blocked`` judgment; and
    - keep only currently open quality issues, with each required correction
      returned to the owner of the affected artifact.
@@ -26,3 +29,7 @@ Syspilot Quality
    Inspect the Quality role card and a completed quality artifact and confirm
    that the judgment covers all applicable evidence, remains independent, and
    contains either no open issue or an actionable correction for each issue.
+   Confirm that the role card states the obligation to apply horizontal
+   coverage analysis and relationship analysis, and that the quality artifact
+   records both analyses with their selected scope, evidence, findings, and
+   stated limits.

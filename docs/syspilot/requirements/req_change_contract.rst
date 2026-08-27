@@ -38,6 +38,8 @@ Change Contract
    - records Quality's current verification judgment and only currently open
      quality issues, with responsibility for correction transferred to the
      affected artifact's owner;
+   - records the review methods Quality applied, with their selected scope,
+     evidence, findings, and stated limits;
    - requires Quality to communicate its ``proceed`` judgment and supporting
      evidence directly to the Project Manager before the outcome is presented
      for validation, without accepting another actor's forwarded claim as
@@ -66,4 +68,6 @@ Change Contract
    the canonical template retains owner-decided applicability, artifact status,
    direct Quality and User decision provenance, autonomous and unattended
    validation handling, evidence, and checkable Closure for every included
-   artifact.
+   artifact. Confirm that the template's Quality Review section provides
+   explicit fields for the applied review methods and their selected scope,
+   evidence, findings, and limits.

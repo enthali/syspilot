@@ -18,7 +18,10 @@ Impact Analysis
     - support incoming, outgoing, or combined traversal to a caller-selected
        depth, with nested tree, flat ID list, and direct-link output modes;
     - de-duplicate Need IDs reached through multiple link options while
-       preserving cycle protection; and
+       preserving cycle protection;
+    - report, on request, the link option and direction that connects each
+      traversed pair, so a consumer that evaluates relationship types does not
+      require a second traversal implementation; and
     - fail explicitly for an unknown Need, missing or invalid ontology, missing
        built Needs data, or an unusable build prerequisite.
 
@@ -37,6 +40,8 @@ Impact Analysis
     synthetic customer-defined link type are discovered; direction, depth,
     output modes, de-duplication, and cycle protection behave consistently; and
     unknown Needs, missing or invalid ontology, missing built data, and failed
-    build prerequisites return explicit non-success results. Inspect ``SKILL.md``
-    and confirm its discovery and authority claims match the tested behavior and
-    Contract-owned scope boundary.
+    build prerequisites return explicit non-success results. Confirm that the
+    requested per-pair output names the link option and direction connecting
+    each traversed pair, and that the default output remains unchanged. Inspect
+    ``SKILL.md`` and confirm its discovery and authority claims match the tested
+    behavior and Contract-owned scope boundary.

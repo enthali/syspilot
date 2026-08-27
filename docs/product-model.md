@@ -50,7 +50,7 @@ The current base roster is deliberately compact:
 | Architect | Architecture, specifications, and design guidance |
 | Developer | Implementation and unit verification |
 | Tester | Adversarial acceptance testing |
-| Quality | Independent quality judgment |
+| Quality | Independent judgment, backed by coverage and relationship analysis |
 | Release | Packaging and release delivery |
 | Research | Investigation and technical due diligence |
 | Technical Writer | User-facing product documentation |

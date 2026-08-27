@@ -104,6 +104,26 @@ Quality records one current judgment:
 - `proceed` when the evidence supports validation; or
 - `blocked` with a concrete required outcome for each open issue.
 
+That judgment is not a general impression. Quality starts from the objects the
+Contract records as impacted and applies two named methods to them.
+
+**Horizontal coverage** compares each impacted object with its peers of the same
+type — Requirement against Requirement, Story against Story — looking for
+overlap, duplicated obligation, contradiction, missing coverage, and
+responsibility boundaries that collide. The peer set is a deliberate choice and
+is reported: either the peers in the same document, or every peer of that type.
+
+**Relationship analysis** walks the object's declared relationships to a chosen
+depth and checks them against what the ontology actually permits. It reports
+targets that do not resolve, relationship types or directions the ontology never
+declared, expected links that are missing, objects holding no relationships at
+all, and neighbours whose content drifted while nobody was editing them.
+
+Both methods are read-only, and both record their scope, evidence, findings, and
+limits — including what they could not check. A method that reports nothing
+because its data was missing is not the same as a method that looked and found
+nothing, and a reviewer has to be able to tell those two apart.
+
 When Quality can proceed, it sends that judgment and its supporting evidence
 directly to the Project Manager. A forwarded summary from another actor does
 not establish Quality's decision. The Project Manager can then present the

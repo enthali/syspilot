@@ -94,6 +94,25 @@ outgoing = "customer outgoing"
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(json.loads(result.stdout), ["CUSTOM", "STANDARD", "TYPED"])
 
+    def test_typed_output_names_option_and_direction_per_pair(self):
+        result = self.run_cli(
+            "ROOT", "--direction", "both", "--depth", "1", "--typed"
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["depth"], 1)
+        self.assertEqual(
+            payload["edges"],
+            [
+                {"source": "BACK", "target": "ROOT", "option": "implements", "direction": "in", "depth": 1},
+                {"source": "ROOT", "target": "CUSTOM", "option": "customer_rel", "direction": "out", "depth": 1},
+                {"source": "ROOT", "target": "STANDARD", "option": "links", "direction": "out", "depth": 1},
+                {"source": "ROOT", "target": "TYPED", "option": "customer_rel", "direction": "out", "depth": 1},
+                {"source": "ROOT", "target": "TYPED", "option": "implements", "direction": "out", "depth": 1},
+            ],
+        )
+
     def test_standard_links_work_without_extra_link_configuration(self):
         standard_only_ontology = self.root / "standard-only.toml"
         standard_only_ontology.write_text("[needs]\n", encoding="utf-8")

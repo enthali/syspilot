@@ -130,6 +130,32 @@ def linked_ids(need: dict, link_options: list[str], direction: str) -> list[str]
     )
 
 
+def linked_edges(need: dict, link_options: list[str], direction: str) -> list[dict]:
+    """Return typed relationship pairs in the requested direction."""
+    suffix = "_back" if direction == "in" else ""
+    options = ["links", *link_options]
+    edges = set()
+    for option in options:
+        for linked_id in need.get(f"{option}{suffix}", []):
+            if not isinstance(linked_id, str):
+                continue
+            source, target = (
+                (linked_id, need["id"])
+                if direction == "in"
+                else (need["id"], linked_id)
+            )
+            edges.add((source, target, option, direction))
+    return [
+        {
+            "source": source,
+            "target": target,
+            "option": option,
+            "direction": edge_direction,
+        }
+        for source, target, option, edge_direction in sorted(edges)
+    ]
+
+
 def get_links(
     need_id: str,
     needs_dir: Path,
@@ -228,6 +254,47 @@ def trace_impact(
     return trace(need_id, 0)
 
 
+def trace_typed_edges(
+    need_id: str,
+    needs_dir: Path,
+    link_options: list[str],
+    depth: int = 2,
+    direction: str = "out",
+) -> list[dict]:
+    """Return typed edges using the same minimum-depth traversal semantics."""
+    minimum_depth_by_id = {need_id: 0}
+    pending = [(need_id, 0)]
+    discovered_edges: dict[tuple[str, str, str], dict] = {}
+
+    while pending:
+        current_id, current_depth = pending.pop(0)
+        if current_depth >= depth:
+            continue
+        need = get_need(current_id, needs_dir)
+        if not need:
+            continue
+
+        requested_directions = (
+            ("out", "in") if direction == "both" else (direction,)
+        )
+        for edge_direction in requested_directions:
+            for edge in linked_edges(need, link_options, edge_direction):
+                edge_key = (edge["source"], edge["target"], edge["option"])
+                neighbor_id = (
+                    edge["source"] if edge_direction == "in" else edge["target"]
+                )
+                neighbor_depth = current_depth + 1
+                existing_edge = discovered_edges.get(edge_key)
+                if existing_edge is None or neighbor_depth < existing_edge["depth"]:
+                    discovered_edges[edge_key] = {**edge, "depth": neighbor_depth}
+                previous_depth = minimum_depth_by_id.get(neighbor_id)
+                if previous_depth is None or neighbor_depth < previous_depth:
+                    minimum_depth_by_id[neighbor_id] = neighbor_depth
+                    pending.append((neighbor_id, neighbor_depth))
+
+    return [discovered_edges[key] for key in sorted(discovered_edges)]
+
+
 def get_all_linked_ids(
     need_id: str,
     needs_dir: Path,
@@ -279,6 +346,10 @@ def main():
         help="Simple output: just links for the given ID"
     )
     parser.add_argument(
+        "--typed", action="store_true",
+        help="Return typed relationship pairs instead of the default output"
+    )
+    parser.add_argument(
         "--ontology", type=Path, default=ONTOLOGY_PATH,
         help="Active ontology TOML path (default: .syspilot/ontology.toml)"
     )
@@ -315,7 +386,20 @@ def main():
         print(f"ERROR: Need {args.need_id} not found", file=sys.stderr)
         sys.exit(4)
     
-    if args.simple:
+    if args.typed:
+        result = {
+            "id": args.need_id,
+            "direction": args.direction,
+            "depth": args.depth,
+            "edges": trace_typed_edges(
+                args.need_id,
+                args.needs_dir,
+                link_options,
+                args.depth,
+                args.direction,
+            ),
+        }
+    elif args.simple:
         result = get_links(
             args.need_id, args.needs_dir, link_options, args.direction
         )

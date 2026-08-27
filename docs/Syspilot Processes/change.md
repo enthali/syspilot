@@ -160,6 +160,12 @@ Record implementation decisions that remain relevant to understanding or maintai
 
 **Current judgment:** {holistic assessment of the currently valid artifacts and evidence}
 
+### Applied Review Methods
+
+| Method | Selected scope | Evidence | Findings | Limits |
+|---|---|---|---|---|
+| {review method} | {objects, peer scope, traversal depth, or other selected boundary} | {inputs and reproducible result} | {observed issues or no finding} | {data, semantic, or analysis limits} |
+
 Quality communicates its `proceed` judgment and supporting evidence directly to the Project Manager before the Project Manager presents the verified outcome for validation. Another actor's forwarded claim does not establish Quality's decision.
 
 ### Open Quality Issues
