@@ -44,7 +44,7 @@ The following list is the Contract-owned installation inventory. Directory jobs 
 | Documentation build | inspect, then preserve or generate | Existing project build, or verified-commit `docs/docs-build.py` | Existing build paths, or `docs/docs-build.py`, `docs/conf.py`, and `docs/index.rst` | user-owned or generated instance | The recorded target build command succeeds with the configured ontology and zero warnings |
 | Sphinx-Needs environment | preserve or install | Existing project environment, or verified-commit `docs/requirements.txt` | Existing environment, or project-local `.venv/` | user-owned or generated instance | Existing Sphinx-Needs remains unchanged, or `uv venv .venv` and `uv pip install --python .venv -r {verified commit tree}/docs/requirements.txt` succeed |
 | Project baseline | generate | Provided release tag, verified commit, and Contract state | `.syspilot/project.toml` | generated instance | Required baseline fields parse and match the provided release |
-| Syspilot actor persistence | inspect then ask if ignored | Git ignore result and User decision | Project Git policy | user-owned | User explicitly decides whether the eight generated Syspilot actor directories are versioned; resulting rules match that decision |
+| Syspilot actor persistence | inspect then ask | Git ignore result and User decision | Project Git policy | user-owned | User explicitly decides whether the eight generated Syspilot actor directories are versioned; resulting rules match that decision |
 | Project ontology | detect, then preserve or copy | Existing configured ontology, or verified-commit `.syspilot/ontology.toml` | Existing configured path, or `.syspilot/ontology.toml` | user-owned or generated instance | Existing ontology remains unchanged, or baseline TOML is copied only when no ontology exists; the target documentation build succeeds |
 | Setup script | generate temporarily | This inventory and Contract rules | Executor-selected system temporary path | transient | Platform-appropriate script supports `--dry-run`; dry-run and execution share one planning path; file remains available for inspection |
 | Syspilot actors | generate eight folders | Actor definitions below | `.jarvis/actors/<name>/` | generated instance | Eight YAML entities and contexts exist; Jarvis lists all eight |
@@ -97,7 +97,7 @@ Perform actor setup in this order:
 
 1. Inspect existing `.jarvis/actors/` contents. Show colliding target actor paths to the User for disposition; unrelated actors remain untouched.
 2. Use `git check-ignore` on each of the eight target actor directories.
-3. If the directories are ignored, ask the User whether the complete eight generated Syspilot actor directories shall be committed.
+3. Show the current ignore result and ask the User whether the complete eight generated Syspilot actor directories shall be versioned or kept private and ignored.
 4. If the User chooses persistence, add only the specific Git negation rules required to make those eight directories versionable.
 5. If the User declines persistence, preserve an existing ignore rule or add ignore rules for exactly those eight directories when none applies.
 6. Generate the eight `actor.yaml` and initial `context.md` pairs.

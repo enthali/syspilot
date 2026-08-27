@@ -1,102 +1,73 @@
-> **V2 STATUS: REQUIRES REVIEW** - Review this document against the v2 architecture before relying on it.
-
 # Naming Conventions
 
-## Overview
+Syspilot uses descriptive, human-readable IDs for specification elements:
+`SYSP_REQ_IMPACT_QUERY` rather than `REQ_042`. This page explains why, what the
+ontology actually enforces, and what this repository does by convention.
 
-syspilot uses **descriptive, human-readable IDs** for all specification elements.
-Unlike traditional sequential numbering (e.g., `REQ_001`), descriptive IDs are
-self-documenting, grep-friendly, and eliminate the "insert pain" of numbered sequences.
-
-This document covers **framework-level** naming conventions that apply across all
-agent families. Family-specific conventions (themes, slug rules, examples) live in
-each family's `namingconventions.md` (e.g., `docs/syspilot/namingconventions.md`).
+The distinction matters more than it sounds. Some of what follows is a rule the
+build will enforce. The rest is a habit this repository keeps, and a customer
+project is free to keep a different one.
 
 ## Why Descriptive IDs?
 
-| Aspect | Sequential (`REQ_001`) | Descriptive (`SYSP_REQ_CORE_SPHINX_NEEDS`) |
-|--------|------------------------|------------------------------------------------|
-| Self-documenting | No — must look it up | Yes — readable inline |
-| Insert new items | Renumber or use gaps | Just pick a name |
-| Grep-friendly | Not really | `grep SPHINX_NEEDS` = instant |
+| Aspect | Sequential (`REQ_042`) | Descriptive (`SYSP_REQ_IMPACT_QUERY`) |
+|--------|------------------------|---------------------------------------|
+| Self-documenting | No — you have to look it up | Yes — readable where it appears |
+| Inserting new items | Renumber, or leave gaps and hope | Just pick a name |
+| Grep-friendly | Not really | `grep IMPACT_QUERY` finds everything |
 | Link readability | Opaque | Clear |
-| Ordering bias | Implies priority/sequence | No false hierarchy |
-| Duplicate safety | Manual tracking | sphinx-needs catches at build time |
+| Ordering bias | Implies a priority or sequence | No false hierarchy |
+| Duplicate safety | Manual tracking | Sphinx-Needs catches it at build time |
 
-## ID Format
+## What the Ontology Fixes
+
+The project ontology decides three things, and the strict build enforces all of
+them:
+
+- **Every Need carries an explicit ID.** `id_required` is set, so nothing is
+  auto-numbered behind your back.
+- **IDs are globally unique.** Sphinx-Needs rejects a duplicate at build time
+  rather than letting two elements quietly share a name.
+- **Each type declares a `prefix`** — `ROOT_`, `US_`, `REQ_`, `AC_`, `VC_`,
+  `DOC_` in the baseline ontology. Read the current values in the
+  [Ontology Reference](ontology-reference.md).
+
+That last point is easy to misread. Sphinx-Needs uses a type `prefix` when it
+*generates* an ID. Because Syspilot requires explicit IDs, the prefix is not a
+naming contract for the IDs you write. Nothing validates that an explicit ID
+begins with its type prefix.
+
+## What This Repository Does
+
+Every active non-root ID in this repository follows one shape:
 
 ```
-<FAMILY>_<TYPE>_<THEME>_<SHORT_SLUG>
+SYSP_<TYPE>_<SLUG>
 ```
 
-- **FAMILY**: Agent family prefix (see Family Prefixes below)
-- **TYPE**: The specification level (`US`, `REQ`, `SPEC`)
-- **THEME**: Abbreviated domain or component identifier (2–5 chars, family-specific)
-- **SHORT_SLUG**: Descriptive name in 2–4 words, UPPERCASE, underscores
+for example `SYSP_US_SETUP`, `SYSP_REQ_CONTRACT_HANDLING`, `SYSP_AC_SETUP_1`,
+`SYSP_VC_RELEASE_1`, and `SYSP_DOC_README`. All 67 of them, without exception.
 
-### Family Prefixes
+The graph root is the one different-looking ID: `ROOT_SYSPILOT` puts the type
+first. That is deliberate rather than accidental — v2 introduced exactly one
+deterministic root anchor, and this ID names it.
 
-| Prefix | Scope | Description |
-|--------|-------|-------------|
-| `SYSP_` | syspilot family | Spec-driven development agents (change, implement, verify, etc.) |
-| `SYSMLV2_` | SysMLv2 family | Model-based systems engineering agents *(planned)* |
-| `INST_<FAMILY>_` | Instance | Project-specific customization (e.g., `INST_SYSP_`) |
-| `COMMON_` | Shared | Cross-family shared specifications |
+This shape is the current convention of the Syspilot product repository. It is
+not a requirement, and no validator checks it.
 
-### Type Abbreviations
+## What Is Not Decided
 
-Common across all families:
+Syspilot does not currently specify a universal project prefix or a full-ID
+template for projects that adopt it. With the baseline ontology, a project
+assigns explicit, globally unique, valid IDs — and that is the whole rule.
 
-| Type | Level | Directive |
-|------|-------|-----------|
-| `US` | 0 — User Stories | `.. story::` |
-| `REQ` | 1 — Requirements | `.. req::` |
-| `SPEC` | 2 — Design Specs | `.. spec::` |
+So a project may mirror `SYSP_<TYPE>_<SLUG>` with its own prefix, or use the
+type prefixes alone, or something else entirely. Choosing one for your project
+is a real decision that belongs in a Contract, not something to infer from this
+page. Consistency inside a project is worth far more than matching Syspilot's
+habits.
 
-### Theme Abbreviations
-
-Themes are **family-specific**. Each family defines its own themes in
-`docs/<family>/namingconventions.md`. The framework only requires themes
-to be short (2–5 chars), uppercase, and consistent within the family.
-
-## Directory Naming
-
-| Directory | Purpose | Example |
-|-----------|---------|---------|
-| `<family>/` | Product artifacts (root) | `syspilot/`, `sysmlv2/` |
-| `docs/<family>/` | Family specs | `docs/syspilot/userstories/` |
-| `docs/inst/<family>/` | Instance specs | `docs/inst/syspilot/userstories/` |
-| `docs/common/` | Shared specs | `docs/common/userstories/` |
-| `.github/agents/` | Installed agents (flat) | `syspilot.design.agent.md` |
-
-## Cross-Family Linking
-
-sphinx-needs resolves `:links:` across **all** `.rst` files in the Sphinx project.
-Families and instances can link freely:
-
-```rst
-.. story:: Release This Project
-   :id: INST_SYSP_US_REL_RELEASE
-   :links: SYSP_US_REL_AGENT_TEMPLATE
-
-   .. (instance links to family product for context)
-```
-
-```rst
-.. req:: Model Validation
-   :id: SYSMLV2_REQ_MODEL_VALIDATION
-   :links: SYSP_REQ_CORE_TRACEABILITY
-
-   .. (SysMLv2 family links to syspilot core for shared traceability)
-```
-
-## Uniqueness
-
-sphinx-needs enforces global uniqueness across all `.rst` files at build time.
-The family prefix guarantees no collisions between families:
-`SYSP_US_CORE_*` can never clash with `SYSMLV2_US_CORE_*`.
-
-## Slug Guidelines
+## Writing a Good Slug
 
 1. **Keep slugs short**: 2–4 words maximum
 2. **Be specific**: `ANALYZE` not `DO_ANALYSIS_OF_CHANGES`
@@ -105,14 +76,18 @@ The family prefix guarantees no collisions between families:
 5. **ALL CAPS**: `SYSP_US_CHG_ANALYZE` not `sysp_us_chg_analyze`
 6. **Underscores only**: no hyphens, no dots
 
-## Migration from Old IDs
+## Renaming an ID
 
-When renaming IDs (e.g., `US_CORE_*` → `SYSP_US_CORE_*`):
+A rename is mechanical, and the build is the safety net:
 
-1. Build a complete mapping table (old → new)
-2. Rename `:id:` directives in specification files
-3. Update all `:links:` directives referencing renamed IDs
-4. Update references in agent files, scripts, release notes
-5. Run `sphinx-build` to validate — it catches any missed references
+1. Write down the complete old-to-new mapping before touching anything.
+2. Rename the `:id:` fields.
+3. Update every typed link that referenced the old ID — `implements`,
+   `specializes`, `validates`, `verifies`, `includes`, `tracked_by`, and any
+   project-defined link your ontology adds.
+4. Update references outside the specification: skills, instructions, Contracts,
+   scripts, and release notes.
+5. Run the strict build. It fails on anything you missed, which is exactly what
+   you want it to do.
 
 

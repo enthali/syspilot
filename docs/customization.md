@@ -36,6 +36,11 @@ typed relationships, and status transitions. It does not assign artifacts to
 actors: the applicable Contract declares ownership, Current responsibility,
 decisions, and evidence for each change.
 
+This is the one level worth slowing down for. The ontology decides what the
+project is able to say about its artifacts, including the ones already written.
+Changing it is never a local edit — it reaches backwards through everything the
+project has recorded so far.
+
 Treat ontology editing as technical Contract work. Preserve unrelated project
 content, change only schema surfaces represented by the current file, and run
 the strict documentation and schema build afterward. Resolve every ontology
@@ -65,24 +70,26 @@ changes, incoming `included_in` links expose the guides that deserve an impact
 review. The Technical Writer can establish the same pattern in a customer
 project without putting Needs markup into the user-facing prose.
 
+A document that no requirement points at is a document nobody thinks of when the
+truth underneath it moves. That is how guides quietly go stale while everyone
+assumes somebody is watching them.
+
 ### 4. Add Specialist Actors
 
 The eight persistent Syspilot actors are a reusable base roster, not a closed
-cast. Add a
-project-owned specialist Actor when work needs durable expertise, authority,
-memory, and a perspective that none of the base roles should pretend to have.
+cast. Add a project-owned specialist Actor when work needs durable expertise,
+authority, memory, and a perspective that none of the base roles should pretend
+to have.
 
 For example, a Test Hardware Actor could own safe operation of a rig and the
 evidence it produces. Project Contracts can then include that artifact and
 owner like any other. Keep the role concise, connect it to the actor kernel and
 process registry, and make its ownership boundaries explicit.
 
-## Tune Knowledge and Tools
-
-After the four structural levels are clear, local memory and skills refine how
-actors work within them.
-
 ## Put Knowledge in the Right Place
+
+Once the four structural levels are in place, local memory and skills decide how
+actors work inside them.
 
 | Kind of knowledge | Best home |
 |---|---|
@@ -95,6 +102,10 @@ actors work within them.
 Actor memory is not a diary. Keep decisions, findings, constraints, and next
 actions that will still matter in a future session. Replace stale entries and
 let Git preserve the history.
+
+Whether that memory is versioned with the project or kept private is a project
+decision, not a default. Setup resolves it with you during installation, because
+the answer determines who gets to read an actor's working notes later.
 
 ### Prefer Memory over Persona Forks
 
@@ -117,6 +128,9 @@ a customer's Contracts, ontology, documentation matrix, or specialist Actors
 are project changes. Run either through the applicable project Contract so
 ownership, impact, and update behavior stay visible.
 
+The distinction is not paperwork. It decides who has to agree before the change
+lands, and whether the next update will quietly take it away again.
+
 ## Build a Learning Organization, Not a Memory Heap
 
 Syspilot can improve through two complementary loops:
@@ -138,7 +152,7 @@ Before changing anything, ask:
 
 - Is this project knowledge, process state, or product behavior?
 - Does the project need a new Contract, ontology element, document surface, or
-   specialist Actor?
+  specialist Actor?
 - Who owns it?
 - Will it still matter in two weeks?
 - Could an update overwrite this location?

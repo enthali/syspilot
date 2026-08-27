@@ -12,7 +12,7 @@ For local development and documentation builds, use:
 - VS Code with GitHub Copilot;
 - the `enthali.jarvis-core` extension for actor identity and messaging;
 - `uv` available on your `PATH`;
-- Python 3.10 or newer; and
+- Python 3.13 or newer; and
 - the Python packages in `docs/requirements.txt`.
 
 Build from the repository root:

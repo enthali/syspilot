@@ -127,6 +127,6 @@ Keeping that boundary visible makes updates safer. Project knowledge belongs
 in actor memory or declared project customization, not in an accidental fork
 of a generated or installed product file.
 
-Continue with [the Change workflow](change-workflow.md) to see the model in
+Continue with [the Change Contract](change-contract.md) to see the model in
 motion, or [Customization](customization.md) to decide where local knowledge
 should live.

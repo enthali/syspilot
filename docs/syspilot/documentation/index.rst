@@ -31,10 +31,10 @@ realized documents remain free of Sphinx-Needs markup.
    A user-oriented explanation of actors, authority, specifications, Contracts,
    memory, and the product-versus-instance boundary.
 
-.. doc:: Change Workflow Guide
-   :id: SYSP_DOC_CHANGE_WORKFLOW
+.. doc:: Change Contract Guide
+   :id: SYSP_DOC_CHANGE_CONTRACT
    :status: verified
-   :realized_by: docs/change-workflow.md
+   :realized_by: docs/change-contract.md
    :includes: SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_CONTRACT_HANDLING, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_PROJECT_MANAGER, SYSP_REQ_ARCHITECT, SYSP_REQ_DEVELOPER, SYSP_REQ_TESTER, SYSP_REQ_QUALITY, SYSP_REQ_TECHNICAL_WRITER, SYSP_REQ_IMPACT_QUERY
 
    The project lead's journey through a Change, from intent and responsibility
@@ -57,3 +57,12 @@ realized documents remain free of Sphinx-Needs markup.
 
    Installation, updates, compatibility, recovery, and routine maintenance for
    a Syspilot project.
+
+.. doc:: Methodology Guide
+   :id: SYSP_DOC_METHODOLOGY
+   :status: verified
+   :realized_by: docs/methodology.md
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_CONTRACT_HANDLING, SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_SETUP, SYSP_REQ_RELEASE
+
+   Why Syspilot works through Contracts rather than a fixed workflow, and what
+   a Contract must name.

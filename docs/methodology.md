@@ -1,187 +1,141 @@
-> **V2 STATUS: REQUIRES REVIEW** - Review this document against the v2 architecture before relying on it.
+# Contract Driven Development
 
-# Methodology: Agent Family Framework
+Syspilot is built by separate actors — a project manager, an architect, a developer,
+a tester, a quality reviewer, a release actor, a researcher and a technical writer.
+Each keeps its own memory and forms its own view of the work. That separation is
+deliberate: an actor that has not already convinced itself is the one most likely to
+notice the thing everyone else walked past.
 
-## Overview
+Separation has a price. The moment work crosses from one actor to another, everything
+that was obvious to the first becomes invisible to the second. Contract Driven
+Development is how Syspilot pays that price on purpose instead of discovering it
+later.
 
-syspilot follows **spec-driven development** — not just for the product, but also for
-processes, methods, and tools. Every decision is traceable through specifications.
+## What a Contract Is
 
-Specifications are organized around **agent families** — independent groups of agents
-with their own spec trees, release cycles, and domain knowledge. Each family has
-a **product** (what it delivers) and each project has an **instance** (how it's used).
+A Contract Document is one document that binds a group of actors to a single goal for
+as long as that goal lasts. It writes down:
 
-## Agent Families
+- **why the work exists** — the problem, not the solution;
+- **scope** — what belongs inside the boundary, described by what it contains rather
+  than by what it excludes;
+- **who is involved and what they deliver** — the included artifacts, their owners,
+  and the evidence that will show each one is complete;
+- **who currently holds responsibility** — exactly one actor at a time;
+- **verification and validation** — an independent quality judgment that the claims
+  hold, and the User's confirmation that the result is what was wanted.
 
-An agent family is a cohesive set of agents, skills, and specifications that address
-a specific domain. Families are independent but can share common infrastructure.
+Two kinds are defined today. A **Change Contract** governs one bounded change to
+versioned artifacts. A **Setup Contract** is bound to an exact release and governs
+installing Syspilot into a project. Each process declares its own canonical template,
+applicability, artifact types, ownership, and closure conditions in the
+[process registry](Syspilot%20Processes/index.md).
 
-| Family | Domain | Agents |
-|--------|--------|--------|
-| `syspilot` | Spec-driven development (US → REQ → SPEC) | design, implement, uat, verify, release, setup, mece, trace, docu |
-| `sysmlv2` | Model-based systems engineering | *(planned)* |
-| `common` | Cross-family shared skills | *(as needed)* |
+Releases do not yet have a process of their own. The Release actor owns packaging and
+delivery, and that work currently runs under a Change Contract like any other bounded
+work. A dedicated Release Contract is expected; until it exists, saying so is more
+useful than implying it is already there.
 
-Each family defines its own:
-- **Methodology** — how specs are structured within the family
-- **Naming conventions** — themes, slug rules, examples
-- **Agent templates** — the product artifacts
-- **Spec tree** — US → REQ → SPEC (or whatever levels the family uses)
-- **Ontology** — which Work-Product types exist and how they relate
+They carry that content differently, and they are meant to. A Contract instance is a
+tailored copy: it includes the artifacts its goal actually needs, may omit a tailorable
+artifact with a recorded reason, and must give every newly introduced artifact exactly
+one owner and explicit completion evidence. What is fixed is *what must be named*, not
+the shape it is named in.
 
-> **Ontology note (Phase 0):** The `syspilot` family ships with a built-in
-> default ontology (User Story → Requirement → Design Spec, L0/L1/L2). This
-> is *one* ontology template, not a hard-coded constraint. Per the ontology
-> architecture decision, other ontologies (e.g. ASPICE) are first-class.
-> See {ref}`Ontology Architecture <ontology-architecture>`.
+## Ownership Is Per Artifact, Not Per Document
 
-## Repository Structure
+Inside a Contract, every included artifact has exactly one owner, and that owner
+decides whether its content is complete. The Architect judges the specification, the
+Developer judges the implementation, the Technical Writer judges the user
+documentation. Nobody approves somebody else's artifact.
 
-### Family Directories (Product)
+This matters more than it first appears. If one actor summarised everyone else's work,
+that summary is where accurate statements quietly acquire inaccurate reasons. When the
+actor who knows a thing is the actor who writes it down, a disagreement between two
+sections stays visible instead of being smoothed away by whoever held the pen.
 
-Each family has a root directory containing its distributable artifacts:
+Current responsibility is a different thing from ownership. It is the temporary duty to
+keep one Contract instance consistent, and it never transfers authority over another
+owner's content. Before handing it on, the responsible actor commits its completed
+artifact and the current Contract state together, then names the next owner who can
+progress the work. The brief gap between commit and message is deliberate: the
+committed document stays authoritative and has one writer.
 
-```
-syspilot/                       # syspilot family product
-├── agents/                     #   Agent templates → .github/agents/
-├── prompts/                    #   Prompt configs → .github/prompts/
-├── skills/                     #   Shared skills → .github/skills/
-│   ├── syspilot.ask-questions/ #     Folder-based, YAML frontmatter
-│   ├── syspilot.branching/
-│   ├── syspilot.impact-python/
-│   ├── syspilot.orchestration-jarvis/     #   Async variant (mutex pair)
-│   └── syspilot.orchestration-subagent/   #   Sync variant (mutex pair)
-├── scripts/python/             #   Utilities → .syspilot/scripts/
-├── sphinx/                     #   Build scripts → docs/
-├── templates/                  #   Document templates → .github/templates/
-│   └── change-document.md      #   Change doc template
+Consultation stays outside that mechanism. Any actor may ask another for advice or a
+factual review; the consultant remains read-only for the Contract and versioned work
+artifacts and returns findings rather than edits. Questions and escalation do not move
+responsibility either. When no included owner can progress, the responsible actor
+records an actionable blocker and escalates it.
 
-sysmlv2/                        # SysMLv2 family product (future)
-├── agents/
-└── skills/
-```
+The boundary itself — scope, included artifacts, and the collaboration agreement — is
+drafted by the actor the Contract names and released by the User. Afterwards it can
+still change, but through an explicit revision the User releases again, never through a
+quiet edit.
 
-### Documentation Structure (Specs)
+## How Much the User Is in the Loop
 
-Specs live under `docs/`, grouped by family:
+A Contract also fixes how its actors make decisions with respect to the User's
+availability. The Contract describes this in free text, and that written agreement is
+authoritative. Three descriptions recur often enough to have names:
 
-```
-docs/
-├── syspilot/                   # syspilot family specs
-│   ├── userstories/            #   Level 0: WHY
-│   ├── requirements/           #   Level 1: WHAT
-│   ├── design/                 #   Level 2: HOW
-│   ├── methodology.md          #   Family-specific methodology
-│   └── namingconventions.md    #   Family-specific naming
-│
-├── sysmlv2/                    # SysMLv2 family specs (future)
-│   ├── userstories/
-│   ├── requirements/
-│   ├── design/
-│   └── methodology.md
-│
-├── inst/                       # Instance specs (project-specific)
-│   ├── syspilot/               #   syspilot instance
-│   │   ├── userstories/        #     e.g. "how we release"
-│   │   ├── requirements/
-│   │   └── design/
-│   └── sysmlv2/                #   SysMLv2 instance (future)
-│       ├── userstories/
-│       ├── requirements/
-│       └── design/
-│
-├── common/                     # Shared specs (optional, cross-family)
-│   ├── userstories/
-│   ├── requirements/
-│   └── design/
-│
-├── traceability/               # Cross-tree traceability matrices
-├── changes/                    # Change Documents
-│   └── archive/                #   Archived by version after release
-├── methodology.md              # THIS FILE (framework-level)
-├── namingconventions.md        # Framework naming conventions
-└── releasenotes.md             # Release notes (newest first)
-```
+| Mode | How actor-owned decisions are made |
+|---|---|
+| **User-guided** | Actors request User agreement at the checkpoints the Contract names |
+| **Autonomous** | Actors decide within the agreed authority and ask the User when a decision exceeds it |
+| **Unattended** | The User is not expected to answer. Actors proceed with a best guess and keep the question, assumption, and resulting action visible until the User returns |
 
-### Installation Directory
+These are starting points, not a closed set. A Contract may describe a more specific
+agreement — and when it does, the specific text wins over the familiar label.
 
-All installed agents live flat in `.github/agents/`, regardless of family:
+## Why a Contract Rather Than a Fixed Workflow
 
-```
-.github/agents/
-├── syspilot.design.agent.md    # syspilot family
-├── syspilot.release.agent.md
-├── sysmlv2.model.agent.md      # SysMLv2 family (future)
-└── ...
-```
+The obvious alternative is a standing workflow: every change goes from A to B to C,
+always in that order. Syspilot tried that in v1 and moved away from it, for two
+reasons.
 
-The agent filename prefix (`syspilot.`, `sysmlv2.`) identifies the family.
+The first is that a fixed sequence prescribes work a given change does not need. When a
+rule requires a step that is plainly pointless in the case at hand, the rule does not
+get followed — it gets ignored, and the habit of ignoring it spreads to the rules that
+mattered.
 
-## ID Naming Convention
+The second is subtler. A standing workflow is itself an authority. Once it exists,
+there are two documents describing who does what, and they drift apart without anyone
+noticing, because nothing forces them to be read together.
 
-IDs follow the pattern `FAMILY_TYPE_THEME_SLUG`:
+So the roles were separated from the orchestration. Each
+[Actor role card](Syspilot%20Actors/index.md) describes what a role durably is and may
+decide. It never says when that actor participates. That is decided per goal, in the
+Contract, and nowhere else.
 
-```
-SYSP_US_CORE_SPEC_AS_CODE          # syspilot family, User Story
-SYSMLV2_REQ_MODEL_VALIDATION        # SysMLv2 family, Requirement
-INST_SYSP_US_REL_RELEASE            # Instance, syspilot family
-COMMON_SPEC_TOOL_INTEGRATION        # Common, shared across families
-```
+## What a Contract Does Not Do
 
-See [namingconventions.md](namingconventions.md) for full rules.
+A Contract assigns work; it does not make the decisions inside that work. Requirements,
+architecture, implementation behavior, verification verdicts, and documentation wording
+stay with the actors that own them, and a Contract that tried to settle them in advance
+would only be guessing.
 
-## Write Boundaries
+It is also not an event log. It holds the currently valid state: when responsibility,
+blockers, or findings change, the current field is replaced rather than appended to.
+Git already remembers the archaeology. Completion is read from committed artifacts — a
+specification diff, a test result, a documentation commit — never from the fact that a
+step was expected to happen. An expected step and a finished step look identical in a
+plan and nothing alike in a repository.
 
-Each agent has a defined scope of what it may write:
+## The Realization Boundary
 
-| Agent | Writes to | Never writes to |
-|-------|-----------|-----------------|
-| System Designer (`design`) | Family specs OR Instance specs | — |
-| Implement Agent | `<family>/` (product artifacts) | `.github/agents/` |
-| Setup Agent | `.github/` (installation) | `<family>/` |
-| Release Agent | `docs/`, version files | `.github/agents/` |
-| Test Designer (`uat`) | Designs UAT test scenarios for human executors | — |
-| Documentation Engineer (`docu`) | `.github/copilot-instructions.md`, `docs/` | `<family>/` |
+Contract Driven Development and the ontology concept are not inherently tied to any one
+toolchain. Syspilot's current realization is Sphinx with Sphinx-Needs, and that is the
+only supported one today. Backend neutrality is an intended direction that a future
+Change must establish and verify; until then, treat the reference stack as the
+supported path rather than an incidental detail.
 
-The **Setup Agent** is the only agent that syncs `<family>/` → `.github/`.
+## Where the Pieces Live
 
-## Agents and Skills
-
-**Agents are stable, universal processes** (WHAT to do). They define the workflow
-steps — analyze, implement, verify, document — independent of any specific tooling.
-
-**Skills are exchangeable tool bindings** (HOW to do it). They encapsulate domain
-knowledge and tool-specific behavior that agents invoke. Skills are folder-based
-(`.github/skills/<name>/SKILL.md`) with YAML frontmatter declaring `name` and
-`description`. Copilot discovers and invokes them automatically.
-
-**Customization principle:** Customers customize syspilot by swapping or adding
-Skills, not by modifying Agents. An agent’s process stays the same across projects;
-the skills it calls adapt to the project’s tools and domain.
-
-sphinx-needs resolves `:links:` directives across **all files** in the Sphinx project.
-Families and instances can link freely to each other:
-
-```
-Instance                    Family Product            Family Product
-INST_SYSP_US_RELEASE ──→ SYSP_US_REL_AGENT ──→ SYSP_REQ_REL_PROCESS_DOC
-```
-
-The System Designer follows these links to provide context from product specs when
-analyzing instance changes — the same mechanism used for any change analysis.
-
-## Family Methodology Reference
-
-Each family defines its own methodology in `docs/<family>/methodology.md`:
-
-- **syspilot**: Three-level hierarchy (US → REQ → SPEC), domain shift at Level 2,
-  theme-based file splitting. See `docs/syspilot/methodology.md`.
-- **sysmlv2**: *(to be defined)*
-
-sphinx-needs traceability links bridge this boundary, maintaining full visibility
-from *why* through *what* to *how* — regardless of how files are organized.
-
----
-
-*For the Product/Instance concept, see [architecture.md](architecture.md).
-For the development process, see [workflows.md](workflows.md).*
+| | |
+|---|---|
+| The roles | [docs/Syspilot Actors/](Syspilot%20Actors/index.md) |
+| The processes and their canonical templates | [docs/Syspilot Processes/](Syspilot%20Processes/index.md) |
+| What a Contract Document must contain | [Contract Documents](Syspilot%20Processes/contract-documents.md) |
+| One bounded change | [The Change process](Syspilot%20Processes/change.md) |
+| Installing Syspilot into a project | [Pristine Setup](Syspilot%20Processes/setup.md) |
+| The method in motion | [The Change Contract](change-contract.md) |

@@ -18,7 +18,7 @@ not follow one fixed relay. The included, open artifacts in a Contract determine
 which owner can make the next useful move, while the Contract always names
 exactly one currently responsible actor.
 
-Start with :doc:`product-model` for the big picture, :doc:`change-workflow` for
+Start with :doc:`product-model` for the big picture, :doc:`change-contract` for
 the process in motion, :doc:`customization` for project tailoring, or
 :doc:`operations` for builds and maintenance.
 
@@ -62,9 +62,11 @@ User Guides
 
    getting-started
    product-model
-   change-workflow
+   change-contract
    customization
    operations
+   methodology
+   branching
 
 
 Reference
@@ -76,22 +78,6 @@ Reference
 
    releasenotes
    ontology-reference
-
-
-Legacy v1 Guides
-----------------
-
-These guides remain available while their durable content is consolidated into
-the v2 user guides. They describe the previous product model and are not
-authoritative for v2 behavior.
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Legacy v1 Guides
-
-   methodology
-   architecture
-   workflows
    namingconventions
 
 

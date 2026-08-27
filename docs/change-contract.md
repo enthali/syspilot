@@ -1,7 +1,7 @@
-# Running a Change
+# The Change Contract
 
-A Syspilot Change starts with a useful sentence: what should become true? It
-does not start by assigning five agents and hoping they agree on the destination
+A Syspilot Change starts with a useful sentence: what should become true? It does
+not start by assigning eight actors and hoping they agree on the destination
 later.
 
 Every modification to versioned source code or documentation uses a Change
@@ -9,7 +9,28 @@ Contract. The canonical rules live in the
 [Change process](Syspilot%20Processes/change.md); this guide is the human-sized
 walkthrough.
 
-## 1. Agree on the Outcome
+The sections below follow the order a Change usually takes. Usually is the
+operative word. Nothing here is a fixed relay: the open artifacts decide who can
+move next, and a Change that needs less simply visits fewer of these sections.
+
+```{mermaid}
+flowchart LR
+    PM["Project Manager<br/>intent and outcome"] --> ARCH["Architect<br/>specification"]
+    ARCH --> DEV["Developer<br/>implementation"]
+    DEV --> TW["Technical Writer<br/>user documentation"]
+    TW --> TEST["Tester<br/>acceptance"]
+    TEST --> QA["Quality<br/>judgment"]
+    QA --> USER["User<br/>validation"]
+    USER --> CLOSE["Project Manager<br/>closure"]
+    TW -.->|"consultation"| ARCH
+```
+
+That is one real Change, and the order its open artifacts happened to require.
+A Change that touches no user-facing surface never reaches the Technical Writer;
+one that needs no new specification can start at the Developer. The dashed arrow
+is a consultation — it returns findings and moves no responsibility at all.
+
+## Agree on the Outcome
 
 The Project Manager creates a feature branch and a tailored Contract at
 `docs/changes/<change>.md`. The opening section records:
@@ -23,7 +44,7 @@ The Project Manager creates a feature branch and a tailored Contract at
 Artifact work begins after the intent and outcome are approved, unless the
 written collaboration agreement explicitly delegates that authority.
 
-## 2. Let Architecture Draw the Boundary
+## Draw the Boundary
 
 The first handoff goes to the Architect. The Architect decides which product
 model, specifications, authority boundaries, and realized artifacts are
@@ -32,7 +53,7 @@ affected.
 This is the point where a request becomes a checkable change rather than a
 plausible collection of edits.
 
-## 3. Include Only the Artifacts the Change Needs
+## Include Only What the Change Needs
 
 Each artifact row says whether it is included, who owns it, what completion
 looks like, and its current status. Common artifacts include architecture,
@@ -40,25 +61,23 @@ implementation, acceptance tests, user documentation, quality review, and user
 validation.
 
 The owner of each artifact decides whether that artifact is complete. Current
-responsibility may move between actors, but it does not grant anyone authority
-to approve somebody else's work.
+responsibility may move between actors, but it never lets one actor approve
+somebody else's work. Otherwise a review would measure nothing more than how
+convincing the last writer was.
 
 User documentation is included when users need a new or changed explanation.
 Incoming `included_in` links on changed requirements tell the Technical Writer
 which documentation surfaces deserve an impact review.
 
-The Impact Python CLI queries a built Need by ID and follows standard links plus
-every link option declared by the active project ontology. It supports incoming,
-outgoing, or combined traversal to a chosen depth, so v2 typed relationships and
-customer-defined relationships work without hard-coded link names.
+Impact Python answers the same question for the rest of the graph. It queries a
+built Need by ID and follows standard links plus every link option the active
+ontology declares, incoming or outgoing, to a chosen depth — so project-defined
+relationships work without hard-coded names. What comes back is a list of
+candidates and the evidence behind them. The Contract still decides what is in
+scope, and a query that failed or returned nothing proves nothing until its
+ontology, built data, and other prerequisites are valid.
 
-The result is candidate scope and traceability evidence, not an independent
-scope decision. The applicable Contract records the disposition of each
-candidate and remains authoritative for included artifacts, responsibility, and
-scope. A failed or empty query is not evidence until its ontology, built Needs
-data, and other reported prerequisites are valid.
-
-## 4. Handoff a Consistent State
+## Hand Off a Consistent State
 
 Before handing off responsibility, an actor updates the owned artifact and the
 Contract, commits them as one consistent state, and then messages the next
@@ -78,7 +97,7 @@ transfer Current responsibility. When no included artifact owner can make
 progress, the responsible actor records an actionable blocker and escalates
 instead of inventing an undeclared owner or route.
 
-## 5. Quality Checks the Whole Outcome
+## Quality Checks the Whole Outcome
 
 Quality records one current judgment:
 
@@ -93,7 +112,7 @@ verified outcome while responsibility moves directly from Quality to the User.
 Resolved issues leave the open-issues table. The Contract is a dashboard, not
 an attic.
 
-## 6. The User Validates Value
+## The User Validates Value
 
 Quality can show that the work is coherent and verified. Only the user can say
 whether the observable outcome delivers the intended value in a user-guided
@@ -112,13 +131,17 @@ can produce the missing outcome. In autonomous work, validation may be marked
 not applicable only when the recorded agreement actually grants that authority.
 Unattended is different: the decision stays pending until the user returns.
 
-## 7. The Project Manager Closes
+## The Project Manager Closes
 
 After validation has an explicit disposition, responsibility returns to the
 Project Manager for Closure. The Contract closes only when included artifacts
 have terminal evidence, Quality can proceed, blockers are gone, and integration
 or publication is complete or its next authorized owner is explicit.
 
-For a live example, read
-`docs/changes/documentation-foundation.md` in the repository. Then use the
-canonical template in the Change process for the next real change.
+A closed Contract is worth more than a finished one. It is the record a future
+reader consults when they need to know why the system looks the way it does.
+
+The Contracts in `docs/changes/` are real instances rather than tidy examples,
+which is why they stay in the repository instead of the rendered documentation.
+Open one there to see the shape of actual work, then start the next change from
+the canonical template in the Change process.
