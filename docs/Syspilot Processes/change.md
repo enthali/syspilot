@@ -28,7 +28,7 @@ Artifact work starts after the Project Manager records the user's approval of th
 The Project Manager initializes a change as one consistent version-controlled state:
 
 1. Choose a lowercase, hyphenated change name.
-2. Create the branch prescribed by the project's branching policy using that change name.
+2. Create the Change's feature branch from `development` using that change name.
 3. Copy the canonical template from `# Change Contract: {NAME}` through the end of this file to `docs/changes/<change>.md`.
 4. Replace the placeholders, tailor the artifact set, and complete the header and `Intent And Outcome` section.
 5. Record user agreement on the intent and outcome, or record the autonomous authority that makes this checkpoint `not applicable`, and set the intent status to `approved`.
@@ -44,7 +44,6 @@ The Project Manager initializes a change as one consistent version-controlled st
 **Current responsibility:** Syspilot Project Manager<br>
 **Current blocker:** none | {decision or action currently needed}<br>
 **Created:** {DATE}<br>
-**Branch:** {BRANCH OR NOT APPLICABLE}<br>
 **Collaboration mode:** {Describe when user agreement is required during this change}
 
 ## Intent And Outcome
@@ -77,6 +76,7 @@ The Project Manager initializes a change as one consistent version-controlled st
 | Artifact type | Included | Owner | Completion evidence | Status |
 |---|---|---|---|---|
 | Intent and outcome | yes | Syspilot Project Manager | Goal, value, scope, and observable outcome are explicit and approved | draft / approved |
+| Version control | yes / not applicable: {reason} | Syspilot Project Manager | Feature branch name and integration state; the branch is squash-integrated into `development` at closure | active / merged / not applicable |
 | Product specification and architecture decisions | yes / not applicable: {reason} | Syspilot Architect | Changed specification and architecture artifacts are linked and checked | pending / not applicable |
 | User-facing documentation | yes / not applicable: {reason} | Syspilot Technical Writer | Agreed documentation surface is coherent and user-oriented; factual-owner review is recorded; `doc` Needs and `includes` links are current; documentation builds cleanly | pending / complete / not applicable |
 | Implementation and unit verification | yes / not applicable: {reason} | Syspilot Developer | Changed artifacts, durable technical decisions, and automated verification results are linked | pending / not applicable |
@@ -202,6 +202,5 @@ In autonomous mode, set this artifact to `not applicable` only when the collabor
 - [ ] User validation is `accepted`, or its `not applicable` status and autonomous authority are recorded.
 - [ ] Current blocker is `none`.
 - [ ] The observable outcome is demonstrated.
-- [ ] Integration or publication has been completed by the authorized actor, or its next owner is explicit.
 
 **Final outcome:** {accepted result, integration reference, or reason for closure without integration}

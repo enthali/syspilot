@@ -58,6 +58,15 @@ realized documents remain free of Sphinx-Needs markup.
    Installation, updates, compatibility, recovery, and routine maintenance for
    a Syspilot project.
 
+.. doc:: Branching Guide
+   :id: SYSP_DOC_BRANCHING
+   :status: verified
+   :realized_by: docs/branching.md
+   :includes: SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_SETUP, SYSP_REQ_RELEASE
+
+   Where a Change states its branch, what the Change and Setup processes
+   prescribe, and what this repository practices beyond that.
+
 .. doc:: Methodology Guide
    :id: SYSP_DOC_METHODOLOGY
    :status: verified

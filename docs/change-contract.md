@@ -32,8 +32,8 @@ is a consultation — it returns findings and moves no responsibility at all.
 
 ## Agree on the Outcome
 
-The Project Manager creates a feature branch and a tailored Contract at
-`docs/changes/<change>.md`. The opening section records:
+The Project Manager creates the Change's feature branch from `development` and a
+tailored Contract at `docs/changes/<change>.md`. The opening section records:
 
 - the goal;
 - who benefits and why;
@@ -57,8 +57,13 @@ plausible collection of edits.
 
 Each artifact row says whether it is included, who owns it, what completion
 looks like, and its current status. Common artifacts include architecture,
-implementation, acceptance tests, user documentation, quality review, and user
-validation.
+implementation, acceptance tests, user documentation, quality review, user
+validation, and version control.
+
+Version control is an artifact like any other, which is what keeps the branch
+out of the prose. The Project Manager owns it, its evidence is the branch name
+and integration state, and a Change that needs no branch marks the row as not
+included instead of inventing a placeholder.
 
 The owner of each artifact decides whether that artifact is complete. Current
 responsibility may move between actors, but it never lets one actor approve
