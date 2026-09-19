@@ -37,10 +37,11 @@ work. A dedicated Release Contract is expected; until it exists, saying so is mo
 useful than implying it is already there.
 
 They carry that content differently, and they are meant to. A Contract instance is a
-tailored copy: it includes the artifacts its goal actually needs, may omit a tailorable
-artifact with a recorded reason, and must give every newly introduced artifact exactly
-one owner and explicit completion evidence. What is fixed is *what must be named*, not
-the shape it is named in.
+tailored copy: each row offers its own choice and says what that choice obliges,
+so a required artifact simply cannot be dropped and an optional one that does not
+apply is marked with a reason and its empty section deleted. Every newly
+introduced artifact declares exactly one owner and explicit completion evidence.
+What is fixed is *what must be named*, not the shape it is named in.
 
 ## Ownership Is Per Artifact, Not Per Document
 
@@ -67,25 +68,23 @@ artifacts and returns findings rather than edits. Questions and escalation do no
 responsibility either. When no included owner can progress, the responsible actor
 records an actionable blocker and escalates it.
 
-The boundary itself — scope, included artifacts, and the collaboration agreement — is
-drafted by the actor the Contract names and released by the User. Afterwards it can
-still change, but through an explicit revision the User releases again, never through a
-quiet edit.
+The boundary itself — scope, included artifacts, and the Operation Mode — is
+drafted by the actor the Contract names and released by the User, in a gate that
+only the User can set. Afterwards it can still change, but through an explicit
+revision the User releases again, never through a quiet edit.
 
 ## How Much the User Is in the Loop
 
 A Contract also fixes how its actors make decisions with respect to the User's
-availability. The Contract describes this in free text, and that written agreement is
-authoritative. Three descriptions recur often enough to have names:
+availability. It selects exactly one Operation Mode — user-guided, autonomous, or
+unattended — agreed with the User before the Contract is released.
 
-| Mode | How actor-owned decisions are made |
-|---|---|
-| **User-guided** | Actors request User agreement at the checkpoints the Contract names |
-| **Autonomous** | Actors decide within the agreed authority and ask the User when a decision exceeds it |
-| **Unattended** | The User is not expected to answer. Actors proceed with a best guess and keep the question, assumption, and resulting action visible until the User returns |
-
-These are starting points, not a closed set. A Contract may describe a more specific
-agreement — and when it does, the specific text wins over the familiar label.
+The selected mode's rule is carried in the Contract itself. The canonical
+template holds all three; initialization keeps the one that was agreed and
+deletes the others, so an actor reading the Contract during execution finds its
+operating rule in the document already open in front of it. A link would have
+been shorter. It would also have meant leaving the active Contract in order to
+find out how to work inside it.
 
 ## Why a Contract Rather Than a Fixed Workflow
 

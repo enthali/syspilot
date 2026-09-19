@@ -12,6 +12,7 @@ Every process declares:
 - the location of its canonical template and concrete instances;
 - required and tailorable artifact types;
 - one owner and explicit completion evidence for every artifact type;
+- process gates recorded alongside artifacts, each with exactly one owner who alone may set it;
 - initial responsibility and the actor responsible for closure;
 - checkable closure conditions.
 
@@ -23,24 +24,13 @@ A Contract Document contains the currently valid state and the durable outcome. 
 
 Evidence demonstrates the outcome through inspectable artifacts, verification results, and approvals. It does not attempt to reconstruct an actor's internal reasoning or every interaction that produced the result.
 
-## Collaboration Mode
-
-The Contract Document describes collaboration expectations in free text: when user agreement is expected, whether the user is available to answer, and how actors handle questions and assumptions. The description may use a familiar mode name, but the written agreement is authoritative.
-
-Common examples are:
-
-- **User-guided:** Actors request user agreement at the checkpoints named in the Contract Document.
-- **Autonomous:** Actors work independently and request user attention when a decision exceeds the agreed authority or available information.
-- **Unattended:** The user is not expected to answer during execution. When a user decision would normally be needed, actors proceed with a best guess and keep the question, assumption, and resulting action visible until the user returns. User validation replaces that pending state with the validated outcome.
-
-These examples are starting points rather than a closed set. A Contract Document may describe a more specific collaboration agreement.
-
 ## Ownership And Responsibility
 
 Ownership is durable authority over an artifact type and its content. Responsibility is the temporary duty to maintain the handed-off Contract Document instance. Ownership does not imply exclusive write access to the Contract Document, and responsibility does not transfer authority over another owner's content.
 
 - The process owner owns the process definition and canonical template.
 - Each included artifact has exactly one owner who judges its content complete.
+- Each process gate has exactly one owner, and only that owner may set it.
 - The currently responsible actor keeps the document state and owned work current.
 - Before a handoff, the currently responsible actor commits the completed owned artifact and current Contract Document state as one consistent version-controlled state.
 - The actor then transfers responsibility to the owner of an included artifact that can progress from that state. The handoff replaces the Contract Document's current responsibility with the receiving actor.
@@ -48,6 +38,10 @@ Ownership is durable authority over an artifact type and its content. Responsibi
 
 ## Tailoring
 
-A concrete instance includes the artifacts needed to satisfy its process contract. Tailorable artifacts may be omitted with a recorded reason. A newly introduced artifact type declares exactly one owner and explicit completion evidence.
+A process describes each tailoring option at the field, row, or section of its canonical Contract template where the choice is made, together with the reason to record and the edit or delete instruction to follow. A concrete instance follows those local instructions and includes the artifacts needed to satisfy its process contract.
 
 Tailoring changes the document shape, not the meaning of an included artifact's completion evidence.
+
+## Contract Composition
+
+One Contract Document may carry multiple goals and observable outcomes only when they share one responsibility, release, validation, and integration boundary.

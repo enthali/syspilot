@@ -9,19 +9,12 @@ This process applies the [Contract Documents](contract-documents.md) method. The
 - **Applicability:** Every modification to versioned source code or documentation.
 - **Canonical template:** The `Canonical Change Contract Template` section in this document.
 - **Concrete instances:** `docs/changes/<change>.md`.
-- **Initial responsibility:** Syspilot Project Manager, who creates the Change Contract, completes its intent and required fields, and records user approval or the autonomous authority that makes the approval checkpoint not applicable.
+- **Initial responsibility:** Syspilot Project Manager, who creates the Change Contract, completes its intent and required fields, and prepares it for the User-owned `Contract release` gate.
 - **First handoff:** Syspilot Architect, who determines the required architecture and specification work before further artifact owners proceed.
 - **Closure responsibility:** Syspilot Project Manager.
 - **Closure conditions:** The checklist in the template's `Closure` section.
 
-Artifact work starts after the Project Manager records the user's approval of the intent and outcome or the autonomous authority that makes this checkpoint not applicable. The first responsibility transfer is to the Architect. After Quality can proceed, Quality communicates its judgment and supporting evidence directly to the Project Manager before responsibility transfers directly to the User for validation. The User communicates an applicable validation decision directly to the Project Manager, and responsibility returns to the Project Manager only for Closure. A forwarded claim from another actor is not evidence of Quality's or the User's decision.
-
-## Tailoring Rules
-
-- Intent and outcome, Quality review, and Closure are required whenever this process is used.
-- User validation and approval is required in user-guided changes.
-- In autonomous changes, user approval and validation checkpoints are `not applicable` when the collaboration agreement explicitly delegates that authority; the Contract records the authority and does not claim user validation.
-- In unattended changes, user approval or validation remains pending until the user returns; absence does not make the checkpoint `not applicable`.
+Artifact work starts only after the User sets the `Contract release` gate to `approved`. A settled intent or operation mode provides no alternative start condition. The first responsibility transfer is to the Architect. After Quality can proceed, Quality communicates its judgment and supporting evidence directly to the Project Manager before responsibility transfers directly to the User for validation. The User communicates an applicable validation decision directly to the Project Manager, and responsibility returns to the Project Manager only for Closure. A forwarded claim from another actor is not evidence of Quality's or the User's decision.
 
 ## Change Contract Initialization
 
@@ -30,10 +23,11 @@ The Project Manager initializes a change as one consistent version-controlled st
 1. Choose a lowercase, hyphenated change name.
 2. Create the Change's feature branch from `development` using that change name.
 3. Copy the canonical template from `# Change Contract: {NAME}` through the end of this file to `docs/changes/<change>.md`.
-4. Replace the placeholders, tailor the artifact set, and complete the header and `Intent And Outcome` section.
-5. Record user agreement on the intent and outcome, or record the autonomous authority that makes this checkpoint `not applicable`, and set the intent status to `approved`.
-6. Commit the branch and initialized Change Contract.
-7. Transfer current responsibility to the Syspilot Architect as the first artifact owner.
+4. Select the agreed Operation Mode, remove the template note and the two non-applicable mode rules, replace the remaining placeholders, tailor the artifact set, and complete the header and `Intent And Outcome` section.
+5. Record evidence that the intent and outcome text is settled, and set its status to `approved`.
+6. Ask the User to set the User-owned `Contract release` gate to `approved`; no other actor may set the gate, and artifact work remains blocked until it reads `approved`.
+7. Commit the branch and initialized Change Contract.
+8. Transfer current responsibility to the Syspilot Architect as the first artifact owner.
 
 ## Canonical Change Contract Template
 
@@ -44,13 +38,20 @@ The Project Manager initializes a change as one consistent version-controlled st
 **Current responsibility:** Syspilot Project Manager<br>
 **Current blocker:** none | {decision or action currently needed}<br>
 **Created:** {DATE}<br>
-**Collaboration mode:** {Describe when user agreement is required during this change}
+- **Operation Mode**: user-guided (default) | autonomous | unattended; select one with the User before Contract release
+
+*(Template note - delete this line and the two non-applicable mode bullets once the mode is picked.)*
+
+- **user-guided** - every actor involves the user in its decision-making before proceeding.
+- **autonomous** - every actor decides on its own; when genuinely unsure, it asks the user directly and pauses only its own step until answered.
+- **unattended** - the user is not reachable. When unsure, the actor flags `USER REVIEW REQUIRED` in this document, takes the simplest KISS path that is cheapest to reverse or amend, and keeps the change moving. The PM reviews flagged points once reachable again; decision ownership remains with the actor that made the decision.
+
 
 ## Intent And Outcome
 
 **Owner:** Syspilot Project Manager<br>
 **Status:** draft | approved<br>
-**Approval evidence:** pending | not applicable: {autonomous authority} | {user agreement reference and date}
+**Approval evidence:** pending | {evidence that the intent and outcome text is settled}
 
 ### Goal
 
@@ -68,21 +69,22 @@ The Project Manager initializes a change as one consistent version-controlled st
 
 {What evidence will demonstrate that the goal was achieved?}
 
-## Artifact Applicability And Ownership
+## Artifacts, Ownership And Process Gates
 
 **Applicability:** Each artifact owner decides and updates its own row.<br>
 **Status:** pending | complete
 
-| Artifact type | Included | Owner | Completion evidence | Status |
+| Artifact or gate | Included | Owner | Completion evidence | Status |
 |---|---|---|---|---|
 | Intent and outcome | yes | Syspilot Project Manager | Goal, value, scope, and observable outcome are explicit and approved | draft / approved |
-| Version control | yes / not applicable: {reason} | Syspilot Project Manager | Feature branch name and integration state; the branch is squash-integrated into `development` at closure | active / merged / not applicable |
-| Product specification and architecture decisions | yes / not applicable: {reason} | Syspilot Architect | Changed specification and architecture artifacts are linked and checked | pending / not applicable |
-| User-facing documentation | yes / not applicable: {reason} | Syspilot Technical Writer | Agreed documentation surface is coherent and user-oriented; factual-owner review is recorded; `doc` Needs and `includes` links are current; documentation builds cleanly | pending / complete / not applicable |
-| Implementation and unit verification | yes / not applicable: {reason} | Syspilot Developer | Changed artifacts, durable technical decisions, and automated verification results are linked | pending / not applicable |
-| Acceptance test design and results | yes / not applicable: {reason} | Syspilot Tester | Black-box scenarios and results trace to the intended outcome | pending / not applicable |
+| Contract release | yes | User | User authorization to start the Change; no other actor may set this gate | pending / approved |
+| Version control | yes / not applicable: {reason; delete the corresponding empty owner section} | Syspilot Project Manager | Feature branch name and integration state; the branch is squash-integrated into `development` at closure | active / merged / not applicable |
+| Product specification and architecture decisions | yes / not applicable: {reason; delete the corresponding empty owner section} | Syspilot Architect | Changed specification and architecture artifacts are linked and checked | pending / not applicable |
+| User-facing documentation | yes / not applicable: {reason; delete the corresponding empty owner section} | Syspilot Technical Writer | Agreed documentation surface is coherent and user-oriented; factual-owner review is recorded; `doc` Needs and `includes` links are current; documentation builds cleanly | pending / complete / not applicable |
+| Implementation and unit verification | yes / not applicable: {reason; delete the corresponding empty owner section} | Syspilot Developer | Changed artifacts, durable technical decisions, and automated verification results are linked | pending / not applicable |
+| Acceptance test design and results | yes / not applicable: {reason; delete the corresponding empty owner section} | Syspilot Tester | Black-box scenarios and results trace to the intended outcome | pending / not applicable |
 | Quality review | yes | Syspilot Quality | Current verification judgment is `proceed` and no open quality issue remains | pending |
-| User validation and approval | yes / not applicable: {autonomous authority} | User | Observable outcome is accepted or changes are requested; autonomous closure records that user validation did not occur | pending / accepted / changes requested / not applicable |
+| User validation and approval | yes / not applicable: {explicit User delegation recorded in this row; retain the section below as evidence} | User | Observable outcome is accepted or changes are requested; a delegated `not applicable` status records that User validation did not occur | pending / accepted / changes requested / not applicable |
 | Closure decision | yes | Syspilot Project Manager | Final outcome, validation disposition, and integration state are recorded | pending |
 
 ## Architecture And Specification
@@ -186,20 +188,20 @@ Quality's `proceed` judgment verifies that the change is ready for validation; i
 
 Current responsibility remains with the User from Quality's handoff until the validation decision is recorded. The Project Manager's presentation and recording duties support that User-owned artifact; they do not make the Project Manager the validation owner or an intermediate responsibility relay.
 
-In autonomous mode, set this artifact to `not applicable` only when the collaboration agreement explicitly delegates closure authority, and record that authority. In unattended mode, keep it `pending` until the user returns.
+Set this artifact to `not applicable` only when the User explicitly delegates validation of the finished outcome and that delegation is recorded in its artifact row. Operation mode does not delegate validation. In unattended mode, keep it `pending` until the User returns.
 
-**Decision and evidence:** {user decision and reference | autonomous authority and statement that user validation did not occur}
+**Decision and evidence:** {user decision and reference | explicit User delegation from the artifact row and statement that User validation did not occur}
 
 ## Closure
 
 **Owner:** Syspilot Project Manager<br>
 **Status:** pending | accepted | closed
 
-- [ ] Every included artifact has terminal status and completion evidence.
+- [ ] Every included artifact or gate has terminal status and completion evidence.
 - [ ] Intent and outcome are `approved`.
 - [ ] Quality has recorded a `proceed` judgment.
 - [ ] Open Quality Issues contains `None`.
-- [ ] User validation is `accepted`, or its `not applicable` status and autonomous authority are recorded.
+- [ ] User validation is `accepted`, or its `not applicable` status and explicit User delegation are recorded in the artifact row.
 - [ ] Current blocker is `none`.
 - [ ] The observable outcome is demonstrated.
 

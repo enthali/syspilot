@@ -41,8 +41,12 @@ tailored Contract at `docs/changes/<change>.md`. The opening section records:
 - the observable outcome; and
 - how and when the user wants to collaborate.
 
-Artifact work begins after the intent and outcome are approved, unless the
-written collaboration agreement explicitly delegates that authority.
+The Contract also selects one Operation Mode — user-guided, autonomous, or
+unattended — agreed with the User beforehand, and keeps that mode's rule in its
+own text rather than pointing elsewhere. It records the User's release exactly
+once, in a `Contract release` gate that only the User may set. Artifact work
+starts when that gate reads `approved`, and nothing else starts it: a settled
+intent is not an authorization to begin.
 
 ## Draw the Boundary
 
@@ -64,6 +68,19 @@ Version control is an artifact like any other, which is what keeps the branch
 out of the prose. The Project Manager owns it, its evidence is the branch name
 and integration state, and a Change that needs no branch marks the row as not
 included instead of inventing a placeholder.
+
+The same table carries process gates alongside artifacts — the User's release of
+the Contract is one. Each gate has exactly one owner, and only that owner may
+set it. An authorization stated in a row with a visible owner cannot later be
+asserted in prose by whoever happened to be holding the pen.
+
+An optional artifact that does not apply is marked `not applicable` with a
+reason, and its now-empty owner section is deleted in the same step. The row
+itself says so, next to the choice, rather than in a rule somewhere else —
+because the moment you are deciding is the moment you need to be told what the
+decision obliges you to do. Required artifacts offer no such option. An empty
+section under a heading tells a reader nothing
+except that somebody may have forgotten it.
 
 The owner of each artifact decides whether that artifact is complete. Current
 responsibility may move between actors, but it never lets one actor approve
@@ -152,9 +169,12 @@ with the User until the direct decision is recorded, then returns to the
 Project Manager only for Closure.
 
 If the user requests changes, responsibility returns to an artifact owner who
-can produce the missing outcome. In autonomous work, validation may be marked
-not applicable only when the recorded agreement actually grants that authority.
-Unattended is different: the decision stays pending until the user returns.
+can produce the missing outcome. Validation can be marked `not applicable` only
+when the User explicitly delegates it and that delegation is recorded in the
+validation row itself. No Operation Mode does this on its own: autonomous
+governs how actors decide within authority they already hold, and it cannot hand
+over authority that belongs to the User. Unattended does not waive anything
+either — the decision stays pending until the user returns.
 
 ## The Project Manager Closes
 

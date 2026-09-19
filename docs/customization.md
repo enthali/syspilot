@@ -14,8 +14,8 @@ need?"
 
 Contracts are the main way a project customizes actor behavior. A project can
 define Contract X for one outcome and Contract Y for another, each with its own
-applicability, artifacts, owners, evidence, collaboration agreement, and
-closure conditions.
+applicability, artifacts, owners, evidence, operation mode, and closure
+conditions.
 
 Tell the actors which Contract is active and the document supplies the shared
 state and work agreement. The same base actors can therefore behave differently

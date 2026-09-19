@@ -65,7 +65,9 @@ does not provide, such as operating test hardware or a laboratory system.
 
 A Contract Document is the durable state of a process. It records what must
 become true, which artifacts apply, who owns them, what counts as completion,
-who currently holds responsibility, and how the work closes.
+who currently holds responsibility, and how the work closes. Alongside those
+artifacts it records process gates, such as the User's release of the Contract.
+Each gate has exactly one owner, and only that owner may set it.
 
 That distinction matters:
 

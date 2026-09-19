@@ -16,14 +16,21 @@ Contract Documents
      and outcome of a process instance rather than an event log;
    - how inspectable artifacts, verification results, and approvals demonstrate
      the current outcome;
-   - how the collaboration mode establishes expectations for user agreement,
-     availability, questions, and assumptions;
    - the distinction between durable artifact ownership and temporary
      responsibility for the Contract Document instance, including a committed
      consistent state before responsibility transfers to an owner whose
      included artifact can progress;
-   - how a concrete process instance may tailor its artifact set while
-     preserving ownership and completion semantics.
+   - process gates that a Contract Document records alongside its artifacts,
+     each carrying exactly one owner who alone may set it, so that an
+     authorization such as a release is stated once with its owner visible;
+   - that each tailoring option is described at the section of the process
+     Contract template where that choice is made, so that an author meets the
+     option and its editing instruction at the point of use rather than in a
+     central list; and
+   - that one Contract Document may carry multiple goals and observable
+     outcomes only when they share one responsibility, release, validation, and
+     integration boundary, which governs Contract composition rather than
+     tailoring.
 
 .. vc:: Contract Document method defines its stable contract
    :id: SYSP_VC_CONTRACT_DOCUMENTS_1
@@ -31,5 +38,10 @@ Contract Documents
    :verifies: SYSP_REQ_CONTRACT_DOCUMENTS
 
    Confirm that the realized method defines process structure, durable state
-   and evidence, collaboration mode, ownership and responsibility, consistent
-   handoff commits, and tailoring.
+   and evidence, ownership and responsibility, consistent handoff commits, and
+   the rule that a tailoring option is described where its choice is made.
+   Confirm that it defines process gates whose owner alone may set them, states
+   the multiple-goal boundary as a Contract composition invariant rather than a
+   tailoring option, carries no central list of tailoring options, and defines
+   no collaboration or operation mode, because mode behavior belongs to the
+   individual process that uses it.
