@@ -1,4 +1,4 @@
-# Syspilot Developer
+# Developer
 
 **Domain:** Implementation, unit testing
 

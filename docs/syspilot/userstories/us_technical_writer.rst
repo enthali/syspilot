@@ -1,7 +1,7 @@
-Syspilot Technical Writer
-=========================
+Technical Writer
+================
 
-.. story:: Syspilot Technical Writer
+.. story:: Technical Writer
    :id: SYSP_US_TECHNICAL_WRITER
    :status: approved
    :priority: mandatory

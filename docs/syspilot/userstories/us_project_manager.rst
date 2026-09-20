@@ -1,7 +1,7 @@
-Syspilot Project Manager
-========================
+Project Manager
+===============
 
-.. story:: Syspilot Project Manager
+.. story:: Project Manager
    :id: SYSP_US_PROJECT_MANAGER
    :status: approved
    :priority: mandatory

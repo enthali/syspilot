@@ -29,7 +29,7 @@ Two kinds are defined today. A **Change Contract** governs one bounded change to
 versioned artifacts. A **Setup Contract** is bound to an exact release and governs
 installing Syspilot into a project. Each process declares its own canonical template,
 applicability, artifact types, ownership, and closure conditions in the
-[process registry](Syspilot%20Processes/index.md).
+[process registry](Syspilot%20Contracts/index.md).
 
 Releases do not yet have a process of their own. The Release actor owns packaging and
 delivery, and that work currently runs under a Change Contract like any other bounded
@@ -133,8 +133,8 @@ supported path rather than an incidental detail.
 | | |
 |---|---|
 | The roles | [docs/Syspilot Actors/](Syspilot%20Actors/index.md) |
-| The processes and their canonical templates | [docs/Syspilot Processes/](Syspilot%20Processes/index.md) |
-| What a Contract Document must contain | [Contract Documents](Syspilot%20Processes/contract-documents.md) |
-| One bounded change | [The Change process](Syspilot%20Processes/change.md) |
-| Installing Syspilot into a project | [Pristine Setup](Syspilot%20Processes/setup.md) |
+| The processes and their canonical templates | [docs/Syspilot Contracts/](Syspilot%20Contracts/index.md) |
+| What a Contract Document must contain | [Contract Documents](Syspilot%20Contracts/contract-documents.md) |
+| One bounded change | [The Change process](Syspilot%20Contracts/change.md) |
+| Installing Syspilot into a project | [Pristine Setup](Syspilot%20Contracts/setup.md) |
 | The method in motion | [The Change Contract](change-contract.md) |

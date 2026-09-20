@@ -32,15 +32,15 @@ syspilot Actors & Processes (v2)
 
    syspilot/index
    Syspilot Actors/index
-   Syspilot Actors/Syspilot Project Manager
-   Syspilot Actors/Syspilot Architect
-   Syspilot Actors/Syspilot Developer
-   Syspilot Actors/Syspilot Tester
-   Syspilot Actors/Syspilot Quality
-   Syspilot Actors/Syspilot Release
-   Syspilot Actors/Syspilot Research
-   Syspilot Actors/Syspilot Technical Writer
-   Syspilot Processes/index
+   Syspilot Actors/Project Manager
+   Syspilot Actors/Architect
+   Syspilot Actors/Developer
+   Syspilot Actors/Tester
+   Syspilot Actors/Quality
+   Syspilot Actors/Release
+   Syspilot Actors/Research
+   Syspilot Actors/Technical Writer
+   Syspilot Contracts/index
 
 
 Traceability

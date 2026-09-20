@@ -1,4 +1,4 @@
-# Syspilot Processes
+# Syspilot Contracts
 
 This registry contains all process checklists of this project. A Syspilot process is a checklist that enables Syspilot actors to collaboratively create verifiable artifacts with declared ownership.
 
@@ -20,4 +20,4 @@ setup
 ```
 
 ---
-*Owner: Syspilot Project Manager. Questions or changes → contact PM.*
+*Owner: Project Manager. Questions or changes → contact PM.*

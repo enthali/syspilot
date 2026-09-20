@@ -1,14 +1,14 @@
-Syspilot Research
-=================
+Research
+========
 
 .. req:: Research Role
    :id: SYSP_REQ_RESEARCH
    :status: approved
    :implements: SYSP_US_RESEARCH
    :specializes: SYSP_REQ_ACTOR_MODEL
-   :realized_by: docs/Syspilot Actors/Syspilot Research.md
+   :realized_by: docs/Syspilot Actors/Research.md
 
-   The Syspilot Research actor shall:
+   The Research actor shall:
 
    - investigate material questions that do not yet fit specification-driven
      work, including model viability, tool behavior, ecosystem changes, and

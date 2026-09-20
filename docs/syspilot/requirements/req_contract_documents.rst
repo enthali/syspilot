@@ -5,7 +5,7 @@ Contract Documents
    :id: SYSP_REQ_CONTRACT_DOCUMENTS
    :status: approved
    :implements: SYSP_US_CONTRACT_DOCUMENTS
-   :realized_by: docs/Syspilot Processes/contract-documents.md
+   :realized_by: docs/Syspilot Contracts/contract-documents.md
 
    A Contract Document method shall define:
 

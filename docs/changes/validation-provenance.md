@@ -98,7 +98,7 @@ The Change Process and approved requirements state that Quality sends its verifi
 | Artifact | Change | Verification evidence |
 |---|---|---|
 | `docs/Syspilot Processes/change.md` | Require direct Quality evidence and direct User decisions; reject forwarded claims; preserve autonomous and unattended handling | Four focused docs-build tests passed; clean strict Sphinx/schema build passed with zero warnings |
-| `docs/Syspilot Actors/Syspilot Project Manager.md` | Add presentation, direct evidence reception, recording, and closure boundaries | Clean strict Sphinx/schema build passed with zero warnings |
+| `docs/Syspilot Actors/Project Manager.md` | Add presentation, direct evidence reception, recording, and closure boundaries | Clean strict Sphinx/schema build passed with zero warnings |
 
 ## Acceptance Testing
 

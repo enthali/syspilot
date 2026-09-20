@@ -52,7 +52,7 @@ Install Syspilot into this project.
 
 1. Look up the releases of https://github.com/enthali/syspilot, tell me the
    latest one, and ask me which version to install.
-2. Fetch `docs/Syspilot Processes/setup.md` from that exact tag.
+2. Fetch `docs/Syspilot Contracts/setup.md` from that exact tag.
 3. Save it unchanged as `.syspilot/setup-contract.md` in this repository, and
    make sure it is the only change in the working tree.
 4. Execute that Contract from top to bottom. It owns every further step,
@@ -100,7 +100,7 @@ Open `docs/_build/html/index.html` after the build succeeds. The most useful
 first stops are:
 
 1. **Syspilot Actors** for the roster and shared actor model.
-2. **Syspilot Processes** for Contract Documents and the Change process.
+2. **Syspilot Contracts** for Contract Documents and the Change process.
 3. **Traceability** for the graph connecting stories, requirements, criteria,
    documentation, and realized artifacts.
 

@@ -1,4 +1,4 @@
-# Syspilot Release
+# Release
 
 **Domain:** Packaging, release delivery
 

@@ -33,7 +33,7 @@ python docs/test_docs_build.py -v
 ## Pristine Installation
 
 Pristine setup uses the selected release's canonical
-[Setup Contract](Syspilot%20Processes/setup.md). A bootstrap prompt loads that
+[Setup Contract](Syspilot%20Contracts/setup.md). A bootstrap prompt loads that
 Contract, materializes it as `.syspilot/setup-contract.md`, and asks the
 initiating Copilot session to execute it. The session is a temporary Contract
 executor; Setup is not a persistent actor.

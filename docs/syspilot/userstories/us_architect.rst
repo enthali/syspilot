@@ -1,7 +1,7 @@
-Syspilot Architect
-==================
+Architect
+=========
 
-.. story:: Syspilot Architect
+.. story:: Architect
    :id: SYSP_US_ARCHITECT
    :status: approved
    :priority: mandatory

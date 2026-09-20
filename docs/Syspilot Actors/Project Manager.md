@@ -1,4 +1,4 @@
-# Syspilot Project Manager
+# Project Manager
 
 **Domain:** Strategy, intake, portfolio management<br>
 **Agentless:** Yes — no agent file, no prompt file. Runs as the default Copilot session.

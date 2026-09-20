@@ -6,12 +6,12 @@ Change Contract
    :status: approved
    :implements: SYSP_US_CHANGE_CONTRACT
    :specializes: SYSP_REQ_CONTRACT_HANDLING
-   :realized_by: docs/Syspilot Processes/change.md
+   :realized_by: docs/Syspilot Contracts/change.md
 
    Every modification to versioned source code or documentation shall use a
    Change Contract that:
 
-   - is initialized on a feature branch that the Syspilot Project Manager
+   - is initialized on a feature branch that the Project Manager
      creates from the change name, using a tailored copy of the canonical
      template committed before the first responsibility transfer;
    - carries an ``Operation Mode`` field in its canonical template that offers
@@ -47,7 +47,7 @@ Change Contract
      architecture and specification work;
    - identifies each applicable artifact, its owner, completion evidence, and
      current status;
-   - includes version control as one artifact owned by the Syspilot Project
+   - includes version control as one artifact owned by the Project
      Manager, whose completion evidence is the Change's branch name together
      with its integration state, and whose status is ``active`` while the
      branch carries the work and ``merged`` once that branch has been
@@ -59,7 +59,7 @@ Change Contract
    - limits that version-control authority to creating the Change's branch and
      squash-integrating it into ``development``, and excludes promotion of
      ``development`` to ``main``, which is release publication owned by the
-     Syspilot Release actor within a Release Contract;
+     Release actor within a Release Contract;
    - lets each artifact owner determine the applicability and completeness of
      that owner's artifact;
    - includes user-facing documentation as an optional artifact owned by the

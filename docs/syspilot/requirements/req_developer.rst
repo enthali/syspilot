@@ -1,14 +1,14 @@
-Syspilot Developer
-==================
+Developer
+=========
 
 .. req:: Developer Role
    :id: SYSP_REQ_DEVELOPER
    :status: approved
    :implements: SYSP_US_DEVELOPER
    :specializes: SYSP_REQ_ACTOR_MODEL
-   :realized_by: docs/Syspilot Actors/Syspilot Developer.md
+   :realized_by: docs/Syspilot Actors/Developer.md
 
-   The Syspilot Developer shall:
+   The Developer shall:
 
    - own implementation and unit verification assigned by the applicable
      process;

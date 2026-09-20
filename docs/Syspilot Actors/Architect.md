@@ -1,4 +1,4 @@
-# Syspilot Architect
+# Architect
 
 **Domain:** Technical architecture, design guidelines
 

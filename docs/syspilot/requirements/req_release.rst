@@ -1,14 +1,14 @@
-Syspilot Release
-================
+Release
+=======
 
 .. req:: Release Role
    :id: SYSP_REQ_RELEASE
    :status: approved
    :implements: SYSP_US_RELEASE
    :specializes: SYSP_REQ_ACTOR_MODEL
-   :realized_by: docs/Syspilot Actors/Syspilot Release.md
+   :realized_by: docs/Syspilot Actors/Release.md
 
-   The Syspilot Release actor shall:
+   The Release actor shall:
 
    - own packaging and release delivery assigned by the applicable process;
    - own release preflight verification and release-facing user

@@ -1,14 +1,14 @@
-Syspilot Project Manager
-========================
+Project Manager
+===============
 
 .. req:: Project Manager Role
    :id: SYSP_REQ_PROJECT_MANAGER
    :status: approved
    :implements: SYSP_US_PROJECT_MANAGER
    :specializes: SYSP_REQ_ACTOR_MODEL
-   :realized_by: docs/Syspilot Actors/Syspilot Project Manager.md
+   :realized_by: docs/Syspilot Actors/Project Manager.md
 
-   The Syspilot Project Manager shall:
+   The Project Manager shall:
 
    - own strategy, intake, and portfolio management;
    - establish and prioritize outcome-oriented work with the user;

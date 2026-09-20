@@ -12,11 +12,11 @@ Processes assign artifact ownership, and each Contract Document records current 
 
 | Actor | Domain |
 |---|---|
-| [Syspilot Project Manager](Syspilot%20Project%20Manager.md) | Strategy, intake, portfolio management |
-| [Syspilot Architect](Syspilot%20Architect.md) | Technical architecture, design guidelines |
-| [Syspilot Developer](Syspilot%20Developer.md) | Implementation, unit testing |
-| [Syspilot Tester](Syspilot%20Tester.md) | Adversarial testing |
-| [Syspilot Quality](Syspilot%20Quality.md) | Quality review |
-| [Syspilot Release](Syspilot%20Release.md) | Packaging, release delivery |
-| [Syspilot Research](Syspilot%20Research.md) | Investigation, technical due diligence |
-| [Syspilot Technical Writer](Syspilot%20Technical%20Writer.md) | User-facing product documentation |
+| [Project Manager](Project%20Manager.md) | Strategy, intake, portfolio management |
+| [Architect](Architect.md) | Technical architecture, design guidelines |
+| [Developer](Developer.md) | Implementation, unit testing |
+| [Tester](Tester.md) | Adversarial testing |
+| [Quality](Quality.md) | Quality review |
+| [Release](Release.md) | Packaging, release delivery |
+| [Research](Research.md) | Investigation, technical due diligence |
+| [Technical Writer](Technical%20Writer.md) | User-facing product documentation |

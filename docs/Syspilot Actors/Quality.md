@@ -1,4 +1,4 @@
-# Syspilot Quality
+# Quality
 
 **Domain:** Quality review
 

@@ -1,4 +1,4 @@
-# Syspilot Tester
+# Tester
 
 **Domain:** Adversarial testing
 

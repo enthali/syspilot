@@ -1,7 +1,7 @@
-Syspilot Developer
-==================
+Developer
+=========
 
-.. story:: Syspilot Developer
+.. story:: Developer
    :id: SYSP_US_DEVELOPER
    :status: approved
    :priority: mandatory

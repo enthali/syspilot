@@ -1,4 +1,4 @@
-# Syspilot Technical Writer
+# Technical Writer
 
 **Domain:** User-facing product documentation
 

@@ -1,7 +1,7 @@
-Syspilot Tester
-===============
+Tester
+======
 
-.. story:: Syspilot Tester
+.. story:: Tester
    :id: SYSP_US_TESTER
    :status: approved
    :priority: mandatory

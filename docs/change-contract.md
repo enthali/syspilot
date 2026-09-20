@@ -6,7 +6,7 @@ later.
 
 Every modification to versioned source code or documentation uses a Change
 Contract. The canonical rules live in the
-[Change process](Syspilot%20Processes/change.md); this guide is the human-sized
+[Change process](Syspilot%20Contracts/change.md); this guide is the human-sized
 walkthrough.
 
 The sections below follow the order a Change usually takes. Usually is the

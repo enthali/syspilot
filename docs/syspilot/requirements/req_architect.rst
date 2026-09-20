@@ -1,14 +1,14 @@
-Syspilot Architect
-==================
+Architect
+=========
 
 .. req:: Architect Role
    :id: SYSP_REQ_ARCHITECT
    :status: approved
    :implements: SYSP_US_ARCHITECT
    :specializes: SYSP_REQ_ACTOR_MODEL
-   :realized_by: docs/Syspilot Actors/Syspilot Architect.md
+   :realized_by: docs/Syspilot Actors/Architect.md
 
-   The Syspilot Architect shall:
+   The Architect shall:
 
    - own product architecture, design guidelines, stories, requirements, and
      architecture decisions assigned by the applicable process;

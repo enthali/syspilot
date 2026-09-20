@@ -1,7 +1,7 @@
-Syspilot Quality
-================
+Quality
+=======
 
-.. story:: Syspilot Quality
+.. story:: Quality
    :id: SYSP_US_QUALITY
    :status: approved
    :priority: mandatory

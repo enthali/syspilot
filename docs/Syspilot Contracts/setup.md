@@ -2,7 +2,7 @@
 
 **Status:** preparing | blocked | verified | handed off<br>
 **Executor:** initiating Copilot session<br>
-**Current responsibility:** initiating Copilot session | Syspilot Project Manager<br>
+**Current responsibility:** initiating Copilot session | Project Manager<br>
 **Current blocker:** none | {unmet condition and required action}<br>
 **Target project root:** {path}<br>
 **Provided release tag:** {exact SemVer tag}<br>
@@ -37,7 +37,7 @@ The following list is the Contract-owned installation inventory. Directory jobs 
 |---|---|---|---|---|---|
 | Actor role cards | copy eight files | The eight role cards listed below | `docs/Syspilot Actors/` | release-owned | Exactly the eight listed persistent role cards exist |
 | Actor registry | generate | Eight-actor list below | `docs/Syspilot Actors/index.md` | generated instance | Registry links exactly the eight installed role cards |
-| Contract processes | copy directory | `docs/Syspilot Processes/` | `docs/Syspilot Processes/` | release-owned | Process registry, Contract Documents, Change Process, and Setup Process exist |
+| Contract processes | copy directory | `docs/Syspilot Contracts/` | `docs/Syspilot Contracts/` | release-owned | Process registry, Contract Documents, Change Process, and Setup Process exist |
 | Syspilot skills | copy directory | `.github/skills/` | `.github/skills/` | release-owned | Every release skill contains `SKILL.md` and declared supporting files |
 | Syspilot instructions | copy directory | `.github/instructions/` | `.github/instructions/` | release-owned | Every release instruction matches its verified-commit source identity and `syspilot.contract-handling.instructions.md` exists |
 | Setup record | retain materialized file | This runbook | `.syspilot/setup-contract.md` | generated instance | Status, responsibility, blockers, and evidence remain available with the installed project |
@@ -76,20 +76,20 @@ Generate exactly these eight actors:
 
 | Actor name | Public role card |
 |---|---|
-| Syspilot Project Manager | `docs/Syspilot Actors/Syspilot Project Manager.md` |
-| Syspilot Architect | `docs/Syspilot Actors/Syspilot Architect.md` |
-| Syspilot Developer | `docs/Syspilot Actors/Syspilot Developer.md` |
-| Syspilot Tester | `docs/Syspilot Actors/Syspilot Tester.md` |
-| Syspilot Quality | `docs/Syspilot Actors/Syspilot Quality.md` |
-| Syspilot Release | `docs/Syspilot Actors/Syspilot Release.md` |
-| Syspilot Research | `docs/Syspilot Actors/Syspilot Research.md` |
-| Syspilot Technical Writer | `docs/Syspilot Actors/Syspilot Technical Writer.md` |
+| Project Manager | `docs/Syspilot Actors/Project Manager.md` |
+| Architect | `docs/Syspilot Actors/Architect.md` |
+| Developer | `docs/Syspilot Actors/Developer.md` |
+| Tester | `docs/Syspilot Actors/Tester.md` |
+| Quality | `docs/Syspilot Actors/Quality.md` |
+| Release | `docs/Syspilot Actors/Release.md` |
+| Research | `docs/Syspilot Actors/Research.md` |
+| Technical Writer | `docs/Syspilot Actors/Technical Writer.md` |
 
 Each actor folder contains:
 
 - `actor.yaml` with at least the exact actor `name`;
 - `context.md` whose first durable instruction links to that actor's public role card; and
-- a second durable instruction to read `docs/Syspilot Processes/index.md` at session start and follow every applicable Contract process.
+- a second durable instruction to read `docs/Syspilot Contracts/index.md` at session start and follow every applicable Contract process.
 
 Setup writes these files directly and does not call `jarvis_createActor`. The generated context contains no machine-specific path, session history, or preloaded project decisions.
 
@@ -136,8 +136,8 @@ Record each command, exit status, and concise result. One failed mandatory gate 
 
 ## Phase 7: Hand Off To Project Manager
 
-1. Set current responsibility to `Syspilot Project Manager`, set Contract status to `handed off`, and commit the final Setup record on the target branch.
-2. Send `Installation complete, welcome to this project` to the Syspilot Project Manager with:
+1. Set current responsibility to `Project Manager`, set Contract status to `handed off`, and commit the final Setup record on the target branch.
+2. Send `Installation complete, welcome to this project` to the Project Manager with:
 	- the installation completion summary;
 	- the selected ontology and its configured path; and
 	- instructions to explain the selected ontology's artifact types, statuses, and relationships to the User and ask whether it fits the project.

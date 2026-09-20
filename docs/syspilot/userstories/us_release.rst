@@ -1,7 +1,7 @@
-Syspilot Release
-================
+Release
+=======
 
-.. story:: Syspilot Release
+.. story:: Release
    :id: SYSP_US_RELEASE
    :status: approved
    :priority: mandatory

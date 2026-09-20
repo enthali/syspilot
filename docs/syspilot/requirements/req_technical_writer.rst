@@ -1,14 +1,14 @@
-Syspilot Technical Writer
-=========================
+Technical Writer
+================
 
 .. req:: Technical Writer Role
    :id: SYSP_REQ_TECHNICAL_WRITER
    :status: approved
    :implements: SYSP_US_TECHNICAL_WRITER
    :specializes: SYSP_REQ_ACTOR_MODEL
-   :realized_by: docs/Syspilot Actors/Syspilot Technical Writer.md
+   :realized_by: docs/Syspilot Actors/Technical Writer.md
 
-   The Syspilot Technical Writer shall:
+   The Technical Writer shall:
 
    - own user-facing documentation assigned by the applicable process;
    - own one ``doc`` Need for each independently maintained user-facing

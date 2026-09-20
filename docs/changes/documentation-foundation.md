@@ -181,7 +181,7 @@ Release-facing and historical user-readable surfaces remain outside the six-guid
 
 | Artifact | Change | Verification evidence |
 |---|---|---|
-| `docs/Syspilot Actors/Syspilot Technical Writer.md`, actor roster, and documentation toctree | Realize and expose the user-approved Technical Writer role in the authoritative product model | Clean strict Sphinx build passed with zero warnings; schema validation passed with zero warnings |
+| `docs/Syspilot Actors/Technical Writer.md`, actor roster, and documentation toctree | Realize and expose the user-approved Technical Writer role in the authoritative product model | Clean strict Sphinx build passed with zero warnings; schema validation passed with zero warnings |
 | `docs/Syspilot Processes/change.md` | Realize the optional user-facing documentation artifact, impact review, authority boundaries, and canonical evidence sections | Four focused docs-build tests passed; clean strict Sphinx build passed with zero warnings |
 
 ## Acceptance Testing

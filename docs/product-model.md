@@ -95,7 +95,7 @@ Contracts store current truth, not a transcript. When a blocker is resolved or
 responsibility changes, the current field is replaced. Git already remembers
 the archaeology.
 
-Syspilot's [Change process](Syspilot%20Processes/change.md) is the canonical
+Syspilot's [Change process](Syspilot%20Contracts/change.md) is the canonical
 Contract definition for modifying versioned artifacts. The repository file
 `docs/changes/documentation-foundation.md` is a concrete instance: it records
 the real decisions, ownership, reviews, and evidence behind these guides. One

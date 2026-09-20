@@ -1,14 +1,14 @@
-Syspilot Tester
-===============
+Tester
+======
 
 .. req:: Tester Role
    :id: SYSP_REQ_TESTER
    :status: approved
    :implements: SYSP_US_TESTER
    :specializes: SYSP_REQ_ACTOR_MODEL
-   :realized_by: docs/Syspilot Actors/Syspilot Tester.md
+   :realized_by: docs/Syspilot Actors/Tester.md
 
-   The Syspilot Tester shall:
+   The Tester shall:
 
    - determine the applicability of acceptance testing assigned by the
      applicable process;

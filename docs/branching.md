@@ -16,7 +16,7 @@ other artifact that does not apply. There is no special branch value meaning
 
 ## What the Change Contract Decides
 
-The [Change process](Syspilot%20Processes/change.md) fixes the branch rules that
+The [Change process](Syspilot%20Contracts/change.md) fixes the branch rules that
 matter:
 
 - the Project Manager creates the Change's feature branch from `development`,
@@ -79,7 +79,7 @@ turns out to be wrong months later. The branch keeps them available for
 
 ## Setup Uses Its Own Branch
 
-[Pristine Setup](Syspilot%20Processes/setup.md) brings stricter branch rules,
+[Pristine Setup](Syspilot%20Contracts/setup.md) brings stricter branch rules,
 because it writes into a project that does not know Syspilot yet:
 
 - Setup asks the User to approve a dedicated Setup branch and creates it from

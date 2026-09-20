@@ -1,4 +1,4 @@
-# Syspilot Research
+# Research
 
 **Domain:** Investigation, technical due diligence
 

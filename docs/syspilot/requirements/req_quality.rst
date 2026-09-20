@@ -1,14 +1,14 @@
-Syspilot Quality
-================
+Quality
+=======
 
 .. req:: Quality Role
    :id: SYSP_REQ_QUALITY
    :status: approved
    :implements: SYSP_US_QUALITY
    :specializes: SYSP_REQ_ACTOR_MODEL
-   :realized_by: docs/Syspilot Actors/Syspilot Quality.md
+   :realized_by: docs/Syspilot Actors/Quality.md
 
-   The Syspilot Quality actor shall:
+   The Quality actor shall:
 
    - independently review all applicable artifacts and evidence without
      producing the artifacts it judges;

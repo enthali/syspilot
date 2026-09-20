@@ -6,7 +6,7 @@ Pristine Syspilot Setup
    :status: approved
    :implements: SYSP_US_SETUP
    :specializes: SYSP_REQ_CONTRACT_DOCUMENTS
-   :realized_by: docs/Syspilot Processes/setup.md
+   :realized_by: docs/Syspilot Contracts/setup.md
 
    Pristine Syspilot setup shall use a release-bound Setup Contract that:
 

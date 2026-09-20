@@ -1,7 +1,7 @@
-Syspilot Research
-=================
+Research
+========
 
-.. story:: Syspilot Research
+.. story:: Research
    :id: SYSP_US_RESEARCH
    :status: approved
    :priority: mandatory
