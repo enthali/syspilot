@@ -17,17 +17,27 @@ Contract Handling
      owner whose work can progress the Contract;
    - updates Contract status, artifact evidence, and ``Current
      responsibility``, then commits the Contract and related artifacts as one
-     consistent state before notifying the receiving owner through ``SEND``,
+     consistent state before notifying the receiving owner through a named
+     ``HANDOFF`` message that realizes the Actor Kernel's ``SEND`` primitive,
      intentionally prioritizing single-writer, consistent Contract state over
      uninterrupted handoff communication and accepting the resulting brief
      notification gap;
    - identifies the Contract path, committed state, completed outcome, and
-     remaining work in the handoff notification without redefining the Actor
+     remaining work in the ``HANDOFF`` message without redefining the Actor
      Kernel's messaging transport;
+   - requires the receiving owner to verify, before starting the received
+     work, that the named commit's Contract header actually states
+     ``Current responsibility`` as itself, then to confirm receipt through a
+     named ``ACK`` message that realizes the Actor Kernel's ``RESPOND``
+     primitive when verified, or to escalate instead of acknowledging when it
+     is not;
    - allows every actor to request advice or review from another actor at any
-     time without transferring ``Current responsibility``; during that
-     consultation, the consulting actor remains read-only with respect to the
-     Contract and versioned work artifacts and returns only advice or findings;
+     time through a named ``CONSULT`` message that realizes the Actor Kernel's
+     ``SEND`` primitive, without transferring ``Current responsibility``;
+     during that consultation, the consulting actor remains read-only with
+     respect to the Contract and versioned work artifacts and returns only
+     advice or findings through a named ``CONSULTRESPOND`` message that
+     realizes the Actor Kernel's ``RESPOND`` primitive;
    - does not transfer ``Current responsibility`` for questions or escalation;
      and
    - records an actionable blocker and escalates when no included artifact
@@ -38,4 +48,4 @@ Contract Handling
    :status: approved
    :verifies: SYSP_REQ_CONTRACT_HANDLING
 
-    Inspect the workspace-shared Contract-handling instruction and exercise a completed handoff, a consultation, and a blocked Contract. Confirm that the completed handoff updates evidence, status, and ``Current responsibility`` in one committed state before ``SEND`` notifies the next logical owner; the deliberate notification gap preserves single-writer, consistent Contract state; consultation is available between any actors without transferring responsibility or allowing the consulting actor to modify the Contract or versioned work artifacts; and an unprogressable Contract records and escalates its blocker.
+    Inspect the workspace-shared Contract-handling instruction and exercise a completed ``HANDOFF``, a receiving owner's ``ACK``, a ``CONSULT`` with its ``CONSULTRESPOND``, and a blocked Contract. Confirm that the completed ``HANDOFF`` updates evidence, status, and ``Current responsibility`` in one committed state before it is sent; the deliberate notification gap preserves single-writer, consistent Contract state; the receiving owner's ``ACK`` verifies the named commit's Contract header before confirming and escalates instead of acknowledging on mismatch; ``CONSULT`` and ``CONSULTRESPOND`` are available between any actors without transferring responsibility or allowing the consulting actor to modify the Contract or versioned work artifacts; and an unprogressable Contract records and escalates its blocker.
