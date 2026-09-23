@@ -9,7 +9,8 @@
 .jarvis/
 .jarvis-v1/
 .jarvis-v2/
-.vscode/
+.vscode/*
+!.vscode/syspilot.code-workspace
 managers/
 projects/
 

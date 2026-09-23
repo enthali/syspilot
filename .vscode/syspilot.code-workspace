@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"jarvis.scanInterval": 20,
+		"jarvis.heartbeatInterval": 300,
+		"jarvis.messages.logging": true,
+		"workbench.colorCustomizations": {
+			"titleBar.activeBackground": "#40ff1a",
+			"titleBar.activeForeground": "#111111",
+			"titleBar.inactiveBackground": "default",
+			"statusBar.background": "#40ff1a",
+			"statusBar.foreground": "#111111"
+		}
+	}
+}
