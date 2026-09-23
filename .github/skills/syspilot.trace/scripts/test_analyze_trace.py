@@ -27,10 +27,6 @@ outgoing = "flows to"
 option = "bad_rel"
 incoming = "bad from"
 outgoing = "bad to"
-[[syspilot.type_links]]
-from = "capability"
-to = "capability"
-rel = "flows_to"
 """.strip(),
             encoding="utf-8",
         )
@@ -46,9 +42,9 @@ rel = "flows_to"
         payload = {"versions": {"": {"needs": {need_id: need}}}}
         (self.needs_dir / f"{need_id}.json").write_text(json.dumps(payload), encoding="utf-8")
 
-    def run_cli(self, need_id="N0", depth=1):
+    def run_cli(self, need_id="N0", depth=1, direction="out"):
         return subprocess.run(
-            [sys.executable, str(SCRIPT), need_id, "--depth", str(depth), "--direction", "out", "--ontology", str(self.ontology), "--needs-dir", str(self.needs_dir)],
+            [sys.executable, str(SCRIPT), need_id, "--depth", str(depth), "--direction", direction, "--ontology", str(self.ontology), "--needs-dir", str(self.needs_dir)],
             capture_output=True,
             text=True,
         )
@@ -60,29 +56,45 @@ rel = "flows_to"
                 self.assertEqual(result.returncode, 0, result.stderr)
                 self.assertEqual(json.loads(result.stdout)["neighborhood"], [f"N{index}" for index in range(depth + 1)])
 
-    def test_typed_edges_are_permitted_by_synthetic_ontology(self):
+    def test_typed_edges_are_observed_without_syspilot_graph_metadata(self):
         payload = json.loads(self.run_cli(depth=2).stdout)
         self.assertTrue(payload["edges"])
-        self.assertTrue(all(edge["permitted"] for edge in payload["edges"]))
+        self.assertTrue(all(edge["option"] == "flows_to" and edge["resolved"] for edge in payload["edges"]))
+        self.assertTrue(all("permitted" not in edge for edge in payload["edges"]))
         self.assertIn("semantic-content-review-required", payload["limitations"])
 
-    def test_absent_permitted_relationship_is_not_reported(self):
+    def test_isolated_object_is_observed_without_defect(self):
         self.write_need("OPTIONAL")
         payload = json.loads(self.run_cli("OPTIONAL", depth=1).stdout)
-        self.assertEqual(payload["findings"], [{"kind": "orphan", "object": "OPTIONAL"}])
+        self.assertEqual(payload["neighborhood"], ["OPTIONAL"])
+        self.assertEqual(payload["edges"], [])
+        self.assertEqual(payload["findings"], [])
 
-    def test_unresolved_and_undeclared_edges_are_reported(self):
+    def test_same_type_edge_does_not_infer_semantic_orientation(self):
+        self.write_need("GENERAL", need_type="req", flows_to=["SPECIFIC"])
+        self.write_need("SPECIFIC", need_type="req")
+        result = self.run_cli("GENERAL", depth=1)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertTrue(any(edge["source"] == "GENERAL" and edge["target"] == "SPECIFIC" and edge["option"] == "flows_to" for edge in payload["edges"]))
+        self.assertEqual(payload["findings"], [])
+        self.assertIn("semantic-content-review-required", payload["limitations"])
+
+    def test_unresolved_target_and_other_named_edges_are_observed(self):
         self.write_need("BAD", flows_to=["MISSING"], bad_rel=["N0"])
         result = self.run_cli("BAD", depth=1)
         self.assertEqual(result.returncode, 0, result.stderr)
-        kinds = {finding["kind"] for finding in json.loads(result.stdout)["findings"]}
-        self.assertIn("unresolved-target", kinds)
-        self.assertIn("undeclared-relationship", kinds)
+        payload = json.loads(result.stdout)
+        self.assertEqual([finding["kind"] for finding in payload["findings"]], ["unresolved-target"])
+        self.assertEqual({edge["option"] for edge in payload["edges"]}, {"flows_to", "bad_rel"})
+        self.assertTrue(any(edge["option"] == "bad_rel" and edge["resolved"] for edge in payload["edges"]))
 
-    def test_orphan_is_reported_without_requiredness_finding(self):
-        self.write_need("ORPHAN")
-        result = self.run_cli("ORPHAN", depth=1)
-        self.assertEqual(json.loads(result.stdout)["findings"], [{"kind": "orphan", "object": "ORPHAN"}])
+    def test_incoming_edge_preserves_source_target_and_name(self):
+        self.write_need("N1", flows_to_back=["N0"])
+        result = self.run_cli("N1", depth=1, direction="in")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        edges = json.loads(result.stdout)["edges"]
+        self.assertTrue(any(edge["source"] == "N0" and edge["target"] == "N1" and edge["option"] == "flows_to" and edge["direction"] == "in" for edge in edges))
 
     def test_current_v2_uses_typed_impact_discovery(self):
         project_root = Path(__file__).resolve().parents[4]

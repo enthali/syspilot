@@ -11,9 +11,10 @@ Ontology Management
    ``.syspilot/ontology.toml``, including:
 
    - the separation between Sphinx-Needs configuration under ``[needs]`` and
-     syspilot-specific metadata under ``[syspilot]``;
+     optional syspilot-specific metadata under ``[syspilot]``;
    - the v2 Need types, statuses, extra options, and extra links;
-   - the v2 ``type_links`` relationships and status-transition metadata; and
+   - the absence of a required Syspilot type-pair or status-transition schema;
+     configured link kinds and statuses come from ``[needs]``; and
    - the absence of centralized artifact-owner or actor-name assignments,
      because applicable Contracts declare ownership and responsibility.
 
@@ -27,8 +28,9 @@ Ontology Management
 
    Compare the realized Ontology skill with ``.syspilot/ontology.toml`` and
    confirm that every described section and example exists in the v2 schema,
-   removed v1 types and actor ownership are absent, and ownership is assigned to
-   applicable Contracts rather than the ontology.
+   removed v1 types, mandatory Syspilot graph and transition metadata, and
+   actor ownership are absent, and ownership is assigned to applicable
+   Contracts rather than the ontology.
 
 .. req:: Contract-Owned Ontology Editing And Validation
    :id: SYSP_REQ_ONTOLOGY_EDITING
@@ -39,8 +41,9 @@ Ontology Management
    When an applicable Contract includes an ontology change, the Ontology skill
    shall provide technical instructions to:
 
-   - edit Need types, statuses, extra options, extra links, type relationships,
-     or status transitions represented by the current schema;
+   - edit Need types, statuses, extra options, extra links, and other
+     project-configured Sphinx-Needs options represented by the current schema,
+     without requiring Syspilot graph or transition metadata;
    - preserve unrelated existing project ontology content and Setup's rule that
      installs the baseline ontology only when none exists;
    - record the decision, responsibility, affected artifacts, and evidence in
@@ -59,6 +62,7 @@ Ontology Management
 
    Inspect the realized skill and exercise a representative Contract-owned
    ontology edit. Confirm that the instructions cover only current schema
-   surfaces, preserve unrelated content and Setup baseline behavior, place
-   governance and evidence in the Contract, contain no separate CR or migration
-   gate, and require a strict documentation build with zero schema warnings.
+   surfaces without a mandatory Syspilot graph or transition schema, preserve
+   unrelated content and Setup baseline behavior, place governance and evidence
+   in the Contract, contain no separate CR or migration gate, and require a
+   strict documentation build with zero schema warnings.

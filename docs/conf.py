@@ -24,8 +24,6 @@ def _generate_ontology_reference(app):
         data = tomllib.load(f)
 
     needs = data.get("needs", {})
-    syspilot = data.get("syspilot", {})
-
     lines = [
         "<!-- AUTO-GENERATED — do not edit manually. Regenerated on every sphinx-build. -->",
         "",
@@ -44,34 +42,6 @@ def _generate_ontology_reference(app):
             lines.append(
                 f"| `{t['directive']}` | {t['title']} | {t['prefix']} | {t['color']} |"
             )
-        lines.append("")
-
-    # --- Type Relationship Diagram ---
-    type_links = syspilot.get("type_links", [])
-    if type_links:
-        lines.append("## Type Relationships")
-        lines.append("")
-        lines.append("```{mermaid}")
-        lines.append("flowchart BT")
-        for link in type_links:
-            lines.append(f"    {link['from']} -->|{link['rel']}| {link['to']}")
-        lines.append("```")
-        lines.append("")
-
-    # --- Lifecycle Diagram ---
-    transitions = syspilot.get("status_transitions", {})
-    universal = transitions.get("universal", [])
-    universal_exit = transitions.get("universal_exit", [])
-    if universal:
-        lines.append("## Status Lifecycle")
-        lines.append("")
-        lines.append("```{mermaid}")
-        lines.append("stateDiagram-v2")
-        for tr in universal:
-            lines.append(f"    {tr['from']} --> {tr['to']}")
-        for exit_status in universal_exit:
-            lines.append(f"    [*] --> {exit_status} : from any")
-        lines.append("```")
         lines.append("")
 
     output_path.write_text("\n".join(lines), encoding="utf-8")

@@ -1,6 +1,6 @@
 [syspilot]
 schema_version = "2.0"
-description = "syspilot v2 ontology — sphinx-needs reads [needs] directly; [syspilot.*] sections are syspilot-specific metadata."
+description = "syspilot v2 ontology — sphinx-needs reads [needs] directly; the [syspilot] schema version labels the baseline."
 
 # ---------------------------------------------------------------------------
 # sphinx-needs configuration (read directly by sphinx-needs via needs_from_toml)
@@ -113,7 +113,7 @@ description = "Deprecated - No longer used"
 # Extra Link Types
 # ---------------------------------------------------------------------------
 
-# US -> root. Self-declared entry-point membership (see [[syspilot.type_links]]).
+# US -> root. Self-declared entry-point membership.
 [[needs.extra_links]]
 option = "tracked_by"
 incoming = "tracks"
@@ -151,80 +151,3 @@ outgoing = "verifies"
 option = "includes"
 incoming = "included_in"
 outgoing = "includes"
-
-# ===========================================================================
-# syspilot-specific sections (ignored by sphinx-needs, read by agents/tooling)
-# ===========================================================================
-#
-# NOTE: no [syspilot.actors] ownership table in v2. Per AD-6, artifact
-# ownership is declared per process/checklist (see docs/Syspilot Processes/),
-# not centrally in the ontology. A type can legitimately have different
-# owners in different processes (e.g. a REQ owned by the Architect in one
-# process, by the PM in an emergency-patch process).
-
-# ---------------------------------------------------------------------------
-# Type Link Relationships — directed, bottom-up relationships between types
-# ---------------------------------------------------------------------------
-
-[[syspilot.type_links]]
-from = "story"
-to   = "root"
-rel  = "tracked_by"
-
-[[syspilot.type_links]]
-from = "req"
-to   = "story"
-rel  = "implements"
-
-[[syspilot.type_links]]
-from = "req"
-to   = "req"
-rel  = "specializes"
-
-[[syspilot.type_links]]
-from = "ac"
-to   = "story"
-rel  = "validates"
-
-[[syspilot.type_links]]
-from = "vc"
-to   = "req"
-rel  = "verifies"
-
-[[syspilot.type_links]]
-from = "doc"
-to   = "req"
-rel  = "includes"
-
-# ---------------------------------------------------------------------------
-# Status Transitions — lifecycle state machine
-# ---------------------------------------------------------------------------
-
-[syspilot.status_transitions]
-# Universal transitions (apply to all types unless overridden)
-universal = [
-  { from = "draft",       to = "approved" },
-  { from = "draft",       to = "open" },
-  { from = "open",        to = "draft" },
-  { from = "open",        to = "approved" },
-  { from = "approved",    to = "implemented" },
-  { from = "implemented", to = "verified" },
-  { from = "approved",    to = "draft" },
-]
-
-# deprecated is a universal exit — reachable from any status
-universal_exit = ["deprecated"]
-
-# Type-specific overrides (replace universal for that type)
-[syspilot.status_transitions.overrides.story]
-transitions = [
-  { from = "draft",    to = "approved" },
-  { from = "approved", to = "verified" },
-  { from = "approved", to = "draft" },
-]
-
-# The root is a stable anchor, not a work item in progress.
-[syspilot.status_transitions.overrides.root]
-transitions = [
-  { from = "draft", to = "approved" },
-]

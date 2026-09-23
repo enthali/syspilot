@@ -19,8 +19,8 @@ Quality Review Methods
    Two methods answer different questions. Horizontal coverage analysis
    compares an object with its comparable peers and exposes overlap,
    duplication, contradiction, and missing coverage. Relationship analysis
-   follows an object's declared relationships and exposes invalid, missing,
-   or semantically inconsistent connections. Both methods report findings to
+   follows an object's observed relationships and exposes unresolved or
+   semantically inconsistent connections. Both methods report findings to
    the applicable Contract, which retains scope and decision authority.
 
 .. ac:: Both review methods produce inspectable evidence

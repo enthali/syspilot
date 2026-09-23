@@ -59,16 +59,11 @@ Quality Review Methods
    - obtain that traversal from the ontology-driven discovery realized for
      ``SYSP_REQ_IMPACT_QUERY``, so depth handling, de-duplication, and cycle
      protection retain a single verified implementation;
-   - evaluate each discovered relationship against the relationship types and
-     directions declared by the active ontology, and report relationships
-     whose target does not resolve and relationships whose type or direction
-     the ontology does not declare between the connected types;
-   - report objects that hold no declared relationship in either direction as
-     orphans, which is detectable without requiredness information;
-   - treat the relationships the active ontology declares for a type as
-     permitted rather than required, because the current ontology expresses no
-     requiredness or cardinality, and therefore not report the absence of a
-     permitted relationship as a finding;
+   - report observed link names and directions from the project's configured
+     Sphinx-Needs links and exported Needs data, including unresolved targets,
+     without requiring Syspilot type-pair metadata;
+   - not infer missing required links, graph completeness, or the semantic
+     correctness of same-type links from observed type pairs;
    - assess whether each linked object's content remains semantically
      consistent with the analyzed object, including relationships that exist
      but were not touched by the change under review; and
@@ -80,9 +75,9 @@ Quality Review Methods
    the applicable Contract. It reports findings and shall not correct
    artifacts, decide scope, or transfer responsibility.
 
-   Reporting an absent relationship as a defect requires an ontology that
-   expresses requiredness or cardinality. That is outside this capability
-   unless a future Contract explicitly includes it.
+   Reporting an absent relationship as a defect requires an explicit
+   requiredness rule. That is outside this capability unless a future Contract
+   explicitly includes it.
 
 .. vc:: Trace reports a depth-bounded typed relationship assessment
    :id: SYSP_VC_TRACE_ANALYSIS_1
@@ -91,14 +86,12 @@ Quality Review Methods
 
    Run focused automated tests that confirm a caller-selected depth returns
    the corresponding relationship neighborhood for depths one through four and
-   a deeper requested value; that relationship type and direction are
-   evaluated against the active ontology's declared type relationships on both
-   current v2 data and a synthetic ontology using different type and
-   relationship names; and that unresolved targets, undeclared relationship
-   types or directions, and orphans holding no declared relationship in either
-   direction are each reported. Confirm that an object which legitimately omits
-   a permitted but optional relationship, such as a Requirement without
-   ``specializes``, produces no finding. Confirm that the traversal is
-   obtained from the discovery realized for ``SYSP_REQ_IMPACT_QUERY`` rather
-   than a second traversal implementation, and that ``SKILL.md`` claims no
-   authority to modify artifacts, decide scope, or transfer responsibility.
+   a deeper requested value; that named forward and backward links preserve
+   observed source and target on current v2 data and a synthetic project
+   ontology without Syspilot graph metadata; and that unresolved targets are
+   reported without inferring missing optional links, orphan status, graph
+   completeness, or semantic correctness of a same-type link. Confirm that
+   the traversal is obtained from the discovery realized for
+   ``SYSP_REQ_IMPACT_QUERY`` rather than a second traversal implementation,
+   and that ``SKILL.md`` claims no authority to modify artifacts, decide
+   scope, or transfer responsibility.

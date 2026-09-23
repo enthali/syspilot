@@ -26,15 +26,18 @@ that the project has never assigned.
 ### 2. Design the Project Ontology
 
 The ontology defines what the project can trace: artifact types, statuses,
-relationships, and structural rules. Syspilot currently realizes its own
+options, and named link kinds. Syspilot currently realizes its own
 ontology with Sphinx-Needs and `.syspilot/ontology.toml`. This is the currently
 supported realization.
 
-The file separates Sphinx-Needs configuration under `[needs]` from Syspilot
-metadata under `[syspilot]`. It defines current Need types, statuses, options,
-typed relationships, and status transitions. It does not assign artifacts to
-actors: the applicable Contract declares ownership, Current responsibility,
-decisions, and evidence for each change.
+The `[needs]` configuration declares Need types, statuses, options, and named
+link kinds. Links stored on Needs point outward; Sphinx-Needs also exports
+incoming backlinks for traversal. Neither Syspilot type-pair rules nor status
+transition metadata is required to navigate those relationships. The
+`[syspilot]` schema version is a descriptive baseline label, not a graph
+input. The ontology does not assign artifacts to actors: the applicable
+Contract declares ownership, Current responsibility, decisions, and evidence
+for each change.
 
 This is the one level worth slowing down for. The ontology decides what the
 project is able to say about its artifacts, including the ones already written.

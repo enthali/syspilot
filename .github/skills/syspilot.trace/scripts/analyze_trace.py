@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Evaluate Impact-discovered typed edges against active ontology rules."""
+"""Report Impact-discovered typed edges and unresolved targets."""
 
 import argparse
 import importlib.util
 import json
 import sys
-import tomllib
 from pathlib import Path
 
 
@@ -24,35 +23,16 @@ def load_impact_module():
     return module
 
 
-def load_rules(ontology_path: Path) -> list[dict]:
-    try:
-        with ontology_path.open("rb") as ontology_file:
-            ontology = tomllib.load(ontology_file)
-    except (OSError, tomllib.TOMLDecodeError) as error:
-        raise ValueError(f"Cannot read ontology {ontology_path}: {error}") from error
-    rules = ontology.get("syspilot", {}).get("type_links")
-    if not isinstance(rules, list):
-        raise ValueError(f"Invalid ontology {ontology_path}: syspilot.type_links is missing")
-    for rule in rules:
-        if not isinstance(rule, dict) or not all(isinstance(rule.get(key), str) for key in ("from", "to", "rel")):
-            raise ValueError(f"Invalid ontology {ontology_path}: malformed type link")
-    return rules
-
-
 def analyze(need_id: str, depth: int, direction: str, ontology_path: Path, needs_dir: Path) -> dict:
     impact = load_impact_module()
     link_options = impact.load_link_options(ontology_path)
-    rules = load_rules(ontology_path)
     root = impact.get_need(need_id, needs_dir)
     if not root:
         raise ValueError(f"Need {need_id} not found")
     edges = impact.trace_typed_edges(need_id, needs_dir, link_options, depth, direction)
     object_ids = {need_id}
-    object_depths = {need_id: 0}
     for edge in edges:
         object_ids.update((edge["source"], edge["target"]))
-        neighbor_id = edge["source"] if edge["direction"] == "in" else edge["target"]
-        object_depths[neighbor_id] = min(object_depths.get(neighbor_id, edge["depth"]), edge["depth"])
     objects = {object_id: impact.get_need(object_id, needs_dir) for object_id in sorted(object_ids)}
 
     findings = []
@@ -64,26 +44,9 @@ def analyze(need_id: str, depth: int, direction: str, ontology_path: Path, needs
         assessed["source_type"] = source.get("type") if source else None
         assessed["target_type"] = target.get("type") if target else None
         assessed["resolved"] = source is not None and target is not None
-        assessed["permitted"] = assessed["resolved"] and any(
-            rule["from"] == assessed["source_type"]
-            and rule["to"] == assessed["target_type"]
-            and rule["rel"] == edge["option"]
-            for rule in rules
-        )
         assessed_edges.append(assessed)
         if not assessed["resolved"]:
             findings.append({"kind": "unresolved-target", "edge": edge})
-        elif not assessed["permitted"]:
-            findings.append({"kind": "undeclared-relationship", "edge": edge})
-
-    for object_id, need in objects.items():
-        if not need or object_depths.get(object_id, depth) >= depth:
-            continue
-        object_type = need.get("type")
-        expected = [rule for rule in rules if rule["from"] == object_type or rule["to"] == object_type]
-        incident = [edge for edge in assessed_edges if edge["source"] == object_id or edge["target"] == object_id]
-        if expected and not incident:
-            findings.append({"kind": "orphan", "object": object_id})
 
     return {
         "object": need_id,

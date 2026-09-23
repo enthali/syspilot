@@ -136,10 +136,11 @@ responsibility boundaries that collide. The peer set is a deliberate choice and
 is reported: either the peers in the same document, or every peer of that type.
 
 **Relationship analysis** walks the object's declared relationships to a chosen
-depth and checks them against what the ontology actually permits. It reports
-targets that do not resolve, relationship types or directions the ontology never
-declared, expected links that are missing, objects holding no relationships at
-all, and neighbours whose content drifted while nobody was editing them.
+depth and reports observed named links in their direction, targets that do not
+resolve, and objects with no observed links in the selected neighborhood. It
+cannot infer which links ought to exist, whether the graph is complete, or
+whether a same-type link points to the semantically right neighbor. Reviewing
+the meaning and coverage of those relationships remains a human judgment.
 
 Both methods are read-only, and both record their scope, evidence, findings, and
 limits — including what they could not check. A method that reports nothing
