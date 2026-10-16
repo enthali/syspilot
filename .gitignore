@@ -61,6 +61,7 @@ docs/build.log
 
 # jarvis runtime hooks (installed/generated locally, not product content)
 .github/hooks/
+.github/agents/
 
 # BEGIN JARVIS MANAGED (see jarvis.gitignore.autoManage)
 .jarvis/logs/

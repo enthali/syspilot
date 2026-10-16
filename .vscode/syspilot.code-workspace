@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": ".."
+		},
+		{
+			"path": "../../actor-context"
 		}
 	],
 	"settings": {
@@ -14,6 +17,8 @@
 			"titleBar.inactiveBackground": "default",
 			"statusBar.background": "#40ff1a",
 			"statusBar.foreground": "#111111"
-		}
+		},
+		"jarvis.actors.folder": "C:\\workspace\\actor-context\\syspilot",
+		"jarvis.actor.autoProvision": true
 	}
 }
