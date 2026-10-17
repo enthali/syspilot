@@ -3,7 +3,7 @@ description: "Primary syspilot setup entry point. Directly invokes the determini
 tools: [execute]
 user-invocable: true
 agents: []
-version: v0.9.1.1
+version: v0.9.1.2
 ---
 
 # syspilot Setup Bootloader

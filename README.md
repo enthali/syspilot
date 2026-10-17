@@ -130,5 +130,5 @@ setup is required.
 
 ## License
 
-[Apache License 2.0](LICENSE)
+This project is licensed under the MIT License. You are free to use, copy, modify, merge, publish, distribute, sublicense, and sell copies of the software, provided that the copyright notice and this permission notice are included in all copies or substantial portions of the software. The software is provided "as is", without warranty of any kind. See [LICENSE](LICENSE) for the full license text.
 
