@@ -2400,7 +2400,7 @@ class TestRealProductAcceptance(unittest.TestCase):
 
         self.assertEqual(metadata["tools"], ["execute"])
         self.assertEqual(metadata["agents"], [])
-        self.assertEqual(metadata["version"], "v0.9.1.1")
+        self.assertEqual(metadata["version"], "v0.9.1.2")
 
     def test_vscode_change_manager_bootstrap_configuration(self):
         target_agent_files = (

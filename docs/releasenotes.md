@@ -6,6 +6,16 @@
 > consistent; CalVer was a brief interlude, reverted per the Release Agent
 > Tailoring Workflow (see `release-agent-tailoring-semver`).
 
+## v0.9.1.2 - 2026-10-17
+
+### Summary
+
+Patch release correcting license metadata: the `LICENSE` copyright holders are now Georg Doll and Dr. Hubertus Becker, and the README license section describes the MIT License. No runtime or agent behavior changes.
+
+### Included Change Documents
+
+- None. The license correction (PR #7) has no change document.
+
 ## v0.9.1.1 - 2026-09-19
 
 ### Summary
