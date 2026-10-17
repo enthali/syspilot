@@ -105,7 +105,12 @@ Meta-level definitions of Soul, Duties, and Workflow concepts.
      skeleton itself contains zero project-specific nouns. The file may be
      empty (proceed generic), clarify, or override. If missing, the agent
      RESPONDs to PM (or, if the agent *is* PM, runs its own Tailoring Workflow
-     directly), who interviews the user and authors it.
+     directly), who interviews the user and authors it. Because VS Code
+     detects any ``.md`` file in ``.github/agents/`` as a selectable custom
+     agent, every tailoring file begins with its own frontmatter block
+     (``user-invocable: false``, ``disable-model-invocation: true``) so it
+     never appears in the agent picker or accepts subagent invocation despite
+     living next to its agent.
 
    * **Implementation Template** — Every customizable agent's Workflow section
      SHALL begin with a Preflight sentence of the form:
@@ -126,7 +131,7 @@ Meta-level definitions of Soul, Duties, and Workflow concepts.
 
 .. spec:: Frontmatter Field Schema
    :id: SYSP_SPEC_AGENT_ARCH_FRONTMATTER
-   :status: draft
+   :status: approved
    :tags: agent-v2, meta, architecture, frontmatter
    :links: SYSP_REQ_AGENT_ARCH_FRONTMATTER
 
@@ -137,25 +142,20 @@ Meta-level definitions of Soul, Duties, and Workflow concepts.
 
    * **description** (string, required) — One-sentence summary of the agent's
      purpose. Used by VS Code Copilot for agent discovery and selection.
-   * **tools** (list of strings, optional) — Omitted by every agent except the
-     Setup Bootloader. When omitted, the agent inherits whatever tools are
-     enabled on the user's default VS Code agent. The Setup Bootloader is the
-     sole exception: its one synchronous ``agent/runSubagent`` call to the
-     Installer is a structural bootstrap mechanism, so it carries an explicit,
-     hardcoded ``tools:`` list.
+   * **tools** (list of strings, optional) — Omitted from source agents. When
+     omitted, the agent inherits whatever tools are enabled on the user's
+     default VS Code agent; a harness adapter may emit only native capability
+     metadata required for the role.
    * **user-invocable** (boolean, required) — Whether users can invoke the agent
      directly via ``@syspilot.<name>``. Every agent except the Setup Bootloader
      and the Installer is ``true``; the Bootloader and Installer are the
      bootstrap layer.
    * **agents** (list of strings, required) — Agents this agent may SEND work to.
      Empty list ``[]`` if the agent has no SEND targets.
-   * **name** (string, required except Bootloader/Installer) — Human-readable
-     session name under which a session can be addressed (e.g. ``Project Manager``).
-     The Setup Bootloader and the Installer omit this field — they never run as a
-     session.
-   * **agent** (string, required except Bootloader/Installer) — The agent
-     identifier used when materializing the session (e.g. ``syspilot.pm``). The
-     Setup Bootloader and the Installer omit this field.
+   * **name** (string, optional) — Human-readable agent name where consumed by
+     a harness; it is not an installation-time session identity.
+   * **agent** (string, optional) — Agent identifier where consumed by a
+     harness; the Installer does not materialize sessions or actors from it.
    * **handover** (string, optional) — Target agent for handover delegation.
      Currently unused by all agents.
    * **version** (string, optional, default: absent) — The installed syspilot
@@ -174,14 +174,9 @@ Meta-level definitions of Soul, Duties, and Workflow concepts.
       agent: syspilot.pm
       ---
 
-   **Constraint:** The Setup Bootloader's ``tools:`` field MUST include
-   ``agent/runSubagent`` — its only per-agent tool exception — because it
-   invokes the Installer synchronously. No other agent declares ``tools:``
-   or ``agent/runSubagent``.
-
-   **Session identity:** The ``name:`` and ``agent:`` fields are read by the
-   Installer to create session scaffolds (SYSP_SPEC_INSTALLER_SESSION_SCAFFOLD).
-   The Setup Bootloader and the Installer carry neither field.
+   **Constraint:** Setup declares no Installer subagent and no
+   ``agent/runSubagent`` dependency. It directly executes the deterministic
+   local runtime. The Installer creates no sessions or actors from frontmatter.
 
 
 .. spec:: Prompt File Definition

@@ -6,7 +6,7 @@ Design specifications defining the structure and content of each documentation f
 
 .. spec:: README Structure
    :id: SYSP_SPEC_DOC_README
-   :status: draft
+   :status: approved
    :tags: agent-v2, documentation, external, readme
    :links: SYSP_REQ_DOC_README, SYSP_SPEC_AGENT_ARCH_SOUL, SYSP_SPEC_PM_SOUL, SYSP_SPEC_CM_SOUL, SYSP_SPEC_QM_SOUL, SYSP_SPEC_DESIGN_SOUL, SYSP_SPEC_IMPLEMENT_SOUL, SYSP_SPEC_UAT_SOUL, SYSP_SPEC_DOCU_SOUL, SYSP_SPEC_MECE_SOUL, SYSP_SPEC_TRACE_SOUL, SYSP_SPEC_RELEASE_SOUL, SYSP_SPEC_SETUP_SOUL
 
@@ -16,18 +16,20 @@ Design specifications defining the structure and content of each documentation f
 
    * Logo and tagline ("Requirements Engineering that scales with AI")
    * Value proposition (O(affected) not O(total))
-   * Quick Start section with platform-specific install commands (Linux/Mac, Windows)
+   * Getting Started section with one remote PEP 723 command per supported harness
    * Agent table listing 8 agents with brief descriptions
    * "How It Works" diagram showing the US → REQ → SPEC link chain
    * Link to full documentation site
-   * Requirements (VS Code + GitHub Copilot, Python 3.10+)
+   * Requirements (Git, ``uv``, target Git repository, selected harness)
    * License (Apache 2.0)
 
    **Required Sections:**
 
    1. Logo and tagline
    2. Value proposition / elevator pitch
-   3. Quick Start with install commands per platform
+   3. Concise Getting Started with prerequisites and separate commands for
+      VS Code GitHub Copilot (``vscode``), Claude Code (``claude``), OpenCode
+      (``opencode``), and Qoder (``qoder``)
    4. Agent overview table
    5. How it works (specification link chain)
    6. Link to full docs
@@ -35,8 +37,21 @@ Design specifications defining the structure and content of each documentation f
    8. License
 
    **Status Notes:**
-   The README currently covers the v2 agent architecture with 8 agents.
-   Needs review to confirm the agent table matches the current agent set.
+   The Getting Started section uses the per-harness structure and
+   separate-install principle: run the command in the target Git repository,
+   repeat it unchanged for updates, and run it once for each harness used.
+   It contains no pip or bare-Python setup and no Setup pre-placement. Optional
+   repository/branch arguments are shown without obscuring the default command.
+   Claude Code installation and authentication are external prerequisites for
+   the ``claude`` target. Qoder availability is an external prerequisite for
+   the ``qoder`` target. VS Code GitHub Copilot, Claude Code, and OpenCode are
+   presented as production-supported; Qoder is presented as an explicitly
+   disclosed experimental, installable harness whose accepted installability
+   evidence is deterministic package staging, with native import and
+   Manager-to-Engineer orchestration parity disclosed as deferred future
+   scope. All four use project-scoped native artifacts and require no
+   hand-edited personal or global harness configuration. Product-facing text
+   uses only ``Claude Code`` and never an environment-specific launcher name.
 
 
 .. spec:: Methodology Structure

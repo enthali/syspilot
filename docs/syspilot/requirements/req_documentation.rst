@@ -12,8 +12,10 @@ Requirements for external and internal documentation artifacts.
    :links: SYSP_US_DOC_EXTERNAL
 
    **Description:**
-   The README.md SHALL provide installation instructions, project overview,
-   and quick-start guide.
+   The README.md SHALL provide production installation instructions for VS Code
+   GitHub Copilot, Claude Code, and OpenCode, disclosed experimental-tier
+   installation instructions for Qoder, a project overview, and a
+   quick-start guide.
 
    **Rationale:**
    The README is the first file users encounter. It must convey what syspilot
@@ -22,9 +24,19 @@ Requirements for external and internal documentation artifacts.
    **Acceptance Criteria:**
 
    * AC-1: README contains a project overview explaining the core value proposition
-   * AC-2: README contains platform-specific installation instructions (Linux/Mac, Windows)
-   * AC-3: README contains a quick-start section or link to getting started
+   * AC-2: README Getting Started lists Git and ``uv`` as prerequisites and
+     contains separate remote PEP 723 production install commands for VS
+     Code GitHub Copilot (``vscode``), Claude Code (``claude``), and
+     OpenCode (``opencode``), plus a disclosed experimental-tier install
+     command for Qoder (``qoder``)
+   * AC-3: README states that commands run in the target Git repository, are
+     rerun unchanged for updates, and accept optional repository/branch inputs
    * AC-4: README lists available agents with brief descriptions
+   * AC-5: README does not require pip, bare Python setup, or pre-placement of
+     Setup; it identifies VS Code GitHub Copilot, Claude Code, and OpenCode as
+     production-supported and Qoder as an explicitly disclosed experimental,
+     installable harness
+   * AC-6: README states that Claude Code installation and authentication are external prerequisites when Claude Code is selected
 
 
 .. req:: Methodology Documentation

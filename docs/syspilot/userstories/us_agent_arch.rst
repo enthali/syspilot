@@ -6,7 +6,7 @@ Meta-level definition of the Soul/Duties/Workflow agent structure.
 
 .. story:: Clean Agent Architecture
    :id: SYSP_US_AGENT_ARCH
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, meta, architecture
 
@@ -50,3 +50,7 @@ Meta-level definition of the Soul/Duties/Workflow agent structure.
    5. Given any behavioural item describing the agent's work, When placed in the agent definition, Then it appears in exactly one of Duties or Workflow — never both
    6. Given any agent, When its frontmatter is installed, Then it declares no ``tools:`` field — the agent inherits whatever tools are enabled on the user's default VS Code agent, with no product-prescribed list to drift out of sync
    7. Given any agent with a Workflow section, When the workflow contains project-specific steps (paths, commands, tool names), Then those bindings are captured in a sibling tailoring file (``syspilot.<name>.tailoring.md``) rather than hardcoded in the agent definition — the agent file remains project-neutral
+   8. Given an agent definition is installed onto another harness, When its
+      native representation differs from VS Code, Then portability and
+      content-invariance behavior is governed exclusively by
+      ``SYSP_US_HARNESS_PORTABILITY``

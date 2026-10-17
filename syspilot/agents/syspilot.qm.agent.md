@@ -2,9 +2,8 @@
 name: "Quality Manager"
 agent: syspilot.qm
 description: "Independent quality guardian that dispatches MECE and Trace engineers, consolidates findings, and produces Findings Reports addressed to PM."
-model: Claude Haiku 4.5 (copilot)
 user-invocable: true
-agents: []
+agents: ["MECE Engineer", "Trace Engineer", "Project Manager"]
 ---
 
 # syspilot Quality Manager

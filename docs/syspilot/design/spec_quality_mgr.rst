@@ -113,6 +113,11 @@ Quality Manager Design
 
    * **description:** ``"Independent quality guardian that dispatches MECE and Trace engineers, consolidates findings, and produces Findings Reports addressed to PM."``
    * **user-invocable:** ``true``
-   * **agents:** ``[]``
+   * **agents:** ``["MECE Engineer", "Trace Engineer", "Project Manager"]`` —
+     VS Code matches these entries exactly against each target's frontmatter
+     ``name:`` value
+   * **target agent identities:** ``syspilot.mece``, ``syspilot.trace``,
+     ``syspilot.pm`` — stable internal/native identities declared by each
+     target's frontmatter ``agent:``
 
    **File:** ``syspilot.qm.agent.md``

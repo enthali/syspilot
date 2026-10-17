@@ -27,10 +27,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
         with:
           python-version: '3.11'
+
+      - name: Run installer tests
+        run: uv run --python 3.11 --with-requirements docs/requirements.txt python -m unittest discover -s tests -v
+
+      - name: Run documentation helper tests
+        run: uv run --python 3.11 --with-requirements docs/requirements.txt python -m unittest docs.test_docs_build
       
       - name: Extract version from tag
         id: tag_version
@@ -87,32 +93,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
         with:
           python-version: '3.11'
+          enable-cache: true
+          cache-dependency-glob: docs/requirements.txt
       
       - name: Install Graphviz
         run: sudo apt-get update && sudo apt-get install -y graphviz
       
-      - name: Install Python dependencies
-        run: |
-          pip install -r docs/requirements.txt
-      
       - name: Build Sphinx documentation
-        run: |
-          cd docs
-          sphinx-build -b html . _build/html
-      
-      - name: Check for Sphinx errors
-        run: |
-          if [ -f docs/_build/html/sphinx-build.log ]; then
-            if grep -i "error" docs/_build/html/sphinx-build.log; then
-              echo "ERROR: Sphinx build errors found"
-              exit 1
-            fi
-          fi
-          echo "✅ Documentation built successfully"
+        run: uv run --python 3.11 --with-requirements docs/requirements.txt python docs/docs-build.py clean
       
       - name: Upload documentation artifact
         uses: actions/upload-artifact@v4

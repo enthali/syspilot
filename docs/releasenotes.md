@@ -6,6 +6,30 @@
 > consistent; CalVer was a brief interlude, reverted per the Release Agent
 > Tailoring Workflow (see `release-agent-tailoring-semver`).
 
+## v0.9.1.2 - 2026-10-17
+
+### Summary
+
+Patch release correcting license metadata: the `LICENSE` copyright holders are now Georg Doll and Dr. Hubertus Becker, and the README license section describes the MIT License. No runtime or agent behavior changes.
+
+### Included Change Documents
+
+- None. The license correction (PR #7) has no change document.
+
+## v0.9.1.1 - 2026-09-19
+
+### Summary
+
+Exceptional four-component release delivering production support for Claude Code, harness-portable deterministic installation, corrected synchronous agent orchestration, and hidden project-tailoring files. Qoder is available as an explicitly experimental target with deterministic, checksummed package staging; native application import and orchestration remain deferred.
+
+### Included Change Documents
+
+- **Agent orchestration fix** (`agent-orchestration-fix.md`) - Corrects invocation visibility and complete `runSubagent` allowlists, removes model pins, and selects the synchronous orchestration variant for this workspace.
+- **Harness interoperability** (`harness-interop.md`) - Introduces the deterministic installer runtime and native adaptation for VS Code, Claude Code, OpenCode, and staged Qoder packages, including transactional update and rollback behavior.
+- **Hide tailoring files from picker** (`hide-tailoring-files-from-picker.md`) - Marks instance tailoring files as non-invocable and codifies that requirement for future tailoring files.
+- **Production Claude Code and Qoder scope** (`production-claude-qoder.md`) - Promotes Claude Code to the production-parity tier and defines Qoder's experimental, installable package-staging tier with deferred native import and orchestration.
+- **Production Claude Code and Qoder validation** (`val-production-claude-qoder.md`) - Preserves the initial failed validation findings that drove the scope and implementation corrections; the final change document records subsequent closure and release clearance.
+
 ## v0.9.1 - 2026-08-01
 
 ### Summary
@@ -831,7 +855,7 @@ Two agent fixes: The release agent is refactored from a ~425-line syspilot-speci
   - Fixed: agent deleted change documents instead of archiving (violated REQ_CHG_CHANGE_DOC AC-5)
   - Refactored from ~425 to ~45 lines — KISS template with embedded decisions table
   - First `@syspilot.release` invocation bootstraps decisions by asking user
-  - Closes [#5](https://github.com/enthali/syspilot/issues/5)
+  - Closes [#5](https://github.com/hubertusgbecker/syspilot/issues/5)
 
 - **Setup Agent Dependency Detection** (US_INST_BOOTSTRAP, REQ_INST_AUTO_SETUP, SPEC_INST_SETUP_AGENT)
   - Fixed: setup agent installed sphinx-needs without checking if already available
@@ -1056,7 +1080,7 @@ Previous releases used sequential IDs (`US_SYSPILOT_001`, `REQ_SYSPILOT_007`). A
 
 ---
 
-*For detailed traceability, see the [documentation](https://enthali.github.io/syspilot/)*
+*For detailed traceability, see the [documentation](https://hubertusgbecker.github.io/syspilot/)*
 
 ## v0.1.0-beta.3 - 2026-01-31
 
@@ -1105,7 +1129,7 @@ Bugfix release improving installation UX. Setup Agent now auto-detects syspilot 
 
 ---
 
-*For detailed traceability, see the [documentation](https://enthali.github.io/syspilot/)*
+*For detailed traceability, see the [documentation](https://hubertusgbecker.github.io/syspilot/)*
 
 ## v0.1.0-beta.2 - 2026-01-30
 
@@ -1171,7 +1195,7 @@ Second beta release adding installation/update system and complete release autom
 
 ---
 
-*For detailed traceability, see the [documentation](https://enthali.github.io/syspilot/)*
+*For detailed traceability, see the [documentation](https://hubertusgbecker.github.io/syspilot/)*
 
 ## v0.1.0-beta - 2026-01-30
 
@@ -1229,4 +1253,4 @@ Initial beta release of syspilot, a requirements engineering toolkit using sphin
 
 ---
 
-*For detailed traceability, see the [documentation](https://enthali.github.io/syspilot/)*
+*For detailed traceability, see the [documentation](https://hubertusgbecker.github.io/syspilot/)*

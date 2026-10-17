@@ -1,99 +1,87 @@
-Installer — Spec Rewrite UAT
-============================
+Installer Deterministic Runtime UAT
+===================================
 
-User Acceptance Test Story for the ``installer-spec-rewrite`` change request.
-Covers all nine CR acceptance criteria against ``SYSP_US_INSTALLER``.
+Acceptance coverage for the current deterministic Installer runtime.
 
-
-.. story:: UAT: Installer Spec Rewrite
+.. story:: UAT: Installer Deterministic Runtime
    :id: SYSP_US_UAT_INSTALLER_SPEC_REWRITE
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: uat, installer, spec-rewrite
-   :links: SYSP_US_INSTALLER
+   :links: SYSP_US_INSTALLER, SYSP_US_HARNESS_INSTALL, SYSP_US_HARNESS_PORTABILITY
 
    **As a** syspilot Test Designer,
-   **I want** to verify that the rewritten Installer agent and specification
-   deliver a correct, transactional, customer-path-validated installation,
-   **so that** customers on the released installer receive a working syspilot
-   environment on first contact and the release is not blocked by Installer
-   defects.
+   **I want** to verify initial installation and update through the shipped
+   deterministic runtime,
+   **so that** every explicit harness installation is complete, repeatable,
+   validated, and transactionally recoverable.
 
-   **Context:**
+   **Scope:**
 
-   CR ``installer-spec-rewrite`` rewrote the Installer spec and agent to fix
-   the customer installation path.  The previous spec described a workflow that
-   only worked inside the dogfooding workspace: it offered a local-source
-   shortcut, performed a Mode-Detect comparison, asked an after-the-fact
-   customization question, and was silent on UTF-8 encoding, wrapper-script
-   discipline, and rollback.  A live install attempt on 2026-05-23 confirmed
-   the impact: BOM corruption in 26 files and a generated wrapper script.
-
-   This test story covers end-to-end verification of all nine CR ACs.
-
-   **Artifacts Under Test:**
-
-   * ``syspilot/agents/syspilot.installer.agent.md`` — rewritten Installer agent
-   * ``docs/syspilot/design/spec_installer.rst`` — SYSP_SPEC_INSTALLER_* nodes
-   * ``docs/syspilot/requirements/req_setup_engineer.rst`` — SYSP_REQ_INSTALLER_* nodes
-   * Clean test repository (no existing ``.github/`` syspilot install)
-
-   **Traceability:**
-
-   Covers all nine ACs of the ``installer-spec-rewrite`` CR against
-   ``SYSP_US_INSTALLER`` and the six in-scope REQs:
-   ``SYSP_REQ_INSTALLER_WORKFLOW``, ``SYSP_REQ_INSTALLER_DUTIES``,
-   ``SYSP_REQ_INSTALLER_GITHUB_SOURCE``, ``SYSP_REQ_INSTALLER_ENCODING``,
-   ``SYSP_REQ_INSTALLER_DIRECT_OPS``, ``SYSP_REQ_INSTALLER_ROLLBACK``.
+   This chain validates the active remote-runtime initial-install and stable
+   local-runtime update model. It does not use Setup for initial installation,
+   assume VS Code-only output, preserve local frontmatter, require a particular
+   summary rendering, or accept Git reset/manual best-effort rollback.
 
    **Acceptance Criteria:**
 
-   1. Given a clean test repository with no local ``syspilot/`` directory,
-      When ``@syspilot.setup`` is invoked with ``branch=development``,
-      Then the installation completes end-to-end without error and produces
-      the per-directory summary table — traces to CR AC1, CR AC9,
-      ``SYSP_REQ_INSTALLER_GITHUB_SOURCE``, ``SYSP_REQ_INSTALLER_WORKFLOW``
-
-   2. Given an existing syspilot installation,
-      When the installer is re-invoked on the same repository,
-      Then the operation completes without error and file content is correct
-      (Mode-Detect does not block the re-run) — traces to CR AC2,
-      ``SYSP_REQ_INSTALLER_GITHUB_SOURCE``
-
-   3. Given a completed installation,
-      When every written file is inspected with a BOM detector,
-      Then zero BOM markers are found in any file — traces to CR AC3,
-      ``SYSP_REQ_INSTALLER_ENCODING``
-
-   4. Given a completed installation,
-      When ``temp/`` and the project root are inspected,
-      Then no ``install.ps1`` or equivalent wrapper script is present —
-      traces to CR AC4, ``SYSP_REQ_INSTALLER_DIRECT_OPS``
-
-   5. Given an agent file with a locally edited ``tools:`` field,
-      When the installer is re-run,
-      Then the edited ``tools:`` value is preserved and all other frontmatter
-      fields are reset to upstream values; the Bootloader is overwritten
-      verbatim — traces to CR AC5, ``SYSP_REQ_INSTALLER_DUTIES``
-
-   6. Given ``sphinx-needs`` is absent from the active Python environment,
-      When the installer is invoked,
-      Then it prints installation instructions and stops without modifying
-      any file — traces to CR AC6, ``SYSP_REQ_INSTALLER_WORKFLOW``
-
-   7. Given the installer has created its pre-install commit,
-      When a simulated failure occurs mid-install,
-      Then ``git reset --hard`` restores the repository to the pre-install
-      commit state — traces to CR AC7, ``SYSP_REQ_INSTALLER_ROLLBACK``
-
-   8. Given the installer specification Step 4,
-      When reviewed by a human tester,
-      Then no customization-question prompt and no double-write flow are
-      present — traces to CR AC8, ``SYSP_REQ_INSTALLER_WORKFLOW``
-
-   9. Given a successful installation,
-      When the installer's run summary is inspected,
-      Then a per-directory summary table is present with rows for
-      ``agents/``, ``prompts/``, ``skills/``, and ``templates/``, each row
-      containing an integer file count — traces to CR AC9,
-      ``SYSP_REQ_INSTALLER_WORKFLOW``
+   1. A clean installation executes the selected branch's remote PEP 723
+      runtime with one explicit production harness and creates only that
+      harness target plus shared runtime and missing-only documentation files.
+   2. Repeating the identical command is idempotent: output remains correct,
+      unchanged files are not rewritten, and no empty installation commit is
+      created.
+   3. Harness-required frontmatter is adapted deterministically, unsupported
+      native fields are omitted, methodology body bytes and EOF state match
+      source, and all written files are UTF-8 without BOM.
+   4. Installation creates no wrapper, helper, intermediary target, target
+      virtual environment, dependency cache, or documentation build output.
+   5. Source resolution, enumeration, fetch, parse, and transformation are
+      read-only and may precede checkpoint creation; a complete checkpoint
+      exists before every target mutation, and every later injected failure
+      restores exact HEAD, index, worktree, and path state.
+   6. Warning-as-error Sphinx validation succeeds before the installation
+      commit, checkpoint deletion, structured summary, and success result.
+   7. Installed Setup updates by directly invoking the stable local runtime;
+      no Installer-agent delegation or other agent mechanism participates.
+   8. Filesystem containment rejects lexical escapes and symlink, junction, or
+      other reparse-point ancestry before write, delete, or restore; rollback
+      never follows an out-of-target link.
+   9. Checkpoint and restore cover only declared mutable paths and exact Git
+      metadata, preserve unrelated and concurrent files, bound work to that
+      path set in large repositories, and fail safely on conflicting changes
+      within a mutable path.
+   10. Linked attached, detached, and unborn Git worktrees install and roll
+       back exactly without assuming that ``.git`` is a directory.
+   11. OpenCode executes SEND through its native Task binding while VS Code
+       executes SEND through ``runSubagent``; both preserve one shared
+       SEND/RECEIVE/RESPOND semantic contract.
+   12. Harness-adapted Skills resolve stable shared resources, including the
+       installed change-document template, without depending on ``.github``
+       paths when another harness is selected.
+   13. A network-conditional test acquires an actual revision and product
+       inventory through the GitHub API and validates the same immutable
+       revision and containment rules as fixture acquisition.
+   14. A supplied checkpoint is rejected before mutation when its target root
+       differs or its canonical mutable-path set is narrower or broader than
+       the exact frozen plan; each rejection leaves target and Git state
+       byte-exact and emits no success result.
+   15. Supplied checkpoints use one platform-canonical lookup key and prove
+       freshness with a nonce plus exact owned-path and Git fingerprints before
+       mutation, without reading unrelated paths.
+   16. Rollback uses compare-and-swap for Installer-created Git state and
+       preserves independently advanced commits while reporting conflicts.
+   17. Every mutation revalidates parent identity with no-follow primitives;
+       deterministic parent-swap races fail closed without touching an escaped
+       target.
+   18. Public source selection remains GitHub-only even when a target-local
+       relative path has the repository name; local directories are available
+       only through an internal fixture snapshot API.
+   19. The complete corrected suite terminates normally with bounded resource
+       use; an abrupt run is investigated and rerun, never accepted as evidence.
+   20. On POSIX, every mutation and restore remains anchored to opened target
+       or parent directory descriptors after a deterministic ancestry swap;
+       no pathname-only revalidation is accepted and no external path changes.
+   21. Supplied and direct internal checkpoint identifiers are opaque,
+       authenticity-protected, expiring, and single-use; tampering, concurrent
+       use, expiry, or replay fails before target or Git mutation.

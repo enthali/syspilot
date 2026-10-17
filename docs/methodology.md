@@ -31,7 +31,7 @@ Each family defines its own:
 > default ontology (User Story → Requirement → Design Spec, L0/L1/L2). This
 > is *one* ontology template, not a hard-coded constraint. Per the ontology
 > architecture decision, other ontologies (e.g. ASPICE) are first-class.
-> See [architecture.md — Ontology Architecture](architecture.md#ontology-architecture).
+> See {ref}`architecture.md — Ontology Architecture <ontology-architecture>`.
 
 ## Repository Structure
 

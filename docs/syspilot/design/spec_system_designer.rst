@@ -99,6 +99,9 @@ System Designer
 
    * **description:** ``"Subagent that analyzes change requests level-by-level (US → REQ → SPEC) with a persistent Change Document. Writes RST files with full traceability."``
    * **user-invocable:** ``false``
-   * **agents:** ``[]``
+   * **agents:** ``["MECE Engineer"]`` — VS Code matches this entry exactly
+     against the target's frontmatter ``name:`` value
+   * **target agent identity:** ``syspilot.mece`` — stable internal/native
+     identity declared by the target's frontmatter ``agent:``
 
    **File:** ``syspilot.design.agent.md``

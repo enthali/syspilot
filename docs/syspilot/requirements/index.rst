@@ -11,6 +11,9 @@ This section contains system requirements following Sphinx-Needs methodology.
    req_skill_arch
    req_skill_definitions
    req_ontology_arch
+   req_harness_portability
+   req_harness_install
+   req_installer_runtime_transition
 
    req_project_mgr
    req_change_mgr
@@ -42,6 +45,14 @@ This section contains system requirements following Sphinx-Needs methodology.
    req_uat_branching_naming_fix
    req_uat_installer_frontmatter_sync
    req_uat_installer_orchestration_select
+   req_uat_installer_harness_targets
+   req_uat_harness_target_matrix
+   req_uat_harness_agent_adapter
+   req_uat_harness_skill_adapter
+   req_uat_harness_prompt_adapter
+   req_uat_harness_orchestration_adapter
+   req_uat_harness_one_time_enablement
+   req_uat_harness_limitations
    req_uat_spec_root_cause_principle
    req_uat_ontology_arch
    req_uat_chg_launcher

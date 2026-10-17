@@ -2,8 +2,7 @@
 name: "Test Designer"
 agent: syspilot.uat
 description: "Subagent that designs User Acceptance Test artifacts (stories, requirements, design specs) for a Change Document. Designs test scenarios for human execution."
-model: Claude Sonnet 4.6 (copilot)
-user-invocable: true
+user-invocable: false
 agents: []
 ---
 

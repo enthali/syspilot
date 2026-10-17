@@ -86,15 +86,20 @@ Quality Manager Requirements
    ``tools:`` field.
 
    **Rationale:**
-   The QM SENDs work to the MECE and Trace engineer sessions and reports Findings
-   to PM using whatever tools are enabled on the user's default VS Code agent,
-   including session-messaging (``enthali.jarvis-core/*``). The QM does not invoke
-   subagents; it omits ``agents:`` and carries no ``agent/runSubagent``.
+   The QM SENDs work to the MECE and Trace engineer sessions and reports
+   Findings to PM using whatever tools are enabled on the user's default VS
+   Code agent. The concrete SEND mechanism (session-messaging or direct
+   subagent call) is determined entirely by the installed orchestration-group
+   Skill variant (``SYSP_REQ_SKILL_ORCHESTRATION_GROUP``) — no default
+   assumption is baked into this agent document. VS Code enforces the
+   ``agents:`` frontmatter field as a hard allowlist for ``runSubagent``
+   regardless of which variant is installed, so QM always declares its real
+   SEND targets.
 
    **Acceptance Criteria:**
 
    * AC-1: QM frontmatter declares ``user-invocable: true``
-   * AC-2: QM frontmatter omits ``agents:`` — it SENDs to engineer sessions
+   * AC-2: QM frontmatter declares ``agents:`` listing its SEND targets (MECE Engineer, Trace Engineer, Project Manager)
    * AC-3: QM frontmatter declares no ``tools:`` field — it inherits the user's default agent tool selection
 
 

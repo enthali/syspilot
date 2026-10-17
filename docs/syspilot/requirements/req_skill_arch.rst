@@ -7,10 +7,10 @@ Instructions, Rules) and the optional Group / DEFINITIONS extension.
 
 .. req:: Skill Frontmatter Definition
    :id: SYSP_REQ_SKILL_ARCH_FRONTMATTER
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, skill, architecture, frontmatter
-   :links: SYSP_US_SKILL_ARCH
+   :links: SYSP_US_SKILL_ARCH, SYSP_US_HARNESS_PORTABILITY
 
    **Description:**
    Every syspilot Skill SHALL have a YAML **Frontmatter** block at the
@@ -40,8 +40,19 @@ Instructions, Rules) and the optional Group / DEFINITIONS extension.
    * AC-2: ``name`` and ``description`` are mandatory fields
    * AC-3: ``group`` is optional; standalone Skills omit it
    * AC-4: Tooling can parse the Frontmatter without reading the body
+   * AC-5: Given a harness other than VS Code Copilot Chat, When a Skill
+     is installed there, Then its Instructions and Rules remain unchanged
+     while deterministic adaptation MAY transform only frontmatter required
+     for native discovery and parsing
 
 
+
+   * **AC6**: Every production-parity harness (VS Code GitHub Copilot,
+     OpenCode, Claude Code) MUST expose native, discoverable Skills through
+     the required frontmatter, reported independently. Qoder MUST expose the
+     same Skill content inside its checksummed package-staging artifact;
+     native in-app discoverability for Qoder is deferred future scope and is
+     not required by this criterion.
 .. req:: Skill Instructions Definition
    :id: SYSP_REQ_SKILL_ARCH_INSTRUCTIONS
    :status: draft

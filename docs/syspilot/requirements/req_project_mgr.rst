@@ -94,15 +94,21 @@ Project Manager Requirements
    ``tools:`` field.
 
    **Rationale:**
-   The PM discusses features, prioritizes backlogs, and dispatches Change Requests
-   to the CM by SENDing to its session. It SENDs work but never invokes a subagent,
-   so it omits ``agents:`` and carries no ``agent/runSubagent``. It inherits
-   whatever tools are enabled on the user's default VS Code agent.
+   The PM discusses features, prioritizes backlogs, and dispatches Change
+   Requests to the CM, and dispatches releases to the Release Agent, by
+   SENDing to their sessions. The concrete SEND mechanism (session-messaging
+   or direct subagent call) is determined entirely by the installed
+   orchestration-group Skill variant (``SYSP_REQ_SKILL_ORCHESTRATION_GROUP``)
+   — no default assumption is baked into this agent document. VS Code
+   enforces the ``agents:`` frontmatter field as a hard allowlist for
+   ``runSubagent`` regardless of which variant is installed, so PM always
+   declares its real SEND targets. It inherits whatever tools are enabled on
+   the user's default VS Code agent.
 
    **Acceptance Criteria:**
 
    * AC-1: PM frontmatter declares ``user-invocable: true``
-   * AC-2: PM frontmatter omits ``agents:`` — it SENDs to the CM session and never invokes a subagent
+   * AC-2: PM frontmatter declares ``agents:`` listing its SEND targets (Change Manager, Release Agent)
    * AC-3: PM frontmatter declares no ``tools:`` field — it inherits the user's default agent tool selection
 
 

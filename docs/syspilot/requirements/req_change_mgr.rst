@@ -84,16 +84,21 @@ Change Manager Requirements
    field.
 
    **Rationale:**
-   The CM is the central workflow hub. It SENDs work to engineer sessions and
-   manages change documents using whatever tools are enabled on the user's
-   default VS Code agent, including session-messaging (``enthali.jarvis-core/*``) for
-   inter-session communication. The CM does not invoke subagents; it omits
-   ``agents:`` and carries no ``agent/runSubagent``.
+   The CM is the central workflow hub. It SENDs work to engineer sessions
+   using whatever tools are enabled on the user's default VS Code agent. The
+   concrete SEND mechanism (session-messaging or direct subagent call) is
+   determined entirely by the installed orchestration-group Skill variant
+   (``SYSP_REQ_SKILL_ORCHESTRATION_GROUP``) — no default assumption is baked
+   into this agent document. VS Code enforces the ``agents:`` frontmatter
+   field as a hard allowlist for ``runSubagent`` regardless of which variant
+   is installed, so CM always declares its real SEND targets: this makes the
+   Subagent variant work when no session-messaging infrastructure is
+   present, and is harmless under the Jarvis variant.
 
    **Acceptance Criteria:**
 
    * AC-1: CM frontmatter declares ``user-invocable: true``
-   * AC-2: CM frontmatter omits ``agents:`` — it SENDs to engineer sessions
+   * AC-2: CM frontmatter declares ``agents:`` listing every SEND target (System Designer, Test Designer, Dev Engineer, Quality Engineers MECE/Trace, Documentation Engineer, Project Manager, Quality Manager)
    * AC-3: CM frontmatter declares no ``tools:`` field — it inherits the user's default agent tool selection
 
 

@@ -47,7 +47,7 @@ Change Manager Design
    * **Change Auditability** — At every point during and after a change,
      the Change Document (``docs/changes/<name>.md``) reflects the true state —
      including after abort or failure. PM creates the document by copying
-     ``.github/templates/change-document.md`` verbatim and filling header +
+     ``.syspilot/templates/change-document.md`` verbatim and filling header +
      ``## Summary``. CM fills all engineering sections (L0/L1/L2, MECE,
      Traceability, Artefakt-Removal-Check, Sign-off) of the same file — CM
      never creates the document and never replaces the template skeleton with
@@ -156,6 +156,9 @@ Change Manager Design
 
    * **description:** ``"Central orchestrator of the change workflow. Receives Change Requests, dispatches engineers in sequence, enforces quality gates, and reports completion with full traceability."``
    * **user-invocable:** ``true``
-   * **agents:** ``[]``
+   * **agents:** ``["System Designer", "Test Designer", "Dev Engineer", "MECE Engineer", "Trace Engineer", "Documentation Engineer", "Project Manager", "Quality Manager"]`` — VS Code matches
+     these entries exactly against each target's frontmatter ``name:`` value
+   * **target agent identities:** ``syspilot.design``, ``syspilot.uat``, ``syspilot.implement``, ``syspilot.mece``, ``syspilot.trace``, ``syspilot.docu``, ``syspilot.pm``, ``syspilot.qm`` — stable
+     internal/native identities declared by each target's frontmatter ``agent:``
 
    **File:** ``syspilot.cm.agent.md``

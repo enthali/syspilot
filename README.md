@@ -14,26 +14,66 @@
 
 Cover 100% of your specs with 6x less tokens. Links are deterministic — search is probabilistic. syspilot gives your agents the map, not the flashlight. Built on [sphinx-needs](https://sphinx-needs.readthedocs.io/) by [useblocks](https://useblocks.com). Powered by [GitHub Copilot](https://github.com/features/copilot).
 
-## Quick Start
+## Installation
 
-**Linux / Mac / GitHub Codespaces:**
+Install [Git](https://git-scm.com/) and [uv](https://docs.astral.sh/uv/), then
+run the command for your harness from the root of the target Git repository.
+
+Production harnesses: GitHub Copilot in VS Code, Claude Code, and OpenCode. Qoder is
+available as an explicitly disclosed experimental, installable harness.
+
+### GitHub Copilot in VS Code
+
 ```bash
-mkdir -p .github/agents && curl -fsSL \
-  "https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/agents/syspilot.setup.agent.md" \
-  -o .github/agents/syspilot.setup.agent.md
+uv run --no-project "https://raw.githubusercontent.com/hubertusgbecker/syspilot/main/syspilot/installer.py" install --harness vscode
 ```
 
-**Windows (PowerShell):**
-```powershell
-New-Item -ItemType Directory -Force -Path .github/agents | Out-Null
-Invoke-WebRequest `
-  -Uri "https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/agents/syspilot.setup.agent.md" `
-  -OutFile ".github/agents/syspilot.setup.agent.md"
+### Claude Code
+
+Install and authenticate Claude Code first, then run:
+
+```bash
+uv run --no-project "https://raw.githubusercontent.com/hubertusgbecker/syspilot/main/syspilot/installer.py" install --harness claude
 ```
 
-Then open VS Code Copilot Chat and run `@syspilot.setup`.
+### OpenCode
 
-That's it. The setup agent handles dependencies, configuration, and validation automatically.
+```bash
+uv run --no-project "https://raw.githubusercontent.com/hubertusgbecker/syspilot/main/syspilot/installer.py" install --harness opencode
+```
+
+### Qoder (experimental, installable)
+
+Install Qoder first, then run:
+
+```bash
+uv run --no-project "https://raw.githubusercontent.com/hubertusgbecker/syspilot/main/syspilot/installer.py" install --harness qoder
+```
+
+The Qoder command deterministically stages
+`.syspilot/qoder/syspilot-qoder-plugin.zip`. Import that archive through
+Qoder's documented UI. The import is external and is not performed or reported
+as completed by the Installer. Native in-app import and autonomous
+Manager-to-Engineer orchestration clearance for Qoder are deferred future
+work, not part of this experimental, installable-only tier.
+
+Run the same command again to update. Run one command for each harness used in
+the repository. The defaults are the current directory, repository
+`hubertusgbecker/syspilot`, and branch `main`. Synchronous orchestration is
+installed deterministically.
+For a fork or branch, change the URL and add `--repository <owner>/<repo>
+--branch <branch>`.
+
+The command writes only the explicitly selected harness target, the stable
+`.syspilot/installer.py` runtime, shared resources in `.syspilot/skills/` and
+`.syspilot/templates/`, and missing documentation bootstrap files.
+Installed Setup uses that runtime directly for later updates. Installation
+rejects target-path links and rolls back only syspilot-owned mutable paths, so
+unrelated project files and concurrent unrelated changes remain untouched.
+
+GitHub Copilot CLI has been evaluated for artifact compatibility but is not
+production-certified. Production support for GitHub Copilot currently means
+GitHub Copilot in VS Code.
 
 ## What You Get
 
@@ -69,15 +109,26 @@ When you request a change, syspilot follows these links to find only the affecte
 
 ## Documentation
 
-📖 **Full docs:** [enthali.github.io/syspilot](https://enthali.github.io/syspilot/index.html)
+📖 **Full docs:** [hubertusgbecker.github.io/syspilot](https://hubertusgbecker.github.io/syspilot/index.html)
 
 Includes methodology, naming conventions, and traceability matrices.
 
 ## Requirements
 
-- **VS Code** + **GitHub Copilot** (license required)
-- **Python 3.10+** with `sphinx` and `sphinx-needs` pre-installed (`pip install sphinx sphinx-needs`)
-- **[`enthali.jarvis-core`](https://marketplace.visualstudio.com/items?itemName=enthali.jarvis-core)** VS Code extension, installed and enabled on your default agent's tool set — required for multi-agent orchestration (agents hand off work via `SEND`/session messaging). If disabled, agents silently lose this ability instead of erroring.
+- **Git**
+- **[uv](https://docs.astral.sh/uv/)**
+- **GitHub Copilot in VS Code**, **Claude Code**, or **OpenCode** (production),
+  or **Qoder** (experimental, installable)
 
-> If `sphinx-needs` is missing, `@syspilot.setup` prints install instructions and stops — it does not auto-install packages.
+Claude Code must be installed and authenticated before selecting it. Qoder
+must be installed before its staged Plugin archive can be imported through the
+documented Qoder UI.
+
+`uv` resolves the exact Python and package dependencies declared by the remote
+PEP 723 script. No project `.venv`, preinstalled Python packages, or `pip`
+setup is required.
+
+## License
+
+This project is licensed under the MIT License. You are free to use, copy, modify, merge, publish, distribute, sublicense, and sell copies of the software, provided that the copyright notice and this permission notice are included in all copies or substantial portions of the software. The software is provided "as is", without warranty of any kind. See [LICENSE](LICENSE) for the full license text.
 

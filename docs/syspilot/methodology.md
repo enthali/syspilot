@@ -10,7 +10,7 @@ see [../methodology.md](../methodology.md).
 > template** — the ontology that ships out-of-the-box. Per the ontology architecture
 > decision, other ontologies are first-class. A project adopting a different ontology
 > (e.g. ASPICE) replaces this template without modifying agents.
-> See [../architecture.md — Ontology Architecture](../architecture.md#ontology-architecture).
+> See {ref}`../architecture.md — Ontology Architecture <ontology-architecture>`.
 
 ```
 Level 0: User Stories  (WHY)   → Stakeholder perspective

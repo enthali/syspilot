@@ -1,10 +1,9 @@
-#!/usr/bin/env python3
 """Automate CR scaffolding: branch, template copy, header pre-fill, commit.
 
 Usage:
-    python launch_change.py --name <change-name> --author <author> --mode <mode>
+    uv run --no-project .syspilot/skills/syspilot.change-launcher/launch_change.py --name <change-name> --author <author> --mode <mode>
 
-Requires Python 3.11+.
+Requires uv with a compatible Python 3.11+ runtime.
 """
 
 from __future__ import annotations
@@ -18,7 +17,7 @@ from datetime import date, timezone
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-TEMPLATE = REPO_ROOT / "syspilot" / "templates" / "change-document.md"
+TEMPLATE = REPO_ROOT / ".syspilot" / "templates" / "change-document.md"
 CHANGES_DIR = REPO_ROOT / "docs" / "changes"
 
 

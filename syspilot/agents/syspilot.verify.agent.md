@@ -2,9 +2,8 @@
 name: "Verify Engineer"
 agent: syspilot.verify
 description: "Verify implementation matches Change Document and traceability is complete."
-model: Claude Haiku 4.5 (copilot)
-user-invocable: true
-agents: []
+user-invocable: false
+agents: ["Trace Engineer"]
 ---
 
 # syspilot Verify Engineer
@@ -38,9 +37,9 @@ The `todo` tool tracks per-element verification progress during long runs.
    what was specified
 3. **Compare Against Implementation** — Locate the implementation artifact
    (agent file, skill file, script, etc.) and compare against spec intent
-4. **Check Traceability** — Verify link chains across all three levels using
-   `get_need_links.py` or direct RST inspection
-5. **Sphinx Build** — Run sphinx-build from `docs/`, check for errors
+4. **Check Traceability** — SEND the changed element IDs to Trace Engineer and
+   incorporate its end-to-end link-chain findings
+5. **Sphinx Build** — Run Sphinx from `docs/` only through the feature's specified `uv` command; never invoke bare `python`, `python3`, `pip`, `pip3`, or `sphinx-build`. Check for errors.
 6. **Write Validation Report** — Create `docs/changes/val-<name>.md` with
    per-element pass/fail, evidence, and summary
 7. **Update Spec Statuses** — Set `:status: implemented` on elements that pass

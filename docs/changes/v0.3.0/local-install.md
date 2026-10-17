@@ -3,7 +3,7 @@
 **Status**: approved
 **Branch**: feature/local-install
 **Created**: 2026-04-01
-**Author**: @enthali
+**Author**: 
 **GitHub Issue**: #9
 
 ---

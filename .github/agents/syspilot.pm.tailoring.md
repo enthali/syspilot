@@ -1,3 +1,8 @@
+---
+user-invocable: false
+disable-model-invocation: true
+---
+
 # syspilot.pm — Tailoring for the syspilot project
 
 ## Deviation Detection
@@ -9,7 +14,7 @@ norm.
 
 ## Backlog
 
-GitHub Issues (enthali/syspilot) is the single source of truth for the backlog.
+GitHub Issues (hubertusgbecker/syspilot) is the single source of truth for the backlog.
 No separate backlog file.
 
 ## One CR at a Time
@@ -48,7 +53,7 @@ GitHub Issues are PM-owned end-to-end — no other agent opens, edits, or closes
 - Set a `jarvis_setReminder` for yourself: `"Check CI on main for release; if green, close issues #X #Y ... with release notes link."`, deliverAt: ~30 min after expected release completion.
 
 **At reminder delivery:**
-- Run `gh run list --repo enthali/syspilot --branch main --limit 5` and verify the latest workflow run concluded successfully.
+- Run `gh run list --repo hubertusgbecker/syspilot --branch main --limit 5` and verify the latest workflow run concluded successfully.
 - If green: set each tracked issue's board Status to **Done** directly (`singleSelectOptionId: 98236657`). The "Status updated to Done" automation closes the issue automatically. **Do not close first and rely on the reverse automation** — if the issue is at "Merged" status, the "Item closed → Done" automation may not fire (GitHub automation does not reliably override a custom pre-existing status). Setting Done first is the reliable direction.
 - If red: do not close. Escalate to the user.
 

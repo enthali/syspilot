@@ -4,7 +4,7 @@
 **Branch**: feature/skill-format
 **Created**: 2026-03-31
 **Author**: Georg Doll
-**Issue**: [#12 — Migrate skills to VS Code standard format](https://github.com/enthali/syspilot/issues/12)
+**Issue**: [#12 — Migrate skills to VS Code standard format](https://github.com/hubertusgbecker/syspilot/issues/12)
 
 ---
 

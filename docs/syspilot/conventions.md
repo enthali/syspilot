@@ -30,7 +30,6 @@ Every agent `.agent.md` file begins with a YAML frontmatter block:
 ---
 description: "One-sentence description shown in the agent picker"
 tools: [read, edit, search, execute, ...]
-model: Claude Opus 4.6 (copilot)
 user-invocable: true          # true for Managers, false for Engineers
 agents: ["syspilot.name"]     # Engineers this agent may invoke (empty if none)
 ---
@@ -40,9 +39,12 @@ agents: ["syspilot.name"]     # Engineers this agent may invoke (empty if none)
 |-------|----------|-------|
 | `description` | mandatory | Shown in VS Code agent picker |
 | `tools` | mandatory | Declare only tools the agent actually uses |
-| `model` | recommended | Pin the model for reproducible behavior |
 | `user-invocable` | mandatory | `true` = Manager, `false` = Engineer |
 | `agents` | mandatory | List of subagents this agent may call; `[]` if none |
+
+Agent files omit `model` so the active harness or user configuration chooses
+the model. This keeps syspilot portable across proprietary and open-source
+models and prevents updates from overriding a user's model selection.
 
 ### Three-Section Structure
 

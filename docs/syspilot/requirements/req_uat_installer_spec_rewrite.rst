@@ -1,104 +1,123 @@
-Installer — Spec Rewrite Test Data
-===================================
+Installer Deterministic Runtime Test Data
+=========================================
 
-Test data requirements for ``SYSP_US_UAT_INSTALLER_SPEC_REWRITE``.
+Test data for ``SYSP_US_UAT_INSTALLER_SPEC_REWRITE``.
 
+.. req:: UAT Test Data: Installer Deterministic Runtime
+  :id: SYSP_REQ_UAT_INSTALLER_SPEC_REWRITE
+  :status: approved
+  :links: SYSP_US_UAT_INSTALLER_SPEC_REWRITE
 
-.. req:: UAT Test Data: Installer Spec Rewrite
-   :id: SYSP_REQ_UAT_INSTALLER_SPEC_REWRITE
-   :status: draft
-   :priority: mandatory
-   :tags: uat, installer, spec-rewrite, test-data
-   :links: SYSP_US_UAT_INSTALLER_SPEC_REWRITE
+   **Required Artifacts:**
 
-   **Description:**
+   * The selected revision's ``syspilot/installer.py`` and product
+     ``syspilot/{agents,prompts,skills,templates}`` roots.
+   * ``SYSP_SPEC_INSTALLER_ADAPTER_ENGINE``,
+     ``SYSP_SPEC_INSTALLER_WORKFLOW``, and
+     ``SYSP_SPEC_INSTALLER_ROLLBACK``.
+   * Isolated upstream and target Git fixtures for ``vscode``, ``claude``,
+     ``opencode``, and ``qoder``.
+   * Source files with structured YAML, source-only Skill ``group``/``tools``/
+     ``triggers`` fields, and bodies with and without terminal newlines.
+   * Pre-existing HEAD, staged/unstaged changes, untracked files, harness
+     orphans, customer-owned files, and tailoring files for state comparison.
+   * Failure hooks for dependencies, source resolution/fetch/parse, first
+     target mutation, runtime and harness writes, docs bootstrap, cleanup,
+     validation, summary, commit, and checkpoint deletion.
+   * Supplied checkpoint fixtures with the correct target root and exact frozen
+     mutable-path set, with one required path removed, with one undeclared path
+     added, and with a different resolved target-root identity.
+   * A command recorder, byte comparator, YAML parser, BOM scanner, Git state
+     inspector, and checkpoint-directory inspector.
+   * Lexical ``..`` escape, file/directory symlink, Windows junction, and other
+     reparse-point fixtures in every mutable-path ancestry position supported
+     by the host; unsupported fixture types are reported as skipped, not passed.
+   * Pre-existing mutable files/directories, transaction-external concurrent
+     writers, unrelated files inside and outside top-level mutable parents, and
+     a large repository whose unrelated tree is measurably larger than the
+     declared mutable set.
+   * Main and linked-worktree fixtures in attached, detached, and unborn states,
+     with recorded ``--git-dir``, ``--git-path index``, and symbolic HEAD data.
+   * Isolated VS Code GitHub Copilot, Claude Code, OpenCode, and Qoder lifecycle
+     fixtures that record selected-target installation, update, failure, and
+     rollback state, plus installed shared templates used by change-launcher.
+   * A network-conditional GitHub API fixture using a real public revision;
+     absent network or rate-limit capacity produces an explicit skip.
+   * Repository-input fixtures for ``owner/repository``, supported GitHub HTTPS,
+     a target-local same-named relative directory, absolute/UNC/drive paths,
+     ``file:`` URLs, and non-GitHub URLs, plus an internal immutable directory
+     snapshot fixture unavailable through the public CLI.
+   * Supplied and direct internal checkpoint fixtures with opaque identifiers,
+     runtime-created secrets or signed/HMAC tokens, trusted state outside the
+     target, short creation/expiry windows, exact target/plan/path/Git binding,
+     concurrent lease attempts, copied consumed identifiers, and independently
+     tampered fields with caller-recomputed unkeyed hashes.
+   * Separate supplied-checkpoint failure fixtures for dependency resolution,
+     source acquisition, source parsing, the plan-construction stage that
+     formerly preceded lease acquisition, and malformed public inputs. Each
+     fixture retains the identifier for a second-process replay attempt.
+   * Deterministic mutation-boundary hooks that replace a verified parent with
+     a symlink on POSIX after final validation and before descriptor-relative
+     temp creation, replace, delete, cleanup, and restore; Windows fixtures use
+     junction/reparse swaps against the existing handle/reparse contract.
+   * A post-install concurrent-commit fixture and full-suite process/resource
+     recorder for exit status, stderr, peak memory, handles, worker count, and
+     enumerated/hashed paths.
 
-   To execute the nine test scenarios in ``SYSP_US_UAT_INSTALLER_SPEC_REWRITE``,
-   the following test data, tools, and preconditions SHALL be available.
+   **Commands:**
 
-   **Primary Artifacts Under Test:**
+   Initial installation SHALL use::
 
-   .. list-table:: Installer Artifacts Under Test
-      :header-rows: 1
-      :widths: 45 25 30
+      uv run --no-project "https://raw.githubusercontent.com/<owner>/<repository>/<branch>/syspilot/installer.py" install --repository <repository> --branch <branch> --target <target-root> --harness <vscode|claude|opencode|qoder>
 
-      * - Artifact
-        - Location
-        - Relevance
-      * - ``syspilot.installer.agent.md``
-        - ``syspilot/agents/``
-        - Rewritten Installer agent (all scenarios)
-      * - ``syspilot.setup.agent.md``
-        - ``syspilot/agents/``
-        - Bootloader (T-1, T-2)
-      * - ``spec_installer.rst``
-        - ``docs/syspilot/design/``
-        - SYSP_SPEC_INSTALLER_* nodes (T-8)
-      * - ``req_setup_engineer.rst``
-        - ``docs/syspilot/requirements/``
-        - SYSP_REQ_INSTALLER_* nodes (all)
+   Setup update SHALL invoke::
 
-   **Test Environment Requirements:**
+      uv run --no-project .syspilot/installer.py install --repository <repository> --branch <branch> --target <target-root> --harness <vscode|claude|opencode|qoder>
 
-   .. list-table:: Test Environment
-      :header-rows: 1
-      :widths: 35 65
+   **Captured Evidence:**
 
-      * - Item
-        - Value / Constraint
-      * - Clean test repository
-        - A Git-initialized repository with **no** ``.github/`` syspilot install
-          and **no** local ``syspilot/`` product directory. Used for T-1, T-6,
-          T-7.
-      * - Existing installation repo
-        - The same test repository after T-1 completes.  Used for T-2 (re-run),
-          T-3 (BOM check), T-4 (wrapper script check), T-5 (frontmatter
-          preservation).
-      * - Agent file with edited ``tools:``
-        - ``.github/agents/syspilot.cm.agent.md`` in the test repo, with the
-          ``tools:`` frontmatter field manually set to a tester-chosen value
-          (e.g. ``tools: [my-custom-tool]``) before T-5 begins.
-      * - Python environment without ``sphinx-needs``
-        - The active venv for the test repo must have ``sphinx-needs``
-          uninstalled (``pip uninstall sphinx-needs``).  Used for T-6.
-      * - BOM detection tool
-        - Any tool capable of detecting UTF-8 BOM (``\xEF\xBB\xBF``): e.g.
-          ``grep -rl $'\xef\xbb\xbf' .github/`` on Linux/macOS,
-          ``Get-Content -Encoding Byte`` on PowerShell, or a hex editor.
-      * - Branch override
-        - The ``@syspilot.setup`` invocation in T-1 SHALL include the parameter
-          ``branch=development``.
-      * - Feature branch
-        - ``feature/installer-spec-rewrite`` is checked out and all CR commits
-          are present in the working tree before any test scenario is executed.
+   * Resolved revision and complete source-request log.
+   * Mutation log showing checkpoint existence before each target mutation.
+   * Checkpoint inventory and byte count proving only declared mutable paths
+     and exact Git metadata were captured.
+   * Before/after HEAD, symbolic-ref, index bytes, path existence, and file
+     bytes for every success and failure case.
+   * Structured installed/updated/removed counts keyed by actual selected
+     target and shared paths; no table rendering is required.
+   * Child-process order proving validation precedes commit and success.
+   * Before/after mutation and Git-state logs proving every invalid supplied
+     checkpoint is rejected before the first mutation.
+   * Ref compare-and-swap log and commit graph proving concurrent history is
+     preserved, plus path-access logs proving freshness and resource checks do
+     not read unrelated target content.
+   * POSIX syscall instrumentation proving mutations use opened directory
+     descriptors and no mutable destination is reopened by pathname, with an
+     external sentinel comparison for every late ancestry-swap fixture.
+   * Trusted token-state and lease logs proving exactly one consumer can acquire
+     an identifier and every tampered, expired, concurrent, or replay attempt
+     fails before the first target or Git mutation.
+   * For every supplied-checkpoint failure fixture, first-attempt and
+     second-process replay logs plus before/after target, Git, and trusted-state
+     inventories proving terminal capability revocation, zero mutation, and no
+     authorizing checkpoint residue.
 
-   **Preconditions (all scenarios):**
+   **Lifecycle Acceptance Ownership:**
 
-   * AC-1: Branch ``feature/installer-spec-rewrite`` is checked out.
-   * AC-2: The tester has write access to the test repository and can run
-     ``@syspilot.setup`` from the VS Code Chat panel.
-   * AC-3: The tester can run PowerShell or Bash commands in the test repository.
-   * AC-4: Network access to ``github.com/georgdoll/syspilot`` is available for
-     scenarios that invoke the Installer (T-1, T-2, T-5, T-7).
+    This requirement is the exclusive normative UAT owner for clean installation, update, injected-failure, and rollback acceptance. For each of ``vscode``, ``claude``, ``opencode``, and ``qoder``, evidence SHALL independently prove a clean installation, an update from an earlier revision, an injected post-checkpoint failure, and exact rollback of target and Git state.
 
-   **Failure Injection Method (T-7 only):**
+    Live native discovery and loading acceptance is owned exclusively by ``SYSP_REQ_UAT_HARNESS_TARGET_MATRIX`` and SHALL NOT be inferred from this requirement's deterministic lifecycle evidence.
 
-   To simulate a mid-install failure for T-7, the tester SHALL corrupt a file
-   in the temporary staging area before the installer writes it to disk.
-   The exact method is implementation-dependent on the installer's mechanism;
-   the tester SHALL consult the installer agent's workflow to identify the
-   appropriate injection point.  If no reproducible injection point is
-   available, this scenario is marked as requiring a test harness and its
-   fragility SHALL be reported (see testability concern TC-1 in
-   ``SYSP_SPEC_UAT_INSTALLER_SPEC_REWRITE``).
+   **Preconditions:**
 
-   **Acceptance Criteria:**
-
-   * AC-1: The clean test repository is a valid Git repository with no
-     pre-existing ``.github/`` syspilot files at test start.
-   * AC-2: The tester can identify and invoke ``@syspilot.setup`` from VS Code
-     Chat with a branch override parameter.
-   * AC-3: A BOM detection method is confirmed working on the test system before
-     T-3 is executed.
-   * AC-4: The Python venv for the test repository can have ``sphinx-needs``
-     removed and re-installed without affecting the product repository.
+   * Git and ``uv`` are the only ambient installation prerequisites.
+   * No product tree or Setup agent is pre-placed for initial installation.
+   * Read-only acquisition hooks fire before checkpoint creation; mutation and
+     later hooks fire only after checkpoint creation.
+   * Parsing, transformation, containment, and complete target-plan validation
+     hooks all fire before checkpoint creation.
+   * Fixtures run separately for each explicit harness and never infer another
+     target from directory presence.
+   * Native POSIX descriptor-relative fixtures execute only on a capable POSIX
+     host. On Windows they are recorded as conditional and unexecuted, never as
+     runtime proof; platform-independent static or implementation evidence does
+     not convert those skipped checks into passing UAT.

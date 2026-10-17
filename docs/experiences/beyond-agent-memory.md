@@ -393,7 +393,7 @@ And the most important capability is no longer memory.
 
 The ideas here are not theoretical. They come from building two digital organizations in the open:
 
-- **[Syspilot](https://github.com/enthali/syspilot)** — an example approach to spec-driven development (SDD) with GitHub Copilot. This is where the actors, the Sphinx-Needs traceability graph, and the PM → CM → Designer → Developer → Tester → QM pipeline live. The build-break story in this article happened here.
+- **[Syspilot](https://github.com/hubertusgbecker/syspilot)** — an example approach to spec-driven development (SDD) with GitHub Copilot. This is where the actors, the Sphinx-Needs traceability graph, and the PM → CM → Designer → Developer → Tester → QM pipeline live. The build-break story in this article happened here.
 - **[Jarvis](https://github.com/enthali/jarvis)** — a VS Code extension for personal project and event management, structured as long-lived actors with local knowledge and explicit communication channels rather than a single assistant session.
 
 Neither system is finished, and — as this article argues — neither is meant to be. Their workflows are imperfect by design; the nets that catch that imperfection are the point.

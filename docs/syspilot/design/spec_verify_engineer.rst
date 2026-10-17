@@ -61,8 +61,8 @@ Verify Engineer Design
       what was specified
    3. **Compare Against Implementation** — Locate the implementation artifact
       (agent file, skill file, script, etc.) and compare against spec intent
-   4. **Check Traceability** — Verify link chains across all three levels using
-      ``get_need_links.py`` or direct RST inspection
+   4. **Check Traceability** — SEND the changed element IDs to Trace Engineer
+      and incorporate its end-to-end link-chain findings
    5. **Sphinx Build** — Run sphinx-build from ``docs/``, check for errors
    6. **Write Validation Report** — Create ``docs/changes/val-<name>.md`` with
       per-element pass/fail, evidence, and summary
@@ -86,6 +86,9 @@ Verify Engineer Design
 
    * **description:** ``"Verify implementation matches Change Document and traceability is complete."``
    * **user-invocable:** ``false``
-   * **agents:** ``[]``
+   * **agents:** ``["Trace Engineer"]`` — VS Code matches this entry exactly
+     against the target's frontmatter ``name:`` value
+   * **target agent identity:** ``syspilot.trace`` — stable internal/native
+     identity declared by the target's frontmatter ``agent:``
 
    **File:** ``syspilot.verify.agent.md``

@@ -11,6 +11,8 @@ This section contains user stories that drive the requirements.
    us_skill_arch
    us_custom_agent_workflows
    us_ontology_arch
+   us_harness_portability
+   us_harness_install
 
    us_project_mgr
    us_change_mgr
@@ -44,6 +46,14 @@ This section contains user stories that drive the requirements.
    us_uat_branching_naming_fix
    us_uat_installer_frontmatter_sync
    us_uat_installer_orchestration_select
+   us_uat_installer_harness_targets
+   us_uat_harness_target_matrix
+   us_uat_harness_agent_adapter
+   us_uat_harness_skill_adapter
+   us_uat_harness_prompt_adapter
+   us_uat_harness_orchestration_adapter
+   us_uat_harness_one_time_enablement
+   us_uat_harness_limitations
    us_uat_spec_root_cause_principle
    us_uat_ontology_arch
    us_uat_chg_launcher

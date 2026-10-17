@@ -1,16 +1,15 @@
-#!/usr/bin/env python3
 """
 Sphinx-Needs Link Discovery Script
 
 Simple script to query Sphinx-Needs elements and their links.
-Reads from _build/html/needs_id/*.json after sphinx-build.
+Reads from _build/html/needs_id/*.json after a uv-managed Sphinx build.
 
 For commercial/fast solution with live parsing, see ubiTrace from Useblocks.
 
 Usage:
-    python .github/skills/syspilot.impact-python/scripts/get_need_links.py <NEED_ID> [--depth N] [--direction in|out|both]
-    python .github/skills/syspilot.impact-python/scripts/get_need_links.py SYSPILOT_US_CORE_SPEC_AS_CODE --depth 2
-    python .github/skills/syspilot.impact-python/scripts/get_need_links.py SYSPILOT_REQ_CHG_ANALYSIS_AGENT --direction out
+    uv run --no-project .syspilot/skills/syspilot.impact-python/scripts/get_need_links.py <NEED_ID> [--depth N] [--direction in|out|both]
+    uv run --no-project .syspilot/skills/syspilot.impact-python/scripts/get_need_links.py SYSPILOT_US_CORE_SPEC_AS_CODE --depth 2
+    uv run --no-project .syspilot/skills/syspilot.impact-python/scripts/get_need_links.py SYSPILOT_REQ_CHG_ANALYSIS_AGENT --direction out
 
 Links: SYSPILOT_SPEC_INST_FILE_OWNERSHIP
 """
@@ -22,8 +21,8 @@ import sys
 from pathlib import Path
 
 # Find docs directory relative to script location
-# Script is at: .github/skills/syspilot.impact-python/scripts/get_need_links.py
-# Project root is 4 levels up (scripts -> impact-python -> skills -> syspilot -> workspace root)
+# Script is at: .syspilot/skills/syspilot.impact-python/scripts/get_need_links.py
+# Project root is 4 levels up (scripts -> impact-python -> skills -> .syspilot -> workspace root)
 SCRIPT_DIR = Path(__file__).parent
 PROJECT_ROOT = SCRIPT_DIR.parent.parent.parent.parent
 DOCS_DIR = PROJECT_ROOT / "docs"
@@ -31,7 +30,7 @@ NEEDS_ID_DIR = DOCS_DIR / "_build" / "html" / "needs_id"
 
 
 def ensure_build() -> bool:
-    """Run sphinx-build if needs_id directory is missing or empty.
+    """Run a uv-managed Sphinx build if needs_id data is unavailable.
     
     Returns True if build was needed and successful.
     """
@@ -40,27 +39,34 @@ def ensure_build() -> bool:
     
     print("Building docs (needs_id not found)...", file=sys.stderr)
     
-    # Try uv first, fallback to direct sphinx-build
-    build_commands = [
-        ["uv", "run", "sphinx-build", "-b", "html", ".", "_build/html"],
-        ["sphinx-build", "-b", "html", ".", "_build/html"],
+    command = [
+        "uv",
+        "run",
+        "--no-project",
+        "--with",
+        "Sphinx==8.2.3",
+        "--with",
+        "sphinx-needs==8.5.0",
+        "sphinx-build",
+        "-b",
+        "html",
+        ".",
+        "_build/html",
     ]
-    
-    for cmd in build_commands:
-        try:
-            result = subprocess.run(
-                cmd,
-                cwd=DOCS_DIR,
-                capture_output=True,
-                text=True
-            )
-            if result.returncode == 0:
-                print("Build complete.", file=sys.stderr)
-                return True
-        except FileNotFoundError:
-            continue
-    
-    print("ERROR: Could not run sphinx-build", file=sys.stderr)
+    try:
+        result = subprocess.run(
+            command,
+            cwd=DOCS_DIR,
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode == 0:
+            print("Build complete.", file=sys.stderr)
+            return True
+    except FileNotFoundError:
+        pass
+
+    print("ERROR: Could not build Sphinx docs through uv", file=sys.stderr)
     return False
 
 

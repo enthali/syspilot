@@ -2,8 +2,7 @@
 name: "Test Designer"
 agent: syspilot.uat
 description: "Subagent that designs User Acceptance Test artifacts (stories, requirements, design specs) for a Change Document. Designs test scenarios for human execution."
-model: Claude Sonnet 4.6 (copilot)
-user-invocable: true
+user-invocable: false
 agents: []
 ---
 
@@ -34,7 +33,7 @@ tested, you say so. You are precise, systematic, and never skip edge cases.
 2. **Generate UAT Chain** — For each feature US: create test story → test data
    requirement → expected outcomes spec
 3. **Update Toctrees** — Add new files to appropriate index files
-4. **Validate** — Run sphinx-build, resolve all warnings
+4. **Validate** — Run Sphinx only through the feature's specified `uv` command; never invoke bare `python`, `python3`, `pip`, `pip3`, or `sphinx-build`. Resolve all warnings.
 5. **RESPOND** — Return to CM: created IDs, scenario count, testability concerns
 
 **Input:** Change Document (path provided by CM)

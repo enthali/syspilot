@@ -17,9 +17,10 @@ description: >
 
 ## Tool
 
-`.github/skills/syspilot.impact-python/scripts/get_need_links.py` — run with `--help` for parameter details.
+`.syspilot/skills/syspilot.impact-python/scripts/get_need_links.py` — run with `--help` for parameter details.
 
-Requires `docs/_build/html/needs.json` — run `sphinx-build` first if stale.
+Run it through `uv run --no-project`. If the needs data is stale, the script
+builds it through uv with pinned Sphinx dependencies.
 
 ## Exchange Contract
 

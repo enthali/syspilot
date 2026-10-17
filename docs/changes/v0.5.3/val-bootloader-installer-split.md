@@ -39,7 +39,7 @@ the full installation engine, internal-only.
 |-------|-------|
 | **Precondition** | Network access available; `syspilot.setup.agent.md` is the Bootloader |
 | **Action** | User invokes the Setup Agent (Bootloader) in a VS Code Copilot session |
-| **Expected** | Agent fetches `https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/bootstrap.json` before any other step |
+| **Expected** | Agent fetches `https://raw.githubusercontent.com/hubertusgbecker/syspilot/main/syspilot/bootstrap.json` before any other step |
 | **Pass criterion** | Manifest JSON is read; `bootstrap_version` and `entry_point` keys are present |
 | **Fail criterion** | Agent proceeds without reading manifest, or reads from a local/different URL |
 
@@ -54,8 +54,8 @@ the full installation engine, internal-only.
 |-------|-------|
 | **Precondition** | Manifest fetched with `entry_point: "syspilot/agents/syspilot.installer.agent.md"` |
 | **Action** | Bootloader constructs fetch URL from `entry_point` |
-| **Expected** | Installer fetched from `https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/agents/syspilot.installer.agent.md` |
-| **Pass criterion** | URL is exactly `https://raw.githubusercontent.com/enthali/syspilot/main/<entry_point>` |
+| **Expected** | Installer fetched from `https://raw.githubusercontent.com/hubertusgbecker/syspilot/main/syspilot/agents/syspilot.installer.agent.md` |
+| **Pass criterion** | URL is exactly `https://raw.githubusercontent.com/hubertusgbecker/syspilot/main/<entry_point>` |
 | **Fail criterion** | Hardcoded URL ignoring `entry_point`, or wrong base URL |
 
 ---

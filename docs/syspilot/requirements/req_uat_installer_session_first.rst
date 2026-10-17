@@ -6,7 +6,7 @@ Test data requirements for ``SYSP_US_UAT_INSTALLER_SESSION_FIRST``.
 
 .. req:: UAT Test Data: Installer Session-First Behavior
    :id: SYSP_REQ_UAT_INSTALLER_SESSION_FIRST
-   :status: draft
+   :status: deprecated
    :priority: mandatory
    :tags: uat, installer, orchestration, session-first, test-data
    :links: SYSP_US_UAT_INSTALLER_SESSION_FIRST

@@ -1,3 +1,8 @@
+---
+user-invocable: false
+disable-model-invocation: true
+---
+
 # syspilot.release — Tailoring for the syspilot project
 
 ## Versioning Scheme

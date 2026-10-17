@@ -8,7 +8,7 @@ per-scenario verification checklist a human tester runs.
 
 .. spec:: UAT Expected Outcomes: Installer Orchestration Select, General Mutex & Scaffold Regression
    :id: SYSP_SPEC_UAT_INSTALLER_ORCHESTRATION_SELECT
-   :status: draft
+   :status: deprecated
    :priority: mandatory
    :tags: uat, installer, orchestration, mutex, regression, critical, expected-outcomes
    :links: SYSP_REQ_UAT_INSTALLER_ORCHESTRATION_SELECT

@@ -8,26 +8,54 @@ customizes it via the agent architecture (Soul, Duties, Workflow). Agent
 frontmatter no longer prescribes a `tools:` list — the VS Code tool picker
 proved unstable across saves and window reloads, silently rewriting or
 dropping enumerated lists independent of any syspilot action. Agents instead
-inherit whatever tools are enabled on your default VS Code agent, with one
-exception: the Setup Bootloader keeps an explicit `tools:` list, since its
-bootstrap `agent/runSubagent` call must not depend on picker state.
+inherit whatever tools are enabled on your default VS Code agent. Setup is the
+exception: it declares execution capability because it launches the installed
+deterministic runtime directly.
 
 | Layer | What it is | Where it lives |
 |-------|-----------|----------------|
 | **Product** | The generic agent toolkit — agents, skills, scripts, templates | `syspilot/` |
-| **Installed Copy** | Running agents that VS Code Copilot invokes | `.github/agents/` |
+| **Installed Copy** | The explicitly selected harness target (production or experimental) plus shared runtime resources | `.github/`, `.claude/`, `.opencode/`, or `.syspilot/qoder/syspilot-qoder-plugin.zip`, with `.syspilot/` |
 
-The Setup Agent copies Product files into a project. Project teams then
-customize project-owned agents directly. Specifications live in
+The deterministic Installer copies Product files into a project. Installed
+Setup launches that runtime for updates. Specifications live in
 `docs/syspilot/` and cover all agents at the product level.
 
-**Required: `enthali.jarvis-core`** — Multi-agent orchestration (the `SEND` /
-session-messaging mechanism agents use to hand off work to each other) depends
-on the `enthali.jarvis-core` tool set being enabled on your default VS Code
-agent. If it is disabled, agents do not error — they silently lose the
-ability to hand off work, and a multi-agent workflow simply stalls with no
-diagnostic. Verify `enthali.jarvis-core` is enabled in the Copilot Chat tool
-picker before running any syspilot multi-agent workflow.
+**Harness installs.** The harness selector matrix is:
+
+| Harness | Status | Evidence boundary |
+|---------|--------|-------------------|
+| GitHub Copilot in VS Code | Production | Native project agents and prompts remain byte-exact to product source. |
+| Claude Code | Production | Project-scoped native agents, Skills, and commands are installed after external Claude Code installation and authentication. |
+| OpenCode | Production | Native configuration parsing and live Manager-to-Engineer Task delegation are accepted. |
+| Qoder | Experimental, installable | The Installer stages `.syspilot/qoder/syspilot-qoder-plugin.zip` as deterministic installability evidence. Documented UI import is external; native in-app import and autonomous Manager-to-Engineer orchestration clearance are deferred future work. |
+
+GitHub Copilot production support refers to the VS Code integration, not the
+GitHub Copilot CLI. Agent/Skill content (Soul, Duties, Workflow, Instructions,
+Rules) is a single source of truth — never
+forked per harness. Only the frontmatter block and target directory are
+adapted per harness. Each install command selects exactly one harness target
+(production or experimental) and writes no other harness target. For Qoder,
+the selected target is the deterministic Plugin archive; the Installer
+neither performs the external UI import nor reports native installation or
+autonomous orchestration clearance.
+See `SYSP_SPEC_HARNESS_TARGET_MATRIX` and
+`docs/syspilot/design/spec_harness_adapters.rst` for the full mapping and
+limitations.
+
+**Transaction boundary.** Before mutation, the Installer resolves one source
+revision, parses and adapts all content, freezes the complete target plan, and
+validates every destination. A bounded checkpoint contains only declared
+mutable paths and required Git metadata. An opaque, expiring identifier carries
+the checkpoint from Setup's preparation process to the installation process;
+HMAC authentication and an atomic one-time lease reject tamper, concurrent use,
+and replay before mutation. Secrets and lease state remain in protected OS
+temporary storage outside the target. Each mutation and restore rejects
+symlinks, junctions, and reparse points in target ancestry. POSIX mutations
+stay relative to opened no-follow directory descriptors, while Windows retains
+handle identity and reparse-point checks. Rollback restores only
+transaction-owned paths, preserving unrelated files and concurrent changes
+outside the plan.
 
 
 ## Why the Separation?
@@ -54,6 +82,7 @@ It's the distribution package — what gets installed into target projects.
 
 ```
 syspilot/                          # The Product
+├── installer.py                  # Deterministic PEP 723 installation runtime
 ├── agents/                        # Generic agent templates
 │   ├── syspilot.design.agent.md
 │   ├── syspilot.uat.agent.md
@@ -78,16 +107,11 @@ syspilot/                          # The Product
 - **Language-agnostic** — No project-specific code, build commands, or test runners
 - **Self-contained** — Everything needed for installation in one directory
 - **Versioned** — The `version:` field in `syspilot/agents/syspilot.setup.agent.md` frontmatter tracks the release; main branch = current release
-- **Single source of truth** — The Setup Agent sources all distributable files
+- **Single source of truth** — The Installer sources all distributable files
   exclusively from `syspilot/`, never from `.github/` or project config
-- **Orchestration variant selection** — `syspilot.orchestration-jarvis` (async,
-  session-based) and `syspilot.orchestration-subagent` (sync, subagent-based)
-  are mutually exclusive. On fresh install, the Setup Agent infers a default
-  from `.jarvis/` presence, asks the user to confirm or override, and installs
-  exactly one — the same mutex mechanism applies to any future Skill that
-  declares a `group:` field. When the async variant is chosen, the Setup Agent
-  also calls `jarvis_createActor` for every eligible agent, creating a
-  `.jarvis/actors/<name>/` actor entry (idempotent — skipped if already exists).
+- **Deterministic orchestration** — Installation always selects
+  `syspilot.orchestration-subagent`; it does not inspect Jarvis state or offer
+  an orchestration choice.
 
 
 ## How Installation Works
@@ -95,20 +119,23 @@ syspilot/                          # The Product
 ```{mermaid}
 flowchart TD
     P["<b>Product</b> (syspilot/)<br/>Generic agents, skills, templates"]
-    G["<b>.github/agents/</b> (Installed copy)<br/>Running agents that Copilot invokes"]
+    G["<b>Selected harness + .syspilot/</b><br/>Native files and shared runtime resources"]
     S["<b>docs/syspilot/</b><br/>Product-level specifications<br/>(US → REQ → SPEC)"]
 
-    P -- "Setup Agent installs<br/>Product → .github/" --> G
+    R["<b>Installer runtime</b><br/>Remote first run, local updates"]
+    P -- "Selected revision" --> R
+    R -- "Installs selected<br/>harness files" --> G
     S -- "Specifications describe<br/>agent architecture" --> G
 ```
 
 The flow:
 
-1. **Setup Agent** reads from `syspilot/` (Product) and copies files to `.github/`
-2. **Project team** customizes project-owned agents (release, implement) directly
-3. **Specifications** in `docs/syspilot/` document the agent architecture
+1. **Initial install** runs the remote PEP 723 Installer from the target Git repository root
+2. **Installer runtime** resolves one source revision and writes only the explicitly selected harness target
+3. **Installed Setup** runs `.syspilot/installer.py` directly for updates
+4. **Specifications** in `docs/syspilot/` document the agent architecture
    with full traceability (US → REQ → SPEC)
-4. **sphinx-needs** resolves `:links:` across the spec hierarchy, enabling impact analysis
+5. **sphinx-needs** resolves `:links:` across the spec hierarchy, enabling impact analysis
 
 
 ## Concrete Example: The PM Agent
@@ -170,9 +197,9 @@ syspilot defines three ownership categories that determine what happens on updat
 
 | Category | What | On Update |
 |----------|------|-----------|
-| **Methodology-owned** | design, uat, verify, mece, trace, docu agents; skills; scripts; build files | **Replaced** — always get the latest version |
-| **Project-owned** | release, implement agents and prompts | **Never touched** — copied once on install, then yours |
-| **User-owned** | Your specs, change docs, copilot-instructions.md | **Never touched** — Setup Agent ignores these entirely |
+| **Installed product** | syspilot agents, prompts, skills, templates, runtime | **Synchronized** — replaced from the selected source revision |
+| **Tailoring** | `syspilot.*.tailoring.md` files | **Preserved** — never removed as orphans |
+| **User-owned** | Your specs, change docs, project configuration | **Preserved** — outside installation scope |
 
 **Orphan cleanup** — The Installer removes stale files from previous syspilot versions,
 but only files whose name **starts with `syspilot.`** and does **not** end with
@@ -193,9 +220,11 @@ are always preserved, regardless of whether they appear in the current release.
 3. **Customize project-owned agents via `@syspilot.design`** — This creates proper
    specs with traceability. The next update won't touch these files.
 
-4. **Transactional rollback** — Before writing any files, the Installer creates a
-   pre-install Git commit. On failure, it executes `git reset --hard` to restore the
-   exact pre-install state. No partial installs persist.
+4. **Transactional rollback** — Before writing any files, the Installer creates
+  a complete authenticated checkpoint outside the repository and consumes its
+  opaque identifier exactly once. On failure it restores exact file bytes,
+  directory state, and the Git index. No partial install or checkpoint secret
+  persists.
 
 ---
 

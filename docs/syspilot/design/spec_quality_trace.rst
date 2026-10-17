@@ -52,7 +52,7 @@ Quality Engineer Trace Design
 
 .. spec:: Quality Engineer Trace Workflow
    :id: SYSP_SPEC_TRACE_WORKFLOW
-   :status: draft
+   :status: approved
    :tags: agent-v2, engineer, trace, workflow
    :links: SYSP_REQ_TRACE_WORKFLOW
 
@@ -60,7 +60,7 @@ Quality Engineer Trace Design
 
    1. **RECEIVE** — RECEIVE a specification element ID to trace from the initiator
    2. **Discover** — Use ``get_need_links.py`` to find all connected elements:
-      ``python .github/skills/syspilot.impact-python/scripts/get_need_links.py <ID> --flat --depth 3``
+      ``uv run --no-project .syspilot/skills/syspilot.impact-python/scripts/get_need_links.py <ID> --flat --depth 3``
    3. **Traverse** — Follow the complete chain upward and downward
    4. **Analyze** — Check chain completeness, semantic consistency, link validity
    5. **RESPOND** — Report the trace result back to the initiator with:

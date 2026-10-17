@@ -9,10 +9,10 @@ requirements: [SYSP_REQ_CHG_LAUNCHER]
 
 ## Script
 
-`syspilot/skills/syspilot.change-launcher/launch_change.py`
+`.syspilot/skills/syspilot.change-launcher/launch_change.py`
 
 ```
-python launch_change.py --name <change-name> --author <author> --mode <mode>
+uv run --no-project .syspilot/skills/syspilot.change-launcher/launch_change.py --name <change-name> --author <author> --mode <mode>
 ```
 
 ## Parameters
@@ -26,7 +26,7 @@ python launch_change.py --name <change-name> --author <author> --mode <mode>
 ## Preconditions
 
 - Current branch must be `development`
-- Template `syspilot/templates/change-document.md` must exist
+- Template `.syspilot/templates/change-document.md` must exist
 - `docs/changes/<name>.md` must not already exist
 
 ## Behaviour

@@ -22,7 +22,7 @@ Getting Started
 
    # Linux / Mac
    mkdir -p .github/agents && curl -fsSL \
-     "https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/agents/syspilot.setup.agent.md" \
+     "https://raw.githubusercontent.com/hubertusgbecker/syspilot/main/syspilot/agents/syspilot.setup.agent.md" \
      -o .github/agents/syspilot.setup.agent.md
 
 .. code-block:: powershell
@@ -30,7 +30,7 @@ Getting Started
    # Windows (PowerShell)
    New-Item -ItemType Directory -Force -Path .github/agents | Out-Null
    Invoke-WebRequest `
-     -Uri "https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/agents/syspilot.setup.agent.md" `
+     -Uri "https://raw.githubusercontent.com/hubertusgbecker/syspilot/main/syspilot/agents/syspilot.setup.agent.md" `
      -OutFile ".github/agents/syspilot.setup.agent.md"
 
 **2. Open VS Code Copilot Chat** and type ``@syspilot.setup`` — the agent does the rest.

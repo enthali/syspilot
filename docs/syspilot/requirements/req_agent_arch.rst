@@ -95,58 +95,56 @@ Meta-level requirements defining the Soul/Duties/Workflow structure.
 
 .. req:: Agent Frontmatter Definition
    :id: SYSP_REQ_AGENT_ARCH_FRONTMATTER
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, meta, architecture, frontmatter
-   :links: SYSP_US_AGENT_ARCH
+   :links: SYSP_US_AGENT_ARCH, SYSP_US_HARNESS_PORTABILITY
 
    **Description:**
    Every agent SHALL have YAML **Agent Frontmatter** defining its technical configuration.
-   The frontmatter specifies how VS Code Copilot discovers, categorizes, and
-   constrains the agent. Every agent except the Setup Bootloader and the Installer
-   SHALL additionally carry session-identity fields and be user-invocable, so that
-   the asynchronous orchestration variant can run each agent as its own session.
+   The source frontmatter specifies how VS Code Copilot discovers, categorizes,
+   and constrains the agent. A deterministic harness adapter MAY transform
+   frontmatter fields required by another harness while preserving the agent's
+   Soul, Duties, and Workflow body unchanged.
 
    **Rationale:**
-   Frontmatter is the machine-readable contract between an agent and the VS Code
-   Copilot runtime. It determines discoverability (description), invocation mode
-   (user-invocable), and session identity. The session-identity fields give each
-   agent a stable name under which a session can be addressed; the Setup
-   Bootloader and the Installer are excluded because they are the bootstrap
-   layer and never run as a session. The ``agents:`` field is retained
-   only on the Setup Bootloader (which lists ``syspilot.installer`` — a real
-   synchronous ``runSubagent`` call outside the orchestration contract); all
-   other session-capable agents omit ``agents:``. Frontmatter deliberately does
-   NOT prescribe a ``tools:`` list for most agents: the VS Code custom-agent
+   The Frontmatter is the machine-readable contract between an agent and its
+   harness runtime. It determines discoverability and invocation mode.
+   Frontmatter deliberately does NOT prescribe a ``tools:`` list: the VS Code custom-agent
    tool picker has proven unstable in practice, silently rewriting or dropping
    enumerated tool lists independent of any syspilot action. Prescribing an
    exact list in spec fights a mechanism syspilot does not control. Agents
    instead inherit whichever tools are enabled on the user's default VS Code
    agent — one place for the user to manage, no drift to maintain in specs.
-   The sole exception is the Setup Bootloader: its one synchronous
-   ``agent/runSubagent`` call to the Installer is a structural bootstrap
-   mechanism, not a customization surface, so it carries an explicit,
-   hardcoded ``tools:`` list.
 
    **Acceptance Criteria:**
 
    * AC-1: Every agent definition contains a YAML frontmatter block (``---`` delimited)
    * AC-2: Frontmatter includes a ``description`` field (string)
-   * AC-3: Every agent except the Setup Bootloader declares no ``tools:``
-     field — the agent inherits whatever tools are enabled on the user's
-     default VS Code agent
+   * AC-3: Every source agent declares no ``tools:`` field — the agent inherits
+     enabled tools or receives only harness-required deterministic capability
+     mapping during adaptation
    * AC-4: Frontmatter includes a ``user-invocable`` field (boolean)
-   * AC-5: The Setup Bootloader MAY include an ``agents`` field listing its synchronous subagent targets (``syspilot.installer``); all other agents omit ``agents:`` — in the session model the field enforces nothing at runtime
+   * AC-5: Setup declares no Installer subagent target; installation control
+     flow uses direct deterministic runtime execution
    * AC-6: Frontmatter may include a ``handover`` field (string, optional)
-   * AC-7: Every agent except the Setup Bootloader and the Installer carries session-identity frontmatter (a human-readable session name and an agent identifier)
-   * AC-8: Every agent except the Setup Bootloader and the Installer declares ``user-invocable: true``
-   * AC-9: The Setup Bootloader and the Installer carry no session-identity fields — they are the bootstrap layer and never run as a session
-   * AC-10: The Setup Bootloader is the sole agent carrying an explicit
-     ``tools:`` field; it includes ``agent/runSubagent`` (its one structural
-     dependency, not shared by any other agent) alongside its other required
-     tools
-
-
+   * AC-7: No agent requires session-identity frontmatter for installation
+   * AC-8: Manager and Engineer invocation visibility follows the source role
+     and the selected harness's native representation
+   * AC-9: Setup and the optional Installer documentation surface carry no
+     bootstrap or session-actor identity
+   * AC-10: Setup has execution capability but no ``agent/runSubagent`` or
+     equivalent Installer-agent dependency
+   * AC-11: Given a harness other than VS Code Copilot Chat, When an agent
+     is installed there, Then only the frontmatter/structural adapter
+     differs — the agent's Soul, Duties, and Workflow content is unchanged
+   * AC-12: Given Claude Code is selected, When agents are installed, Then
+         the harness exposes native, discoverable Manager and Engineer roles
+         and records independent production evidence for that harness. Given
+         Qoder is selected, When agents are installed, Then the harness
+         receives the staged, checksummed package archive as its
+         experimental-tier evidence; live native discoverability for Qoder
+         is deferred future scope and is not required for this change.
 .. req:: Agent Prompt File
    :id: SYSP_REQ_AGENT_ARCH_PROMPT
    :status: draft
@@ -188,6 +186,13 @@ Meta-level requirements defining the Soul/Duties/Workflow structure.
    reads the agent's generic workflow, interviews the user, and authors the
    tailoring file. The file is instance-only: setup ships ``*.agent.md`` and
    never ``*.tailoring.md``, so product updates never overwrite it.
+
+   Because VS Code detects any ``.md`` file placed in ``.github/agents/`` as a
+   selectable custom agent, every tailoring file SHALL begin with YAML
+   frontmatter declaring ``user-invocable: false`` and
+   ``disable-model-invocation: true``, so it is colocated with its agent for
+   the Installer's orphan-cleanup exemption without appearing in the agent
+   picker or being invocable as a subagent.
 
    **Rationale:**
    Separating generic method (in the agent, product) from project-specific

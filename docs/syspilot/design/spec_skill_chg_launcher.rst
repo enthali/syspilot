@@ -3,7 +3,7 @@ Change Launcher Skill Design
 
 .. spec:: Change Launcher Script
    :id: SYSP_SPEC_CHG_LAUNCHER
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: skill, pm, automation
    :links: SYSP_REQ_CHG_LAUNCHER
@@ -30,7 +30,7 @@ Change Launcher Skill Design
    1. **Validate preconditions:**
 
       * Current branch is ``development`` (or error)
-      * ``syspilot/templates/change-document.md`` exists (or error)
+      * ``.syspilot/templates/change-document.md`` exists (or error)
       * ``docs/changes/<name>.md`` does not already exist (or error)
 
    2. **Create or switch to branch:**
@@ -40,7 +40,7 @@ Change Launcher Skill Design
 
    3. **Copy template:**
 
-      * Copy ``syspilot/templates/change-document.md`` to ``docs/changes/<name>.md``
+      * Copy ``.syspilot/templates/change-document.md`` to ``docs/changes/<name>.md``
 
    4. **Pre-fill header fields** (regex replacement in the copied file):
 
@@ -74,5 +74,10 @@ Change Launcher Skill Design
 
    **Installation:**
 
-   The Setup Agent copies ``syspilot/skills/syspilot.change-launcher/`` to
-   ``.github/skills/syspilot.change-launcher/`` during installation.
+   The Installer writes ``SKILL.md`` only to the selected harness's native
+   Skill directory, copies ``launch_change.py`` to the harness-neutral
+   ``.syspilot/skills/syspilot.change-launcher/`` resource directory, and
+   installs the required template at
+   ``.syspilot/templates/change-document.md``. The installed Skill invokes the
+   shared script through ``uv run --no-project`` and never depends on a
+   ``.github`` path.

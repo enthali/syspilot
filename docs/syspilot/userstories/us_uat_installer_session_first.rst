@@ -8,7 +8,7 @@ installation, and session-scaffold creation behaviour.
 
 .. story:: UAT: Installer Session-First Behavior
    :id: SYSP_US_UAT_INSTALLER_SESSION_FIRST
-   :status: draft
+   :status: deprecated
    :priority: mandatory
    :tags: uat, installer, orchestration, session-first
    :links: SYSP_US_INSTALLER, SYSP_US_SKILL_ARCH

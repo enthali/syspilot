@@ -2,8 +2,7 @@
 name: "Release Engineer"
 agent: syspilot.release
 description: "Subagent that guides the release process: squash merge, version bump, validation, release notes, change doc archival, git tagging."
-model: Claude Sonnet 4.6 (copilot)
-user-invocable: true
+user-invocable: false
 agents: []
 ---
 

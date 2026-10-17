@@ -6,7 +6,7 @@ Meta-level definition of the Skill structure and its exchangeability model.
 
 .. story:: Skill Architecture
    :id: SYSP_US_SKILL_ARCH
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: agent-v2, skill, architecture
    :links: SYSP_US_AGENT_ARCH
@@ -72,7 +72,8 @@ Meta-level definition of the Skill structure and its exchangeability model.
 
    5. Given a Skill declares a ``group``, When another Skill of the same
       group is installed, Then only one of them may be active at a time
-      (Mutual Exclusion enforced by the Setup Agent)
+      under the Installer-owned mutual-exclusion behavior in
+      ``SYSP_US_INSTALLER``
    6. Given a Skill declares a ``group`` and that group has DEFINITIONS,
       When the Skill is installed, Then it implements every DEFINITION of
       its group's contract
@@ -89,3 +90,9 @@ Meta-level definition of the Skill structure and its exchangeability model.
    9. Given no ``tailoring.md`` file exists for a Skill, When an Agent
       consults that Skill, Then the Skill's documented default convention
       applies unmodified — no escalation or interview is required
+
+   **Acceptance Criteria — Harness Portability (see ``SYSP_US_HARNESS_PORTABILITY``):**
+
+   10. Given cross-harness Skill portability is required, When its acceptance
+       criteria are defined or evaluated, Then ownership is delegated to
+       ``SYSP_US_HARNESS_PORTABILITY``

@@ -12,7 +12,7 @@ provides explicit regression scenarios for GH #48 and GH #22.
 
 .. story:: UAT: Installer Orchestration Select, General Mutex & Scaffold Regression
    :id: SYSP_US_UAT_INSTALLER_ORCHESTRATION_SELECT
-   :status: draft
+   :status: deprecated
    :priority: mandatory
    :tags: uat, installer, orchestration, mutex, regression, critical
    :links: SYSP_US_INSTALLER, SYSP_US_SKILL_ARCH

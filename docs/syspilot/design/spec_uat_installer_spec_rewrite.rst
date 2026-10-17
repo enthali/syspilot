@@ -1,344 +1,337 @@
-Installer — Spec Rewrite Expected Outcomes
-==========================================
+Installer Deterministic Runtime Expected Outcomes
+=================================================
 
-Expected outcomes specification for ``SYSP_REQ_UAT_INSTALLER_SPEC_REWRITE``.
-Per-scenario verification checklist for all nine CR acceptance criteria.
+Expected outcomes for ``SYSP_REQ_UAT_INSTALLER_SPEC_REWRITE``.
 
+.. spec:: UAT Expected Outcomes: Installer Deterministic Runtime
+  :id: SYSP_SPEC_UAT_INSTALLER_SPEC_REWRITE
+  :status: approved
+  :priority: mandatory
+  :tags: uat, installer, spec-rewrite, expected-outcomes
+  :links: SYSP_REQ_UAT_INSTALLER_SPEC_REWRITE, SYSP_SPEC_INSTALLER_DIRECT_OPS, SYSP_SPEC_INSTALLER_SUPPLIED_CHECKPOINT
 
-.. spec:: UAT Expected Outcomes: Installer Spec Rewrite
-   :id: SYSP_SPEC_UAT_INSTALLER_SPEC_REWRITE
-   :status: draft
-   :priority: mandatory
-   :tags: uat, installer, spec-rewrite, expected-outcomes
-   :links: SYSP_REQ_UAT_INSTALLER_SPEC_REWRITE
+   **TC-IDR-INITIAL - Remote-runtime clean installation**
 
-   **Definition:**
+  *Action:* Run the remote command against clean targets with ``--harness
+  vscode``, ``--harness claude``, ``--harness opencode``, and ``--harness
+  qoder`` separately.
 
-   For each of the nine test scenarios derived from the ``installer-spec-rewrite``
-   CR, the following outcomes SHALL be observable when the rewritten Installer
-   is correct.  The tester executes each scenario in order and records pass/fail
-   for every check item.
+   *Expected result:*
 
-   ---
+   * [ ] Every source request uses one resolved revision from the explicit
+     repository and branch; no local product or installed harness tree is a source.
+   * [ ] Each run writes only its explicit harness target or, for Qoder,
+     exactly ``.syspilot/qoder/syspilot-qoder-plugin.zip`` with the validated
+     manifest and package digest,
+     ``.syspilot/installer.py``, shared ``.syspilot/{skills,templates}``
+     resources, and missing-only documentation bootstrap files.
+   * [ ] The stable runtime bytes equal the selected revision's runtime bytes.
+   * [ ] Validation succeeds before one installation commit and success result.
+   * [ ] Each harness has an independent result; a Claude Code or Qoder failure
+     cannot be masked by another harness's pass.
 
-   **T-1 — Clean install end-to-end**
-
-   *CR ACs:* AC1, AC9 |
-   *REQ refs:* ``SYSP_REQ_INSTALLER_GITHUB_SOURCE``, ``SYSP_REQ_INSTALLER_WORKFLOW``
-
-   **Precondition:** Clean test repository (no ``.github/`` syspilot files);
-   network access to GitHub; ``branch=development`` passed to ``@syspilot.setup``.
-
-   **Actions:**
-
-   1. Open VS Code Chat in the clean test repository.
-   2. Invoke: ``@syspilot.setup branch=development``
-   3. Observe agent output until completion or error.
-
-   **Expected Results:**
-
-   * [ ] The agent completes without an error message.
-   * [ ] Files appear under ``.github/agents/``, ``.github/prompts/``,
-     ``.github/skills/``, and ``.github/templates/``.
-   * [ ] The agent output includes a per-directory summary table with rows
-     for ``agents/``, ``prompts/``, ``skills/``, and ``templates/``.
-   * [ ] No message indicates a local-source fallback was used; all fetches
-     reference the upstream GitHub repository.
-   * [ ] A Git commit is present in the test repo log after the run.
-
-   **Pass criterion:** All five check items confirmed.
-
-   **Fail criterion:** Any error message, any missing directory, summary table
-   absent, or local-source message in the output.
+   *Traces to:* ``SYSP_US_UAT_INSTALLER_SPEC_REWRITE`` AC-1
 
    ---
 
-   **T-2 — Re-invoke on existing installation (relaxed idempotency)**
+   **TC-IDR-UPDATE - Idempotent repeated command**
 
-   *CR AC:* AC2 |
-   *REQ ref:* ``SYSP_REQ_INSTALLER_GITHUB_SOURCE``
+  *Action:* Repeat each successful command unchanged for all four harnesses,
+  then invoke each installed Setup entry with the same inputs.
 
-   **Precondition:** T-1 passed; the test repository has a complete syspilot
-   installation.
+   *Expected result:*
 
-   **Actions:**
+   * [ ] The repeat reports zero content changes and creates no commit.
+   * [ ] Setup records the stable local-runtime command and reaches the same state.
+   * [ ] No Agent, Task, ``runSubagent``, SEND, or Installer-agent invocation
+     appears in the command record.
 
-   1. In the same test repository, invoke ``@syspilot.setup branch=development``
-      again without making any other changes.
-   2. Observe agent output until completion or error.
-
-   **Expected Results:**
-
-   * [ ] The agent completes without an error message on the second run.
-   * [ ] No message indicates a "Mode-Detect", "same version", or "nothing to
-     do" early-exit that would prevent files from being re-checked.
-   * [ ] File content in ``.github/`` matches the upstream source after the run.
-
-   **Pass criterion:** All three check items confirmed.
-
-   **Fail criterion:** Error on second run, or agent halts citing Mode-Detect
-   logic, or file content differs from upstream.
+   *Traces to:* ``SYSP_US_UAT_INSTALLER_SPEC_REWRITE`` AC-2, AC-7
 
    ---
 
-   **T-3 — UTF-8 BOM absence in all written files**
+   **TC-IDR-ADAPT - Deterministic native output**
 
-   *CR AC:* AC3 |
-   *REQ ref:* ``SYSP_REQ_INSTALLER_ENCODING``
+   *Action:* Parse generated frontmatter, compare bodies with source, and scan
+   every managed output for a BOM.
 
-   **Precondition:** T-1 or T-2 passed; the test repository contains a complete
-   syspilot installation under ``.github/``.
+   *Expected result:*
 
-   **Actions:**
+   * [ ] VS Code files are byte-identical where adaptation is unnecessary.
+   * [ ] OpenCode output matches adapter contracts; unsupported Skill
+     ``group``, ``tools``, and ``triggers`` are omitted while source ``group``
+     metadata still enforces mutual exclusion.
+   * [ ] Every body and EOF-newline state matches source and no output begins
+     with ``EF BB BF``.
+   * [ ] Locally edited frontmatter is deterministically replaced, not preserved.
 
-   1. From the test repository root, run a BOM scan across all installed files:
-
-      * **Linux / macOS:** ``grep -rl $'\xef\xbb\xbf' .github/``
-      * **PowerShell:** ``Get-ChildItem -Recurse .github | ForEach-Object { $bytes = [System.IO.File]::ReadAllBytes($_.FullName); if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) { $_.FullName } }``
-
-   2. Record all file paths returned by the scan.
-
-   **Expected Results:**
-
-   * [ ] The BOM scan returns zero results (empty output).
-
-   **Pass criterion:** Zero files with BOM marker.
-
-   **Fail criterion:** One or more files listed by the BOM scan.
+   *Traces to:* ``SYSP_US_UAT_INSTALLER_SPEC_REWRITE`` AC-3
 
    ---
 
-   **T-4 — No wrapper scripts generated**
+   **TC-IDR-ARTIFACTS - No generated execution residue**
 
-   *CR AC:* AC4 |
-   *REQ ref:* ``SYSP_REQ_INSTALLER_DIRECT_OPS``
+   *Action:* Recursively inspect the target and command record after both runs.
 
-   **Precondition:** T-1 passed; the test repository contains a complete
-   syspilot installation.
+   *Expected result:*
 
-   **Actions:**
+   * [ ] No wrapper, helper, intermediary, ``.venv``, target dependency cache,
+     ``__pycache__``, or ``docs/_build`` exists.
+   * [ ] The only installed executable product artifact is the final stable runtime.
 
-   1. Inspect ``temp/`` in the test repository root:
-      ``Get-ChildItem temp\ -ErrorAction SilentlyContinue``
-   2. Inspect the project root for any ``.ps1`` or ``.sh`` script files not
-      part of the project's own source:
-      ``Get-ChildItem *.ps1, *.sh -ErrorAction SilentlyContinue``
-   3. Search for ``install.ps1``, ``install.sh``, or any file whose name
-      contains "install" outside the ``syspilot/`` product directory.
-
-   **Expected Results:**
-
-   * [ ] ``temp/`` contains no ``install.ps1``, ``install.sh``, or equivalent
-     wrapper script created by the Installer.
-   * [ ] The project root contains no Installer-generated ``.ps1`` or ``.sh``
-     helper file.
-   * [ ] The agent output contains no message about generating or writing a
-     wrapper script.
-
-   **Pass criterion:** All three check items confirmed.
-
-   **Fail criterion:** Any Installer-generated wrapper script found in ``temp/``
-   or the project root.
+   *Traces to:* ``SYSP_US_UAT_INSTALLER_SPEC_REWRITE`` AC-4
 
    ---
 
-   **T-5 — Frontmatter preservation: ``tools:`` preserved, others reset**
+   **TC-IDR-BOUNDARY - Read-only acquisition and protected mutation**
 
-   *CR AC:* AC5 |
-   *REQ ref:* ``SYSP_REQ_INSTALLER_DUTIES``
+  *Action:* For each of the four harness values, inject source
+  resolution/fetch/parse failures before the checkpoint, then inject every
+  mutation and later failure after it.
 
-   **Precondition:** T-1 passed; ``.github/agents/syspilot.cm.agent.md`` exists.
-   The tester has manually edited the ``tools:`` field in that file to a known
-   custom value before this scenario begins (e.g. ``tools: [my-custom-tool]``).
-   The ``model`` and ``description`` fields are noted before the re-run.
+   *Expected result:*
 
-   **Actions:**
+   * [ ] Source acquisition and in-memory transformation perform no target mutation.
+   * [ ] Structured parsing, transformation, path containment, and the complete
+     target plan finish before checkpoint creation.
+   * [ ] Every pre-checkpoint failure leaves exact target and Git state and no residue.
+   * [ ] A scoped checkpoint containing only declared mutable paths and exact
+     Git metadata exists before every target mutation.
+   * [ ] Every post-checkpoint failure, including after commit but before
+     checkpoint deletion, restores exact HEAD, symbolic ref, index,
+     tracked/untracked bytes, and path existence.
+   * [ ] Rollback deletes the checkpoint and emits no retained commit or success;
+     Git reset and manual recovery are not acceptance evidence.
+   * [ ] After the Installer commit, an independently created concurrent commit
+     advances the same ref; injected rollback reports a conflict, preserves the
+     concurrent commit and ancestry, and restores only non-conflicting owned
+     file/index state using compare-and-swap.
+   * [ ] Clean installation, update, injected-failure restoration, and rollback
+     are each reported separately for Claude Code production installation and
+     Qoder experimental-tier package staging.
+     The Qoder result is ``staged`` only; it never reports native import or a
+     completed external Qoder UI lifecycle. Qoder Manager-to-Engineer
+     orchestration is out of scope for this change and explicitly deferred to
+     a future change, not a gate cleared or blocked here.
 
-   1. Confirm the ``tools:`` custom value is saved in
-      ``.github/agents/syspilot.cm.agent.md``.
-   2. Invoke ``@syspilot.setup branch=development``.
-   3. After completion, open ``.github/agents/syspilot.cm.agent.md`` and
-      read the frontmatter.
-
-   **Expected Results:**
-
-   * [ ] The ``tools:`` field value matches the tester's custom value
-     (``[my-custom-tool]`` or equivalent) — it was NOT overwritten.
-   * [ ] The ``model`` field matches the upstream value (not the locally cached
-     value if it changed upstream).
-   * [ ] The ``description`` field matches the upstream value.
-   * [ ] Open ``.github/agents/syspilot.setup.agent.md`` (the Bootloader):
-     its entire content matches the upstream file verbatim — no field preservation
-     was applied.
-
-   **Pass criterion:** All four check items confirmed.
-
-   **Fail criterion:** ``tools:`` value reset to upstream; or ``model`` /
-   ``description`` not reset; or Bootloader content differs from upstream verbatim.
-
-   ---
-
-   **T-6 — Missing sphinx-needs dependency: stop with instructions**
-
-   *CR AC:* AC6 |
-   *REQ ref:* ``SYSP_REQ_INSTALLER_WORKFLOW``
-
-   **Precondition:** ``sphinx-needs`` is uninstalled from the active Python
-   environment (``pip uninstall sphinx-needs -y``).  The test repository has no
-   pre-existing syspilot installation (or use the clean test repo).
-
-   **Actions:**
-
-   1. Invoke ``@syspilot.setup branch=development``.
-   2. Observe agent output.
-   3. Inspect the test repository for any modified files.
-
-   **Expected Results:**
-
-   * [ ] The agent output contains instructions for installing
-     ``sphinx-needs`` (e.g. ``pip install sphinx-needs``).
-   * [ ] The agent stops before writing any syspilot files to ``.github/``.
-   * [ ] No files under ``.github/agents/``, ``.github/prompts/``, or
-     ``.github/skills/`` were created or modified.
-   * [ ] No Git commit was made to the test repository.
-
-   **Pass criterion:** All four check items confirmed.
-
-   **Fail criterion:** Installer proceeds past the dependency check; any file
-   written; or a commit created despite missing dependency.
+   *Traces to:* ``SYSP_US_UAT_INSTALLER_SPEC_REWRITE`` AC-5
 
    ---
 
-   **T-7 — Rollback on mid-install failure**
+   **TC-IDR-CONTAINMENT - Lexical and physical escape rejection**
 
-   *CR AC:* AC7 |
-   *REQ ref:* ``SYSP_REQ_INSTALLER_ROLLBACK``
+   *Action:* Run each planned write, orphan deletion, and rollback case against
+   lexical ``..``/absolute/drive/UNC escapes and against symlink, Windows
+   junction, mount-point, and reparse-point ancestry fixtures.
 
-   **Testability concern:** See TC-1 below.  This scenario requires the tester
-   to inject a failure mid-install.  The exact injection point is
-   implementation-dependent.
+   *Expected result:*
 
-   **Precondition:** Clean test repository (no syspilot install).  The tester
-   has identified the Installer's pre-install commit step in the agent workflow
-   and has a method to interrupt execution between file writes (e.g. by manually
-   corrupting a file the Installer will write next, or by network interruption
-   if the Installer fetches sequentially).
+   * [ ] Every supported escape fixture fails before write, delete, or restore.
+   * [ ] No external sentinel changes and no out-of-target link is followed.
+   * [ ] Unsupported host fixture types are explicitly skipped, not passed.
+   * [ ] Any post-checkpoint rejection restores non-conflicting planned paths
+     and deletes checkpoint data without reporting success.
+   * [ ] Deterministic race hooks replace each destination parent with a
+     junction/reparse point after validation and before temporary-file create,
+     replace, delete, and restore; every case fails closed and leaves the
+     external sentinel byte-exact.
+   * [ ] On POSIX, a second race hook swaps ancestry after the final identity
+     validation for temporary-file creation, write/replace, delete, cleanup,
+     and restore. Syscall evidence shows every operation remains relative to
+     an opened target/parent directory descriptor, uses ``O_DIRECTORY`` and
+     ``O_NOFOLLOW`` where available, never falls back to the mutable pathname,
+     and leaves the external sentinel byte-exact.
+   * [ ] Native POSIX execution is conditional on a capable POSIX host. On
+     Windows these checks are recorded as unexecuted conditional UAT and are
+     not reported as runtime proof.
+   * [ ] On Windows, the existing handle identity and reparse-point checks are
+     exercised unchanged as the platform-equivalent containment boundary.
 
-   **Actions:**
-
-   1. Begin invoking ``@syspilot.setup branch=development``.
-   2. After the pre-install commit is created (tester observes the commit in
-      ``git log``), inject the failure before all files are written.
-   3. Observe agent output for rollback messaging.
-   4. Run ``git log --oneline -5`` to inspect the repository state.
-   5. Inspect ``.github/`` for partially written files.
-
-   **Expected Results:**
-
-   * [ ] The agent output mentions rollback or ``git reset --hard``.
-   * [ ] ``git log`` shows the repository is at the pre-install commit
-     (i.e. the partial-write commits, if any, are gone).
-   * [ ] ``.github/`` contains no partial or corrupt files from the failed run.
-   * [ ] The working tree is clean (``git status`` reports no uncommitted changes
-     from the Installer's partial work).
-
-   **Pass criterion:** All four check items confirmed.
-
-   **Fail criterion:** Repository left in a partial state; no rollback message;
-   or partial files remain in ``.github/``.
+   *Traces to:* ``SYSP_US_UAT_INSTALLER_SPEC_REWRITE`` AC-8
 
    ---
 
-   **T-8 — No customization-question in Step 4 of spec**
+   **TC-IDR-SCOPED - Bounded checkpoint and concurrent preservation**
 
-   *CR AC:* AC8 |
-   *REQ ref:* ``SYSP_REQ_INSTALLER_WORKFLOW``
+   *Action:* Install in a large repository containing unrelated files inside
+   and outside mutable parents. Create unrelated files after checkpoint
+   creation and inject external changes to both an unplanned path and a planned
+   path before rollback.
 
-   **Precondition:** Branch ``feature/installer-spec-rewrite`` is checked out;
-   ``docs/syspilot/design/spec_installer.rst`` is readable.
+   *Expected result:*
 
-   **Actions:**
+   * [ ] Checkpoint inventory contains only selected-harness planned entries,
+     exact shared runtime/resources, planned missing-only docs, and exact Git
+     metadata; its file count and bytes do not scale with the unrelated tree.
+   * [ ] Unrelated and concurrently created unplanned files remain byte-exact.
+   * [ ] A transaction-external change to a planned path is detected, preserved,
+     and reported as an incomplete rollback conflict rather than overwritten.
+   * [ ] Pre-existing mutable directories retain every unplanned child, and a
+     transaction-created directory is removed only when empty.
 
-   1. Open ``docs/syspilot/design/spec_installer.rst``.
-   2. Locate the ``SYSP_SPEC_INSTALLER_WORKFLOW`` spec node.
-   3. Find the content corresponding to Step 4 (Frontmatter Preservation /
-      file-write step).
-   4. Search the spec for "customization" and "double-write".
-
-   **Expected Results:**
-
-   * [ ] No step in ``SYSP_SPEC_INSTALLER_WORKFLOW`` contains a
-     "customization question" prompt directed at the user.
-   * [ ] No step describes a double-write flow (write once with placeholder,
-     then write again with preserved values).
-   * [ ] The search for "customization" in the context of a user-facing prompt
-     returns no results in the workflow steps section.
-
-   **Pass criterion:** All three check items confirmed.
-
-   **Fail criterion:** Any customization question prompt or double-write step
-   found in the spec.
+   *Traces to:* ``SYSP_US_UAT_INSTALLER_SPEC_REWRITE`` AC-9
 
    ---
 
-   **T-9 — Per-directory summary table in run output**
+    **TC-IDR-SUPPLIED-CHECKPOINT - Coverage, identity, authenticity, and freshness**
 
-   *CR AC:* AC9 (partial), ``SYSP_REQ_INSTALLER_WORKFLOW`` AC-10 |
-   *REQ ref:* ``SYSP_REQ_INSTALLER_WORKFLOW``
+    *Action:* Supply checkpoints to separate public attempts that fail during
+    dependency resolution, source acquisition, source parsing, the
+    plan-construction stage that formerly preceded lease acquisition, and
+    malformed-input handling. After each failure, present the same identifier
+    from a separate process. Also supply one checkpoint with the exact canonical
+    mutable-path set and target-root identity, one omitting a planned OpenCode
+    agent or shared runtime/resource path, one adding an undeclared target path,
+    one recording a different resolved target root, one using mixed-case
+    display paths on Windows, and stale same-plan checkpoints after changing an
+    owned file, index, HEAD/ref, token, fingerprint, creation time, or expiry.
+    Independently tamper with each bound field and recompute any caller-visible
+    unkeyed hash; concurrently present one valid identifier; then replay it
+    after successful and failed attempts. Repeat the token, tamper, expiry,
+    lease, and replay cases for a direct internal checkpoint.
 
-   **Precondition:** T-1 passed; the agent output from T-1 is available for
-   inspection (or the tester re-runs to capture fresh output).
+   *Expected result:*
 
-   **Actions:**
+   * [ ] The exact checkpoint is accepted only when its normalized path set is
+     equal to the complete frozen plan.
+   * [ ] The narrow, broad, and mismatched-root checkpoints are rejected before
+     the first target or Git mutation.
+   * [ ] Each rejection leaves the selected harness agent, stable runtime,
+     ``.syspilot/skills/``, ``.syspilot/templates/``, documentation, HEAD,
+     index, and worktree byte-exact to pre-run state.
+   * [ ] Each rejection emits no commit or success result and leaves no
+     checkpoint residue created by the rejected run.
+   * [ ] On Windows, stored entries, expected-current identities, and restore
+     lookup use one case-normalized canonical key while retaining original
+     display spelling; the accepted mixed-case fixture restores every entry
+     without lookup failure or transaction residue.
+   * [ ] The caller-visible identifier is opaque; trusted token state is outside
+     the target and authenticity binds target identity, canonical plan,
+     owned-path/Git fingerprints, and creation/expiry times to a runtime-created
+     secret or signed/HMAC token that the caller cannot recompute.
+   * [ ] Atomic lease/consume permits exactly one attempt. Every concurrent,
+     replayed, expired, missing, tampered, or stale supplied and direct internal
+     checkpoint is rejected before target or Git mutation, including when a
+     caller recomputes an unkeyed hash over altered fields.
+   * [ ] Dependency, source-acquisition, parse, formerly pre-lease plan, and
+     malformed-input failures each terminally consume or revoke the supplied
+     capability; the separate-process retry rejects the identifier in every
+     case and both attempts leave target bytes, Git state, and unrelated trusted
+     state unchanged with no authorizing checkpoint residue.
+   * [ ] Cleanup and forensic reporting may retain only non-authorizing records;
+     malformed or unauthenticated input cannot delete, consume, or disclose a
+     different transaction's trusted state.
+   * [ ] The valid token and all owned-path/Git pre-state fingerprints are
+     checked immediately before first mutation. Instrumentation proves unrelated
+     paths were not read or hashed and no long-lived secret is persisted in the
+     caller-controlled target.
 
-   1. Review the final output section of the ``@syspilot.setup`` agent run.
-   2. Locate the run summary.
-
-   **Expected Results:**
-
-   * [ ] A summary table is present in the agent output.
-   * [ ] The table contains a row for ``agents/`` with an integer count.
-   * [ ] The table contains a row for ``prompts/`` with an integer count.
-   * [ ] The table contains a row for ``skills/`` with an integer count.
-   * [ ] The table contains a row for ``templates/`` with an integer count.
-   * [ ] All counts are non-negative integers (including zero).
-
-   **Pass criterion:** All six check items confirmed.
-
-   **Fail criterion:** Table absent; any directory row missing; any count is
-   non-numeric or absent.
+   *Traces to:* ``SYSP_US_UAT_INSTALLER_SPEC_REWRITE`` AC-14
 
    ---
 
-   **Testability Concerns**
+   **TC-IDR-WORKTREE - Linked Git worktree install and rollback**
 
-   **TC-1 — T-7 Rollback scenario requires manual failure injection**
+   *Action:* Run changed installation and injected post-commit failure in
+   linked worktrees with attached, detached, and unborn HEAD fixtures.
 
-   Scenario T-7 requires the tester to interrupt the Installer mid-execution.
-   This is fragile because:
+   *Expected result:*
 
-   * The exact injection point depends on the Installer implementation detail
-     (how it sequences file writes relative to the pre-install commit).
-   * Network interruption mid-run may leave the agent in an undefined VS Code
-     Chat state.
-   * There is no automated test harness; the scenario relies on human timing
-     and observation.
+   * [ ] Runtime discovery records command-derived Git directory, index path,
+     symbolic full HEAD, and OID/unborn state without requiring a ``.git``
+     directory.
+   * [ ] Successful installation commits in the linked worktree without
+     modifying unrelated common-worktree state.
+   * [ ] Rollback restores the exact attached ref/OID, detached OID, or unborn
+     symbolic ref plus exact index bytes and planned worktree paths.
 
-   *Recommendation:* Accept T-7 as a manual, best-effort scenario for this
-   release.  If repeated rollback failures are observed, a dedicated automated
-   test harness should be created as a follow-up work item.
+   *Traces to:* ``SYSP_US_UAT_INSTALLER_SPEC_REWRITE`` AC-10
 
-   **TC-2 — T-6 requires ``sphinx-needs`` uninstall in a separate venv**
+   ---
 
-   Uninstalling ``sphinx-needs`` from the shared product venv would break the
-   docs build.  The tester MUST use a separate Python environment for the test
-   repository.  If no such environment is available, T-6 must be executed in an
-   isolated container or VM.
+   **TC-IDR-GITHUB - Real GitHub API acquisition**
 
-   **TC-3 — T-5 upstream value observation**
+   *Action:* When network and rate-limit capacity are available, resolve a real
+   public branch through the GitHub API, enumerate the selected immutable tree,
+   and fetch representative product bytes through the production acquisition
+   path.
 
-   T-5 requires knowing the upstream ``model`` and ``description`` values before
-   the re-run to confirm they are reset correctly.  If the upstream values are
-   identical to local values, the check item is vacuously true.  The tester
-   SHOULD temporarily set ``model`` to a dummy value locally before the re-run
-   to make the check observable.
+   *Expected result:*
+
+   * [ ] Branch resolution yields one commit SHA used by every tree and raw
+     request; required product roots and representative bytes match that SHA.
+   * [ ] No target mutation or checkpoint occurs during acquisition and plan
+     validation.
+   * [ ] Missing network, credentials, or rate-limit capacity yields an
+     explicit conditional skip; fixture tests remain mandatory.
+   * [ ] Public repository parsing accepts only ``owner/repository`` and the
+     supported GitHub HTTPS form. A same-named local relative path, absolute
+     path, ``file:`` URL, and non-GitHub URL are rejected before filesystem
+     resolution; local fixture bytes enter only through the internal immutable
+     ``SourceSnapshot.from_directory`` API.
+
+   *Traces to:* ``SYSP_US_UAT_INSTALLER_SPEC_REWRITE`` AC-13
+
+   ---
+
+   **TC-IDR-SUCCESS - Validation-gated commit and structured summary**
+
+   *Action:* Run a changed installation and inspect process order, Git history,
+   checkpoint state, and structured result.
+
+   *Expected result:*
+
+   * [ ] Warning-as-error Sphinx validation completes before the final commit.
+   * [ ] Checkpoint deletion completes before success becomes observable.
+   * [ ] Non-negative counts identify actual selected-harness and shared paths;
+     no fixed table or directory-row set is required.
+   * [ ] No checkpoint residue remains after success.
+
+   ---
+
+   **TC-IDR-FULL-SUITE - Normal completion and bounded resources**
+
+   *Action:* Run the complete Installer suite after all corrections in a clean
+   process, including the large unrelated-tree fixture. Capture exit status,
+   stderr, peak memory, open handles, worker count, and test totals. If a run
+   terminates abruptly, preserve available diagnostics, investigate the cause,
+   correct it, and rerun the complete suite from the beginning.
+
+   *Expected result:*
+
+   * [ ] The process exits normally with every mandatory test executed and no
+     unexplained termination, timeout, or worker loss.
+   * [ ] Worker count is explicitly bounded; checkpoint bytes, peak memory,
+     handles, and path hashing scale with selected source plus declared mutable
+     paths, not with unrelated target-tree size.
+   * [ ] An interrupted run is never reported as passing or clearance evidence;
+     only the subsequent complete normal run is recorded.
+
+   *Traces to:* ``SYSP_US_UAT_INSTALLER_SPEC_REWRITE`` AC-6
+
+   ---
+
+   **TC-IDR-SPEC - Active workflow consistency**
+
+   *Action:* Review active Installer and Setup specifications against these scenarios.
+
+   *Expected result:*
+
+   * [ ] Initial install is remote-runtime-owned and update is local-runtime-owned.
+   * [ ] Read-only acquisition precedes the checkpoint, which precedes every mutation.
+   * [ ] No active flow contains Setup-to-Installer delegation, local frontmatter
+     preservation, customization prompts, double writes, or manual/Git-reset rollback.
+
+   *Traces to:* ``SYSP_US_UAT_INSTALLER_SPEC_REWRITE`` AC-7
+
+   **Automation rule:** executable fixture evidence is required for runtime,
+   adapter, transaction, and ordering outcomes. Prose matching and manual
+   best-effort recovery are not acceptance evidence.
+
+  **Exclusive ownership:** This design is the sole lifecycle acceptance owner
+  for clean installation, update, injected failure, rollback, validation-gated
+  commit, and checkpoint cleanup across ``vscode``, ``claude``, ``opencode``,
+  and ``qoder``. For Qoder, this ownership ends at staged-package validity and
+  reversible project state; it does not include external UI import. Native
+  discovery/loading evidence belongs exclusively to
+  SYSP_SPEC_UAT_HARNESS_TARGET_MATRIX.

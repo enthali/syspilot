@@ -1,9 +1,8 @@
 ---
 description: "Setup Bootloader for syspilot. Fetches the current Installer from upstream and runs it via direct runSubagent. User-invocable entry point for syspilot installation."
 tools: [vscode, execute, read, edit, search, web, browser, agent, todo, context7, enthali.jarvis-core, enthali.jarvis-syspilot]
-model: Claude Sonnet 4.6 (copilot)
 user-invocable: true
-agents: ["syspilot.installer"]
+agents: ["Installer"]
 version: v0.9.0
 ---
 
@@ -31,7 +30,7 @@ and hand off orchestration to the Installer.
 ## Workflow
 
 1. **Fetch Manifest** — Fetch the manifest from:
-   `https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/bootstrap.json`
+   `https://raw.githubusercontent.com/hubertusgbecker/syspilot/main/syspilot/bootstrap.json`
 
    If fetch fails, display:
    > "Unable to reach upstream repository. Please check your internet connection and try again."
@@ -46,7 +45,7 @@ and hand off orchestration to the Installer.
 
 3. **Fetch and Install Files** — Iterate over the `files[]` array in the manifest.
    For each entry, construct the URL:
-   `https://raw.githubusercontent.com/enthali/syspilot/main/<source>`
+   `https://raw.githubusercontent.com/hubertusgbecker/syspilot/main/<source>`
    
    Fetch the file content from this URL and write it to
    `<workspace>/<destination>/<filename>` (where `<filename>` is the basename of `<source>`).

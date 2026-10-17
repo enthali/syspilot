@@ -2,8 +2,7 @@
 name: "Documentation Engineer"
 agent: syspilot.docu
 description: "Subagent that keeps internal and external documentation in sync with reality. Updates copilot-instructions.md, context.md, README, and methodology docs."
-model: Claude Sonnet 4.6 (copilot)
-user-invocable: true
+user-invocable: false
 agents: []
 ---
 

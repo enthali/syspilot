@@ -7,7 +7,7 @@ This document is the per-scenario verification checklist a human tester runs.
 
 .. spec:: UAT Expected Outcomes: Installer Session-First Behavior
    :id: SYSP_SPEC_UAT_INSTALLER_SESSION_FIRST
-   :status: draft
+   :status: deprecated
    :priority: mandatory
    :tags: uat, installer, orchestration, session-first, expected-outcomes
    :links: SYSP_REQ_UAT_INSTALLER_SESSION_FIRST

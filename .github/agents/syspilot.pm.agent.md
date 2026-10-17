@@ -2,9 +2,8 @@
 name: "Project Manager"
 agent: syspilot.pm
 description: "Strategic project manager that discusses features, prioritizes backlogs, conducts research, and delegates Change Requests to the Change Manager."
-model: Claude Sonnet 5 (copilot)
 user-invocable: true
-agents: []
+agents: ["Change Manager", "Release Engineer"]
 ---
 
 # syspilot Project Manager
@@ -108,7 +107,9 @@ any agent RESPONDs that its tailoring file is missing):
    cannot resolve its project-specific steps
 2. **Interview** — PM reads the agent's generic workflow and asks the user
    whether this project clarifies, overrides, or deviates from any step
-3. **Author** — PM writes `syspilot.<name>.tailoring.md` next to the agent.
-   It may be empty (nothing to tailor), clarify steps, or override them. This
-   file is instance-only and never shipped by setup
+3. **Author** — PM writes `syspilot.<name>.tailoring.md` next to the agent,
+   beginning with a `user-invocable: false` / `disable-model-invocation: true`
+   frontmatter block so VS Code never surfaces it in the agent picker. It may
+   be empty (nothing to tailor), clarify steps, or override them. This file
+   is instance-only and never shipped by setup
 4. **Resume** — The agent continues now that its tailoring file exists

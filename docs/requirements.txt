@@ -7,3 +7,4 @@ furo>=2024.0.0
 myst-parser>=2.0.0
 graphviz>=0.20.0
 sphinxcontrib-mermaid>=1.0.0
+PyYAML>=6.0.0

@@ -6,7 +6,7 @@ Test data requirements for ``SYSP_US_UAT_BRANCHING_NAMING_FIX``.
 
 .. req:: UAT Test Data: Branching Naming Fix & Trace Cross-Reference Re-verification
    :id: SYSP_REQ_UAT_BRANCHING_NAMING_FIX
-   :status: draft
+   :status: approved
    :priority: mandatory
    :tags: uat, skill-branching, trace, naming, regression, test-data
    :links: SYSP_US_UAT_BRANCHING_NAMING_FIX
@@ -76,8 +76,9 @@ Test data requirements for ``SYSP_US_UAT_BRANCHING_NAMING_FIX``.
      ``Select-String``) — AC-1, AC-2
    * ``git show <commit>:<path>`` or a detached-HEAD worktree checkout of
      ``96347f3`` — AC-3, AC-4
-   * ``get_need_links.py`` (``.github/skills/syspilot.impact-python/scripts/``)
-     or manual ``:links:`` field inspection — AC-4
+   * ``get_need_links.py``
+     (``.syspilot/skills/syspilot.impact-python/scripts/``) or manual
+     ``:links:`` field inspection — AC-4
    * VS Code with Copilot, ``@syspilot.trace`` accessible from the Chat
      panel, pointed at the ``F-INCIDENT-COMMIT`` checkout — AC-3
 

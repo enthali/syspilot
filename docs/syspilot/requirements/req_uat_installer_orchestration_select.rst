@@ -7,7 +7,7 @@ Test data requirements for
 
 .. req:: UAT Test Data: Installer Orchestration Select, General Mutex & Scaffold Regression
    :id: SYSP_REQ_UAT_INSTALLER_ORCHESTRATION_SELECT
-   :status: draft
+   :status: deprecated
    :priority: mandatory
    :tags: uat, installer, orchestration, mutex, regression, critical, test-data
    :links: SYSP_US_UAT_INSTALLER_ORCHESTRATION_SELECT

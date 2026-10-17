@@ -11,6 +11,8 @@ This section contains design specifications following Sphinx-Needs methodology.
    spec_skill_arch
    spec_skill_definitions
    spec_ontology_arch
+   spec_harness_adapters
+   spec_harness_install_entry
 
    spec_project_mgr
    spec_change_mgr
@@ -43,6 +45,14 @@ This section contains design specifications following Sphinx-Needs methodology.
    spec_uat_branching_naming_fix
    spec_uat_installer_frontmatter_sync
    spec_uat_installer_orchestration_select
+   spec_uat_installer_harness_targets
+   spec_uat_harness_target_matrix
+   spec_uat_harness_agent_adapter
+   spec_uat_harness_skill_adapter
+   spec_uat_harness_prompt_adapter
+   spec_uat_harness_orchestration_adapter
+   spec_uat_harness_one_time_enablement
+   spec_uat_harness_limitations
    spec_uat_spec_root_cause_principle
    spec_uat_ontology_arch
    spec_uat_chg_launcher

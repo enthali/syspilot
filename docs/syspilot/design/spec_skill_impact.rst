@@ -6,7 +6,7 @@ Design specifications for the impact analysis skill.
 
 .. spec:: Impact Analysis Query Interface
    :id: SYSP_SPEC_SKILL_IMPACT_QUERY
-   :status: draft
+   :status: approved
    :tags: agent-v2, skill, impact, query
    :links: SYSP_REQ_SKILL_IMPACT_QUERY
 
@@ -16,7 +16,7 @@ Design specifications for the impact analysis skill.
    affected specification elements before writing changes. It traverses
    traceability links by ID, configurable depth and direction.
 
-   **Tool:** ``.github/skills/syspilot.impact-python/scripts/get_need_links.py``
+   **Tool:** ``.syspilot/skills/syspilot.impact-python/scripts/get_need_links.py``
 
    **Data Source:** ``docs/_build/html/needs.json`` (requires prior ``sphinx-build``)
 
@@ -38,7 +38,7 @@ Design specifications for the impact analysis skill.
 
 .. spec:: Impact Analysis Exchangeability
    :id: SYSP_SPEC_SKILL_IMPACT_EXCHANGE
-   :status: draft
+   :status: approved
    :tags: agent-v2, skill, impact, exchange
    :links: SYSP_REQ_SKILL_IMPACT_EXCHANGE
 
@@ -60,15 +60,17 @@ Design specifications for the impact analysis skill.
       └── scripts/               # Named subdirectory for implementation scripts
           └── get_need_links.py  # Python implementation (skill-owned artifact)
 
-      .github/skills/syspilot.impact-python/    ← installed runtime (what agents use)
-      ├── SKILL.md
+        <selected-harness>/skills/syspilot.impact-python/  ← native discovery
+        └── SKILL.md
+
+        .syspilot/skills/syspilot.impact-python/ ← shared runtime resources
       └── scripts/
           └── get_need_links.py
 
    ``syspilot/skills/`` is the product source for distribution and versioning.
-   ``.github/skills/`` is the installed instance — the only path visible to
-   Copilot agents at runtime. Agents SHALL reference ``.github/skills/`` paths;
-   the product source path is invisible to them.
+   The selected harness's native Skill directory provides discovery while
+   ``.syspilot/skills/`` provides one stable runtime-resource path. Agents
+   SHALL reference the shared path and never assume ``.github`` exists.
 
    A skill is self-contained: all its artifacts (SKILL.md and associated scripts)
    reside in the skill folder. Scripts SHALL be placed in a named subdirectory
@@ -85,8 +87,10 @@ Design specifications for the impact analysis skill.
    The installed instance (maintained by Setup Agent only) is what agents
    read at runtime::
 
-      .github/skills/syspilot.impact-python/    ← installed runtime (agents read this)
-      ├── SKILL.md
+        <selected-harness>/skills/syspilot.impact-python/
+        └── SKILL.md
+
+        .syspilot/skills/syspilot.impact-python/
       └── scripts/
           └── get_need_links.py
 
@@ -114,12 +118,13 @@ Design specifications for the impact analysis skill.
    3. Return structured output (JSON or equivalent)
    4. Update the skill ``description`` so Copilot discovers it
    5. Run Setup Agent to install the new skill to
-      ``.github/skills/syspilot.impact-graphql/scripts/`` — that is the path
-      agents will invoke at runtime
+      ``.syspilot/skills/syspilot.impact-graphql/scripts/`` — that is the
+      stable path agents will invoke at runtime
 
    No agent code changes required — agents discover skills by description.
-   The installed path (``.github/skills/<name>/scripts/``) is the runtime
-   entry point; the product source (``syspilot/skills/``) is invisible to agents.
+   The shared installed path (``.syspilot/skills/<name>/scripts/``) is the
+   runtime entry point; the selected harness retains only its native
+   ``SKILL.md`` discovery file and the product source is invisible to agents.
 
 
 .. spec:: Impact Skill Group Membership

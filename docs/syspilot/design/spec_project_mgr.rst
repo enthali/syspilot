@@ -165,8 +165,11 @@ Project Manager Design
 
    **Frontmatter Configuration:**
 
-   * **description:** ``"Strategic project manager that discusses features, prioritizes backlogs, conducts research, and dispatches Change Requests to the Change Manager."``
-   * **user-invocable:** ``true``
-   * **agents:** ``[]``
+    * **description:** ``"Strategic project manager that discusses features, prioritizes backlogs, conducts research, and delegates Change Requests to the Change Manager."``
+    * **user-invocable:** ``true``
+    * **agents:** ``["Change Manager", "Release Engineer"]`` — VS Code matches
+      these entries exactly against each target's frontmatter ``name:`` value
+    * **target agent identities:** ``syspilot.cm``, ``syspilot.release`` — stable
+      internal/native identities declared by each target's frontmatter ``agent:``
 
    **File:** ``syspilot.pm.agent.md``

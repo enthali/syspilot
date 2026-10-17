@@ -63,7 +63,7 @@ elements (Frontmatter, Instructions, Rules) are laid out.
 
 .. spec:: Skill Instructions Section
    :id: SYSP_SPEC_SKILL_ARCH_INSTRUCTIONS
-   :status: draft
+   :status: approved
    :tags: agent-v2, skill, architecture, instructions
    :links: SYSP_REQ_SKILL_ARCH_INSTRUCTIONS
 
@@ -98,7 +98,7 @@ elements (Frontmatter, Instructions, Rules) are laid out.
       **Procedure:**
 
       1. Validate that the ``<id>`` argument matches ``SYSP_*``
-      2. Run ``python .github/skills/syspilot.impact-python/scripts/get_need_links.py <id>``
+      2. Run ``uv run --no-project .syspilot/skills/syspilot.impact-python/scripts/get_need_links.py <id>``
       3. Parse the JSON result
 
       **Outcome:** A JSON object with ``id``, ``linked_to`` and

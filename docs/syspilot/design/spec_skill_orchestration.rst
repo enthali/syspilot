@@ -227,10 +227,10 @@ Design specifications for the agent orchestration skill.
 
 
 .. spec:: Orchestration Skill Group Membership
-   :id: SYSP_SPEC_SKILL_ORCHESTRATION_GROUP
-   :status: draft
-   :tags: agent-v2, skill, orchestration, architecture
-   :links: SYSP_REQ_SKILL_ORCHESTRATION_GROUP; SYSP_SPEC_SKILL_ARCH_FRONTMATTER
+  :id: SYSP_SPEC_SKILL_ORCHESTRATION_GROUP
+  :status: approved
+  :tags: agent-v2, skill, orchestration, architecture
+  :links: SYSP_REQ_SKILL_ORCHESTRATION_GROUP; SYSP_SPEC_SKILL_ARCH_FRONTMATTER
 
    **Definition:**
 
@@ -244,14 +244,21 @@ Design specifications for the agent orchestration skill.
    with ``group: orchestration`` is installed. If a new variant is installed,
    the previous one is removed.
 
-   **Variants:** Two interchangeable variants implement the group contract:
+    **Variants:** Two implementations exist for the group contract:
 
    * ``syspilot.orchestration-jarvis`` — asynchronous, session-messaging
    * ``syspilot.orchestration-subagent`` — synchronous, in-process
 
-   The Setup Agent installs exactly one, selected by workspace context. No
-   default assumption is made in agent documents — the group mechanism handles
-   substitutability.
+    Harness installation deterministically installs exactly
+    ``syspilot.orchestration-subagent`` for every harness value —
+    ``vscode``, ``claude``, ``opencode``, and ``qoder`` — regardless of
+    tier. It never selects from workspace context, installed directories,
+    or session state. Production-parity orchestration clearance applies to
+    ``vscode``, ``opencode``, and ``claude``; Qoder's orchestration
+    clearance is out of scope for this change and deferred to a future
+    change, not silently waived. The Jarvis variant remains a mutually
+    exclusive implementation but is not selected by the harness
+    installation flow.
 
    **DEFINITIONS:** The ``orchestration`` group uses a DEFINITIONS section
    in the Group Contract Spec (``SYSP_SPEC_SKILL_ORCHESTRATION_CONTRACT``)

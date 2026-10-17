@@ -42,3 +42,4 @@ Peer-to-peer agent communication pattern.
    1. Given any agent that says "SEND", When it dispatches work to another agent, Then the work reaches that agent regardless of the underlying communication mechanism
    2. Given any agent that says "RECEIVE", When it starts a run, Then it obtains the instructions that triggered the run
    3. Given any agent that says "RESPOND", When it completes its work, Then the result reaches the agent that initiated the work
+   4. Given a supported harness (see ``SYSP_US_HARNESS_PORTABILITY``) lacks a native session-messaging capability, When the orchestration skill variant is selected for that harness, Then the synchronous fallback variant is installed automatically so SEND/RECEIVE/RESPOND still function without manual configuration
