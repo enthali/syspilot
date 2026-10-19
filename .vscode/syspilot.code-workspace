@@ -19,6 +19,8 @@
 			"statusBar.foreground": "#111111"
 		},
 		"jarvis.actors.folder": "C:\\workspace\\actor-context\\syspilot",
-		"jarvis.actor.autoProvision": true
+		"jarvis.actor.autoProvision": true,
+		"jarvis.mcpPort": 31413,
+		"jarvis.mcp.enabled": true
 	}
 }
