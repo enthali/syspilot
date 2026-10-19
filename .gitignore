@@ -11,8 +11,7 @@
 .jarvis-v2/
 .vscode/*
 !.vscode/syspilot.code-workspace
-managers/
-projects/
+
 
 # Python
 __pycache__/
@@ -58,6 +57,9 @@ temp/
 
 # build artifacts
 docs/build.log
+
+# vscode
+.mcp.json
 
 # jarvis runtime hooks (installed/generated locally, not product content)
 .github/hooks/
