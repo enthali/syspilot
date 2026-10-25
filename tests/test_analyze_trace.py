@@ -6,7 +6,8 @@ import unittest
 from pathlib import Path
 
 
-SCRIPT = Path(__file__).with_name("analyze_trace.py")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+SCRIPT = PROJECT_ROOT / ".github" / "skills" / "syspilot.trace" / "scripts" / "analyze_trace.py"
 
 
 class TraceCliTests(unittest.TestCase):
@@ -97,7 +98,7 @@ outgoing = "bad to"
         self.assertTrue(any(edge["source"] == "N0" and edge["target"] == "N1" and edge["option"] == "flows_to" and edge["direction"] == "in" for edge in edges))
 
     def test_current_v2_uses_typed_impact_discovery(self):
-        project_root = Path(__file__).resolve().parents[4]
+        project_root = PROJECT_ROOT
         result = subprocess.run(
             [sys.executable, str(SCRIPT), "SYSP_REQ_QUALITY", "--depth", "1", "--direction", "both", "--ontology", str(project_root / ".syspilot" / "ontology.toml"), "--needs-dir", str(project_root / "docs" / "_build" / "html" / "needs_id")],
             capture_output=True,
@@ -109,7 +110,7 @@ outgoing = "bad to"
         self.assertIn("specializes", options)
 
     def test_current_v2_requirement_without_specializes_has_no_missing_finding(self):
-        project_root = Path(__file__).resolve().parents[4]
+        project_root = PROJECT_ROOT
         result = subprocess.run(
             [sys.executable, str(SCRIPT), "SYSP_REQ_MECE_ANALYSIS", "--depth", "1", "--direction", "both", "--ontology", str(project_root / ".syspilot" / "ontology.toml"), "--needs-dir", str(project_root / "docs" / "_build" / "html" / "needs_id")],
             capture_output=True,

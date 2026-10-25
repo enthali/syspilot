@@ -26,7 +26,7 @@ realized documents remain free of Sphinx-Needs markup.
    :id: SYSP_DOC_PRODUCT_MODEL
    :status: verified
    :realized_by: docs/product-model.md
-   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_PROJECT_MANAGER, SYSP_REQ_ARCHITECT, SYSP_REQ_DEVELOPER, SYSP_REQ_TESTER, SYSP_REQ_QUALITY, SYSP_REQ_SETUP, SYSP_REQ_RELEASE, SYSP_REQ_RESEARCH, SYSP_REQ_TECHNICAL_WRITER, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_CONTRACT_HANDLING
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_PROJECT_MANAGER, SYSP_REQ_ARCHITECT, SYSP_REQ_DEVELOPER, SYSP_REQ_TESTER, SYSP_REQ_QUALITY, SYSP_REQ_SETUP, SYSP_REQ_RELEASE, SYSP_REQ_RESEARCH, SYSP_REQ_TECHNICAL_WRITER, SYSP_REQ_ADMIN, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_CONTRACT_HANDLING
 
    A user-oriented explanation of actors, authority, specifications, Contracts,
    memory, and the product-versus-instance boundary.
@@ -35,7 +35,7 @@ realized documents remain free of Sphinx-Needs markup.
    :id: SYSP_DOC_CHANGE_CONTRACT
    :status: verified
    :realized_by: docs/change-contract.md
-   :includes: SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_CONTRACT_HANDLING, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_PROJECT_MANAGER, SYSP_REQ_ARCHITECT, SYSP_REQ_DEVELOPER, SYSP_REQ_TESTER, SYSP_REQ_QUALITY, SYSP_REQ_TECHNICAL_WRITER, SYSP_REQ_IMPACT_QUERY, SYSP_REQ_MECE_ANALYSIS, SYSP_REQ_TRACE_ANALYSIS
+   :includes: SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_CONTRACT_HANDLING, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_PROJECT_MANAGER, SYSP_REQ_ARCHITECT, SYSP_REQ_DEVELOPER, SYSP_REQ_TESTER, SYSP_REQ_QUALITY, SYSP_REQ_TECHNICAL_WRITER, SYSP_REQ_ADMIN, SYSP_REQ_IMPACT_QUERY, SYSP_REQ_MECE_ANALYSIS, SYSP_REQ_TRACE_ANALYSIS
 
    The project lead's journey through a Change, from intent and responsibility
    transfers to validation and closure.
@@ -44,7 +44,7 @@ realized documents remain free of Sphinx-Needs markup.
    :id: SYSP_DOC_CUSTOMIZATION
    :status: verified
    :realized_by: docs/customization.md
-   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_SETUP, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_TECHNICAL_WRITER, SYSP_REQ_ONTOLOGY_SCHEMA, SYSP_REQ_ONTOLOGY_EDITING
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_SETUP, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_TECHNICAL_WRITER, SYSP_REQ_ONTOLOGY_SCHEMA, SYSP_REQ_ONTOLOGY_EDITING, SYSP_REQ_PROCESS_MAINTENANCE
 
    Practical guidance for tailoring project Contracts, ontology, documentation,
    specialist Actors, local memory, and skills without losing clean updates.
@@ -53,16 +53,25 @@ realized documents remain free of Sphinx-Needs markup.
    :id: SYSP_DOC_OPERATIONS
    :status: verified
    :realized_by: docs/operations.md
-   :includes: SYSP_REQ_SETUP, SYSP_REQ_RELEASE
+   :includes: SYSP_REQ_SETUP, SYSP_REQ_RELEASE, SYSP_REQ_RELEASE_CONTRACT, SYSP_REQ_ADMIN
 
    Installation, updates, compatibility, recovery, and routine maintenance for
    a Syspilot project.
+
+.. doc:: Upgrade Guide
+   :id: SYSP_DOC_UPGRADE
+   :status: verified
+   :realized_by: docs/upgrade.md
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_SETUP, SYSP_REQ_CONTRACT_HANDLING, SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_ONTOLOGY_SCHEMA, SYSP_REQ_IMPACT_QUERY
+
+   A checklist for moving a project that predates Syspilot 0.10 to 0.10,
+   used as input to the project's update Change.
 
 .. doc:: Branching Guide
    :id: SYSP_DOC_BRANCHING
    :status: verified
    :realized_by: docs/branching.md
-   :includes: SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_SETUP, SYSP_REQ_RELEASE
+   :includes: SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_SETUP, SYSP_REQ_RELEASE, SYSP_REQ_RELEASE_CONTRACT
 
    Where a Change states its branch, what the Change and Setup processes
    prescribe, and what this repository practices beyond that.
@@ -71,7 +80,7 @@ realized documents remain free of Sphinx-Needs markup.
    :id: SYSP_DOC_METHODOLOGY
    :status: verified
    :realized_by: docs/methodology.md
-   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_CONTRACT_HANDLING, SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_SETUP, SYSP_REQ_RELEASE
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_CONTRACT_HANDLING, SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_SETUP, SYSP_REQ_RELEASE, SYSP_REQ_RELEASE_CONTRACT, SYSP_REQ_PROCESS_MAINTENANCE
 
    Why Syspilot works through Contracts rather than a fixed workflow, and what
    a Contract must name.

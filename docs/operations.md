@@ -39,10 +39,15 @@ initiating Copilot session to execute it. The session is a temporary Contract
 executor; Setup is not a persistent actor.
 
 The Contract verifies prerequisites and release identity, audits a dry run,
-preserves existing project-owned configuration, installs eight persistent
+preserves existing project-owned configuration, installs nine persistent
 Syspilot actors, validates the target build, and completes User-guided Git
 integration before handoff. It records the exact release and commit in
 `.syspilot/project.toml`, permanently pinning the project's approved baseline.
+When it asks for the Setup branch approval it opens the Contract in the User's
+editor, and it records its single handover to the Project Manager in its own
+Handover log. If a User decision widens the approved scope after a gate has
+passed, the executor sets the affected gates back to open and passes them again
+before sealing the project state.
 
 The successful handoff identifies the selected ontology and its configured
 path. The Project Manager explains its artifact types, statuses, and
@@ -67,6 +72,11 @@ technical executor.
 Jarvis installation, compatibility, and extension updates have their own
 lifecycle and are outside Syspilot's project-update policy.
 
+A project that runs a Syspilot version before 0.10 can use the
+[upgrade checklist](upgrade.md) as input for that Change. The checklist does
+not replace the Change: the Change still owns the baselines, the impact
+analysis, and the User's authorization.
+
 ## Release Responsibility
 
 The Release actor owns packaging, release delivery, preflight checks, and
@@ -74,8 +84,19 @@ release-facing user documentation. A release should not move because the
 calendar is impatient; it moves when its artifacts and evidence say it is
 ready.
 
+Each publication runs under a Release Contract, defined by the
+[Release process](Syspilot%20Contracts/release.md). Its preflight runs on the
+`development` commit to be released, in this order: the documentation tests, the
+strict documentation build, the release QA suites, the automated version check
+(`uv run python scripts/check_release_version.py v{version}`), and a
+validation-only run of the release workflow. The first failure stops the release
+before `main` or a tag moves and becomes an open quality issue for the owner of
+the affected artifact. Release is the only writer of the release notes, and the
+tag is the version of a release. [Branching](branching.md) describes the
+publication steps.
+
 Release notes remain release-facing documentation rather than part of the
-Technical Writer's six-guide ownership map. The Technical Writer may still
+Technical Writer's documentation ownership map. The Technical Writer may still
 review linked explanations for clarity when a Change includes user
 documentation.
 
@@ -107,7 +128,13 @@ pretending a handoff occurred.
 
 - The release-bound Setup Contract owns pristine installation behavior while
    its initiating Copilot session executes the current instance.
-- Release owns packaging and delivery.
+- Release owns packaging, delivery, and what the release gate checks and
+  publishes. It is the mandatory consultee on every change to a release
+  workflow definition and decides whether a gate change is acceptable.
+- Admin owns build, test, and documentation tooling, workflow and CI
+  definitions, and repository conflicts outside the development flow. That
+  includes the wiring of release workflows: jobs, steps, runners, and
+  dependencies.
 - The process owner owns each canonical Contract template.
 - The Technical Writer owns these user guides and their `doc` Needs.
 - The factual owner of a source artifact remains the authority on its behavior.

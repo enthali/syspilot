@@ -13,6 +13,10 @@ Release
    - own packaging and release delivery assigned by the applicable process;
    - own release preflight verification and release-facing user
      documentation;
+   - own what the release gate must check and publish, namely preflight
+     content, the release run, and tag authorization, and decide as mandatory
+     consultee whether a change to a release workflow definition is
+     acceptable, while Admin owns that definition as tooling;
    - collaborate with artifact owners until release inputs satisfy their
      declared completion conditions; and
    - preserve completeness and verification without trading them for delivery
@@ -25,4 +29,5 @@ Release
 
    Inspect the Release role card and completed release evidence and confirm
    that packaging, preflight verification, user documentation, unresolved
-   inputs, and delivery outcome are explicit.
+   inputs, and delivery outcome are explicit, and that a change to a release
+   workflow definition records Release's consultation and decision.

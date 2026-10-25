@@ -1,7 +1,7 @@
 # The Change Contract
 
 A Syspilot Change starts with a useful sentence: what should become true? It does
-not start by assigning eight actors and hoping they agree on the destination
+not start by assigning a cast of actors and hoping they agree on the destination
 later.
 
 Every modification to versioned source code or documentation uses a Change
@@ -46,7 +46,9 @@ unattended — agreed with the User beforehand, and keeps that mode's rule in it
 own text rather than pointing elsewhere. It records the User's release exactly
 once, in a `Contract release` gate that only the User may set. Artifact work
 starts when that gate reads `approved`, and nothing else starts it: a settled
-intent is not an authorization to begin.
+intent is not an authorization to begin. The Project Manager opens the Contract
+document in the User's editor in the same step that asks for the gate, because
+the User reviews it before deciding and an unopened Contract is not reviewed.
 
 ## Draw the Boundary
 
@@ -75,7 +77,7 @@ set it. An authorization stated in a row with a visible owner cannot later be
 asserted in prose by whoever happened to be holding the pen.
 
 An optional artifact that does not apply is marked `not applicable` with a
-reason, and its now-empty owner section is deleted in the same step. The row
+reason, and its now-empty section is deleted in the same step. The row
 itself says so, next to the choice, rather than in a rule somewhere else —
 because the moment you are deciding is the moment you need to be told what the
 decision obliges you to do. Required artifacts offer no such option. An empty
@@ -86,6 +88,17 @@ The owner of each artifact decides whether that artifact is complete. Current
 responsibility may move between actors, but it never lets one actor approve
 somebody else's work. Otherwise a review would measure nothing more than how
 convincing the last writer was.
+
+The artifact table is also the only place a Contract names an artifact's owner. Section
+headings carry none, because an owner restated in a heading can drift from the
+table, and then nobody can tell which copy to believe.
+
+Intent can grow after work has started. When the approved intent widens after an
+artifact reached a terminal status, `Intent and outcome` returns to `draft` until
+it is approved again. Each owner whose finished row the wider intent may affect
+then reassesses it: the owner sets the row back to `pending`, or records in the
+row why its evidence still holds. Nobody sets another owner's row, so a row
+never keeps a `complete` status over evidence that no longer fits.
 
 User documentation is included when users need a new or changed explanation.
 Incoming `included_in` links on changed requirements tell the Technical Writer
@@ -99,6 +112,15 @@ candidates and the evidence behind them. The Contract still decides what is in
 scope, and a query that failed or returned nothing proves nothing until its
 ontology, built data, and other prerequisites are valid.
 
+A Needs graph holds no workflow, CI, or packaging files, so no query over it
+can see a change to them. When a Change may affect those, the Contract includes
+an optional `Infrastructure impact` artifact owned by Admin. Admin confirms each
+claim against the infrastructure itself rather than inferring it from a Needs
+result. Packaging and release delivery stay with Release, which owns what the
+release gate checks and publishes. Release is the mandatory consultee on every
+change to a release workflow definition and decides whether a gate change is
+acceptable; the wiring itself remains Admin's edit.
+
 ## Hand Off a Consistent State
 
 Before handing off responsibility, an actor updates the owned artifact and the
@@ -106,6 +128,20 @@ Contract, commits them as one consistent state, and then messages the next
 owner. The handoff identifies the Contract path, commit, completed outcome, and
 remaining work. The brief gap between commit and notification is intentional:
 the committed Contract stays authoritative and has one writer throughout.
+
+The handing-over actor also appends one line to the Contract's `Handover log`,
+owned by the Project Manager, in the same commit that changes `Current
+responsibility`. The line names date, time, sender, receiver, and a note, and
+the actor takes date and time from the system clock. The log explains
+transitions; the header stays the only authority. The receiving actor re-reads
+its own `context.md`, its role card, and the Contract, and checks that the
+committed header names it before sending its acknowledgment. If the header says
+something else, it escalates that discrepancy instead of acknowledging.
+
+None of this is special to Change Contracts. The Handover log, the scope-change
+rule, the single ownership statement, and the refresh before an acknowledgment
+are shared by every Contract kind; the [methodology](methodology.md) lists them
+all.
 
 There is no universal middle sequence. Open artifacts and dependencies decide
 which owner receives responsibility next. Independent artifacts may be
@@ -146,6 +182,16 @@ Both methods are read-only, and both record their scope, evidence, findings, and
 limits — including what they could not check. A method that reports nothing
 because its data was missing is not the same as a method that looked and found
 nothing, and a reviewer has to be able to tell those two apart.
+
+Quality does not re-run everything. Verification is automated, and each owner
+records what was run. The Developer writes and runs the unit tests. The Tester
+writes and runs the requirement tests and provides the means for the User's
+validation. Quality reviews those recorded commands and results, and runs a
+check itself only when a recorded result cannot support its judgment, recording
+why. A missing automation is an open quality issue whose row names the task that
+closes it, the owner of that task, and the completion evidence. A Markdown
+process artifact has no automated check of its content, so Quality's recorded
+review is its verification.
 
 When Quality can proceed, it sends that judgment and its supporting evidence
 directly to the Project Manager. A forwarded summary from another actor does

@@ -112,6 +112,9 @@ jobs:
       - name: Build documentation strictly
         run: uv run python docs/docs-build.py clean
 
+      - name: Run release QA suites
+        run: uv run python -m unittest discover -s tests -v
+
       - name: Upload documentation artifact
         uses: actions/upload-artifact@v4
         with:

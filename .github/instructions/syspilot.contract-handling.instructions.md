@@ -9,7 +9,7 @@ applyTo: "**"
 ## Handoff
 
 - **HANDOFF** (via `SEND`) — after completing work, select the next logical included artifact owner whose work can progress the Contract. Update Contract status, artifact evidence, and `Current responsibility`, then commit the Contract and related artifacts as one consistent state before sending HANDOFF. This intentionally prioritizes single-writer, consistent Contract state over uninterrupted communication and accepts the brief notification gap. In the HANDOFF message, identify the Contract path, commit, completed outcome, and remaining work.
-- **ACK** (via `RESPOND`) — before starting work received through a HANDOFF, verify that the named commit's Contract header actually states `Current responsibility` as yourself. If verified, RESPOND with ACK. If not, do not acknowledge; escalate the discrepancy instead.
+- **ACK** (via `RESPOND`) — before starting work received through a HANDOFF, re-read your own `context.md`, public role card, and the Contract instance, then verify that the named commit's Contract header actually states `Current responsibility` as yourself. If verified, RESPOND with ACK. If the header differs, escalate the discrepancy in place of an ACK.
 
 ## Consultation
 

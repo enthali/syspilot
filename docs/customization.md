@@ -23,6 +23,10 @@ in different projects without forking their public roles. A Contract coordinates
 declared authority; it does not silently grant an actor ownership or expertise
 that the project has never assigned.
 
+The [Process Maintenance example](Syspilot%20Contracts/examples/process-maintenance.md)
+shows one such Contract: how a project maintains its own process documents.
+It is an example to adopt and tailor, not a process Syspilot imposes.
+
 ### 2. Design the Project Ontology
 
 The ontology defines what the project can trace: artifact types, statuses,
@@ -79,7 +83,7 @@ assumes somebody is watching them.
 
 ### 4. Add Specialist Actors
 
-The eight persistent Syspilot actors are a reusable base roster, not a closed
+The nine persistent Syspilot actors are a reusable base roster, not a closed
 cast. Add a project-owned specialist Actor when work needs durable expertise,
 authority, memory, and a perspective that none of the base roles should pretend
 to have.

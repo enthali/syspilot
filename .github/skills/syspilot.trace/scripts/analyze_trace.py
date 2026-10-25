@@ -9,7 +9,6 @@ from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
-ONTOLOGY_PATH = PROJECT_ROOT / ".syspilot" / "ontology.toml"
 NEEDS_ID_DIR = PROJECT_ROOT / "docs" / "_build" / "html" / "needs_id"
 IMPACT_SCRIPT = PROJECT_ROOT / ".github" / "skills" / "syspilot.impact-python" / "scripts" / "get_need_links.py"
 
@@ -23,8 +22,10 @@ def load_impact_module():
     return module
 
 
-def analyze(need_id: str, depth: int, direction: str, ontology_path: Path, needs_dir: Path) -> dict:
+def analyze(need_id: str, depth: int, direction: str, ontology_path: Path | None, needs_dir: Path) -> dict:
     impact = load_impact_module()
+    if ontology_path is None:
+        ontology_path = impact.resolve_ontology_path()
     link_options = impact.load_link_options(ontology_path)
     root = impact.get_need(need_id, needs_dir)
     if not root:
@@ -64,7 +65,7 @@ def main() -> None:
     parser.add_argument("need_id")
     parser.add_argument("--depth", type=int, required=True)
     parser.add_argument("--direction", choices=["in", "out", "both"], default="both")
-    parser.add_argument("--ontology", type=Path, default=ONTOLOGY_PATH)
+    parser.add_argument("--ontology", type=Path, help="Default: needs_from_toml in docs/conf.py")
     parser.add_argument("--needs-dir", type=Path, default=NEEDS_ID_DIR)
     args = parser.parse_args()
     if args.depth < 1:

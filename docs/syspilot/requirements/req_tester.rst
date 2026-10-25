@@ -15,6 +15,8 @@ Tester
    - derive black-box scenarios from the observable outcome, stories,
      acceptance criteria, and requirements without relying on implementation
      details;
+   - write and run requirement tests from those scenarios, provide the means
+     for User validation, and record commands and results;
    - challenge normal behavior, boundaries, loopholes, and failure conditions;
      and
    - record reproducible results and surface unclear or inconsistent
@@ -28,3 +30,5 @@ Tester
    Inspect the Tester role card and applicable acceptance-test evidence and
    confirm that scenarios trace to specified outcomes, avoid implementation
    knowledge, exercise adverse conditions, and record reproducible results.
+   Confirm that the Tester wrote and ran the requirement tests, recorded their
+   commands and results, and provided the means for User validation.

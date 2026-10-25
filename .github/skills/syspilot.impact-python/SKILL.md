@@ -21,10 +21,10 @@ python .github/skills/syspilot.impact-python/scripts/get_need_links.py NEED_ID -
 
 The default inputs are:
 
-- active ontology: `.syspilot/ontology.toml`;
+- active ontology: the literal `needs_from_toml` string in `docs/conf.py`, resolved relative to that configuration file;
 - built per-ID Needs data: `docs/_build/html/needs_id/`.
 
-Use `--ontology` or `--needs-dir` for project-specific paths. The tool attempts a Sphinx HTML build when default Needs data is absent; use `--no-build` when the caller must control that prerequisite.
+Use `--ontology` or `--needs-dir` to override these inputs. Configuration is inspected without executing it; use `--ontology` when `needs_from_toml` is computed rather than a literal string. Missing or invalid bindings fail explicitly. The tool attempts a Sphinx HTML build when default Needs data is absent; use `--no-build` when the caller must control that prerequisite.
 
 ## Traversal
 
@@ -49,8 +49,4 @@ Do not treat an empty or failed query as authoritative evidence. The command exi
 
 ## Verification
 
-Run the focused automated suite after changing this skill:
-
-```powershell
-python .github/skills/syspilot.impact-python/scripts/test_get_need_links.py -v
-```
+Release QA is maintained in Syspilot's repository test suite, outside the installed skill folder.

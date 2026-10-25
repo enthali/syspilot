@@ -19,7 +19,7 @@ A Syspilot project is not merely an extension installation. Its setup defines:
 - the project ontology: artifact types, statuses, and relationships;
 - the specification and traceability sources that realize that ontology;
 - the documentation matrix for independently maintained user information; and
-- any specialist Actors the project needs beyond Syspilot's eight base roles.
+- any specialist Actors the project needs beyond Syspilot's nine base roles.
 
 The [Customization guide](customization.md) explains these four project-owned
 levels. The [product model](product-model.md) shows how Syspilot applies the
@@ -71,13 +71,22 @@ Syspilot would have to be updated in lockstep with it forever.
 From there the Contract takes over. It verifies the release's full commit
 identity, works on a dedicated User-approved branch, preserves existing
 project-owned content, and records the release tag and commit in
-`.syspilot/project.toml`. It may report an actionable blocker, but it cannot
+`.syspilot/project.toml`. Unrelated files already in `.github/instructions/` or
+`.github/skills/` stay in place while Syspilot's files are copied alongside
+them. A different file at a path Syspilot needs is integrated only with the
+User's approval, and otherwise blocks Setup. An ignore rule that would silently
+exclude a generated destination is reported as a blocker. When it asks you to
+approve the Setup branch, it opens the Contract in your editor, because you
+review it before deciding, and it records its one handover, to the Project
+Manager, in its own Handover log. The Contract cannot
 claim success until every mandatory gate, Git integration, and Project Manager
 handoff has completed.
 
 That handoff identifies the selected ontology and its configured path. The
-Project Manager explains its artifact types, statuses, and relationships, then
-asks whether it fits the project. If the User accepts it, normal project intake
+Project Manager first re-reads its own context, its role card, and the Setup
+record, and checks that the committed header names it. Then it explains the
+ontology's artifact types, statuses, and relationships, and asks whether it fits
+the project. If the User accepts it, normal project intake
 continues without an ontology Change. If the User requests an adjustment, the
 Project Manager starts a normal Change before anyone modifies the ontology;
 the existing Ontology skill supplies technical guidance inside that Change.
@@ -125,3 +134,5 @@ human reads them.
 Later Syspilot updates are not routine setup work. Each update requires a
 separate project-specific Change that records the old and proposed baselines,
 impact analysis, revalidation scope, authorization, and technical executor.
+A project that runs a version before 0.10 finds a starting checklist in
+[Upgrading to 0.10](upgrade.md).

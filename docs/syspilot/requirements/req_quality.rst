@@ -17,7 +17,10 @@ Quality
    - apply horizontal coverage analysis and relationship analysis to the
      objects the applicable Contract records as impacted, and record the
      selected scope, evidence, findings, and limits of both methods;
-   - record a current ``proceed`` or ``blocked`` judgment; and
+   - record a current ``proceed`` or ``blocked`` judgment;
+   - review the commands and results that artifact owners recorded, executing
+     a check itself only when a recorded result cannot support its judgment,
+     and record the reason; and
    - keep only currently open quality issues, with each required correction
      returned to the owner of the affected artifact.
 
@@ -32,4 +35,6 @@ Quality
    Confirm that the role card states the obligation to apply horizontal
    coverage analysis and relationship analysis, and that the quality artifact
    records both analyses with their selected scope, evidence, findings, and
-   stated limits.
+   stated limits. Confirm that the role card and the quality artifact state
+   Quality's default of reviewing recorded commands and results, with any
+   execution by Quality recorded together with its reason.

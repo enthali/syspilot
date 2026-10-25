@@ -13,7 +13,7 @@ ownership, evidence, and current responsibility visible while work progresses.
     bootstrap is not implemented yet. Start with the repository preview in
     :doc:`getting-started`.
 
-Eight persistent actors contribute through distinct areas of authority. They do
+Nine persistent actors contribute through distinct areas of authority. They do
 not follow one fixed relay. The included, open artifacts in a Contract determine
 which owner can make the next useful move, while the Contract always names
 exactly one currently responsible actor.
@@ -40,6 +40,7 @@ syspilot Actors & Processes (v2)
    Syspilot Actors/Release
    Syspilot Actors/Research
    Syspilot Actors/Technical Writer
+   Syspilot Actors/Admin
    Syspilot Contracts/index
 
 
@@ -65,6 +66,7 @@ User Guides
    change-contract
    customization
    operations
+   upgrade
    methodology
    branching
 

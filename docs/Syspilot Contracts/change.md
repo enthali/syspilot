@@ -25,7 +25,7 @@ The Project Manager initializes a change as one consistent version-controlled st
 3. Copy the canonical template from `# Change Contract: {NAME}` through the end of this file to `docs/changes/<change>.md`.
 4. Select the agreed Operation Mode, remove the template note and the two non-applicable mode rules, replace the remaining placeholders, tailor the artifact set, and complete the header and `Intent And Outcome` section.
 5. Record evidence that the intent and outcome text is settled, and set its status to `approved`.
-6. Ask the User to set the User-owned `Contract release` gate to `approved`; no other actor may set the gate, and artifact work remains blocked until it reads `approved`.
+6. Ask the User to set the User-owned `Contract release` gate to `approved`, and in that same step open the Contract document in the User's editor, because the User reviews it before deciding; no other actor may set the gate, and artifact work remains blocked until it reads `approved`.
 7. Commit the branch and initialized Change Contract.
 8. Transfer current responsibility to the Architect as the first artifact owner.
 
@@ -46,10 +46,17 @@ The Project Manager initializes a change as one consistent version-controlled st
 - **autonomous** - every actor decides on its own; when genuinely unsure, it asks the user directly and pauses only its own step until answered.
 - **unattended** - the user is not reachable. When unsure, the actor flags `USER REVIEW REQUIRED` in this document, takes the simplest KISS path that is cheapest to reverse or amend, and keeps the change moving. The PM reviews flagged points once reachable again; decision ownership remains with the actor that made the decision.
 
+## Handover log
+
+Owned by: Project Manager
+
+The handing-over actor appends one line as the last act before handing over, in the same commit that changes `Current responsibility`, taking `Date` as `YYYY-MM-DD` and `Time` as `HH:MM` in 24-hour local time from the system clock at that moment. The handover goes to the next actor that follows from the logical flow of the Change. The log explains transitions; the header stays authoritative.
+
+| Date | Time | From | To | Note |
+|--|--|--|--|--|
 
 ## Intent And Outcome
 
-**Owner:** Project Manager<br>
 **Status:** draft | approved<br>
 **Approval evidence:** pending | {evidence that the intent and outcome text is settled}
 
@@ -72,24 +79,26 @@ The Project Manager initializes a change as one consistent version-controlled st
 ## Artifacts, Ownership And Process Gates
 
 **Applicability:** Each artifact owner decides and updates its own row.<br>
+**Scope change:** When the approved intent widens after a row reached a terminal status, `Intent and outcome` returns to `draft` until it is approved again, and each owner whose terminal row the wider intent may affect reassesses it: the owner sets the row back to `pending` or records in the row why its evidence still holds.<br>
+**Ownership:** The `Owner` column of this table is the only statement of artifact and gate ownership in the Contract; section headings name no artifact owner.<br>
 **Status:** pending | complete
 
 | Artifact or gate | Included | Owner | Completion evidence | Status |
 |---|---|---|---|---|
 | Intent and outcome | yes | Project Manager | Goal, value, scope, and observable outcome are explicit and approved | draft / approved |
 | Contract release | yes | User | User authorization to start the Change; no other actor may set this gate | pending / approved |
-| Version control | yes / not applicable: {reason; delete the corresponding empty owner section} | Project Manager | Feature branch name and integration state; the branch is squash-integrated into `development` at closure | active / merged / not applicable |
-| Product specification and architecture decisions | yes / not applicable: {reason; delete the corresponding empty owner section} | Architect | Changed specification and architecture artifacts are linked and checked | pending / not applicable |
-| User-facing documentation | yes / not applicable: {reason; delete the corresponding empty owner section} | Technical Writer | Agreed documentation surface is coherent and user-oriented; factual-owner review is recorded; `doc` Needs and `includes` links are current; documentation builds cleanly | pending / complete / not applicable |
-| Implementation and unit verification | yes / not applicable: {reason; delete the corresponding empty owner section} | Developer | Changed artifacts, durable technical decisions, and automated verification results are linked | pending / not applicable |
-| Acceptance test design and results | yes / not applicable: {reason; delete the corresponding empty owner section} | Tester | Black-box scenarios and results trace to the intended outcome | pending / not applicable |
-| Quality review | yes | Quality | Current verification judgment is `proceed` and no open quality issue remains | pending |
+| Version control | yes / not applicable: {reason; delete the corresponding empty section} | Project Manager | Feature branch name and integration state; the branch is squash-integrated into `development` at closure | active / merged / not applicable |
+| Infrastructure impact | yes / not applicable: {reason; delete the corresponding empty section} | Admin | Affected workflow, CI, and packaging artifacts are updated, confirmed by their current owner rather than inferred from a Needs-only impact query | pending / complete / not applicable |
+| Product specification and architecture decisions | yes / not applicable: {reason; delete the corresponding empty section} | Architect | Changed specification and architecture artifacts are linked and checked | pending / not applicable |
+| User-facing documentation | yes / not applicable: {reason; delete the corresponding empty section} | Technical Writer | Agreed documentation surface is coherent and user-oriented; factual-owner review is recorded; `doc` Needs and `includes` links are current; documentation builds cleanly | pending / complete / not applicable |
+| Implementation and unit verification | yes / not applicable: {reason; delete the corresponding empty section} | Developer | Changed artifacts and durable technical decisions are linked; the Developer wrote and ran the unit tests, and their commands and results are recorded | pending / not applicable |
+| Acceptance test design and results | yes / not applicable: {reason; delete the corresponding empty section} | Tester | Requirement tests written and run by the Tester, with their commands and results, and the means for User validation trace to the intended outcome | pending / not applicable |
+| Quality review | yes | Quality | Quality reviewed the recorded commands and results; current verification judgment is `proceed` and no open quality issue remains | pending |
 | User validation and approval | yes / not applicable: {explicit User delegation recorded in this row; retain the section below as evidence} | User | Observable outcome is accepted or changes are requested; a delegated `not applicable` status records that User validation did not occur | pending / accepted / changes requested / not applicable |
 | Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | pending |
 
 ## Architecture And Specification
 
-**Owner:** Architect<br>
 **Status:** pending | in progress | complete | not applicable
 
 ### Affected Artifacts
@@ -104,9 +113,24 @@ The Project Manager initializes a change as one consistent version-controlled st
 |---|---|
 | {architecture decision, consistency check, or traceability result} | {link or result} |
 
+### Ontology Binding
+
+*(Tailoring: include this subsection only when the project's active ontology lacks `doc` Needs or typed links; delete it otherwise.)*
+
+| Contract artifact | Realized as | Owner |
+|---|---|---|
+| {role, e.g. Product specification} | {project-specific artifact kind and location} | {owner} |
+
+## Infrastructure Impact
+
+**Status:** pending | complete | not applicable
+
+| Infrastructure artifact | Impact | Required action and evidence |
+|---|---|---|
+| {workflow, CI, packaging, or configuration} | {what the change requires} | {action and evidence} |
+
 ## User-Facing Documentation
 
-**Owner:** Technical Writer<br>
 **Status:** pending | in progress | complete | not applicable
 
 ### Documentation Plan And Ownership
@@ -129,7 +153,6 @@ The Project Manager initializes a change as one consistent version-controlled st
 
 ## Implementation And Unit Verification
 
-**Owner:** Developer<br>
 **Status:** pending | in progress | complete | not applicable
 
 ### Decisions And Evidence
@@ -148,7 +171,6 @@ Record implementation decisions that remain relevant to understanding or maintai
 
 ## Acceptance Testing
 
-**Owner:** Tester<br>
 **Status:** pending | in progress | passed | failed | not applicable
 
 | Scenario | Traces to | Result | Evidence |
@@ -157,7 +179,6 @@ Record implementation decisions that remain relevant to understanding or maintai
 
 ## Quality Review
 
-**Owner:** Quality<br>
 **Status:** pending | in progress | proceed | blocked
 
 **Current judgment:** {holistic assessment of the currently valid artifacts and evidence}
@@ -168,11 +189,13 @@ Record implementation decisions that remain relevant to understanding or maintai
 |---|---|---|---|---|
 | {review method} | {objects, peer scope, traversal depth, or other selected boundary} | {inputs and reproducible result} | {observed issues or no finding} | {data, semantic, or analysis limits} |
 
+Verification is fully automated. Quality reviews the commands and results that the Developer and the Tester recorded, and executes a check itself only when a recorded result cannot support its judgment, recording the reason in the table above. A Markdown process artifact whose content has no automated check is verified by Quality's review, and the table above records that review and its limits.
+
 Quality communicates its `proceed` judgment and supporting evidence directly to the Project Manager before the Project Manager presents the verified outcome for validation. Another actor's forwarded claim does not establish Quality's decision.
 
 ### Open Quality Issues
 
-Keep this table synchronized with currently open issues. For each issue, Quality transfers current responsibility to the owner of the affected artifact. When Quality confirms the required outcome, update the affected artifact or evidence and remove the resolved row. At closure this table contains `None`.
+Keep this table synchronized with currently open issues. A missing automation is an open issue whose row names the task that closes it, the owner of that task, and the completion evidence. For each issue, Quality transfers current responsibility to the owner of the affected artifact. When Quality confirms the required outcome, update the affected artifact or evidence and remove the resolved row. At closure this table contains `None`.
 
 | Artifact | Current issue | Required outcome |
 |---|---|---|
@@ -180,7 +203,6 @@ Keep this table synchronized with currently open issues. For each issue, Quality
 
 ## User Validation And Approval
 
-**Owner:** User<br>
 **Recorded by:** Project Manager<br>
 **Status:** pending | accepted | changes requested | not applicable
 
@@ -194,7 +216,6 @@ Set this artifact to `not applicable` only when the User explicitly delegates va
 
 ## Closure
 
-**Owner:** Project Manager<br>
 **Status:** pending | accepted | closed
 
 - [ ] Every included artifact or gate has terminal status and completion evidence.

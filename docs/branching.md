@@ -102,3 +102,23 @@ and build without publishing anything.
 
 That is why `main` is never a working branch. Its history is meant to read as a
 list of releases and nothing else.
+
+The [Release process](Syspilot%20Contracts/release.md) runs that promotion in a
+Release Contract at `docs/changes/release-v{version}.md`. Its preflight runs on
+the `development` commit to be released, with the release notes already
+committed there, before `main` or a tag moves: the documentation tests, the
+strict documentation build, the release QA suites, an automated check of the tag
+form and the release-notes heading, and a validation-only run of the release
+workflow. That run exercises only validation and the documentation build, so a
+pass does not show that publication works. It needs a pushed branch, which is
+the one exception to keeping feature branches local and needs the User's
+explicit authorization.
+
+Publication then merges `development` into `main` and checks that the release
+commit carries the preflighted commit's tree; a difference stops the release.
+`main` is pushed first and the tag second, and the tag sits only on the release
+commit on `main`, because the workflow publishes any pushed `v*.*.*` tag. The
+User's authorization to push `main` and the tag is recorded apart from the
+authorization to start the release. If the workflow fails after the tag is
+pushed, the release stops with a recorded blocker and the User decides; the tag
+stays where it is, and the usual fix is a new patch version.

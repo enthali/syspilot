@@ -16,6 +16,7 @@ Links: SYSPILOT_SPEC_INST_FILE_OWNERSHIP
 """
 
 import argparse
+import ast
 import json
 import subprocess
 import sys
@@ -29,7 +30,33 @@ SCRIPT_DIR = Path(__file__).parent
 PROJECT_ROOT = SCRIPT_DIR.parent.parent.parent.parent
 DOCS_DIR = PROJECT_ROOT / "docs"
 NEEDS_ID_DIR = DOCS_DIR / "_build" / "html" / "needs_id"
-ONTOLOGY_PATH = PROJECT_ROOT / ".syspilot" / "ontology.toml"
+
+
+def resolve_ontology_path(conf_path: Path = DOCS_DIR / "conf.py") -> Path:
+    try:
+        configuration = ast.parse(conf_path.read_text(encoding="utf-8-sig"))
+        binding = None
+        for statement in configuration.body:
+            if isinstance(statement, ast.Assign) and any(
+                isinstance(target, ast.Name) and target.id == "needs_from_toml"
+                for target in statement.targets
+            ):
+                binding = statement.value
+            elif (
+                isinstance(statement, ast.AnnAssign)
+                and isinstance(statement.target, ast.Name)
+                and statement.target.id == "needs_from_toml"
+            ):
+                binding = statement.value
+        value = ast.literal_eval(binding) if binding is not None else None
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError("needs_from_toml must be a non-empty literal string")
+    except (OSError, SyntaxError, ValueError, TypeError) as error:
+        raise ValueError(
+            f"Cannot resolve needs_from_toml in {conf_path}: {error}. "
+            "Pass --ontology explicitly for computed configuration."
+        ) from error
+    return (conf_path.parent / value).resolve()
 
 
 def ensure_build(needs_dir: Path) -> bool:
@@ -350,8 +377,8 @@ def main():
         help="Return typed relationship pairs instead of the default output"
     )
     parser.add_argument(
-        "--ontology", type=Path, default=ONTOLOGY_PATH,
-        help="Active ontology TOML path (default: .syspilot/ontology.toml)"
+        "--ontology", type=Path,
+        help="Active ontology TOML path (default: needs_from_toml in docs/conf.py)"
     )
     parser.add_argument(
         "--needs-dir", type=Path, default=NEEDS_ID_DIR,
@@ -365,7 +392,8 @@ def main():
     args = parser.parse_args()
     
     try:
-        link_options = load_link_options(args.ontology)
+        ontology_path = args.ontology if args.ontology is not None else resolve_ontology_path()
+        link_options = load_link_options(ontology_path)
     except ValueError as error:
         print(f"ERROR: {error}", file=sys.stderr)
         sys.exit(2)

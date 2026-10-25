@@ -54,6 +54,7 @@ The current base roster is deliberately compact:
 | Release | Packaging and release delivery |
 | Research | Investigation and technical due diligence |
 | Technical Writer | User-facing product documentation |
+| Admin | Tools, repository infrastructure, process maintenance |
 
 The [actor registry](Syspilot%20Actors/index.md) and individual role cards are
 the authority for these roles. This guide explains the model; it does not get
@@ -93,7 +94,9 @@ blocker and escalates it.
 
 Contracts store current truth, not a transcript. When a blocker is resolved or
 responsibility changes, the current field is replaced. Git already remembers
-the archaeology.
+the archaeology. The one bounded exception is the Change Contract's append-only
+Handover log, which records each responsibility transition as a single line to
+explain it; the header's `Current responsibility` stays the only authority.
 
 Syspilot's [Change process](Syspilot%20Contracts/change.md) is the canonical
 Contract definition for modifying versioned artifacts. The repository file

@@ -28,7 +28,7 @@ Install Syspilot into this project.
 
 1. Look up the releases of https://github.com/enthali/syspilot, tell me the
    latest one, and ask me which version to install.
-2. Fetch `docs/Syspilot Processes/setup.md` from that exact tag.
+2. Fetch `docs/Syspilot Contracts/setup.md` from that exact tag.
 3. Save it unchanged as `.syspilot/setup-contract.md` in this repository, and
    make sure it is the only change in the working tree.
 4. Execute that Contract from top to bottom. It owns every further step,
@@ -54,6 +54,7 @@ the honest boundary on what has and has not been proven at runtime.
 | Know which branch your work belongs on | [Branching](docs/branching.md) |
 | Tailor Syspilot to a project | [Customization](docs/customization.md) |
 | Build, update, or troubleshoot it | [Operations](docs/operations.md) |
+| Move a project from before 0.10 to 0.10 | [Upgrading to 0.10](docs/upgrade.md) |
 
 The [rendered documentation](https://enthali.github.io/syspilot/index.html)
 also includes the authoritative specifications, actor roles, process
@@ -69,7 +70,7 @@ Syspilot connects three kinds of truth:
   responsibility of one piece of work — so nobody has to reconstruct it from
   chat history later.
 
-Eight persistent actors contribute through distinct areas of authority. There is
+Nine persistent actors contribute through distinct areas of authority. There is
 no giant scripted relay race, because a fixed sequence eventually prescribes a
 step some change plainly does not need — and a rule nobody can follow is a rule
 everybody learns to ignore. Instead, the open artifacts in the current Contract

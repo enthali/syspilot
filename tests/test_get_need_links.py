@@ -1,3 +1,4 @@
+import importlib.util
 import json
 import os
 import subprocess
@@ -7,7 +8,49 @@ import unittest
 from pathlib import Path
 
 
-SCRIPT = Path(__file__).with_name("get_need_links.py")
+SCRIPT = Path(__file__).resolve().parents[1] / ".github" / "skills" / "syspilot.impact-python" / "scripts" / "get_need_links.py"
+
+
+class OntologyConfigurationTests(unittest.TestCase):
+    def setUp(self):
+        self.temp_dir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp_dir.cleanup)
+        self.root = Path(self.temp_dir.name)
+        self.conf = self.root / "docs" / "conf.py"
+        self.conf.parent.mkdir()
+        spec = importlib.util.spec_from_file_location("impact", SCRIPT)
+        self.impact = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.impact)
+
+    def test_relative_binding_uses_configuration_directory_without_execution(self):
+        self.conf.write_text(
+            'raise RuntimeError("must not execute")\n'
+            'needs_from_toml = "../model/customer.toml"\n', encoding="utf-8"
+        )
+        self.assertEqual(
+            self.impact.resolve_ontology_path(self.conf),
+            (self.root / "model" / "customer.toml").resolve(),
+        )
+
+    def test_absolute_and_annotated_binding(self):
+        ontology = self.root / "customer.toml"
+        self.conf.write_text(
+            f"needs_from_toml: str = {str(ontology)!r}\n", encoding="utf-8"
+        )
+        self.assertEqual(self.impact.resolve_ontology_path(self.conf), ontology.resolve())
+
+    def test_unavailable_binding_requires_explicit_override(self):
+        for configuration in (
+            "", "needs_from_toml = ''", "needs_from_toml = None",
+            'needs_from_toml = str("../model/customer.toml")', "invalid [",
+        ):
+            with self.subTest(configuration=configuration):
+                self.conf.write_text(configuration, encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, "--ontology"):
+                    self.impact.resolve_ontology_path(self.conf)
+        self.conf.unlink()
+        with self.assertRaisesRegex(ValueError, "--ontology"):
+            self.impact.resolve_ontology_path(self.conf)
 
 
 class ImpactQueryCliTests(unittest.TestCase):

@@ -8,16 +8,24 @@
 **Provided release tag:** {exact SemVer tag}<br>
 **Verified commit:** pending | {full SHA}<br>
 
+## Handover log
+
+The single executing session appends one line as the last act before handing over to the Project Manager, in the same commit that sets `Current responsibility` to `Project Manager`, taking `Date` as `YYYY-MM-DD` and `Time` as `HH:MM` in 24-hour local time from the system clock at that moment. The log explains the transition; the header stays authoritative.
+
+| Date | Time | From | To | Note |
+|--|--|--|--|--|
+
 ## Phase 1: Establish Target And Prerequisites
 
 Do not modify the target project in this phase.
 
 1. Identify the writable, version-controlled project root. Verify and record that `.syspilot/setup-contract.md` is the only tracked, staged, or untracked working-tree change.
 2. Read `.syspilot/project.toml` when present. A confirmed Syspilot baseline stops pristine Setup. Show other Syspilot-like paths to the User and record whether to preserve them, integrate with them, or stop.
-3. Ask the User to approve a dedicated Setup branch, then create it from the selected project state.
+3. Ask the User to approve a dedicated Setup branch, and in that same step open `.syspilot/setup-contract.md` in the User's editor, because the User reviews the Contract before deciding; then create the branch from the selected project state.
 4. Verify that the provided release tag identifies one full commit and use only that commit tree as the installation source.
 5. Verify VS Code with GitHub Copilot, Git, Python 3.13 or newer, `uv`, and Jarvis Core 0.25 or newer are available.
 6. Record `jarvis_listActors` and `jarvis_listChatSessions` before installation.
+7. Run `git check-ignore` on `.github/instructions/` and `.github/skills/`. An existing ignore rule that would silently exclude a generated destination is a blocker; an occupied destination with unrelated existing files is not — those files are preserved during the additive copy.
 
 Existing committed project content is allowed and remains untouched unless the User approves an additive integration edit.
 
@@ -31,23 +39,23 @@ Generate a release-specific Setup script from the Contract inventory. The script
 
 ### Installation Jobs
 
-The following list is the Contract-owned installation inventory. Directory jobs recurse over all release-owned files below the source path while excluding generated build output, virtual environments, caches, and Change instances.
+The following list is the Contract-owned installation inventory. The `Class` column is the only statement of who owns an installed artifact, and section headings name no artifact owner; the executor named in the header holds the Setup record until handoff. Directory jobs recurse over all release-owned files below the source path while excluding generated build output, virtual environments, caches, and Change instances.
 
 | Job | Mode | Source or input | Destination | Class | Required verification |
 |---|---|---|---|---|---|
-| Actor role cards | copy eight files | The eight role cards listed below | `docs/Syspilot Actors/` | release-owned | Exactly the eight listed persistent role cards exist |
-| Actor registry | generate | Eight-actor list below | `docs/Syspilot Actors/index.md` | generated instance | Registry links exactly the eight installed role cards |
-| Contract processes | copy directory | `docs/Syspilot Contracts/` | `docs/Syspilot Contracts/` | release-owned | Process registry, Contract Documents, Change Process, and Setup Process exist |
-| Syspilot skills | copy directory | `.github/skills/` | `.github/skills/` | release-owned | Every release skill contains `SKILL.md` and declared supporting files |
-| Syspilot instructions | copy directory | `.github/instructions/` | `.github/instructions/` | release-owned | Every release instruction matches its verified-commit source identity and `syspilot.contract-handling.instructions.md` exists |
+| Actor role cards | copy nine files | The nine role cards listed below | `docs/Syspilot Actors/` | release-owned | Exactly the nine listed persistent role cards exist |
+| Actor registry | generate | Nine-actor list below | `docs/Syspilot Actors/index.md` | generated instance | Registry links exactly the nine installed role cards |
+| Contract processes | copy directory | `docs/Syspilot Contracts/` | `docs/Syspilot Contracts/` | release-owned | Process registry, Contract Documents, Change Process, Release Process, and Setup Process exist |
+| Syspilot skills | copy directory, additive | `.github/skills/` | `.github/skills/` | release-owned | Every release skill contains `SKILL.md` and declared supporting files; existing unrelated files in an occupied directory are preserved |
+| Syspilot instructions | copy directory, additive | `.github/instructions/` | `.github/instructions/` | release-owned | Every release instruction matches its verified-commit source identity and `syspilot.contract-handling.instructions.md` exists; existing unrelated files in an occupied directory are preserved |
 | Setup record | retain materialized file | This runbook | `.syspilot/setup-contract.md` | generated instance | Status, responsibility, blockers, and evidence remain available with the installed project |
 | Documentation build | inspect, then preserve or generate | Existing project build, or verified-commit `docs/docs-build.py` | Existing build paths, or `docs/docs-build.py`, `docs/conf.py`, and `docs/index.rst` | user-owned or generated instance | The recorded target build command succeeds with the configured ontology and zero warnings |
 | Sphinx-Needs environment | preserve or install | Existing project environment, or verified-commit `docs/requirements.txt` | Existing environment, or project-local `.venv/` | user-owned or generated instance | Existing Sphinx-Needs remains unchanged, or `uv venv .venv` and `uv pip install --python .venv -r {verified commit tree}/docs/requirements.txt` succeed |
 | Project baseline | generate | Provided release tag, verified commit, and Contract state | `.syspilot/project.toml` | generated instance | Required baseline fields parse and match the provided release |
-| Syspilot actor persistence | inspect then ask | Git ignore result and User decision | Project Git policy | user-owned | User explicitly decides whether the eight generated Syspilot actor directories are versioned; resulting rules match that decision |
+| Syspilot actor persistence | inspect then ask | Git ignore result and User decision | Project Git policy | user-owned | User explicitly decides whether the nine generated Syspilot actor directories are versioned; resulting rules match that decision |
 | Project ontology | detect, then preserve or copy | Existing configured ontology, or verified-commit `.syspilot/ontology.toml` | Existing configured path, or `.syspilot/ontology.toml` | user-owned or generated instance | Existing ontology remains unchanged, or baseline TOML is copied only when no ontology exists; the target documentation build succeeds |
 | Setup script | generate temporarily | This inventory and Contract rules | Executor-selected system temporary path | transient | Platform-appropriate script supports `--dry-run`; dry-run and execution share one planning path; file remains available for inspection |
-| Syspilot actors | generate eight folders | Actor definitions below | `.jarvis/actors/<name>/` | generated instance | Eight YAML entities and contexts exist; Jarvis lists all eight |
+| Syspilot actors | generate nine folders | Actor definitions below | `.jarvis/actors/<name>/` | generated instance | Nine YAML entities and contexts exist; Jarvis lists all nine |
 
 Generate `.syspilot/project.toml` as:
 
@@ -59,7 +67,7 @@ commit_sha = "{full commit SHA for provided tag}"
 baseline_status = "preparing"
 ```
 
-Apply the persistence choice to each of the eight generated Syspilot actor directories as one unit, including `actor.yaml`, `context.md`, and all memory files stored below that actor directory.
+Apply the persistence choice to each of the nine generated Syspilot actor directories as one unit, including `actor.yaml`, `context.md`, and all memory files stored below that actor directory.
 
 Inspect the target independently for its configured ontology, Sphinx-Needs availability, dependency files, documentation structure, and build command.
 
@@ -72,7 +80,7 @@ Ontology evaluation or modification is not part of Setup.
 
 ### Syspilot Actor Setup
 
-Generate exactly these eight actors:
+Generate exactly these nine actors:
 
 | Actor name | Public role card |
 |---|---|
@@ -84,6 +92,7 @@ Generate exactly these eight actors:
 | Release | `docs/Syspilot Actors/Release.md` |
 | Research | `docs/Syspilot Actors/Research.md` |
 | Technical Writer | `docs/Syspilot Actors/Technical Writer.md` |
+| Admin | `docs/Syspilot Actors/Admin.md` |
 
 Each actor folder contains:
 
@@ -96,13 +105,13 @@ Setup writes these files directly and does not call `jarvis_createActor`. The ge
 Perform actor setup in this order:
 
 1. Inspect existing `.jarvis/actors/` contents. Show colliding target actor paths to the User for disposition; unrelated actors remain untouched.
-2. Use `git check-ignore` on each of the eight target actor directories.
-3. Show the current ignore result and ask the User whether the complete eight generated Syspilot actor directories shall be versioned or kept private and ignored.
-4. If the User chooses persistence, add only the specific Git negation rules required to make those eight directories versionable.
-5. If the User declines persistence, preserve an existing ignore rule or add ignore rules for exactly those eight directories when none applies.
-6. Generate the eight `actor.yaml` and initial `context.md` pairs.
+2. Use `git check-ignore` on each of the nine target actor directories.
+3. Show the current ignore result and ask the User whether the complete nine generated Syspilot actor directories shall be versioned or kept private and ignored.
+4. If the User chooses persistence, add only the specific Git negation rules required to make those nine directories versionable.
+5. If the User declines persistence, preserve an existing ignore rule or add ignore rules for exactly those nine directories when none applies.
+6. Generate the nine `actor.yaml` and initial `context.md` pairs.
 7. Install the remaining Contract inventory.
-8. Allow up to 60 seconds for the Jarvis actor rescan, then use `jarvis_listActors` to verify that it includes all eight expected entities; unrelated actors are allowed.
+8. Allow up to 60 seconds for the Jarvis actor rescan, then use `jarvis_listActors` to verify that it includes all nine expected entities; unrelated actors are allowed.
 9. Record generated paths, Git treatment, registration result, and any blocker as Contract evidence.
 
 Run `--dry-run` and classify every destination: create absent files, retain identical files, apply only User-approved additive integration edits, and block on other differing files. Audit the generated script and complete plan before execution.
@@ -120,11 +129,13 @@ On script failure, stop and keep the branch for inspection. Git is the cleanup b
 | Integrity | Every release-owned destination matches the source identity or verification rule declared by the Contract inventory |
 | Inventory | Compare the script operation log with the inventory; every declared destination exists and every written path is declared or an approved integration edit |
 | Structure | Required Syspilot instruction, skill, process, ontology, and documentation integration entry points exist; `syspilot.contract-handling.instructions.md` is installed |
-| Jarvis actor discovery | Compare before/after snapshots: `jarvis_listActors` includes all eight expected Syspilot actors, no Setup actor was generated, and `jarvis_listChatSessions` contains no session opened by Setup |
-| Actor files | Exactly eight expected actor folders contain valid `actor.yaml` and initial `context.md` |
+| Jarvis actor discovery | Compare before/after snapshots: `jarvis_listActors` includes all nine expected Syspilot actors, no Setup actor was generated, and `jarvis_listChatSessions` contains no session opened by Setup |
+| Actor files | Exactly nine expected actor folders contain valid `actor.yaml` and initial `context.md` |
 | Documentation | The target project's documentation builds successfully with its selected ontology and zero warnings |
 | Baseline | `project.toml` reads back the provided SemVer tag and corresponding commit |
 | Project preservation | Git status and approved integration evidence show only the initial Setup Contract, declared Setup outputs, and approved integration edits changed from the starting commit |
+
+The Executor owns every gate in this table and alone records its evidence and passes it; the User owns none of them.
 
 Record each command, exit status, and concise result. One failed mandatory gate leaves the Setup branch and Contract `blocked`; Setup does not mark the baseline verified or continue to handoff.
 
@@ -136,20 +147,22 @@ Record each command, exit status, and concise result. One failed mandatory gate 
 
 ## Phase 7: Hand Off To Project Manager
 
-1. Set current responsibility to `Project Manager`, set Contract status to `handed off`, and commit the final Setup record on the target branch.
+1. Set current responsibility to `Project Manager`, set Contract status to `handed off`, append the Handover log entry, and commit the final Setup record on the target branch in one commit.
 2. Send `Installation complete, welcome to this project` to the Project Manager with:
 	- the installation completion summary;
 	- the selected ontology and its configured path; and
 	- instructions to explain the selected ontology's artifact types, statuses, and relationships to the User and ask whether it fits the project.
-3. If the User accepts the selected ontology, continue normal project intake without creating an ontology Change.
-4. If the User requests an adjustment, start a normal Change before modifying the ontology. Use the existing `syspilot.ontology` skill only as technical guidance inside that Change.
-5. If delivery fails, record the delivery blocker in the durable Setup record without claiming successful receipt and commit that evidence. Keep the verified integrated installation.
+3. The Project Manager re-reads its `context.md`, its role card, and this Setup record, and verifies that the committed header names it, before it acts on the message.
+4. If the User accepts the selected ontology, continue normal project intake without creating an ontology Change.
+5. If the User requests an adjustment, start a normal Change before modifying the ontology. Use the existing `syspilot.ontology` skill only as technical guidance inside that Change.
+6. If delivery fails, record the delivery blocker in the durable Setup record without claiming successful receipt and commit that evidence. Keep the verified integrated installation.
 
 ## Failure And Resume Rules
 
 - Before target writes, failure leaves only the materialized Contract and status `blocked`.
 - After target writes, failure leaves status `blocked`, an exact path disposition, and the dedicated branch for inspection or deletion.
 - Open mandatory gates prohibit `verified`, success messaging, and PM handoff.
+- When a User decision widens the approved scope after a gate has passed, such as an additional integration edit or a changed persistence choice, the executor sets the affected gates back to open and passes them again before sealing the project state.
 - Cleanup discards the dedicated Setup branch for versioned changes and removes only untracked actor paths that this Setup run demonstrably created; it never deletes pre-existing or user-owned content.
 
 ## Evidence Summary

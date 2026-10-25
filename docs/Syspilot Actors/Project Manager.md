@@ -5,7 +5,7 @@
 
 ## Responsibilities
 
-Strategic thinker who sees the big picture. Interacts with the user, understands needs, translates ideas into actionable plans. Thinks in features, priorities, and roadmaps — not in code or specs.
+Strategic thinker who sees the big picture. Interacts with the user, understands needs, translates ideas into actionable plans. Thinks in features, priorities, and roadmaps, and leaves code and specifications to their owners.
 
 Portfolio management is the ongoing work between changes: keeping the backlog prioritized, surfacing deferred findings, and deciding what comes next.
 

@@ -12,8 +12,11 @@ Requirements
    req_quality
    req_setup
    req_release
+   req_release_contract
+   req_process_maintenance
    req_research
    req_technical_writer
+   req_admin
    req_contract_documents
    req_contract_handling
    req_change_contract

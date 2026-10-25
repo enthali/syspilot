@@ -6,7 +6,8 @@ import unittest
 from pathlib import Path
 
 
-SCRIPT = Path(__file__).with_name("analyze_mece.py")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+SCRIPT = PROJECT_ROOT / ".github" / "skills" / "syspilot.mece" / "scripts" / "analyze_mece.py"
 
 
 class MeceCliTests(unittest.TestCase):
@@ -79,7 +80,7 @@ class MeceCliTests(unittest.TestCase):
         self.assertNotEqual(undeclared.returncode, 0)
 
     def test_current_v2_data_discovers_requirement_peers(self):
-        project_root = Path(__file__).resolve().parents[4]
+        project_root = PROJECT_ROOT
         result = subprocess.run(
             [sys.executable, str(SCRIPT), "SYSP_REQ_QUALITY", "--scope", "same-document", "--ontology", str(project_root / ".syspilot" / "ontology.toml"), "--needs-dir", str(project_root / "docs" / "_build" / "html" / "needs_id")],
             capture_output=True,

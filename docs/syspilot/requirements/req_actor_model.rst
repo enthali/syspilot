@@ -15,7 +15,13 @@ Syspilot Actor Model
      process registry it follows;
    - obtain artifact ownership and current responsibility from the applicable
      process and Contract Document rather than from a prescribed actor
-     sequence; and
+     sequence;
+   - state its role card and instructions in project-neutral wording, naming
+     no specific project, so the same card and instruction apply unchanged to
+     the project syspilot ships into;
+   - state required behavior in positive wording in its role card and
+     instructions, rather than relying on a negation to imply the bounded
+     alternative; and
    - inherit memory, messaging, escalation, and culture from the Jarvis Actor
      Kernel without duplicating that behavior in syspilot.
 
@@ -26,4 +32,6 @@ Syspilot Actor Model
 
    Inspect each Syspilot actor's public role card and ``context.md`` and confirm
    that its role, process registry, process-derived authority, and Jarvis
-   kernel boundary follow the common Actor Model.
+   kernel boundary follow the common Actor Model. Confirm that the role card
+   and instructions name no specific project and state required behavior
+   positively rather than through a negation alone.

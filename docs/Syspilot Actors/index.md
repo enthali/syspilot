@@ -20,3 +20,4 @@ Processes assign artifact ownership, and each Contract Document records current 
 | [Release](Release.md) | Packaging, release delivery |
 | [Research](Research.md) | Investigation, technical due diligence |
 | [Technical Writer](Technical%20Writer.md) | User-facing product documentation |
+| [Admin](Admin.md) | Tools, repository infrastructure, process maintenance |

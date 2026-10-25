@@ -25,6 +25,11 @@ Pristine Syspilot Setup
      but presents other possible Syspilot artifacts to the User for disposition
      instead of treating every similar artifact as an installation or deleting
      it;
+   - copies Syspilot instructions and skills additively into an occupied
+     ``.github/instructions/`` or ``.github/skills/`` directory, preserving
+     existing unrelated files rather than requiring an empty destination, and
+     surfaces an existing ignore rule that would silently exclude a generated
+     destination as a blocker instead of a silent installation gap;
    - verifies Jarvis Core before any Jarvis-dependent action and records an
      actionable blocker without claiming success when a mandatory prerequisite
      is unavailable;
@@ -44,11 +49,11 @@ Pristine Syspilot Setup
      destinations that are not an approved integration;
    - records the supplied release tag, corresponding commit, and approved
      project baseline in the versioned ``.syspilot/project.toml`` file;
-   - generates exactly the eight persistent Syspilot actors Project Manager,
-     Architect, Developer, Tester, Quality, Release, Research, and Technical
-     Writer without generating a Setup actor or opening their sessions, and
-     verifies that Jarvis actor discovery includes all eight regardless of
-     unrelated actors already present;
+   - generates exactly the nine persistent Syspilot actors Project Manager,
+     Architect, Developer, Tester, Quality, Release, Research, Technical
+     Writer, and Admin without generating a Setup actor or opening their
+     sessions, and verifies that Jarvis actor discovery includes all nine
+     regardless of unrelated actors already present;
    - verifies the declared installation inventory and content integrity,
      installed structure, actor files and Jarvis discovery, successful
      zero-warning target documentation build with its selected ontology, and
@@ -67,10 +72,20 @@ Pristine Syspilot Setup
      guidance within that Change;
    - exposes every unmet mandatory condition as explicit Contract evidence and
      does not produce a successful Project Manager handoff while blocked;
-   - does not install or retain a persistent Setup actor; and
+   - does not install or retain a persistent Setup actor;
    - permits a later technical update only when a separate project-specific
      Change records the old and proposed baselines, impact analysis,
-     revalidation scope, authorization, and assigned technical executor.
+     revalidation scope, authorization, and assigned technical executor; and
+   - carries the shared rules of the Contract Document method in the form its
+     single executor allows: a Handover log whose entry records the one
+     handoff to the Project Manager in the commit that changes the header, the
+     scope-change rule applied to gates that already passed, one statement of
+     installed-artifact ownership in the inventory, one statement of
+     verification-gate ownership naming the executor as sole owner, the Setup
+     Contract opened in the User's editor in the step that asks for the Setup
+     branch, and the
+     Project Manager's refresh and header check before it acts on the
+     completion message.
 
 .. vc:: Setup Contract establishes a reproducible project baseline
    :id: SYSP_VC_SETUP_1
@@ -88,9 +103,10 @@ Pristine Syspilot Setup
    disposition; any existing ontology remains authoritative and the baseline
    ontology is installed only when none exists; Sphinx-Needs is independently
    preserved or installed as needed; unrelated project work and documentation
-   infrastructure remain intact; the eight expected persistent Syspilot actors
+   infrastructure remain intact; the nine expected persistent Syspilot actors
    are discovered without a Setup actor or Setup-opened sessions; every
-   mandatory gate records passing evidence before baseline verification; Git
+   mandatory gate records passing evidence before baseline verification and
+   the Contract names the executor as the single owner of those gates; Git
    commit and merge complete before the Project Manager handoff; the handoff
    identifies the selected ontology and directs the Project Manager to explain
    its artifact types, statuses, and relationships and ask the User whether it
@@ -98,4 +114,7 @@ Pristine Syspilot Setup
    a requested adjustment starts a normal Change before modification and uses
    the existing Ontology skill only for technical guidance; blockers cannot
    report success; and later updates require an authorized project-specific
-   Change.
+   Change. Confirm that an occupied ``.github/instructions/`` or
+   ``.github/skills/`` destination keeps its existing unrelated files after
+   installation, and that an ignore rule which would silently exclude a
+   generated destination is reported as a blocker rather than passed over.

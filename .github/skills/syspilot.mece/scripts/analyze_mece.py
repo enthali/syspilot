@@ -2,6 +2,7 @@
 """Discover comparable peers and report deterministic MECE evidence."""
 
 import argparse
+import importlib.util
 import json
 import sys
 import tomllib
@@ -9,8 +10,17 @@ from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
-ONTOLOGY_PATH = PROJECT_ROOT / ".syspilot" / "ontology.toml"
 NEEDS_ID_DIR = PROJECT_ROOT / "docs" / "_build" / "html" / "needs_id"
+IMPACT_SCRIPT = PROJECT_ROOT / ".github" / "skills" / "syspilot.impact-python" / "scripts" / "get_need_links.py"
+
+
+def resolve_ontology_path() -> Path:
+    spec = importlib.util.spec_from_file_location("syspilot_impact", IMPACT_SCRIPT)
+    if spec is None or spec.loader is None:
+        raise ValueError(f"Cannot load Impact discovery from {IMPACT_SCRIPT}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.resolve_ontology_path()
 
 
 def load_types(ontology_path: Path) -> set[str]:
@@ -113,11 +123,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("need_id")
     parser.add_argument("--scope", choices=["same-document", "all-type"], required=True)
-    parser.add_argument("--ontology", type=Path, default=ONTOLOGY_PATH)
+    parser.add_argument("--ontology", type=Path, help="Default: needs_from_toml in docs/conf.py")
     parser.add_argument("--needs-dir", type=Path, default=NEEDS_ID_DIR)
     args = parser.parse_args()
     try:
-        result = analyze(args.need_id, args.scope, load_types(args.ontology), load_needs(args.needs_dir))
+        ontology_path = args.ontology if args.ontology is not None else resolve_ontology_path()
+        result = analyze(args.need_id, args.scope, load_types(ontology_path), load_needs(args.needs_dir))
     except ValueError as error:
         print(f"ERROR: {error}", file=sys.stderr)
         raise SystemExit(2) from error

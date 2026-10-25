@@ -28,6 +28,10 @@ Change Contract
      while the Project Manager reviews the flagged points once the User is
      reachable and decision ownership stays with the actor that decided;
    - agrees the selected mode with the User before the Contract is released;
+   - has the Project Manager open the Contract document in the User's editor
+     within the same initialization step that asks the User to set the
+     ``Contract release`` gate, because the User reviews the Contract before
+     deciding;
    - records the User's release exactly once, in a User-owned gate named
      ``Contract release`` holding ``pending`` or ``approved``, which no other
      actor may set, so that an approved intent text no longer also asserts the
@@ -45,6 +49,22 @@ Change Contract
      required;
    - transfers first responsibility to the Architect to determine the required
      architecture and specification work;
+   - carries a Handover log, owned by the Project Manager, in which the
+     handing-over actor appends one line naming the date, time, sending actor,
+     receiving actor, and a note, with date and time taken from the system
+     clock, as the last act before transferring
+     responsibility and in the same commit that changes the header, directed
+     to the next actor that follows from the logical flow of the Change,
+     explaining transitions without displacing the header as the authoritative
+     ``Current responsibility`` value;
+   - includes infrastructure impact as an optional artifact owned by Admin,
+     whose completion evidence is the owner's own confirmation of affected
+     workflow, CI, or packaging artifacts rather than an inference drawn from
+     a Needs-only impact query;
+   - offers an optional ``Ontology Binding`` subsection, owned by the
+     Architect within the architecture artifact, that maps Contract artifact
+     roles to a project's own realized artifact kinds, included only when the
+     project's active ontology lacks ``doc`` Needs or typed links;
    - identifies each applicable artifact, its owner, completion evidence, and
      current status;
    - includes version control as one artifact owned by the Project
@@ -79,6 +99,20 @@ Change Contract
      affected artifact's owner;
    - records the review methods Quality applied, with their selected scope,
      evidence, findings, and stated limits;
+   - assigns test responsibility in the artifact rows: the Developer writes
+     and runs unit tests, the Tester writes and runs requirement tests and
+     provides the means for User validation, each recording commands and
+     results, and Quality reviews those recorded commands and results,
+     executing a check itself only when a recorded result cannot support its
+     judgment and recording the reason;
+   - treats verification as fully automated, records a missing automation as
+     an open quality issue that names its task, owner, and completion
+     evidence, and verifies a Markdown process artifact whose content has no
+     automated check through Quality's recorded review;
+   - carries in its artifact table the rule that a widened intent returns to
+     ``draft`` and that each owner of an affected terminal row reassesses it,
+     and the rule that the table's ``Owner`` column is the only statement of
+     artifact and gate ownership, with no owner named in section headings;
    - requires Quality to communicate its ``proceed`` judgment and supporting
      evidence directly to the Project Manager before the outcome is presented
      for validation, without accepting another actor's forwarded claim as
@@ -138,4 +172,21 @@ Change Contract
    at that element, that no required element offers such an option, and that
    the ``User validation and approval`` row becomes ``not applicable`` only
    through an explicit User delegation recorded at that row rather than through
-   the operation mode.
+   the operation mode. Confirm that the template carries a Project
+   Manager-owned Handover log whose entry format names date, time, sender,
+   receiver, and a note, that its instruction requires the entry and the header
+   to change in the same commit with date and time taken from the system clock,
+   and that it states the header as authoritative
+   over the log. Confirm that the template carries an optional
+   Infrastructure impact artifact owned by Admin with its own omission
+   option, and an optional Ontology Binding subsection owned by the Architect
+   whose tailoring note limits inclusion to projects whose active ontology
+   lacks ``doc`` Needs or typed links. Confirm that the initialization step
+   that asks for the ``Contract release`` gate also has the Project Manager
+   open the Contract in the User's editor; that the Developer, Tester, and
+   Quality rows state who writes, runs, and reviews tests and that Quality's
+   default is review of recorded commands and results; that a missing
+   automation is an open quality issue naming task, owner, and completion
+   evidence; that the artifact table carries the scope-change rule and the
+   rule that its ``Owner`` column is the only statement of ownership; and that
+   no section heading names an artifact owner.

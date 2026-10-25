@@ -1,8 +1,9 @@
 # Contract Driven Development
 
 Syspilot is built by separate actors — a project manager, an architect, a developer,
-a tester, a quality reviewer, a release actor, a researcher and a technical writer.
-Each keeps its own memory and forms its own view of the work. That separation is
+a tester, a quality reviewer, a release actor, a researcher, a technical writer
+and an admin for tools and repository infrastructure. Each keeps its own memory
+and forms its own view of the work. That separation is
 deliberate: an actor that has not already convinced itself is the one most likely to
 notice the thing everyone else walked past.
 
@@ -25,18 +26,41 @@ as long as that goal lasts. It writes down:
 - **verification and validation** — an independent quality judgment that the claims
   hold, and the User's confirmation that the result is what was wanted.
 
-Two kinds are defined today. A **Change Contract** governs one bounded change to
-versioned artifacts. A **Setup Contract** is bound to an exact release and governs
-installing Syspilot into a project. Each process declares its own canonical template,
-applicability, artifact types, ownership, and closure conditions in the
+Three kinds are defined today. A **Change Contract** governs one bounded change to
+versioned artifacts. A **Release Contract** governs one publication of a Syspilot
+version, from a closed set of Changes to the tag on `main`. A **Setup Contract** is
+bound to an exact release and governs installing Syspilot into a project. Each
+process declares its own canonical template, applicability, artifact types,
+ownership, and closure conditions in the
 [process registry](Syspilot%20Contracts/index.md).
 
-Releases do not yet have a process of their own. The Release actor owns packaging and
-delivery, and that work currently runs under a Change Contract like any other bounded
-work. A dedicated Release Contract is expected; until it exists, saying so is more
-useful than implying it is already there.
+Five rules hold for every Contract kind, including kinds added later, and each
+canonical template carries them in its own wording. The handing-over actor
+appends one line to the Handover log in the same commit that changes the
+responsible actor, taking date and time from the system clock. When the approved
+intent widens after an artifact is finished, the intent returns to draft until it
+is approved again, and the owner of each affected row reopens it or records why
+its evidence still holds. A Contract names each
+artifact's owner once, in its owner table, and never in a section heading. The
+actor who asks the User to set a User-owned gate presents the Contract to the
+User in that same step, because the User reviews it before deciding. And the
+receiving actor re-reads its own context, its role card, and the Contract, and
+verifies the committed header before it acknowledges. A kind whose responsibility
+moves only once, such as Setup, carries the same rules in the form that fits: its
+single transition is the first Handover log entry.
 
-They carry that content differently, and they are meant to. A Contract instance is a
+The registry also lists an adopter example, the
+[Process Maintenance Contract](Syspilot%20Contracts/examples/process-maintenance.md).
+It shows how a project can maintain its own Contract templates, process
+registry, role cards, and the instructions and skills that govern them: the
+Admin changes the documents, and Quality compares each one with its peers of the
+same kind. Because that comparison is a reading and not a script, the example
+states its limits: the reviewer lists the peers, a peer that is not listed is not
+examined, the judgment rests on a recorded reading that another reader may judge
+differently, and a clean result covers the listed peers only. It is not one of Syspilot's own processes, and Syspilot's own process
+documents still change through the Change process.
+
+Contract kinds carry that content differently, and they are meant to. A Contract instance is a
 tailored copy: each row offers its own choice and says what that choice obliges,
 so a required artifact simply cannot be dropped and an optional one that does not
 apply is marked with a reason and its empty section deleted. Every newly
