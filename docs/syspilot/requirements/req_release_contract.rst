@@ -26,7 +26,8 @@ Release Contract
      user-facing documentation, the infrastructure impact, the release
      verification, the publication, and the closure, with the artifact table
      as the only statement of ownership and the shared rules of the Contract
-     Document method for every Contract kind, namely the Handover log, the
+     Document method for every Contract kind, namely the Handover log with its
+     short note, the
      scope-change rule, the single ownership statement, the presentation of the
      Contract to the User in the step that asks for ``Release start``, and the
      receiving actor's refresh before it acknowledges;

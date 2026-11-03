@@ -54,7 +54,10 @@ Change Contract
      receiving actor, and a note, with date and time taken from the system
      clock, as the last act before transferring
      responsibility and in the same commit that changes the header, directed
-     to the next actor that follows from the logical flow of the Change,
+     to the next actor that follows from the logical flow of the Change, with a
+     note that states what the owner did and the facts that change the next
+     owner's situation while evidence stays in the owner's section and
+     remaining work in the open rows,
      explaining transitions without displacing the header as the authoritative
      ``Current responsibility`` value;
    - includes infrastructure impact as an optional artifact owned by Admin,
@@ -176,7 +179,8 @@ Change Contract
    Manager-owned Handover log whose entry format names date, time, sender,
    receiver, and a note, that its instruction requires the entry and the header
    to change in the same commit with date and time taken from the system clock,
-   and that it states the header as authoritative
+   that its note states what the owner did and the facts that change the next
+   owner's situation, and that it states the header as authoritative
    over the log. Confirm that the template carries an optional
    Infrastructure impact artifact owned by Admin with its own omission
    option, and an optional Ontology Binding subsection owned by the Architect

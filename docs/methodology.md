@@ -37,7 +37,10 @@ ownership, and closure conditions in the
 Five rules hold for every Contract kind, including kinds added later, and each
 canonical template carries them in its own wording. The handing-over actor
 appends one line to the Handover log in the same commit that changes the
-responsible actor, taking date and time from the system clock. When the approved
+responsible actor, taking date and time from the system clock. The note says
+what the owner did and the facts that change the next owner's situation;
+evidence stays in the owner's section and remaining work in the open rows.
+When the approved
 intent widens after an artifact is finished, the intent returns to draft until it
 is approved again, and the owner of each affected row reopens it or records why
 its evidence still holds. A Contract names each
@@ -57,7 +60,8 @@ Admin changes the documents, and Quality compares each one with its peers of the
 same kind. Because that comparison is a reading and not a script, the example
 states its limits: the reviewer lists the peers, a peer that is not listed is not
 examined, the judgment rests on a recorded reading that another reader may judge
-differently, and a clean result covers the listed peers only. It is not one of Syspilot's own processes, and Syspilot's own process
+differently, and a clean result covers the listed peers only. It is not one of
+Syspilot's own processes, and Syspilot's own process
 documents still change through the Change process.
 
 Contract kinds carry that content differently, and they are meant to. A Contract instance is a

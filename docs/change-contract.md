@@ -125,14 +125,18 @@ acceptable; the wiring itself remains Admin's edit.
 
 Before handing off responsibility, an actor updates the owned artifact and the
 Contract, commits them as one consistent state, and then messages the next
-owner. The handoff identifies the Contract path, commit, completed outcome, and
-remaining work. The brief gap between commit and notification is intentional:
+owner. The handoff message names the Contract path and the commit, nothing
+more. The completed outcome is the last Handover log line, and the remaining
+work is in the open rows. The brief gap between commit and notification is
+intentional:
 the committed Contract stays authoritative and has one writer throughout.
 
 The handing-over actor also appends one line to the Contract's `Handover log`,
 owned by the Project Manager, in the same commit that changes `Current
 responsibility`. The line names date, time, sender, receiver, and a note, and
-the actor takes date and time from the system clock. The log explains
+the actor takes date and time from the system clock. The note says what the
+owner did and the facts that change the next owner's situation. Evidence stays
+in the owner's section, and remaining work in the open rows. The log explains
 transitions; the header stays the only authority. The receiving actor re-reads
 its own `context.md`, its role card, and the Contract, and checks that the
 committed header names it before sending its acknowledgment. If the header says

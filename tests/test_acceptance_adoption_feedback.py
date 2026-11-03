@@ -101,6 +101,41 @@ class SharedContractRulesTests(unittest.TestCase):
             with self.subTest(kind=path.stem):
                 self.assertIn(marker, text)
 
+    def test_each_handover_log_states_what_a_note_holds(self):
+        for _, path in listed_kinds():
+            section = read(path).split("## Handover log", 1)[1].split("\n## ", 1)[0]
+            with self.subTest(kind=path.stem):
+                self.assertIn("facts that change the next owner's situation", section)
+                self.assertRegex(section, r"evidence stays in the ")
+
+    def test_the_method_states_what_a_note_holds_once_for_all_kinds(self):
+        rule = read(CONTRACTS / "contract-documents.md").split("Shared Rules Of Every Contract Kind", 1)[1]
+        rule = rule.split("2. **Scope change.**", 1)[0]
+        self.assertIn("facts that change the next owner's situation", rule)
+        self.assertIn("evidence stays in the owner's section and remaining work in the open rows", rule)
+
+    def test_the_requirements_of_the_kinds_carry_what_a_note_holds(self):
+        requirements = ROOT / "docs" / "syspilot" / "requirements"
+        for name in ("req_contract_documents", "req_change_contract", "req_setup"):
+            text = " ".join(read(requirements / f"{name}.rst").split())
+            with self.subTest(requirement=name):
+                self.assertIn("next owner's situation", text)
+        release = " ".join(read(requirements / "req_release_contract.rst").split())
+        self.assertIn("Handover log with its short note", release)
+
+    def test_the_handoff_message_carries_the_contract_path_and_the_commit_only(self):
+        instruction = read(ROOT / ".github" / "instructions" / "syspilot.contract-handling.instructions.md")
+        handoff = next(line for line in instruction.splitlines() if line.startswith("- **HANDOFF**"))
+        self.assertIn("Contract path and the commit", handoff)
+        self.assertIn("the completed outcome is the last Handover-log line", handoff)
+        self.assertIn("remaining work is in the open rows", handoff)
+        self.assertNotIn("completed outcome, and remaining work", handoff)
+        example = " ".join(read(CONTRACTS / "examples" / "process-maintenance.md").split())
+        self.assertIn("before sending the Contract path and the commit", example)
+        self.assertNotIn("sending its path, commit, completed outcome", example)
+        requirement = " ".join(read(ROOT / "docs" / "syspilot" / "requirements" / "req_contract_handling.rst").split())
+        self.assertIn("names the Contract path and the committed state in the ``HANDOFF`` message", requirement)
+
     def test_setup_names_the_executor_as_sole_owner_of_the_phase_5_gates(self):
         setup = read(CONTRACTS / "setup.md")
         phase = setup.split("## Phase 5: Verify Installed Outcome", 1)[1].split("\n## ", 1)[0]

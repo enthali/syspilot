@@ -77,7 +77,9 @@ Pristine Syspilot Setup
      Change records the old and proposed baselines, impact analysis,
      revalidation scope, authorization, and assigned technical executor; and
    - carries the shared rules of the Contract Document method in the form its
-     single executor allows: a Handover log whose entry records the one
+     single executor allows: a Handover log whose entry, with a note that
+     states what the executor did and the facts that change the next owner's
+     situation, records the one
      handoff to the Project Manager in the commit that changes the header, the
      scope-change rule applied to gates that already passed, one statement of
      installed-artifact ownership in the inventory, one statement of

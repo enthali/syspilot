@@ -34,7 +34,10 @@ Contract Documents
    - shared rules that every Contract kind carries in its canonical template,
      including a kind added later: a Handover log with date as ``YYYY-MM-DD`` and
      time as ``HH:MM`` in 24-hour local time, both taken from the system clock,
-     and a handover to the next actor that follows from the logical flow
+     a note that states what the owner did and the facts that change the next
+     owner's situation, with evidence kept in the owner's section and remaining
+     work in the open rows, and a handover to the next actor that follows from
+     the logical flow
      of the Contract, the scope-change rule, the single statement of artifact
      ownership, the presentation of the Contract to the User in the step that
      asks for a User-owned gate, and the receiving actor's refresh before it
@@ -71,7 +74,8 @@ Contract Documents
    replace-in-place rule. Confirm that an instance names each artifact's owner
    only in its artifact table, and that a widened intent returns to ``draft``
    and triggers an owner reassessment of terminal artifacts. Confirm that the
-   method lists the five shared rules once, that every process and example the
+   method lists the five shared rules once, including the content of the
+   Handover-log note, that every process and example the
    registry lists carries each of them in its template, and that a Contract
    kind lacking a shared rule is detectable by a requirement test over the
    registry's listed kinds.

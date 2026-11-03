@@ -23,7 +23,7 @@ This example applies the [Contract Document method](../contract-documents.md) to
 4. Hand the committed instance and artifacts to Quality for the peer comparison. Quality returns findings to the affected artifact owner for resolution, then reassesses them.
 5. Quality communicates its `proceed` judgment and supporting evidence directly to the Project Manager. The Project Manager then presents the verified outcome to the User for validation and records the User's decision; Project Manager closes the instance after its checklist is satisfied.
 
-Each handoff commits the current Contract state, its Handover log entry, and related artifacts before sending its path, commit, completed outcome, and remaining work. The receiving actor reads its context, role card, and Contract and verifies the committed `Current responsibility` before ACK.
+Each handoff commits the current Contract state, its Handover log entry, and related artifacts before sending the Contract path and the commit. The receiving actor reads its context, role card, and Contract and verifies the committed `Current responsibility` before ACK.
 
 ## Manual Comparison Limits
 
@@ -53,7 +53,7 @@ For a mechanical headings-and-fields inventory, substitute the selected peer pat
 
 Format owned by: Project Manager
 
-The handing-over actor appends one line as the last act before handing over, in the same commit that changes `Current responsibility`, taking `Date` as `YYYY-MM-DD` and `Time` as `HH:MM` in 24-hour local time from the system clock at that moment. The handover goes to the next actor that follows from the logical flow of the Contract. The log explains transitions; the header stays authoritative.
+The handing-over actor appends one line as the last act before handing over, in the same commit that changes `Current responsibility`, taking `Date` as `YYYY-MM-DD` and `Time` as `HH:MM` in 24-hour local time from the system clock at that moment. The note states what the owner did and the facts that change the next owner's situation; evidence stays in the owner's section and remaining work in the open rows. The handover goes to the next actor that follows from the logical flow of the Contract. The log explains transitions; the header stays authoritative.
 
 | Date | Time | From | To | Note |
 |--|--|--|--|--|

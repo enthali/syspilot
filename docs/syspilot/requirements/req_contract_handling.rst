@@ -22,9 +22,12 @@ Contract Handling
      intentionally prioritizing single-writer, consistent Contract state over
      uninterrupted handoff communication and accepting the resulting brief
      notification gap;
-   - identifies the Contract path, committed state, completed outcome, and
-     remaining work in the ``HANDOFF`` message without redefining the Actor
-     Kernel's messaging transport;
+   - names the Contract path and the committed state in the ``HANDOFF``
+     message, leaves the completed outcome to the last Handover-log line and
+     the remaining work to the open rows, and keeps notes and messages short
+     and direct, with facts and decisions, without recited evidence and
+     without instructions to a receiver who owns the next artifact, all
+     without redefining the Actor Kernel's messaging transport;
    - requires the receiving owner, before starting the received work, to
      re-read its own ``context.md``, public role card, and the Contract
      instance, so that an ``ACK`` confirms current authority against current
@@ -50,4 +53,4 @@ Contract Handling
    :status: approved
    :verifies: SYSP_REQ_CONTRACT_HANDLING
 
-    Inspect the workspace-shared Contract-handling instruction and exercise a completed ``HANDOFF``, a receiving owner's ``ACK``, a ``CONSULT`` with its ``CONSULTRESPOND``, and a blocked Contract. Confirm that the completed ``HANDOFF`` updates evidence, status, and ``Current responsibility`` in one committed state before it is sent; the deliberate notification gap preserves single-writer, consistent Contract state; the receiving owner re-reads its ``context.md``, public role card, and the Contract instance and verifies the named commit's Contract header before confirming, and escalates instead of acknowledging on mismatch; ``CONSULT`` and ``CONSULTRESPOND`` are available between any actors without transferring responsibility or allowing the consulting actor to modify the Contract or versioned work artifacts; and an unprogressable Contract records and escalates its blocker.
+    Inspect the workspace-shared Contract-handling instruction and exercise a completed ``HANDOFF``, a receiving owner's ``ACK``, a ``CONSULT`` with its ``CONSULTRESPOND``, and a blocked Contract. Confirm that the completed ``HANDOFF`` updates evidence, status, and ``Current responsibility`` in one committed state before it is sent; the deliberate notification gap preserves single-writer, consistent Contract state; the receiving owner re-reads its ``context.md``, public role card, and the Contract instance and verifies the named commit's Contract header before confirming, and escalates instead of acknowledging on mismatch; ``CONSULT`` and ``CONSULTRESPOND`` are available between any actors without transferring responsibility or allowing the consulting actor to modify the Contract or versioned work artifacts; and an unprogressable Contract records and escalates its blocker. Confirm that the ``HANDOFF`` message names the Contract path and the commit and no more, that the completed outcome is the last Handover-log line and the remaining work is in the open rows, and that the instruction asks for short, direct notes and messages without recited evidence.

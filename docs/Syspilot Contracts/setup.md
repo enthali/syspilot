@@ -10,7 +10,7 @@
 
 ## Handover log
 
-The single executing session appends one line as the last act before handing over to the Project Manager, in the same commit that sets `Current responsibility` to `Project Manager`, taking `Date` as `YYYY-MM-DD` and `Time` as `HH:MM` in 24-hour local time from the system clock at that moment. The log explains the transition; the header stays authoritative.
+The single executing session appends one line as the last act before handing over to the Project Manager, in the same commit that sets `Current responsibility` to `Project Manager`, taking `Date` as `YYYY-MM-DD` and `Time` as `HH:MM` in 24-hour local time from the system clock at that moment. The note states what the executor did and the facts that change the next owner's situation; evidence stays in the Evidence Summary. The log explains the transition; the header stays authoritative.
 
 | Date | Time | From | To | Note |
 |--|--|--|--|--|

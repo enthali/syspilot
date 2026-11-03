@@ -95,8 +95,9 @@ blocker and escalates it.
 Contracts store current truth, not a transcript. When a blocker is resolved or
 responsibility changes, the current field is replaced. Git already remembers
 the archaeology. The one bounded exception is the Change Contract's append-only
-Handover log, which records each responsibility transition as a single line to
-explain it; the header's `Current responsibility` stays the only authority.
+Handover log, which records each responsibility transition as a single short
+line: what the owner did and what changes for the next owner. The header's
+`Current responsibility` stays the only authority.
 
 Syspilot's [Change process](Syspilot%20Contracts/change.md) is the canonical
 Contract definition for modifying versioned artifacts. The repository file
