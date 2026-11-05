@@ -33,8 +33,38 @@ Pristine Syspilot Setup
    - verifies Jarvis Core before any Jarvis-dependent action and records an
      actionable blocker without claiming success when a mandatory prerequisite
      is unavailable;
-   - distinguishes immutable release-owned product artifacts, generated
-     project-instance artifacts, and protected user-owned configuration;
+   - distinguishes immutable release-owned product artifacts, seeded copies,
+     generated project-instance artifacts, and protected user-owned
+     configuration, where a seeded copy is copied from the example folders of
+     the verified commit, is identical to its source when Setup verifies it,
+     and belongs to the adopting project from the handoff to the Project
+     Manager on, so that the project's later adaptation is never a deviation
+     from the release;
+   - installs the nine role cards from ``docs/Example Actors/`` as seeded
+     copies at ``docs/Syspilot Actors/``, and the Contract processes the
+     User selects from ``docs/Example Contracts/`` as seeded copies at
+     ``docs/Syspilot Contracts/``, because generated actor contexts and
+     installed projects already refer to those paths; does not install the
+     Setup Process of ``docs/Syspilot Contracts/``, because the retained
+     ``.syspilot/setup-contract.md`` holds the Setup Contract of the
+     installation;
+   - asks the User before the installation script is generated which example
+     Contracts to install, recommends the Change Process alone as the start
+     and says that the others can be added later, always installs Contract
+     Documents because every Contract process links to it as its method, adds
+     to the selection every Contract that a selected Contract requires and
+     tells the User which it added, because the target's zero-warning
+     documentation build would report a link that does not resolve, and
+     records the final selection in the Setup Contract;
+   - generates the process registry of the adopting project, whose preamble
+     is the text of ``docs/Example Contracts/index.md`` above its
+     ``Processes`` heading and whose list names exactly the installed
+     Contracts, so that the registry never lists a Contract the project did
+     not install and no installed Contract is missing from it;
+   - installs all nine role cards whichever Contracts are selected, because a
+     role card names no Contract process, and so an actor whose process is not
+     installed has no assignment from that process until the project adopts
+     it;
    - preserves an existing configured ontology regardless of whether it is
      defined in ``conf.py``, ``ubproject.toml``, or another TOML source, and
      installs the Syspilot baseline ontology only when no ontology exists;
@@ -45,7 +75,7 @@ Pristine Syspilot Setup
      or evaluating project-owned configuration;
    - generates and audits one platform-appropriate installation script whose
      dry run and execution use the same declared operation path, retains
-     identical destinations, and blocks on differing release-owned
+     identical destinations, and blocks on differing release-owned or seeded
      destinations that are not an approved integration;
    - records the supplied release tag, corresponding commit, and approved
      project baseline in the versioned ``.syspilot/project.toml`` file;
@@ -62,7 +92,8 @@ Pristine Syspilot Setup
      the selected target branch, completes that Git integration, and only then
      sends the Project Manager ``Installation complete, welcome to this
      project`` with the completion summary, the identity of the selected
-     ontology, and first-project guidance that requires the Project Manager to
+     ontology, the installed Contracts, and first-project guidance that
+     requires the Project Manager to
      explain its artifact types, statuses, and relationships and ask the User
      whether it fits the project;
    - continues normal project intake without an ontology Change when the User
@@ -114,7 +145,14 @@ Pristine Syspilot Setup
    its artifact types, statuses, and relationships and ask the User whether it
    fits; acceptance continues normal intake without an ontology Change, while
    a requested adjustment starts a normal Change before modification and uses
-   the existing Ontology skill only for technical guidance; blockers cannot
+   the existing Ontology skill only for technical guidance; the nine role
+   cards and the selected Contract processes are installed as seeded copies
+   identical to their example sources, the User is asked which Contracts to
+   install before the script is generated with the Change Process recommended
+   first, Contract Documents and every required Contract are added to the
+   selection, the generated registry lists exactly the installed Contracts,
+   and the Setup Process of
+   ``docs/Syspilot Contracts/`` is not installed; blockers cannot
    report success; and later updates require an authorized project-specific
    Change. Confirm that an occupied ``.github/instructions/`` or
    ``.github/skills/`` destination keeps its existing unrelated files after

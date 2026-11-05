@@ -7,7 +7,7 @@ This registry contains all process checklists of this project. A Syspilot proces
 - This process registry is the single source of artifact ownership: each process declares its artifacts and owners, and each instance's artifact table states them once.
 - Every artifact in a process has a guardian. An artifact without a guardian does not belong in the process.
 
-The processes below are this project's own. When adopting Syspilot for another project, treat them as worked examples rather than a fixed set to copy verbatim.
+The processes below are this project's own. Adopting projects receive generic copies from `docs/Example Contracts/` at Setup instead.
 
 ## Processes
 
@@ -18,16 +18,6 @@ contract-documents
 change
 release
 setup
-```
-
-## Examples
-
-Adopter examples are separate from Syspilot's own processes and gain authority only through explicit adoption in the target project.
-
-```{toctree}
-:maxdepth: 1
-
-examples/process-maintenance
 ```
 
 ---

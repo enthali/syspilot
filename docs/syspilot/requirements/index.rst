@@ -14,6 +14,7 @@ Requirements
    req_release
    req_release_contract
    req_process_maintenance
+   req_examples
    req_research
    req_technical_writer
    req_admin

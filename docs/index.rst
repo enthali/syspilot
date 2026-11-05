@@ -42,6 +42,8 @@ syspilot Actors & Processes (v2)
    Syspilot Actors/Technical Writer
    Syspilot Actors/Admin
    Syspilot Contracts/index
+   Example Actors/index
+   Example Contracts/index
 
 
 Traceability

@@ -92,6 +92,14 @@ Change Contract
      ``doc`` Needs and ``includes`` links, and a clean documentation build;
    - uses incoming ``included_in`` links on changed requirements to identify
      documentation surfaces that require Technical Writer impact review;
+   - includes an ``Example sync`` artifact, included by default and owned by
+     the Technical Writer, whose completion evidence is that the changes of
+     the Change which also hold for a general project are carried into
+     ``docs/Example Actors/`` and ``docs/Example Contracts/``, that each
+     deliberate deviation of an example role card is declared, and that the
+     documentation builds cleanly; the owner sets it ``not applicable`` only
+     with a reason recorded in the row, so that the maintainer is named from
+     the start of the Change;
    - distinguishes user-facing documentation from authoritative textual product
      artifacts by purpose and authority rather than by path or file format;
    - records durable architecture and implementation decisions with their
@@ -192,5 +200,7 @@ Change Contract
    default is review of recorded commands and results; that a missing
    automation is an open quality issue naming task, owner, and completion
    evidence; that the artifact table carries the scope-change rule and the
-   rule that its ``Owner`` column is the only statement of ownership; and that
-   no section heading names an artifact owner.
+   rule that its ``Owner`` column is the only statement of ownership; that no
+   section heading names an artifact owner; and that the artifact table carries
+   an ``Example sync`` row owned by the Technical Writer, included by default,
+   with ``not applicable`` allowed only with a recorded reason.

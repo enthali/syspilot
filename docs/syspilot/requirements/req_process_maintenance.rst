@@ -6,7 +6,7 @@ Process Maintenance Example
   :status: approved
   :implements: SYSP_US_PROCESS_MAINTENANCE
   :specializes: SYSP_REQ_CONTRACT_DOCUMENTS
-  :realized_by: docs/Syspilot Contracts/examples/process-maintenance.md
+  :realized_by: docs/Example Contracts/process-maintenance.md
 
    Syspilot shall provide a Process Maintenance Contract example that:
 
@@ -42,17 +42,20 @@ Process Maintenance Example
      schema checks and any mechanical inventory of the listed peers recorded
      separately as supporting checks that do not establish semantic
      consistency;
-   - states its boundary: it is an adopter example whose authority extends to
-     the adopting project, it is listed in the process registry apart from
-     Syspilot's own processes, and Syspilot's own process documents change
+   - states its boundary: it is an optional example Contract that the User may
+     select at Setup, whose authority extends to the adopting project once it
+     is installed, it requires the Change Process and Contract Documents, a
+     project's registry lists it among its processes only after the project
+     installed it, and Syspilot's own process documents change
      through the Change process, where the Needs graph covers the
      specification Needs and their realization links and Quality's recorded
      review verifies the Markdown content;
    - names the Project Manager as the actor that presents the verified outcome
      to the User after Quality communicates its ``proceed`` judgment directly
      to the Project Manager, as the Change process does; and
-   - lives at ``docs/Syspilot Contracts/examples/process-maintenance.md``,
-     listed in the registry index under its own ``Examples`` heading.
+   - lives at ``docs/Example Contracts/process-maintenance.md``, directly in
+     the flat example folder and listed in the example registry used by the
+     documentation build.
 
 .. vc:: Process Maintenance example is a bounded adopter example
    :id: SYSP_VC_PROCESS_MAINTENANCE_1
@@ -69,7 +72,10 @@ Process Maintenance Example
    peer set, evidence, findings, and limits, states the four limits of manual
    comparison, and states its adopter boundary without claiming that the
    Needs graph verifies Markdown content, and names the Project Manager as the
-   presenter of the verified outcome to the User. Confirm that the registry lists it under ``Examples`` and not
-   under ``Processes``, that Syspilot's own process changes still use the
+   presenter of the verified outcome to the User. Confirm that the example
+   lies directly in ``docs/Example Contracts/``, that its relative links point
+   only to ``contract-documents.md`` and ``change.md``, that the registry of
+   an installing project lists it among its processes only when installed,
+   that Syspilot's own process changes still use the
    Change process, and that the realization link of this Requirement names the
    example.

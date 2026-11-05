@@ -35,17 +35,31 @@ Read the installation inventory below. Verify that every destination is unique a
 
 ## Phase 3: Generate And Audit Setup Script
 
-Generate a release-specific Setup script from the Contract inventory. The script must support `--dry-run` and use the same planning and execution path in both modes; dry-run suppresses writes but reports every planned create, copy, generation, verification, and collision.
+Generate a release-specific Setup script from the Contract inventory and the Contract selection. The script must support `--dry-run` and use the same planning and execution path in both modes; dry-run suppresses writes but reports every planned create, copy, generation, verification, and collision.
+
+### Contract Selection
+
+Before generating the script, ask the User which example Contracts to install, recommend starting with the Change Process alone, and say that adding the others later is the project's own task, starting from `docs/Example Contracts/` of its pinned release. Contract Documents is always installed, because every Contract process links to it as its method. When a selected Contract requires another, add the required Contract to the selection and tell the User which one was added; the reason is that the target's zero-warning documentation build reports a link that does not resolve. Record the final selection in the Evidence Summary.
+
+| Contract | File in `docs/Example Contracts/` | Selection | Requires |
+|---|---|---|---|
+| Contract Documents | `contract-documents.md` | always installed | none |
+| Change Process | `change.md` | recommended first | Contract Documents |
+| Release Process | `release.md` | optional | Contract Documents |
+| Process Maintenance | `process-maintenance.md` | optional | Contract Documents, Change Process |
+
+The nine role cards are installed whichever Contracts are selected, because a role card names no Contract process. An actor whose process is not installed, such as Release without the Release Process, has no assignment from that process until the project adopts it.
 
 ### Installation Jobs
 
-The following list is the Contract-owned installation inventory. The `Class` column is the only statement of who owns an installed artifact, and section headings name no artifact owner; the executor named in the header holds the Setup record until handoff. Directory jobs recurse over all release-owned files below the source path while excluding generated build output, virtual environments, caches, and Change instances.
+The following list is the Contract-owned installation inventory. The `Class` column is the only statement of who owns an installed artifact, and section headings name no artifact owner; the executor named in the header holds the Setup record until handoff. A `seeded copy` is copied from the example folders of the verified commit, is identical to its source when Setup verifies it, and belongs to the project from the handoff on; later adaptation is not a deviation, and Setup does not check it again. Directory jobs recurse over all release-owned or seeded files below the source path while excluding generated build output, virtual environments, caches, and Change instances.
 
 | Job | Mode | Source or input | Destination | Class | Required verification |
 |---|---|---|---|---|---|
-| Actor role cards | copy nine files | The nine role cards listed below | `docs/Syspilot Actors/` | release-owned | Exactly the nine listed persistent role cards exist |
+| Actor role cards | copy nine files | The nine role cards listed below, taken from `docs/Example Actors/` | `docs/Syspilot Actors/` | seeded copy | Exactly the nine listed persistent role cards exist, each identical to its source |
 | Actor registry | generate | Nine-actor list below | `docs/Syspilot Actors/index.md` | generated instance | Registry links exactly the nine installed role cards |
-| Contract processes | copy directory | `docs/Syspilot Contracts/` | `docs/Syspilot Contracts/` | release-owned | Process registry, Contract Documents, Change Process, Release Process, and Setup Process exist |
+| Contract processes | copy selected files | The files named by the Contract selection, directly below `docs/Example Contracts/`; `index.md` and `setup.md` of `docs/Syspilot Contracts/` are not among them | `docs/Syspilot Contracts/`, each under its own file name | seeded copy | `contract-documents.md` and every selected Contract exist, each identical to its source; no unselected Contract file exists |
+| Contract registry | generate | Preamble of `docs/Example Contracts/index.md` above its `Processes` heading, and the Contract selection | `docs/Syspilot Contracts/index.md` | generated instance | Registry links exactly the installed Contracts |
 | Syspilot skills | copy directory, additive | `.github/skills/` | `.github/skills/` | release-owned | Every release skill contains `SKILL.md` and declared supporting files; existing unrelated files in an occupied directory are preserved |
 | Syspilot instructions | copy directory, additive | `.github/instructions/` | `.github/instructions/` | release-owned | Every release instruction matches its verified-commit source identity and `syspilot.contract-handling.instructions.md` exists; existing unrelated files in an occupied directory are preserved |
 | Setup record | retain materialized file | This runbook | `.syspilot/setup-contract.md` | generated instance | Status, responsibility, blockers, and evidence remain available with the installed project |
@@ -80,7 +94,7 @@ Ontology evaluation or modification is not part of Setup.
 
 ### Syspilot Actor Setup
 
-Generate exactly these nine actors:
+Generate exactly these nine actors; each public role card is the seeded copy of `docs/Example Actors/<name>.md`:
 
 | Actor name | Public role card |
 |---|---|
@@ -126,7 +140,7 @@ On script failure, stop and keep the branch for inspection. Git is the cleanup b
 
 | Gate | Proposed pass condition |
 |---|---|
-| Integrity | Every release-owned destination matches the source identity or verification rule declared by the Contract inventory |
+| Integrity | Every release-owned destination matches the source identity or verification rule declared by the Contract inventory, and every seeded destination is identical to its example source at this verification |
 | Inventory | Compare the script operation log with the inventory; every declared destination exists and every written path is declared or an approved integration edit |
 | Structure | Required Syspilot instruction, skill, process, ontology, and documentation integration entry points exist; `syspilot.contract-handling.instructions.md` is installed |
 | Jarvis actor discovery | Compare before/after snapshots: `jarvis_listActors` includes all nine expected Syspilot actors, no Setup actor was generated, and `jarvis_listChatSessions` contains no session opened by Setup |
@@ -150,7 +164,8 @@ Record each command, exit status, and concise result. One failed mandatory gate 
 1. Set current responsibility to `Project Manager`, set Contract status to `handed off`, append the Handover log entry, and commit the final Setup record on the target branch in one commit.
 2. Send `Installation complete, welcome to this project` to the Project Manager with:
 	- the installation completion summary;
-	- the selected ontology and its configured path; and
+	- the selected ontology and its configured path;
+	- the installed Contracts and the actors that have no installed process yet; and
 	- instructions to explain the selected ontology's artifact types, statuses, and relationships to the User and ask whether it fits the project.
 3. The Project Manager re-reads its `context.md`, its role card, and this Setup record, and verifies that the committed header names it, before it acts on the message.
 4. If the User accepts the selected ontology, continue normal project intake without creating an ontology Change.
@@ -162,7 +177,7 @@ Record each command, exit status, and concise result. One failed mandatory gate 
 - Before target writes, failure leaves only the materialized Contract and status `blocked`.
 - After target writes, failure leaves status `blocked`, an exact path disposition, and the dedicated branch for inspection or deletion.
 - Open mandatory gates prohibit `verified`, success messaging, and PM handoff.
-- When a User decision widens the approved scope after a gate has passed, such as an additional integration edit or a changed persistence choice, the executor sets the affected gates back to open and passes them again before sealing the project state.
+- When a User decision widens the approved scope after a gate has passed, such as an additional integration edit, a changed persistence choice, or a changed Contract selection, the executor sets the affected gates back to open and passes them again before sealing the project state.
 - Cleanup discards the dedicated Setup branch for versioned changes and removes only untracked actor paths that this Setup run demonstrably created; it never deletes pre-existing or user-owned content.
 
 ## Evidence Summary
@@ -171,6 +186,7 @@ Record each command, exit status, and concise result. One failed mandatory gate 
 |---|---|---|
 | Prerequisites | pending | pending |
 | Contract inventory | pending | pending |
+| Contract selection | pending | pending |
 | Script dry-run and audit | pending | pending |
 | Script execution | pending | pending |
 | Mandatory verification | pending | pending |

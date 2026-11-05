@@ -22,7 +22,12 @@ Technical Writer
    - consult factual artifact owners directly for clarification and for review
      of accuracy and understandability; and
    - keep consultation distinct from Contract handoff so that messaging alone
-     transfers neither current responsibility nor artifact ownership.
+     transfers neither current responsibility nor artifact ownership; and
+   - maintain ``docs/Example Actors/`` and ``docs/Example Contracts/`` in
+     every Change through its ``Example sync`` row, deciding for each changed
+     role card or Contract process whether the change also holds for a general
+     project, and declaring each deliberate deviation of an example role card
+     in the ``Deviations`` table of ``docs/Example Actors/index.md``.
 
 .. vc:: Technical Writer preserves documentation authority boundaries
    :id: SYSP_VC_TECHNICAL_WRITER_1
@@ -34,3 +39,5 @@ Technical Writer
    requirement traceability, changed requirements expose incoming
    ``included_in`` impact, source authority is preserved, factual review is
    recorded, and consultation did not implicitly transfer responsibility.
+   Confirm that the role card names the example maintenance duty and that the
+   ``Example sync`` row of a closed Change records its result.

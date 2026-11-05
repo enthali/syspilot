@@ -77,7 +77,7 @@ The handing-over actor appends one line as the last act before handing over, in 
 |---|---|---|---|---|
 | Objective and scope | yes | Project Manager | Objective, included Changes, and known limitations are explicit and approved | draft / approved |
 | Release start | yes | User | User authorization to start the release; no other actor may set this gate | pending / approved |
-| Change inventory | yes | Release | Every included Change Contract is closed and integrated into `development` | pending / complete |
+| Change inventory | yes | Release | Every included Change Contract is closed and integrated into `development`, and its `Example sync` row reads `complete` or `not applicable` with a reason | pending / complete |
 | Version | yes | Release | The version is the tag under SemVer; the tag form and the release-notes heading agree | pending / complete |
 | Preflight | yes | Release | Documentation build tests, strict clean documentation build, release QA suites, the automated version check, and a validation-only run of the release workflow pass on the preflighted commit, with commands and results recorded | pending / passed / failed |
 | Release notes | yes | Release | `docs/releasenotes.md` holds exactly one heading for the version and covers every included Change | pending / complete |
@@ -91,11 +91,11 @@ The handing-over actor appends one line as the last act before handing over, in 
 
 **Status:** pending | complete
 
-A Change is release-ready when its Change Contract is closed. Including a Change whose Contract is still open requires a User decision recorded here.
+A Change is release-ready when its Change Contract is closed. Including a Change whose Contract is still open requires a User decision recorded here. Release verifies each Change's `Example sync` row here instead of merging example changes at the release; a Change whose Contract has no such row was closed before the row existed and records `no row`.
 
-| Change | Integrated commit | Contract closed |
-|---|---|---|
-| {change} | {sha} | yes / no |
+| Change | Integrated commit | Contract closed | Example sync |
+|---|---|---|---|
+| {change} | {sha} | yes / no | complete / not applicable: {reason} / no row |
 
 ## Version
 

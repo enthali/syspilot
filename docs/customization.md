@@ -23,7 +23,7 @@ in different projects without forking their public roles. A Contract coordinates
 declared authority; it does not silently grant an actor ownership or expertise
 that the project has never assigned.
 
-The [Process Maintenance example](Syspilot%20Contracts/examples/process-maintenance.md)
+The [Process Maintenance example](Example%20Contracts/process-maintenance.md)
 shows one such Contract: how a project maintains its own process documents.
 It is an example to adopt and tailor, not a process Syspilot imposes.
 

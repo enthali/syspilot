@@ -55,8 +55,16 @@ leave before new actors arrive, for the reason given under Pitfalls.
    instructions: read the actor's role card, and read the Contract registry at
    session start. The [Setup Contract](Syspilot%20Contracts/setup.md) lists the
    roles and the files each actor folder holds.
-6. **Derive your Contracts and role cards** from the 0.10 canonical templates in
-   `docs/Syspilot Contracts/` and `docs/Syspilot Actors/`. Install
+6. **Derive your Contracts and role cards** from the 0.10 generic examples in
+   `docs/Example Contracts/` and `docs/Example Actors/`. Syspilot's own
+   `docs/Syspilot Contracts/` and `docs/Syspilot Actors/` stay its working
+   artifacts. Copy the Contracts you use, each under its own file name, and
+   start with the Change Process and the Contract Documents method it links to;
+   the others can follow later. Process Maintenance needs the Change Process,
+   Release needs only the method. An upgrade runs no Setup, so write
+   `docs/Syspilot Contracts/index.md` yourself: list exactly the Contracts you
+   copied, with the text of `docs/Example Contracts/index.md` above its
+   `Processes` heading as the preamble, which is what Setup does. Install
    `syspilot.contract-handling.instructions.md`, and keep project-specific
    knowledge in actor memory or in the project-owned levels that
    [Customization](customization.md) describes.

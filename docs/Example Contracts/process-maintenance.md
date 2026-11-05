@@ -1,8 +1,8 @@
 # Process Maintenance Example
 
-Adopt and tailor this example explicitly before using it as authority in a project. It is separate from the source project's own processes: their maintenance follows the [Change process](../change.md), where the Needs graph covers specification Needs and their realization links, and Quality's recorded review verifies the Markdown content.
+This is an optional example Contract. Without it, a project changes its own process documents through its [Change process](change.md), where the Needs graph covers specification Needs and their realization links, and Quality's recorded review verifies the Markdown content. This example adds a Contract for that work; it requires the Change process and the Contract Document method, and gains authority once the project has installed and tailored it.
 
-This example applies the [Contract Document method](../contract-documents.md) to a project's own Contract templates, process registry, role cards, and governing instructions and skills. The Admin maintains changed process documents; Quality supplies an independent comparison with their same-kind peers. A project adopting this example decides its paths, integration target, and approval arrangements before starting an instance.
+This example applies the [Contract Document method](contract-documents.md) to a project's own Contract templates, process registry, role cards, and governing instructions and skills. The Admin maintains changed process documents; Quality supplies an independent comparison with their same-kind peers. A project adopting this example decides its paths, integration target, and approval arrangements before starting an instance.
 
 ## Process Definition
 
@@ -47,7 +47,7 @@ For a mechanical headings-and-fields inventory, substitute the selected peer pat
 **Current responsibility:** Project Manager<br>
 **Current blocker:** none | {needed decision or action}<br>
 **Created:** {DATE}<br>
-**Operation Mode:** {User-agreed mode as defined in the project's adopted [Change template](../change.md), and the specifics for this instance; tailor the link when adopting; User-owned gates remain User-owned}
+**Operation Mode:** {User-agreed mode as defined in the project's adopted [Change template](change.md), and the specifics for this instance; tailor the link when adopting; User-owned gates remain User-owned}
 
 ## Handover log
 

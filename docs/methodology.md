@@ -52,8 +52,8 @@ verifies the committed header before it acknowledges. A kind whose responsibilit
 moves only once, such as Setup, carries the same rules in the form that fits: its
 single transition is the first Handover log entry.
 
-The registry also lists an adopter example, the
-[Process Maintenance Contract](Syspilot%20Contracts/examples/process-maintenance.md).
+Syspilot also ships an adopter example in `docs/Example Contracts/`, the
+[Process Maintenance Contract](Example%20Contracts/process-maintenance.md).
 It shows how a project can maintain its own Contract templates, process
 registry, role cards, and the instructions and skills that govern them: the
 Admin changes the documents, and Quality compares each one with its peers of the
@@ -162,6 +162,7 @@ supported path rather than an incidental detail.
 |---|---|
 | The roles | [docs/Syspilot Actors/](Syspilot%20Actors/index.md) |
 | The processes and their canonical templates | [docs/Syspilot Contracts/](Syspilot%20Contracts/index.md) |
+| Generic role cards and processes that Setup copies into a project | [docs/Example Actors/](Example%20Actors/index.md), [docs/Example Contracts/](Example%20Contracts/index.md) |
 | What a Contract Document must contain | [Contract Documents](Syspilot%20Contracts/contract-documents.md) |
 | One bounded change | [The Change process](Syspilot%20Contracts/change.md) |
 | Installing Syspilot into a project | [Pristine Setup](Syspilot%20Contracts/setup.md) |

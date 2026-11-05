@@ -32,7 +32,10 @@ Release Contract
      Contract to the User in the step that asks for ``Release start``, and the
      receiving actor's refresh before it acknowledges;
    - requires every included Change Contract to be closed, or a User decision
-     recorded for an open one;
+     recorded for an open one, and verifies the ``Example sync`` row of each
+     included Change Contract that carries one as ``complete`` or as
+     ``not applicable`` with its reason, instead of merging the example
+     changes at the release;
    - requires the preflight to run on the ``development`` commit to be
      released, after the release notes and release-facing documentation are
      committed there and with any later commit requiring a new preflight, and
@@ -83,5 +86,7 @@ Release Contract
    failure path after the tag, that Quality's judgment is direct and rests on
    recorded commands and results, and that the publication table records the
    preflighted commit, release commit, authorization, tag, workflow run,
-   GitHub Release, and Pages URL. Confirm that the Release Process is listed
+   GitHub Release, and Pages URL. Confirm that the Change inventory records
+   the ``Example sync`` disposition of each included Change that carries the
+   row. Confirm that the Release Process is listed
    in the process registry.

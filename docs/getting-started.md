@@ -75,7 +75,12 @@ project-owned content, and records the release tag and commit in
 `.github/skills/` stay in place while Syspilot's files are copied alongside
 them. A different file at a path Syspilot needs is integrated only with the
 User's approval, and otherwise blocks Setup. An ignore rule that would silently
-exclude a generated destination is reported as a blocker. When it asks you to
+exclude a generated destination is reported as a blocker. Setup also asks which
+example Contracts to install. It recommends starting with the Change Process
+alone, always installs the Contract Documents method, and adds any Contract a
+choice depends on, telling you which one it added; the others can follow when
+you need them. The project's Contract registry then lists exactly the Contracts
+that were installed. When it asks you to
 approve the Setup branch, it opens the Contract in your editor, because you
 review it before deciding, and it records its one handover, to the Project
 Manager, in its own Handover log. The Contract cannot

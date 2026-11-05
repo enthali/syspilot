@@ -62,7 +62,7 @@ realized documents remain free of Sphinx-Needs markup.
    :id: SYSP_DOC_UPGRADE
    :status: verified
    :realized_by: docs/upgrade.md
-   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_SETUP, SYSP_REQ_CONTRACT_HANDLING, SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_ONTOLOGY_SCHEMA, SYSP_REQ_IMPACT_QUERY
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_SETUP, SYSP_REQ_CONTRACT_HANDLING, SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_ONTOLOGY_SCHEMA, SYSP_REQ_IMPACT_QUERY, SYSP_REQ_EXAMPLES
 
    A checklist for moving a project that predates Syspilot 0.10 to 0.10,
    used as input to the project's update Change.
@@ -80,7 +80,27 @@ realized documents remain free of Sphinx-Needs markup.
    :id: SYSP_DOC_METHODOLOGY
    :status: verified
    :realized_by: docs/methodology.md
-   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_CONTRACT_HANDLING, SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_SETUP, SYSP_REQ_RELEASE, SYSP_REQ_RELEASE_CONTRACT, SYSP_REQ_PROCESS_MAINTENANCE
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_CONTRACT_HANDLING, SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_SETUP, SYSP_REQ_RELEASE, SYSP_REQ_RELEASE_CONTRACT, SYSP_REQ_PROCESS_MAINTENANCE, SYSP_REQ_EXAMPLES
 
    Why Syspilot works through Contracts rather than a fixed workflow, and what
    a Contract must name.
+
+.. doc:: Example Actors
+   :id: SYSP_DOC_EXAMPLE_ACTORS
+   :status: implemented
+   :realized_by: docs/Example Actors/index.md
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_PROJECT_MANAGER, SYSP_REQ_ARCHITECT, SYSP_REQ_DEVELOPER, SYSP_REQ_TESTER, SYSP_REQ_QUALITY, SYSP_REQ_RELEASE, SYSP_REQ_RESEARCH, SYSP_REQ_TECHNICAL_WRITER, SYSP_REQ_ADMIN, SYSP_REQ_EXAMPLES
+
+   The generic role cards of the nine persistent actors that Setup copies into
+   an adopting project, with the declaration of deliberate deviations from
+   Syspilot's own cards.
+
+.. doc:: Example Contracts
+   :id: SYSP_DOC_EXAMPLE_CONTRACTS
+   :status: implemented
+   :realized_by: docs/Example Contracts/index.md
+   :includes: SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_RELEASE_CONTRACT, SYSP_REQ_PROCESS_MAINTENANCE, SYSP_REQ_EXAMPLES
+
+   The generic Contract processes that Setup copies into an adopting project:
+   the registry, the Contract Document method, the Change and Release
+   templates, and the process-maintenance example.

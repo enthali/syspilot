@@ -12,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACTS = ROOT / "docs" / "Syspilot Contracts"
 ACTORS = ROOT / "docs" / "Syspilot Actors"
+EXAMPLE_CONTRACTS = ROOT / "docs" / "Example Contracts"
 CLIS = (
     ("syspilot.impact-python", "get_need_links.py", ["SYSP_REQ_ADMIN", "--flat", "--no-build"]),
     ("syspilot.mece", "analyze_mece.py", ["SYSP_REQ_ADMIN", "--scope", "all-type"]),
@@ -30,17 +31,18 @@ def read(path):
 
 
 def listed_kinds():
-    """Contract documents the registry lists under Processes and Examples, as (section, path)."""
+    """Contract documents both registries list under Processes and Examples, as (section, path)."""
     kinds = []
-    for block in re.split(r"(?m)^## ", read(CONTRACTS / "index.md"))[1:]:
-        section = block.splitlines()[0].strip()
-        if section not in ("Processes", "Examples"):
-            continue
-        for toctree in re.findall(r"```\{toctree\}\n(.*?)```", block, re.S):
-            for line in toctree.splitlines():
-                entry = line.strip()
-                if entry and not entry.startswith(":") and entry != "contract-documents":
-                    kinds.append((section, CONTRACTS / f"{entry}.md"))
+    for folder in (CONTRACTS, EXAMPLE_CONTRACTS):
+        for block in re.split(r"(?m)^## ", read(folder / "index.md"))[1:]:
+            section = block.splitlines()[0].strip()
+            if section not in ("Processes", "Examples"):
+                continue
+            for toctree in re.findall(r"```\{toctree\}\n(.*?)```", block, re.S):
+                for line in toctree.splitlines():
+                    entry = line.strip()
+                    if entry and not entry.startswith(":") and entry != "contract-documents":
+                        kinds.append((section, folder / f"{entry}.md"))
     return kinds
 
 
@@ -97,7 +99,7 @@ class SharedContractRulesTests(unittest.TestCase):
     def test_each_kind_presents_the_contract_at_the_user_owned_gate(self):
         for section, path in listed_kinds():
             text = read(path)
-            marker = "User's editor" if section == "Processes" else "Present"
+            marker = "Present" if path.stem == "process-maintenance" else "User's editor"
             with self.subTest(kind=path.stem):
                 self.assertIn(marker, text)
 
@@ -130,7 +132,7 @@ class SharedContractRulesTests(unittest.TestCase):
         self.assertIn("the completed outcome is the last Handover-log line", handoff)
         self.assertIn("remaining work is in the open rows", handoff)
         self.assertNotIn("completed outcome, and remaining work", handoff)
-        example = " ".join(read(CONTRACTS / "examples" / "process-maintenance.md").split())
+        example = " ".join(read(EXAMPLE_CONTRACTS / "process-maintenance.md").split())
         self.assertIn("before sending the Contract path and the commit", example)
         self.assertNotIn("sending its path, commit, completed outcome", example)
         requirement = " ".join(read(ROOT / "docs" / "syspilot" / "requirements" / "req_contract_handling.rst").split())
@@ -163,13 +165,13 @@ class ProcessMaintenanceExampleTests(unittest.TestCase):
     """Package E: the example states what the Needs graph checks, and who presents the outcome."""
 
     def setUp(self):
-        self.example = read(CONTRACTS / "examples" / "process-maintenance.md")
+        self.example = read(EXAMPLE_CONTRACTS / "process-maintenance.md")
 
     def test_the_needs_graph_boundary_is_stated_without_overstatement(self):
         opening = self.example.split("\n## ", 1)[0]
         self.assertIn("Needs graph covers specification Needs and their realization links", opening)
         self.assertIn("Quality's recorded review verifies the Markdown content", opening)
-        for text in (self.example, read(CONTRACTS / "index.md")):
+        for text in (self.example, read(EXAMPLE_CONTRACTS / "index.md")):
             self.assertNotRegex(text, r"specification consistency[^.]*Needs graph")
 
     def test_the_project_manager_presents_the_verified_outcome(self):
@@ -182,10 +184,13 @@ class ProcessMaintenanceExampleTests(unittest.TestCase):
         requirement = read(ROOT / "docs" / "syspilot" / "requirements" / "req_process_maintenance.rst")
         self.assertRegex(requirement, r"names the Project Manager as the actor that presents the verified outcome")
 
-    def test_the_example_is_listed_apart_from_the_processes(self):
-        index = read(CONTRACTS / "index.md")
-        self.assertGreater(index.index("examples/process-maintenance"), index.index("## Examples"))
-        self.assertTrue((CONTRACTS / "examples" / "process-maintenance.md").exists())
+    def test_the_example_lies_directly_in_the_flat_example_folder(self):
+        index = read(EXAMPLE_CONTRACTS / "index.md")
+        self.assertNotIn("examples/", index)
+        self.assertNotIn("## Examples", index)
+        self.assertTrue((EXAMPLE_CONTRACTS / "process-maintenance.md").exists())
+        self.assertFalse((EXAMPLE_CONTRACTS / "examples").exists())
+        self.assertFalse((CONTRACTS / "examples").exists())
 
 
 class ReleaseVersionCheckTests(unittest.TestCase):

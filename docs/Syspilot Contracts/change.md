@@ -91,6 +91,7 @@ The handing-over actor appends one line as the last act before handing over, in 
 | Infrastructure impact | yes / not applicable: {reason; delete the corresponding empty section} | Admin | Affected workflow, CI, and packaging artifacts are updated, confirmed by their current owner rather than inferred from a Needs-only impact query | pending / complete / not applicable |
 | Product specification and architecture decisions | yes / not applicable: {reason; delete the corresponding empty section} | Architect | Changed specification and architecture artifacts are linked and checked | pending / not applicable |
 | User-facing documentation | yes / not applicable: {reason; delete the corresponding empty section} | Technical Writer | Agreed documentation surface is coherent and user-oriented; factual-owner review is recorded; `doc` Needs and `includes` links are current; documentation builds cleanly | pending / complete / not applicable |
+| Example sync | yes (default) / not applicable: {reason; delete the corresponding empty section} | Technical Writer | Changes of this Change that also hold for a general project are carried into `docs/Example Actors/` and `docs/Example Contracts/`; each deliberate deviation of an example role card is declared in the `Deviations` table of `docs/Example Actors/index.md`; documentation builds cleanly | pending / complete / not applicable |
 | Implementation and unit verification | yes / not applicable: {reason; delete the corresponding empty section} | Developer | Changed artifacts and durable technical decisions are linked; the Developer wrote and ran the unit tests, and their commands and results are recorded | pending / not applicable |
 | Acceptance test design and results | yes / not applicable: {reason; delete the corresponding empty section} | Tester | Requirement tests written and run by the Tester, with their commands and results, and the means for User validation trace to the intended outcome | pending / not applicable |
 | Quality review | yes | Quality | Quality reviewed the recorded commands and results; current verification judgment is `proceed` and no open quality issue remains | pending |
@@ -150,6 +151,16 @@ The handing-over actor appends one line as the last act before handing over, in 
 | Artifact | Change | Verification evidence |
 |---|---|---|
 | {path or `doc` Need} | {what changed} | {review and clean-build result} |
+
+## Example Sync
+
+**Status:** pending | in progress | complete | not applicable
+
+*(Tailoring: set `not applicable` only with the reason recorded in the artifact row, for example a Change that touches no role card, Contract process, or requirement describing one; delete this section then.)*
+
+| Artifact | Change | Verification evidence |
+|---|---|---|
+| {example path or `doc` Need} | {what changed, or why the change does not hold for a general project} | {review and clean-build result} |
 
 ## Implementation And Unit Verification
 
