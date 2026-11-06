@@ -21,6 +21,7 @@
 		"jarvis.actors.folder": "C:\\workspace\\actor-context\\syspilot",
 		"jarvis.actor.autoProvision": true,
 		"jarvis.mcpPort": 31413,
-		"jarvis.mcp.enabled": true
+		"jarvis.mcp.enabled": false,
+		"powershell.cwd": "syspilot"
 	}
 }
