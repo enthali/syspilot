@@ -1,15 +1,7 @@
 # Getting Started with Your Project
 
-This guide is for project leads who want to apply Syspilot to their own project.
-The supported setup model starts with an exact Syspilot release and its
-release-bound Setup Contract. The initiating Copilot session executes that
-Contract as a temporary executor; no persistent Setup actor is installed.
-
-The process, inventory, blockers, and verification gates are defined and
-reviewed. End-to-end installation, actor discovery, target build, baseline
-readback, Git integration, and Project Manager handoff have not yet been run in
-an isolated Jarvis or VS Code Extension Host environment. This guide therefore
-explains the supported interface without claiming operational runtime proof.
+This guide helps project leads apply Syspilot to their own projects. Setup
+follows the Contract included in the Syspilot release you choose.
 
 ## What Your Project Setup Defines
 
@@ -32,15 +24,19 @@ intended direction that a future Change must establish and verify. The current
 stack is:
 
 - VS Code with GitHub Copilot for AI-assisted work;
-- `enthali.jarvis-core` for persistent actors and messaging;
+- `enthali.jarvis-core` 0.32.0 or newer for persistent actors and messaging;
+  Setup can install it for you, with your consent;
 - Python 3.13 or newer and `uv`;
 - Sphinx for the rendered information space; and
-- Sphinx-Needs for ontology-backed Needs and traceability.
+- Sphinx-Needs 4.1.0 or newer for ontology-backed Needs and traceability.
 
 For this reference stack, Sphinx, Sphinx-Needs, and the project ontology are
 part of the supported Change workflow. They are not installed automatically by
 an extension. The Setup Contract preserves an existing Sphinx-Needs environment
-or installs a project-local environment when one is absent.
+or installs a project-local environment when one is absent. When Setup itself has
+to bind an ontology and the environment's Sphinx-Needs is older than 4.1.0, it
+records the version and stops with a blocker; an ontology your project already
+configures is left alone whatever the version.
 
 ## Install Syspilot Into Your Project
 
@@ -68,24 +64,68 @@ version-specific lives in the Contract that ships with that release, so the
 prompt itself never goes out of date. A bootstrap that knew how to install
 Syspilot would have to be updated in lockstep with it forever.
 
-From there the Contract takes over. It verifies the release's full commit
-identity, works on a dedicated User-approved branch, preserves existing
-project-owned content, and records the release tag and commit in
-`.syspilot/project.toml`. Unrelated files already in `.github/instructions/` or
-`.github/skills/` stay in place while Syspilot's files are copied alongside
-them. A different file at a path Syspilot needs is integrated only with the
-User's approval, and otherwise blocks Setup. An ignore rule that would silently
-exclude a generated destination is reported as a blocker. Setup also asks which
-example Contracts to install. It recommends starting with the Change Process
-alone, always installs the Contract Documents method, and adds any Contract a
-choice depends on, telling you which one it added; the others can follow when
-you need them. The project's Contract registry then lists exactly the Contracts
-that were installed. When it asks you to
-approve the Setup branch, it opens the Contract in your editor, because you
-review it before deciding, and it records its one handover, to the Project
-Manager, in its own Handover log. The Contract cannot
-claim success until every mandatory gate, Git integration, and Project Manager
-handoff has completed.
+From there, the Setup Contract guides the installation. It checks the release,
+preserves existing project content, and asks which example Contracts to
+include. It creates the Actor and Contract folders using a project name you
+confirm, and asks before resolving file conflicts. If Setup cannot proceed, it
+records a blocker and explains how to continue.
+
+Setup checks for Jarvis Core 0.32.0 or newer in the VS Code instance hosting
+your session. If needed, it explains why Jarvis is required and asks your
+permission to install it. If Setup cannot verify or install Jarvis, it records
+a blocker and explains how to continue. If an installation it performs requires
+a reload, Setup gives you a prompt to resume in a new chat.
+
+Setup creates the nine Actors and leaves any existing Actors unchanged. If the
+session cannot create Actors, Setup stops and offers two ways forward: enable
+Actor creation in the Chat tool picker or create them by hand as the Contract
+describes.
+
+An ordinary chat session does not offer the Jarvis messaging tools. In that case
+Setup creates the other eight Actors, transfers its record to the Admin actor,
+and then creates the Admin last, with the request for it as the first message.
+When an Admin already exists and you accept it, its files stay unchanged and
+Setup asks whether it may append the request to `.jarvis/messages/queue.json`
+itself; without your consent it writes nothing to the queue and gives you the
+manual prompt instead. For a newly created Admin, Setup never writes the queue:
+the request reaches it through Jarvis as the first message. In both cases Setup
+adds the Admin to `.jarvis/messages/autodelivery.json`. Jarvis does not lock
+either file. Jarvis writes `autodelivery.json` itself only when a person enables
+or disables delivery in its menu, so an overwrite needs such an action within
+the milliseconds of Setup's write. For `queue.json`, which only the existing-Admin
+path writes, Jarvis's own writers are the risk: heartbeat jobs, reminders, and
+Actors. An entry another writer adds at that moment can be overwritten, and no
+read-back can show it. Setup keeps the entries it read, states this limit to you
+and records it, and treats it as a limit, not a guarantee. The request is
+written in the language you used with the session, or in English when that
+language is ambiguous.
+
+The only evidence that the Admin continued is its acknowledgement row in the
+Setup record, which Setup waits for up to 120 seconds. A queue entry that is
+still present means at most that Jarvis announced it, not that the Admin acted
+on it. Without the row, Setup reports the failure and gives you a prompt: open
+the Admin's chat from the ACTORS view and paste it. The Admin then continues
+from the first open phase. Whoever executes records each transfer, and the
+handover to the Project Manager, in the Handover log of the Setup record.
+
+The Contract cannot claim success until every mandatory gate has passed. A gate
+is either `pending`, `passed`, or `failed`. While any gate is not `passed`,
+including Actor discovery that has not yet listed all nine Actors and a
+documentation build with warnings, the baseline stays unverified and nothing is
+handed to the Project Manager. Git integration follows the passed gates. The
+record then reads `verified` with the Project Manager named and the handoff
+pending; it reads `handed off` only after the Project Manager has acknowledged
+it, and Setup reports completion only then. If the message cannot be sent, the
+record stays unchanged and Setup tells you to give the Project Manager's chat the
+path of the record.
+
+The documentation Setup generates is deliberately plain. Its `docs/conf.py` has
+no Syspilot project metadata, loads only the two extensions the installed
+requirements provide, and binds the ontology with a literal `needs_from_toml`
+setting, because Syspilot's skills read that setting directly. Its
+`docs/index.rst` lists only the Actor and Contract registries. Setup does not
+install Syspilot's own ontology reference page, and Change Contracts stay out of
+the rendered site.
 
 That handoff identifies the selected ontology and its configured path. The
 Project Manager first re-reads its own context, its role card, and the Setup

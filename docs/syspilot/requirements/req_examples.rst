@@ -21,7 +21,8 @@ Example Actors And Contracts
      subfolder: every file other than ``index.md`` is one example Contract,
      namely ``contract-documents.md``, ``change.md``, ``release.md``, and
      ``process-maintenance.md``, and each is installed under its own file name
-     directly in the adopting project's ``docs/Syspilot Contracts/``, so that
+     directly in the adopting project's Contracts folder named after the
+     project, so that
      the relative links between Contracts resolve in the source and in the
      copy; ``index.md`` serves the documentation build, is not installed, and
      carries above its ``Processes`` heading the preamble that Setup reuses
@@ -37,6 +38,11 @@ Example Actors And Contracts
      project-specific values such as branch names, tag form, publication
      target, and workflow names left as values to fill in, and expect them to
      differ from ``docs/Syspilot Contracts/``;
+   - name, in the role cards and Contracts, no installed folder such as
+     ``docs/Syspilot Actors/`` or ``docs/Syspilot Contracts/``, because the
+     installed folders carry the project's name and Setup substitutes no text
+     in a seeded copy; the examples refer to their neighbours by relative
+     links and to the project's Change Contracts by ``docs/changes/``;
    - keep each role card identical to its counterpart in
      ``docs/Syspilot Actors/`` after line-ending normalization, unless the
      ``Deviations`` table in ``docs/Example Actors/index.md`` names the card
@@ -60,8 +66,9 @@ Example Actors And Contracts
    Inspect both example folders, their ``doc`` Needs, and the documentation
    build. Confirm that the folders contain exactly the listed files, that
    ``docs/Example Contracts/`` has no subfolder and every file in it other
-   than ``index.md`` is installable under its own name into
-   ``docs/Syspilot Contracts/``, that every relative link between example
+   than ``index.md`` is installable under its own name into the Contracts
+   folder named after the project, that no role card or Contract example names an
+   installed folder by its Syspilot name, that every relative link between example
    Contracts resolves to ``contract-documents.md`` or to a Contract the Setup
    selection table lists as required, that no Contract example names a
    Syspilot-specific repository path, workflow, branch, tag form, or

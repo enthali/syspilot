@@ -21,7 +21,13 @@ Admin
      results;
    - own release workflow definitions as tooling, meaning job and step wiring,
      runners, and dependencies, and treat Release as a mandatory consultee on
-     every change to them; and
+     every change to them;
+   - continue a pristine Setup record that the Setup Contract transfers to it
+     because the initiating session lacks the Jarvis messaging tools, by
+     re-reading its context, its role card, and the record, verifying that the
+     header names it as executor, recording its acknowledgement in the record
+     rather than by message, and then acting as the Setup executor under the
+     Setup Contract; and
    - leave what the release gate checks and publishes, and whether a change
      to it is acceptable, with Release, and leave code and unit verification
      with the Developer.
@@ -35,4 +41,6 @@ Admin
    Contract and confirm that the affected infrastructure, the action taken,
    and the confirming evidence are explicit, that a change to a release
    workflow definition records Release as consulted, and that release gate
-   content and delivery remain with Release.
+   content and delivery remain with Release. Confirm that the role card names
+   the continuation of a transferred Setup record, with the acknowledgement
+   recorded in that record.

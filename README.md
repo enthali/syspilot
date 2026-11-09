@@ -12,11 +12,11 @@ state. Instead of asking an agent to rediscover your entire project on every
 change, you hand it explicit links, owned artifacts, and an outcome somebody can
 actually check.
 
-> **Early research project:** Syspilot v2 is taking shape in public. The product
-> model, Change process, and release-bound Setup Contract are there to be read
-> and picked apart. End-to-end setup has not yet been demonstrated in an
-> isolated target environment, and we are not going to pretend otherwise.
-> Expect sharp edges and breaking changes.
+> Syspilot is an experimental method for contract-driven development, used to
+> build Syspilot itself and other successful projects, including
+> [Jarvis](https://github.com/enthali/Jarvis) and
+> [zonal-rc-car](https://github.com/enthali/zonal-rc-car). Expect some rough
+> edges — let us know about your experience.
 
 ## Install It
 
@@ -41,7 +41,7 @@ proceed.
 That is the entire entry point. It names a release and gets out of the way —
 everything version-specific lives in the Contract that ships with that release.
 See [Getting started](docs/getting-started.md) for what happens next, and for
-the honest boundary on what has and has not been proven at runtime.
+an overview of the supported setup.
 
 ## Start Here
 
@@ -112,14 +112,10 @@ Syspilot's tooling, not the idea behind it.
   the entity folder. Handy for project management, and pleasantly hard to
   desynchronise from reality, since the board is a file the actors read and
   write like any other.
-- **[`enthali.jarvis-syspilot`](https://marketplace.visualstudio.com/items?itemName=enthali.jarvis-syspilot)**
-  may automate the same Contract interfaces. Optional, and it adds no separate
-  installation or update lifecycle to keep track of.
 
-`enthali.jarvis-core` and the three optional extensions above are all developed
+`enthali.jarvis-core` and the two optional extensions above are all developed
 in the **[`enthali/Jarvis`](https://github.com/enthali/Jarvis)** repository.
 
 ## License
 
 See [LICENSE](LICENSE).
-

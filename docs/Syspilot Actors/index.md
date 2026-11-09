@@ -4,7 +4,7 @@ Actor definitions for syspilot v2. Each file describes one actor's identity, gua
 
 ## Actor Model
 
-Every Syspilot actor inherits memory, messaging, escalation, and culture from the Jarvis Actor Kernel. Syspilot adds the method-specific role: a public role card defines the actor's domain, responsibilities, character, and perspective; the actor's `context.md` links to that role card and the process registry it follows.
+Every Syspilot actor inherits memory, messaging, escalation, and culture from the Jarvis Actor Kernel. Syspilot adds the method-specific role: a public role card defines the actor's domain, responsibilities, character, and perspective; the actor's `context.md` names that role card and the Contract registry it follows.
 
 Processes assign artifact ownership, and each Contract Document records current responsibility. Actors use that current state to decide what must become true; Syspilot does not prescribe an actor sequence or duplicate kernel behavior in role-specific workflow prose.
 

@@ -30,6 +30,20 @@ There is no separate v2 directory full of prose design specifications. The
 or code artifact that supplies the how. Less duplicate truth means less stale
 truth.
 
+## Why Actors?
+
+The name is inspired by Carl Hewitt's Actor Model (1973): independent participants
+with local state that communicate through messages. Each Syspilot actor has
+its own identity, perspective, and memory, not an automatically synchronized
+global view. The Contract and work products hold explicit shared state that
+actors read when they need it.
+
+Actors can communicate directly with one another, not only along a prescribed
+handoff chain. Where their tools and project authority allow, they can also
+create new actors. The organization can therefore grow beyond its initial
+roster, with [project-owned specialist roles](customization.md)
+for work that needs them.
+
 ## Actors Have a Public Role and Local Memory
 
 Every actor combines four pieces:
@@ -61,6 +75,19 @@ the authority for these roles. This guide explains the model; it does not get
 to quietly rewrite anyone's job description. A customer project may add a
 specialist Actor when its Contracts need durable expertise that the base roster
 does not provide, such as operating test hardware or a laboratory system.
+
+## The Organization Learns Too
+
+Learning is central to the method. An actor retains useful experience in its
+own memory; organizational learning goes further. Interactions reveal recurring
+problems, useful practices, and missing responsibilities. When those lessons are
+reviewed and retained in shared specifications, skills, roles, or Contracts,
+they can change how the group works next time.
+
+Experience with Syspilot so far suggests that not only individual actors but
+the organization can learn. That is an observation, not an automatic consequence
+of exchanging messages. [Customization](customization.md)
+describes how to turn such lessons into lasting changes.
 
 ## Contracts Hold the Shared State
 

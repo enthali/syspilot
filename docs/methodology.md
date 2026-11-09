@@ -48,9 +48,9 @@ artifact's owner once, in its owner table, and never in a section heading. The
 actor who asks the User to set a User-owned gate presents the Contract to the
 User in that same step, because the User reviews it before deciding. And the
 receiving actor re-reads its own context, its role card, and the Contract, and
-verifies the committed header before it acknowledges. A kind whose responsibility
-moves only once, such as Setup, carries the same rules in the form that fits: its
-single transition is the first Handover log entry.
+verifies the committed header before it acknowledges. A kind with a short fixed
+sequence of transitions, such as Setup, carries the same rules in the form that
+fits: each transition is a Handover log entry.
 
 Syspilot also ships an adopter example in `docs/Example Contracts/`, the
 [Process Maintenance Contract](Example%20Contracts/process-maintenance.md).
@@ -117,8 +117,8 @@ find out how to work inside it.
 ## Why a Contract Rather Than a Fixed Workflow
 
 The obvious alternative is a standing workflow: every change goes from A to B to C,
-always in that order. Syspilot tried that in v1 and moved away from it, for two
-reasons.
+always in that order. An earlier version of Syspilot tried that and moved away
+from it, for three reasons.
 
 The first is that a fixed sequence prescribes work a given change does not need. When a
 rule requires a step that is plainly pointless in the case at hand, the rule does not
@@ -128,6 +128,26 @@ mattered.
 The second is subtler. A standing workflow is itself an authority. Once it exists,
 there are two documents describing who does what, and they drift apart without anyone
 noticing, because nothing forces them to be read together.
+
+The third is the most fundamental. A coding agent already brings knowledge of
+how to plan work toward a goal with the means available. Syspilot's earlier
+workflows were themselves written almost entirely by generative AI. Freezing
+one such plan into a standing workflow misses the more useful contribution:
+an explicit, verifiable goal. The agent's plan may be wrong. Checks against the
+agreed outcome let it detect a mismatch and revise its approach. Reliability
+depends on the quality of those criteria and checks, not on the model getting
+its first plan right.
+
+This is where specification-driven and test-driven development meet in a
+Contract. The specification makes the intended outcome explicit; tests and
+other verification provide feedback against it. The Contract brings together
+the goal, guardrails, and required evidence, while the responsible actor finds
+the route. The means depend on the project: a Sphinx-Needs ontology or a SysML v2
+model can structure the specification, and GoogleTest or pytest can provide
+executable checks. The
+[zonal-rc-car project](https://github.com/enthali/zonal-rc-car) adapted the
+Syspilot method by replacing Sphinx-Needs with SysML v2. That required
+project-specific tooling integration; the principle stayed the same.
 
 So the roles were separated from the orchestration. Each
 [Actor role card](Syspilot%20Actors/index.md) describes what a role durably is and may

@@ -306,7 +306,7 @@ class ActorRosterTests(unittest.TestCase):
         for name in cards:
             with self.subTest(actor=name):
                 self.assertIn(f"{name.replace(' ', '%20')}.md", registry)
-                self.assertIn(f"docs/Syspilot Actors/{name}.md", setup)
+                self.assertIn(f"docs/<Project name> Actors/{name}.md", setup)
 
     def test_role_cards_name_no_project(self):
         for path in ACTORS.glob("*.md"):

@@ -17,7 +17,7 @@ realized documents remain free of Sphinx-Needs markup.
    :id: SYSP_DOC_GETTING_STARTED
    :status: verified
    :realized_by: docs/getting-started.md
-   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_SETUP, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_TECHNICAL_WRITER
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_SETUP, SYSP_REQ_SETUP_NAMING, SYSP_REQ_SETUP_JARVIS, SYSP_REQ_SETUP_CONTINUATION, SYSP_REQ_SETUP_ACTORS, SYSP_REQ_SETUP_GATES, SYSP_REQ_SETUP_DOCS, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_TECHNICAL_WRITER
 
    The shortest supported path from prerequisites to a working Syspilot
    project and first actor interaction.
@@ -53,7 +53,7 @@ realized documents remain free of Sphinx-Needs markup.
    :id: SYSP_DOC_OPERATIONS
    :status: verified
    :realized_by: docs/operations.md
-   :includes: SYSP_REQ_SETUP, SYSP_REQ_RELEASE, SYSP_REQ_RELEASE_CONTRACT, SYSP_REQ_ADMIN
+   :includes: SYSP_REQ_SETUP, SYSP_REQ_SETUP_JARVIS, SYSP_REQ_SETUP_CONTINUATION, SYSP_REQ_SETUP_ACTORS, SYSP_REQ_SETUP_GATES, SYSP_REQ_RELEASE, SYSP_REQ_RELEASE_CONTRACT, SYSP_REQ_ADMIN
 
    Installation, updates, compatibility, recovery, and routine maintenance for
    a Syspilot project.

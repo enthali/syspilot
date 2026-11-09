@@ -113,7 +113,7 @@ class FolderContentTests(unittest.TestCase):
         text = read(CONTRACTS / "setup.md")
         row = next(line for line in text.splitlines() if line.startswith("| Contract registry |"))
         self.assertIn("generated instance", row)
-        self.assertIn("docs/Syspilot Contracts/index.md", row)
+        self.assertIn("docs/<Project name> Contracts/index.md", row)
         index = read(EXAMPLE_CONTRACTS / "index.md")
         self.assertIn("\n## Processes", index)
 

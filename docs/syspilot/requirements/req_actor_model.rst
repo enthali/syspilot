@@ -11,8 +11,12 @@ Syspilot Actor Model
 
    - have a public role card that defines its domain, responsibilities,
      character, and perspective;
-   - maintain a ``context.md`` that links to its public role card and to the
-     process registry it follows;
+   - maintain a ``context.md`` that names its public role card and the
+     process registry it follows by paths that resolve to the files, written
+     as project-root-relative paths in code spans, because an actor reads the
+     context as text and the depth of an actor folder below the project root
+     varies with the Jarvis ``jarvis.actors.folder`` setting, so that a
+     relative link written for one depth fails at another;
    - obtain artifact ownership and current responsibility from the applicable
      process and Contract Document rather than from a prescribed actor
      sequence;
@@ -32,6 +36,8 @@ Syspilot Actor Model
 
    Inspect each Syspilot actor's public role card and ``context.md`` and confirm
    that its role, process registry, process-derived authority, and Jarvis
-   kernel boundary follow the common Actor Model. Confirm that the role card
+   kernel boundary follow the common Actor Model, and that the ``context.md``
+   names its role card and the process registry as project-root-relative paths
+   that resolve to existing files. Confirm that the role card
    and instructions name no specific project and state required behavior
    positively rather than through a negation alone.

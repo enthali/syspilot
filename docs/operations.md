@@ -10,7 +10,8 @@ executed in an isolated Jarvis or VS Code Extension Host environment.
 For local development and documentation builds, use:
 
 - VS Code with GitHub Copilot;
-- the `enthali.jarvis-core` extension for actor identity and messaging;
+- the `enthali.jarvis-core` extension, version 0.32.0 or newer, for actor identity
+  and messaging;
 - `uv` available on your `PATH`;
 - Python 3.13 or newer; and
 - the Python packages in `docs/requirements.txt`.
@@ -36,16 +37,27 @@ Pristine setup uses the selected release's canonical
 [Setup Contract](Syspilot%20Contracts/setup.md). A bootstrap prompt loads that
 Contract, materializes it as `.syspilot/setup-contract.md`, and asks the
 initiating Copilot session to execute it. The session is a temporary Contract
-executor; Setup is not a persistent actor.
+executor; Setup is not a persistent actor. When the session lacks the Jarvis
+messaging tools, the record transfers to the Admin actor, which becomes the
+executor until the handoff to the Project Manager; only one session executes it
+at a time.
 
-The Contract verifies prerequisites and release identity, audits a dry run,
-preserves existing project-owned configuration, installs nine persistent
-Syspilot actors, validates the target build, and completes User-guided Git
-integration before handoff. It records the exact release and commit in
+The Contract verifies prerequisites, including Jarvis Core 0.32.0 or newer in
+the instance that hosts the session, which Setup may install after the User's
+consent, and release identity, audits a dry run,
+preserves existing project-owned configuration, installs the Syspilot role cards,
+creates nine persistent Syspilot actors through Jarvis, validates the target
+build, and completes User-guided Git
+integration before handoff. A mandatory gate that is `pending` or `failed`, such
+as Actor discovery or a documentation build with warnings, blocks the verified
+baseline and the handoff. Setup's direct writes to the Jarvis message files are
+short but not concurrency-safe; the Contract states that limit to the adopting
+User and records it, and asks for consent before appending to an existing
+Admin's queue. It records the exact release and commit in
 `.syspilot/project.toml`, permanently pinning the project's approved baseline.
 When it asks for the Setup branch approval it opens the Contract in the User's
-editor, and it records its single handover to the Project Manager in its own
-Handover log. If a User decision widens the approved scope after a gate has
+editor, and the executor records each transfer of the record, to the Admin when
+it occurs and to the Project Manager, in its own Handover log. If a User decision widens the approved scope after a gate has
 passed, the executor sets the affected gates back to open and passes them again
 before sealing the project state.
 
@@ -119,15 +131,21 @@ and rebuild.
 
 ## When Actor Messaging Fails
 
-Check that Jarvis Core is installed and that its messaging tools are enabled
-for the active agent. Confirm the destination uses the exact actor or session
-name. A failed message does not authorize editing another actor's memory or
-pretending a handoff occurred.
+Check that Jarvis Core 0.32.0 or newer is installed in the VS Code instance and
+profile that host the session; an extension list read through another `code`
+command is not evidence. An installed extension does not guarantee that the
+session offers its tools; a window reload may be needed. An ordinary chat session
+does not offer the Jarvis messaging tools; Actor chats do. Confirm the
+destination uses the exact actor name. A message queued for automatic delivery
+is announced to the Actor's chat once Jarvis marks its entry `notified`; that does
+not show that the Actor has acted on it. A failed message does not
+authorize editing another actor's memory or pretending a handoff occurred.
 
 ## Operational Ownership
 
 - The release-bound Setup Contract owns pristine installation behavior while
-   its initiating Copilot session executes the current instance.
+   its initiating Copilot session or, after a transfer, the Admin executes the
+   current instance.
 - Release owns packaging, delivery, and what the release gate checks and
   publishes. It is the mandatory consultee on every change to a release
   workflow definition and decides whether a gate change is acceptable.

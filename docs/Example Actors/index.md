@@ -1,6 +1,6 @@
 # Example Actors
 
-Generic role cards of the nine persistent Syspilot actors. Setup copies them into an adopting project's `docs/Syspilot Actors/`, where the project owns and adapts them. This file serves the Syspilot documentation build and is not installed, because Setup generates the registry of the adopting project.
+Generic role cards of the nine persistent Syspilot actors. Setup copies them into an adopting project's Actors folder, `docs/<Project name> Actors/`, named after the project, where the project owns and adapts them. This file serves the Syspilot documentation build and is not installed, because Setup generates the registry of the adopting project.
 
 Each card here is identical to its counterpart in `docs/Syspilot Actors/` after line-ending normalization, unless the table below declares a deviation with its reason. A test fails on an undeclared difference and on a declared deviation whose cards do not differ.
 

@@ -4,8 +4,7 @@ This checklist is for a project that already works with actors, Contracts, and
 skills from an earlier Syspilot version, or from a comparable earlier setup, and
 wants to move to 0.10. The [Setup Contract](Syspilot%20Contracts/setup.md)
 installs into pristine projects only, so there is no automated upgrade path.
-Version 0.10 is not released yet; check the [release notes](releasenotes.md)
-before you rely on any step here.
+Check the [release notes](releasenotes.md) before starting your upgrade.
 
 The checklist is distilled from one completed migration. The adopter who made
 that migration reviewed it for accuracy. That review did not include running the
@@ -61,10 +60,16 @@ leave before new actors arrive, for the reason given under Pitfalls.
    artifacts. Copy the Contracts you use, each under its own file name, and
    start with the Change Process and the Contract Documents method it links to;
    the others can follow later. Process Maintenance needs the Change Process,
-   Release needs only the method. An upgrade runs no Setup, so write
-   `docs/Syspilot Contracts/index.md` yourself: list exactly the Contracts you
+   Release needs only the method. An upgrade runs no Setup, so write your
+   project's Contract registry yourself, in the Contracts folder you chose
+   (Setup names it `docs/<Project name> Contracts/` after the project): list
+   exactly the Contracts you
    copied, with the text of `docs/Example Contracts/index.md` above its
    `Processes` heading as the preamble, which is what Setup does. Install
+   the actors' registry the same way, in the folder you chose for the role cards
+   (Setup: `docs/<Project name> Actors/`). Whatever folder names you choose, each
+   actor's `context.md` must name its role card and the registry by their
+   project-root-relative paths. Install
    `syspilot.contract-handling.instructions.md`, and keep project-specific
    knowledge in actor memory or in the project-owned levels that
    [Customization](customization.md) describes.
@@ -133,3 +138,10 @@ leave before new actors arrive, for the reason given under Pitfalls.
   can also prescribe the content of `copilot-instructions.md`; one migration
   found five such elements. Step 9 makes them false, so include them in the
   impact analysis of that follow-up Change.
+
+## Let Your Actors Help
+
+You do not have to do this alone. Pick a capable model — such as Opus or Astra —
+and give your Project Manager, or your Admin if you already have one, this guide
+and the release you want to move to. Ask them to help bring your project up to
+date. You already have actors for this kind of work. 😉
