@@ -1,6 +1,6 @@
 # Change Contract: setup-feedback-2
 
-**Status:** accepted<br>
+**Status:** closed<br>
 **Process owner:** Project Manager<br>
 **Current responsibility:** Project Manager<br>
 **Current blocker:** none<br>
@@ -132,13 +132,13 @@ Intent remains approved for this explicitly authorized extension; autonomous mod
 **Applicability:** Each artifact owner decides and updates its own row.<br>
 **Scope change:** When the approved intent widens after a row reached a terminal status, `Intent and outcome` returns to `draft` until it is approved again, and each owner whose terminal row the wider intent may affect reassesses it: the owner sets the row back to `pending` or records in the row why its evidence still holds.<br>
 **Ownership:** The `Owner` column of this table is the only statement of artifact and gate ownership in the Contract; section headings name no artifact owner.<br>
-**Status:** pending
+**Status:** complete
 
 | Artifact or gate | Included | Owner | Completion evidence | Status |
 |---|---|---|---|---|
 | Intent and outcome | yes | Project Manager | User authorized starting on 2026-11-06 and explicitly accepted both concurrent-update limits and the corresponding intent wording change on 2026-11-09 (Architect's direct consultation report) | approved |
 | Contract release | yes | User | User requested starting the Change in autonomous mode on 2026-11-06 | approved |
-| Version control | yes | Project Manager | Feature branch `feature/setup-feedback-2`; squash-integrated into `development` at closure | active |
+| Version control | yes | Project Manager | Feature branch `feature/setup-feedback-2` squash-integrated into `development` at `ddb8dbc`; local only, not pushed | merged |
 | Infrastructure impact | yes | Admin | Affected workflow, CI, and packaging artifacts are updated, confirmed by their current owner rather than inferred from a Needs-only impact query | complete |
 | Product specification and architecture decisions | yes | Architect | Changed specification and architecture artifacts are linked and checked, including the supported Jarvis bootstrap and fallback | complete (reassessed 2026-11-09 for the Jarvis installation and the project-naming extensions: `SYSP_REQ_SETUP_JARVIS` and `SYSP_REQ_SETUP_NAMING` added, see Decisions And Evidence) |
 | User-facing documentation | yes | Technical Writer | User walkthrough completed on 2026-11-09; requested revisions and factual reviews are recorded, existing `doc` coverage remains applicable, and the final strict build passes | complete |
@@ -147,7 +147,7 @@ Intent remains approved for this explicitly authorized extension; autonomous mod
 | Acceptance test design and results | yes | Tester | Requirement tests, commands, results, and the practical Setup validation trace to the intended outcome | complete at text, scaffold and fixture level (Tester, 2026-11-09 19:50); practical Setup cases deferred by the User's 18:57 disposition, not demonstrated |
 | Quality review | yes | Quality | Final review at `71607f5`: acceptance record aligned with explicit User deferral; all quality issues resolved, practical cases remain undemonstrated | proceed |
 | User validation and approval | yes | User | User accepted the presented outcome and explicit practical-evidence limits on 2026-11-09 at 20:10 and authorized closure and integration | accepted |
-| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | pending |
+| Closure decision | yes | Project Manager | User acceptance, Quality's proceed, accepted practical-evidence limits and squash integration at `ddb8dbc` recorded | complete |
 
 ## Architecture And Specification
 
@@ -443,14 +443,14 @@ Set this artifact to `not applicable` only when the User explicitly delegates va
 
 ## Closure
 
-**Status:** pending
+**Status:** complete
 
-- [ ] Every included artifact or gate has terminal status and completion evidence.
-- [ ] Intent and outcome are `approved`.
-- [ ] Quality has recorded a `proceed` judgment.
-- [ ] Open Quality Issues contains `None`.
-- [ ] User validation is `accepted`, or its `not applicable` status and explicit User delegation are recorded in the artifact row.
-- [ ] Current blocker is `none`.
-- [ ] The observable outcome is demonstrated.
+- [x] Every included artifact or gate has terminal status and completion evidence.
+- [x] Intent and outcome are `approved`.
+- [x] Quality has recorded a `proceed` judgment.
+- [x] Open Quality Issues contains `None`.
+- [x] User validation is `accepted`, or its `not applicable` status and explicit User delegation are recorded in the artifact row.
+- [x] Current blocker is `none`.
+- [x] The observable outcome is accepted on the recorded automated evidence and explicit User disposition of undemonstrated practical cases; full practical demonstration is not claimed.
 
-**Final outcome:** pending
+**Final outcome:** Closed on 2026-11-09 after direct User acceptance at 20:10. Setup bootstrap, consented active-instance Jarvis installation, project-named destinations, verification rules and user documentation are integrated into `development` by squash commit `ddb8dbc`. Quality's direct `proceed` and the User's acceptance support closure with the explicitly deferred practical scenarios still undemonstrated. No release, tag, push or publication was performed.
