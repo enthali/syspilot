@@ -2,7 +2,7 @@
 
 **Status:** approved<br>
 **Process owner:** Release<br>
-**Current responsibility:** Admin<br>
+**Current responsibility:** Release<br>
 **Current blocker:** none<br>
 **Created:** 2026-11-10<br>
 - **Operation Mode:** user-guided
@@ -19,6 +19,7 @@ The handing-over actor appends one line immediately before handing over, in the 
 | 2026-11-10 | 11:58 | Release | Technical Writer | Inventory verified, v0.10.0 release notes written; user-facing documentation check next. |
 | 2026-11-10 | 12:50 | Technical Writer | Release | Documentation accuracy complete with User approval; stale portal/shared-Contract claims corrected, factual review clear, strict build and focused checks pass. |
 | 2026-11-10 | 13:05 | Release | Admin | Preflight passed at P 5637fa4; triggers 1 and 2 recorded; Infrastructure impact row to complete. |
+| 2026-11-10 | 13:05 | Admin | Release | Infrastructure impact recorded; changed workflow inputs and environment make validation-only CI revalidation necessary, pending User authorization to push the branch. |
 
 ## Objective And Scope
 
@@ -187,11 +188,17 @@ After reviewing the corrections and results, the User explicitly approved comple
 
 ## Infrastructure Impact
 
-**Status:** pending
+**Status:** complete
+
+Admin compared preflighted commit P `5637fa4` with the last successful tag-triggered run, v0.9.1 run `30684899863` at `cc063e1` (all four jobs passed). The run used the older workflow and its logs are no longer available (HTTP 410), so it provides no evidence for the current workflow or the old runner image and resolved package versions.
+
+The canonical trigger-path comparison found changes to `.github/workflows/release.yml`, `.syspilot/ontology.toml`, `docs/_static/needs-dark-mode.css`, `docs/conf.py`, and `docs/requirements.txt`, plus the addition of `scripts/check_release_version.py`. `docs/docs-build.py`, `docs/test_docs_build.py`, `docs/_templates/`, and `assets/syspilot-logo.svg` are unchanged. The environment also changed from Python 3.11 with pip to Python 3.13 with uv (`astral-sh/setup-uv@v6`); the `sphinx-needs` minimum changed from 2.0.0 to 4.1.0. A fresh dependency resolution recorded on 2026-11-09 selected Sphinx 9.2.0 and sphinx-needs 9.2.0. Both workflow definitions use `ubuntu-latest` and install Graphviz, but the unavailable prior logs prevent comparison of the actual runner image. These findings are the basis for the fired triggers above; Release remains responsible for the gate decision.
+
+The current workflow runs documentation build tests and, on tag pushes, the tag/version check before the strict documentation build and QA suite; publication and GitHub Release creation remain tag-only. The four local preflight checks passed at P, but do not prove execution on the hosted Linux runner. A validation-only run is therefore required; none has been pushed or run because User authorization to push the branch has not been granted.
 
 | Infrastructure artifact | Impact | Required action and evidence |
 |---|---|---|
-| .github/workflows/release.yml | Assess current workflow inputs and Linux revalidation triggers | Admin records findings; Release is mandatory consultee |
+| `.github/workflows/release.yml` and its build inputs | No workflow defect identified; prior successful run does not cover the current workflow or resolved environment | Trigger-path and environment comparison recorded above and in Revalidation Triggers; Release was consulted and retains the gate decision. Validation-only hosted run remains pending User authorization to push its branch. |
 
 ## Release Verification
 
