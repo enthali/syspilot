@@ -83,7 +83,7 @@ Publication is not atomic: Pages deployment may succeed before GitHub Release cr
 | Release start | yes | User | User: "ok go", 2026-11-10; preparation only, no push authorization | approved |
 | Change inventory | yes | Release | Integrated Changes closed; Example sync verified or justified | complete: 20 Changes verified against first-parent history on 2026-11-10, all closed (see Change Inventory) |
 | Version | yes | Release | Tag, newest release-note heading and documentation agree | complete: tag v0.10.0; newest heading and `docs/conf.py` agree (version checker passes) |
-| Preflight | yes | Release | Four local checks on P; triggered CI validation separately authorized | complete: four checks pass at P 75cf135; validation-only run required, not yet authorized |
+| Preflight | yes | Release | Four local checks on P; triggered CI validation separately authorized | complete: four checks pass at P 174658b (supersedes 75cf135); second validation-only run authorized, result pending |
 | Release notes | yes | Release | One v0.10.0 heading covers all included Changes | complete: single `## v0.10.0` heading with 20 entries in integration order and known limitations; `check_release_version.py v0.10.0` passes |
 | User-facing documentation | yes | Technical Writer | Portal/shared-Contract corrections cc772a6 and Release-owned Setup-note correction 3d86026 reviewed; Architect factual review clear, strict build (zero warnings), 4 build tests, 27 focused checks and v0.10.0 version check pass; User approved completion on 2026-11-10 | complete |
 | Infrastructure impact | yes | Admin | Workflow-input and environment comparison, trigger assessment, and hosted revalidation requirement recorded in Infrastructure Impact; commit ecc8b2e | complete |
@@ -135,7 +135,7 @@ The tag is v0.10.0. Release prepares exactly one newest matching heading in docs
 
 **Status:** complete
 
-**Preflighted commit P:** 75cf13596125d2447decd00fde0a361d7d3bce29
+**Preflighted commit P:** 174658b87bdf81b14aa91ec6072ee64c4cdc9b6f
 
 Commit release notes and release-facing documentation before choosing P. Apply the canonical Release Process's protected-record and revalidation rules.
 
@@ -153,7 +153,7 @@ The strict build needs network access to docs.python.org. Local success does not
 | 3 | `uv run python -m unittest discover -s tests` at P, 2026-11-10 | pass: 202 tests OK (run without `-v`; same test set) |
 | 4 | `uv run python scripts/check_release_version.py v0.10.0` at P, 2026-11-10 | pass: v0.10.0 is the newest heading and matches `docs/conf.py` |
 
-P replaces the superseded candidate 5637fa4 (QI-1): the protected Objective, Version and Change Inventory content is final at P, and P includes 8fcb53b.
+P replaces the superseded candidates 5637fa4 (QI-1) and 75cf135 (hosted Linux failure, fixed by the Developer in 174658b, which is a test-helper change only). The protected Objective, Version and Change Inventory content is unchanged since 75cf135; P includes 8fcb53b. The four checks above were rerun at P 174658b on 2026-11-10 with the same results (202 tests OK).
 
 ### Revalidation triggers
 
@@ -168,6 +168,7 @@ Admin records the trigger paths/environment comparison against the last successf
 | Validation-only run | Authorization | Result |
 |---|---|---|
 | Required on a pushed branch (triggers 1 and 2) | Granted by the User on 2026-11-10 13:3x (approximate): push branch `release-validation-v0.10.0` at P 75cf135 and run the Release workflow manually (validation-only: no Pages, tag or GitHub Release). Acknowledged: local tests ran on the preparing platform only and Linux is first proven by this run; a failure means fix-forward. does not authorize pushing main or the tag. | failed: run 42821583430 (2026-11-10, branch at P 75cf135): validate and strict docs build passed; "Run release QA suites" failed 1 of 202 on Linux: `tests/test_acceptance_release_record.py:231` `test_rename_mode_change_and_deletion_of_another_file`, a mode change was accepted (exit 0, expected 1); passes on Windows. Fix-forward needs a new P and a new authorized run; routed to the Project Manager. |
+| Second run, fix-forward (triggers 1 and 2) | Granted by the User on 2026-11-10 (approximate 14:3x): update branch `release-validation-v0.10.0` to P 174658b and run the Release workflow manually (validation-only). Acknowledged: local tests ran on the preparing platform only, Linux is proven only by this run, a failure means fix-forward again. Does not authorize pushing main or the tag. | pending |
 
 ## Release Notes
 
@@ -269,7 +270,7 @@ Validation/build failure prevents publication. Failure after Pages deployment ca
 
 | Evidence | Value |
 |---|---|
-| Preflighted commit P | 75cf13596125d2447decd00fde0a361d7d3bce29 |
+| Preflighted commit P | 174658b87bdf81b14aa91ec6072ee64c4cdc9b6f |
 | Release commit on main R | pending |
 | User authorization to push main and the tag | Not granted |
 | Tag | v0.10.0 (not created) |
