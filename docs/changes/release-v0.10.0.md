@@ -73,7 +73,7 @@ Publication is not atomic: Pages deployment may succeed before GitHub Release cr
 | Version | yes | Release | Tag, newest release-note heading and documentation agree | pending |
 | Preflight | yes | Release | Four local checks on P; triggered CI validation separately authorized | pending |
 | Release notes | yes | Release | One v0.10.0 heading covers all included Changes | complete: single `## v0.10.0` heading with 20 entries in integration order and known limitations; `check_release_version.py v0.10.0` passes |
-| User-facing documentation | yes | Technical Writer | Release-accurate guidance and limitations | pending |
+| User-facing documentation | yes | Technical Writer | Release-accuracy review in progress; User-approved portal/shared-Contract wording corrections, documentation-map coverage and Release-owned Setup-note correction | in progress |
 | Infrastructure impact | yes | Admin | Workflow inputs, environment baseline and revalidation assessment | pending |
 | Release verification | yes | Quality | Independent proceed and no open issue | pending |
 | Publication | yes | Release | Explicit push authorization, main/tag, successful workflow, Pages and GitHub Release verified | pending |
@@ -159,11 +159,20 @@ Release is the only writer of docs/releasenotes.md. Cover the verified inventory
 
 ## User-Facing Documentation
 
-**Status:** pending
+**Status:** in progress
+
+The User approved the release-accuracy check and requesting the Setup-note correction from Release on 2026-11-10. After reviewing the findings, the User also approved correcting the portal and shared-Contract explanations, explicitly retaining Syspilot's experimental status while recognizing implemented Setup. These are explanations of existing released behavior, not new release scope or authorization to push.
+
+Impact queries for `SYSP_REQ_RELEASE_CONTRACT` and `SYSP_REQ_SETUP` (both directions, depth 1, `--flat --no-build`) succeeded on 2026-11-10. The results identify candidate guides; the direct review also includes the rendered portal, documentation map, notes and all nine user-facing guides/README.
 
 | Document | Required update | Evidence |
 |---|---|---|
-| Pending Technical Writer assessment | Check release/version consistency and honest limits | pending |
+| `docs/index.rst` | Replace obsolete unimplemented-bootstrap/repository-preview claim with implemented release-bound Setup, keeping experimental-project framing and linking evidence limits | User approved; factual review/build pending |
+| `docs/methodology.md` | Qualify tailoring by Contract kind: Release retains required headings and excludes unattended mode | Matches canonical Release and shared Contract Documents; factual review/build pending |
+| `docs/product-model.md` | State that every Contract kind carries the Handover log, not Change alone | Shared Contract rule; factual review/build pending |
+| `docs/syspilot/documentation/index.rst` | Add `SYSP_DOC_PORTAL` for the independently maintained rendered entry point; existing guide Needs/includes still cover their explanations | Map update; strict validation pending |
+| `README.md`, `docs/getting-started.md`, `docs/customization.md`, `docs/change-contract.md`, `docs/operations.md`, `docs/branching.md`, `docs/upgrade.md` | Reviewed against v0.10.0 notes: current stack, ordinary-session Setup/Admin path, project-owned examples/ontology, authority, upgrade-to-0.10 guidance, four checks, bounded record review and partial-publication limits remain applicable; no edits needed | Source review complete; no runtime installation/publication claimed |
+| `docs/releasenotes.md` (Release-owned) | Remove the new v0.10.0 entry's blanket unverified-installation claim; preserve reported-run versus deferred-scenario distinction from Operations | Release reports correction committed as `3d86026`; final source check pending |
 
 ## Infrastructure Impact
 

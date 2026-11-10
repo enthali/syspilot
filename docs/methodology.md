@@ -65,10 +65,13 @@ Syspilot's own processes, and Syspilot's own process
 documents still change through the Change process.
 
 Contract kinds carry that content differently, and they are meant to. A Contract instance is a
-tailored copy: each row offers its own choice and says what that choice obliges,
-so a required artifact simply cannot be dropped and an optional one that does not
-apply is marked with a reason and its empty section deleted. Every newly
-introduced artifact declares exactly one owner and explicit completion evidence.
+tailored copy: each row offers its own choice and says what that choice obliges.
+A required artifact cannot be dropped; an optional one that does not apply is
+marked with a reason, and the template says whether to delete or retain its
+section. The Release Contract retains every second-level template heading,
+including sections marked `not applicable`, because its record checker requires
+their presence. Every newly introduced artifact declares exactly one owner and
+explicit completion evidence.
 What is fixed is *what must be named*, not the shape it is named in.
 
 ## Ownership Is Per Artifact, Not Per Document
@@ -107,9 +110,11 @@ A Contract also fixes how its actors make decisions with respect to the User's
 availability. It selects exactly one Operation Mode — user-guided, autonomous, or
 unattended — agreed with the User before the Contract is released.
 
-The selected mode's rule is carried in the Contract itself. The canonical
-template holds all three; initialization keeps the one that was agreed and
-deletes the others, so an actor reading the Contract during execution finds its
+The selected mode's rule is carried in the Contract itself. The Change template
+offers all three; other Contract kinds define their own choices. Release offers
+only user-guided and autonomous, because publication requires the User to be
+reachable. Initialization keeps the agreed rule and deletes the others, so an
+actor reading the Contract during execution finds its
 operating rule in the document already open in front of it. A link would have
 been shorter. It would also have meant leaving the active Contract in order to
 find out how to work inside it.

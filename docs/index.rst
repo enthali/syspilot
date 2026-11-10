@@ -8,10 +8,11 @@ ownership, evidence, and current responsibility visible while work progresses.
 
 .. note::
 
-    Syspilot v2 is an early research project. Its product model and Change
-    process are available for review and development, but the supported customer
-    bootstrap is not implemented yet. Start with the repository preview in
-    :doc:`getting-started`.
+    Syspilot is an experimental project for contract-driven development.
+    Pristine Setup is implemented: it installs Syspilot into your project
+    through the Contract in the release you choose. Start with
+    :doc:`getting-started` for installation, and see :doc:`operations` for the
+    distinction between reported Setup runs and demonstrated scenario coverage.
 
 Nine persistent actors contribute through distinct areas of authority. They do
 not follow one fixed relay. The included, open artifacts in a Contract determine

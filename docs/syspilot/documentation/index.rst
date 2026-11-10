@@ -13,6 +13,16 @@ realized documents remain free of Sphinx-Needs markup.
    The concise project portal for project leads evaluating or returning to
    Syspilot.
 
+.. doc:: Rendered Documentation Portal
+   :id: SYSP_DOC_PORTAL
+   :status: implemented
+   :realized_by: docs/index.rst
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_SETUP
+
+   Syspilot's own rendered documentation entry point, introducing the method,
+   supported installation and navigation to guides, product artifacts and
+   evidence limits; not the neutral index generated in an adopting project.
+
 .. doc:: Getting Started Guide
    :id: SYSP_DOC_GETTING_STARTED
    :status: verified
