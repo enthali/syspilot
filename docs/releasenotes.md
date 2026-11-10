@@ -17,7 +17,7 @@ Minor release that moves Syspilot to the v2 model: Jarvis actors, outcome-orient
 - **v2 foundation** — Jarvis actors and Contract Documents replace the dedicated Change Manager and fixed actor sequence
 - **Documentation foundation** — the Technical Writer owns user-facing documentation, built on the established product model
 - **Direct validation provenance** — the Project Manager receives Quality's verification and the User's validation decision directly from their sources
-- **Pristine Setup** — release-bound process, Contract and product interfaces for setting up Syspilot v2 in a new customer project; end-to-end installation in an isolated environment is not yet verified
+- **Pristine Setup** — release-bound process, Contract and product interfaces for setting up Syspilot v2 in a new customer project; the User reported successful Setup runs, while deferred practical scenarios remain undemonstrated and text, scaffold and fixture checks are not runtime proof
 - **Contract handling** — one short always-on instruction makes responsibility handoffs reliable across Contract types; the Change Process template starts a Change with only what it needs
 - **v2 skills** — Impact Python and Ontology have v2 requirements, Impact traversal works with any project ontology, and three v1-only skills are removed
 - **Setup ontology review** — the first Project Manager session after Setup reviews the chosen ontology with the User
