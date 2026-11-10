@@ -15,8 +15,9 @@
 			"titleBar.activeBackground": "#40ff1a",
 			"titleBar.activeForeground": "#111111",
 			"titleBar.inactiveBackground": "default",
-			"statusBar.background": "#40ff1a",
-			"statusBar.foreground": "#111111"
+			"titleBar.inactiveForeground": "default",
+			"statusBar.background": "#1b6b0b",
+			"statusBar.foreground": "default"
 		},
 		"jarvis.actors.folder": "C:\\workspace\\actor-context\\syspilot",
 		"jarvis.actor.autoProvision": true,
