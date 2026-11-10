@@ -2,8 +2,8 @@
 
 **Status:** approved<br>
 **Process owner:** Release<br>
-**Current responsibility:** Release<br>
-**Current blocker:** QI-1: superseded preflight candidate; QI-2: required hosted validation pending<br>
+**Current responsibility:** Quality<br>
+**Current blocker:** QI-2: required hosted validation pending; Quality re-review of new P<br>
 **Created:** 2026-11-10<br>
 - **Operation Mode:** user-guided
 
@@ -25,6 +25,7 @@ The handing-over actor appends one line immediately before handing over, in the 
 | 2026-11-10 | 13:15 | Release | Admin | QI-3: synchronize the Infrastructure artifact row with the completed section. |
 | 2026-11-10 | 13:15 | Admin | Release | Infrastructure artifact row synchronized with the completed assessment in commit ecc8b2e; hosted validation remains pending User authorization. |
 | 2026-11-10 | 13:16 | Admin | Release | Corrected the responsibility header to Release; the infrastructure row is complete and QI-1/QI-2 remain open. |
+| 2026-11-10 | 13:22 | Release | Quality | QI-1 resolved: new P 75cf135, four checks pass; QI-2 (validation-only run) pending User authorization; re-review needed. |
 
 ## Objective And Scope
 
@@ -79,7 +80,7 @@ Publication is not atomic: Pages deployment may succeed before GitHub Release cr
 | Release start | yes | User | User: "ok go", 2026-11-10; preparation only, no push authorization | approved |
 | Change inventory | yes | Release | Integrated Changes closed; Example sync verified or justified | complete: 20 Changes verified against first-parent history on 2026-11-10, all closed (see Change Inventory) |
 | Version | yes | Release | Tag, newest release-note heading and documentation agree | complete: tag v0.10.0; newest heading and `docs/conf.py` agree (version checker passes) |
-| Preflight | yes | Release | Four local checks on P; triggered CI validation separately authorized | complete: four checks pass at P 5637fa4; validation-only run required, not yet authorized |
+| Preflight | yes | Release | Four local checks on P; triggered CI validation separately authorized | complete: four checks pass at P 75cf135; validation-only run required, not yet authorized |
 | Release notes | yes | Release | One v0.10.0 heading covers all included Changes | complete: single `## v0.10.0` heading with 20 entries in integration order and known limitations; `check_release_version.py v0.10.0` passes |
 | User-facing documentation | yes | Technical Writer | Portal/shared-Contract corrections cc772a6 and Release-owned Setup-note correction 3d86026 reviewed; Architect factual review clear, strict build (zero warnings), 4 build tests, 27 focused checks and v0.10.0 version check pass; User approved completion on 2026-11-10 | complete |
 | Infrastructure impact | yes | Admin | Workflow-input and environment comparison, trigger assessment, and hosted revalidation requirement recorded in Infrastructure Impact; commit ecc8b2e | complete |
@@ -130,7 +131,7 @@ The tag is v0.10.0. Release prepares exactly one newest matching heading in docs
 
 **Status:** complete
 
-**Preflighted commit P:** 5637fa41d6055e2287d0dbb64057061d2ef97c3f
+**Preflighted commit P:** 75cf13596125d2447decd00fde0a361d7d3bce29
 
 Commit release notes and release-facing documentation before choosing P. Apply the canonical Release Process's protected-record and revalidation rules.
 
@@ -147,6 +148,8 @@ The strict build needs network access to docs.python.org. Local success does not
 | 2 | `uv run python docs/docs-build.py clean` at P, 2026-11-10 | pass: strict build succeeded |
 | 3 | `uv run python -m unittest discover -s tests` at P, 2026-11-10 | pass: 202 tests OK (run without `-v`; same test set) |
 | 4 | `uv run python scripts/check_release_version.py v0.10.0` at P, 2026-11-10 | pass: v0.10.0 is the newest heading and matches `docs/conf.py` |
+
+P replaces the superseded candidate 5637fa4 (QI-1): the protected Objective, Version and Change Inventory content is final at P, and P includes 8fcb53b.
 
 ### Revalidation triggers
 
@@ -261,7 +264,7 @@ Validation/build failure prevents publication. Failure after Pages deployment ca
 
 | Evidence | Value |
 |---|---|
-| Preflighted commit P | 5637fa41d6055e2287d0dbb64057061d2ef97c3f |
+| Preflighted commit P | 75cf13596125d2447decd00fde0a361d7d3bce29 |
 | Release commit on main R | pending |
 | User authorization to push main and the tag | Not granted |
 | Tag | v0.10.0 (not created) |
