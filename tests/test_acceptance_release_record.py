@@ -52,7 +52,7 @@ class Repo:
     def git(self, *args):
         result = subprocess.run(
             ["git", "-C", str(self.path), "-c", "user.name=t", "-c", "user.email=t@example.com",
-             "-c", "core.autocrlf=false", *args], capture_output=True, text=True)
+             "-c", "core.autocrlf=false", "-c", "core.fileMode=false", *args], capture_output=True, text=True)
         assert result.returncode == 0, result.stderr
         return result.stdout.strip()
 
