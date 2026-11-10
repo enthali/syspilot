@@ -2,7 +2,7 @@
 
 **Status:** approved<br>
 **Process owner:** Release<br>
-**Current responsibility:** Release<br>
+**Current responsibility:** Technical Writer<br>
 **Current blocker:** none<br>
 **Created:** 2026-11-10<br>
 - **Operation Mode:** user-guided
@@ -16,6 +16,7 @@ The handing-over actor appends one line immediately before handing over, in the 
 | Date | Time | From | To | Note |
 |---|---|---|---|---|
 | 2026-11-10 | 11:54 | Project Manager | Release | User approved release start in user-guided mode; preparation can begin. |
+| 2026-11-10 | 11:58 | Release | Technical Writer | Inventory verified, v0.10.0 release notes written; user-facing documentation check next. |
 
 ## Objective And Scope
 
@@ -68,10 +69,10 @@ Publication is not atomic: Pages deployment may succeed before GitHub Release cr
 |---|---|---|---|---|
 | Objective and scope | yes | Project Manager | User approved the scope on 2026-11-10; Release verifies the candidate inventory | approved |
 | Release start | yes | User | User: "ok go", 2026-11-10; preparation only, no push authorization | approved |
-| Change inventory | yes | Release | Integrated Changes closed; Example sync verified or justified | pending |
+| Change inventory | yes | Release | Integrated Changes closed; Example sync verified or justified | complete: 20 Changes verified against first-parent history on 2026-11-10, all closed (see Change Inventory) |
 | Version | yes | Release | Tag, newest release-note heading and documentation agree | pending |
 | Preflight | yes | Release | Four local checks on P; triggered CI validation separately authorized | pending |
-| Release notes | yes | Release | One v0.10.0 heading covers all included Changes | pending |
+| Release notes | yes | Release | One v0.10.0 heading covers all included Changes | complete: single `## v0.10.0` heading with 20 entries in integration order and known limitations; `check_release_version.py v0.10.0` passes |
 | User-facing documentation | yes | Technical Writer | Release-accurate guidance and limitations | pending |
 | Infrastructure impact | yes | Admin | Workflow inputs, environment baseline and revalidation assessment | pending |
 | Release verification | yes | Quality | Independent proceed and no open issue | pending |
@@ -86,7 +87,28 @@ Release verifies the candidates above, closure and Example sync, and records the
 
 | Change | Integrated commit | Contract closed | Example sync |
 |---|---|---|---|
-| Pending Release verification | Pending | pending | pending |
+| v2-foundation | 5e68781 | yes | no row |
+| documentation-foundation | 8c8d674 | yes | no row |
+| validation-provenance | 998dd74 | yes | no row |
+| pristine-setup | 547f9a1 | yes | no row |
+| contract-handling | 41b653a | yes | no row |
+| v2-skill-foundations | 6537f8c | yes | no row |
+| setup-ontology-review | 1e06939 | yes | no row |
+| actor-memory-separation | b95a75f | yes | no row |
+| pre-initial-release-review | e20c565 | yes | no row |
+| mece-trace-skills | 603c8b3 | yes | no row |
+| version-control-ownership | 45dfbd5 | yes | no row |
+| contract-gates-and-modes | e7d7540 | yes | no row |
+| actor-naming-simplification | 2ea4a86 | yes | no row |
+| actor-handoff-consultation-model | e94e68f | yes | no row |
+| sphinx-needs-graph-alignment | e3343b6 | yes | no row |
+| vse-adoption-feedback | 4afc552 | yes | no row |
+| shorter-handover-text | 0001ee9 | yes | no row |
+| setup-examples | 091748e | yes | complete |
+| setup-feedback-2 | ddb8dbc | yes | complete |
+| release-contract-preflight | eded12d | yes | complete |
+
+Verified 2026-11-10 against `git log --first-parent v0.9.1..development`: these 20 are the integrations of the release; the five workspace commits `5134d1f`, `266d0b1`, `a165cac`, `877acc4`, `58b426a` change only `.vscode/syspilot.code-workspace` and `.gitignore`, and `38ed5d6` only a setup agent version line, so they are not Changes of the release. `no row` marks a Contract closed before the Example sync row existed.
 
 ## Version
 
