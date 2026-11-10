@@ -1,11 +1,13 @@
 # Release Contract: 0.10.0
 
-**Status:** proposed<br>
+**Status:** approved<br>
 **Process owner:** Release<br>
-**Current responsibility:** Project Manager<br>
-**Current blocker:** User agreement on Operation Mode and Release start<br>
+**Current responsibility:** Release<br>
+**Current blocker:** none<br>
 **Created:** 2026-11-10<br>
-- **Operation Mode:** pending User selection
+- **Operation Mode:** user-guided
+
+- **user-guided** - every actor involves the user in its decision-making before proceeding.
 
 ## Handover log
 
@@ -13,15 +15,16 @@ The handing-over actor appends one line immediately before handing over, in the 
 
 | Date | Time | From | To | Note |
 |---|---|---|---|---|
+| 2026-11-10 | 11:54 | Project Manager | Release | User approved release start in user-guided mode; preparation can begin. |
 
 ## Objective And Scope
 
-**Status:** draft<br>
-**Approval evidence:** The User requested preparing the 0.10 release on 2026-11-10; release-start approval remains pending.
+**Status:** approved<br>
+**Approval evidence:** The User approved release start with "ok go" on 2026-11-10 after reviewing the scope and shortened Known Limitations, and selected user-guided mode.
 
 ### Objective
 
-Publish Syspilot v0.10.0: the v2 Contract-driven source release, with project-owned Actor and Contract examples, ontology-aware skills, pristine Setup and its feedback corrections, user documentation and the revised release process. The deliverable is the source state on main and its version tag, rendered documentation and GitHub Release, not an installer package.
+Publish Syspilot v0.10.0: the Contract-driven source release, with project-owned Actor and Contract examples, ontology-aware skills, pristine Setup and its feedback corrections, user documentation and the revised release process. The deliverable is the source state on main and its version tag, rendered documentation and GitHub Release, not an installer package.
 
 ### Included Changes
 
@@ -63,8 +66,8 @@ Publication is not atomic: Pages deployment may succeed before GitHub Release cr
 
 | Artifact or gate | Included | Owner | Completion evidence | Status |
 |---|---|---|---|---|
-| Objective and scope | yes | Project Manager | Objective, included Changes and limits approved | draft |
-| Release start | yes | User | Explicit authorization to start, not permission to push | pending |
+| Objective and scope | yes | Project Manager | User approved the scope on 2026-11-10; Release verifies the candidate inventory | approved |
+| Release start | yes | User | User: "ok go", 2026-11-10; preparation only, no push authorization | approved |
 | Change inventory | yes | Release | Integrated Changes closed; Example sync verified or justified | pending |
 | Version | yes | Release | Tag, newest release-note heading and documentation agree | pending |
 | Preflight | yes | Release | Four local checks on P; triggered CI validation separately authorized | pending |
@@ -89,7 +92,7 @@ Release verifies the candidates above, closure and Example sync, and records the
 
 **Status:** pending
 
-**Version:** 0.10.0 - User-requested v2 minor release.
+**Version:** 0.10.0 - User-requested minor release.
 
 The tag is v0.10.0. Release prepares exactly one newest matching heading in docs/releasenotes.md; documentation metadata derives from that source. The version checker must pass.
 
