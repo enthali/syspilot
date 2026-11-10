@@ -2,7 +2,7 @@
 
 **Status:** approved<br>
 **Process owner:** Release<br>
-**Current responsibility:** Release<br>
+**Current responsibility:** Admin<br>
 **Current blocker:** none<br>
 **Created:** 2026-11-10<br>
 - **Operation Mode:** user-guided
@@ -18,6 +18,7 @@ The handing-over actor appends one line immediately before handing over, in the 
 | 2026-11-10 | 11:54 | Project Manager | Release | User approved release start in user-guided mode; preparation can begin. |
 | 2026-11-10 | 11:58 | Release | Technical Writer | Inventory verified, v0.10.0 release notes written; user-facing documentation check next. |
 | 2026-11-10 | 12:50 | Technical Writer | Release | Documentation accuracy complete with User approval; stale portal/shared-Contract claims corrected, factual review clear, strict build and focused checks pass. |
+| 2026-11-10 | 13:05 | Release | Admin | Preflight passed at P 5637fa4; triggers 1 and 2 recorded; Infrastructure impact row to complete. |
 
 ## Objective And Scope
 
@@ -72,7 +73,7 @@ Publication is not atomic: Pages deployment may succeed before GitHub Release cr
 | Release start | yes | User | User: "ok go", 2026-11-10; preparation only, no push authorization | approved |
 | Change inventory | yes | Release | Integrated Changes closed; Example sync verified or justified | complete: 20 Changes verified against first-parent history on 2026-11-10, all closed (see Change Inventory) |
 | Version | yes | Release | Tag, newest release-note heading and documentation agree | pending |
-| Preflight | yes | Release | Four local checks on P; triggered CI validation separately authorized | pending |
+| Preflight | yes | Release | Four local checks on P; triggered CI validation separately authorized | complete: four checks pass at P 5637fa4; validation-only run required, not yet authorized |
 | Release notes | yes | Release | One v0.10.0 heading covers all included Changes | complete: single `## v0.10.0` heading with 20 entries in integration order and known limitations; `check_release_version.py v0.10.0` passes |
 | User-facing documentation | yes | Technical Writer | Portal/shared-Contract corrections cc772a6 and Release-owned Setup-note correction 3d86026 reviewed; Architect factual review clear, strict build (zero warnings), 4 build tests, 27 focused checks and v0.10.0 version check pass; User approved completion on 2026-11-10 | complete |
 | Infrastructure impact | yes | Admin | Workflow inputs, environment baseline and revalidation assessment | pending |
@@ -121,9 +122,9 @@ The tag is v0.10.0. Release prepares exactly one newest matching heading in docs
 
 ## Preflight
 
-**Status:** pending
+**Status:** complete
 
-**Preflighted commit P:** pending
+**Preflighted commit P:** 5637fa41d6055e2287d0dbb64057061d2ef97c3f
 
 Commit release notes and release-facing documentation before choosing P. Apply the canonical Release Process's protected-record and revalidation rules.
 
@@ -136,7 +137,10 @@ The strict build needs network access to docs.python.org. Local success does not
 
 | Check | Command and commit | Result |
 |---|---|---|
-| Pending | Pending | pending |
+| 1 | `uv run python docs/test_docs_build.py -v` at P, 2026-11-10 | pass: 4 tests OK (the printed build-failed line belongs to a negative test) |
+| 2 | `uv run python docs/docs-build.py clean` at P, 2026-11-10 | pass: strict build succeeded |
+| 3 | `uv run python -m unittest discover -s tests` at P, 2026-11-10 | pass: 202 tests OK (run without `-v`; same test set) |
+| 4 | `uv run python scripts/check_release_version.py v0.10.0` at P, 2026-11-10 | pass: v0.10.0 is the newest heading and matches `docs/conf.py` |
 
 ### Revalidation triggers
 
@@ -144,17 +148,17 @@ Admin records the trigger paths/environment comparison against the last successf
 
 | Trigger | Observable test | Fired |
 |---|---|---|
-| Workflow input changed | Compare canonical trigger inputs against the last successful tag-run commit | pending |
-| Environment change | Admin statement against prior runner/tool baseline | pending |
-| No tag-run evidence | Verify evidence for the preceding release | pending |
+| Workflow input changed | Compare canonical trigger inputs against the last successful tag-run commit | yes (Admin, 2026-11-10): `release.yml`, `.syspilot/ontology.toml`, `docs/_static/needs-dark-mode.css`, `docs/conf.py`, `docs/requirements.txt` changed and `scripts/check_release_version.py` added since v0.9.1 |
+| Environment change | Admin statement against prior runner/tool baseline | yes (Admin, 2026-11-10): Python 3.11/pip became 3.13/uv; sphinx-needs bound raised; v0.9.1 run logs are gone, so no image comparison is possible |
+| No tag-run evidence | Verify evidence for the preceding release | not relied on: v0.9.1 had a successful tag run, but of the older workflow, so no comparable baseline exists; triggers 1 and 2 suffice |
 
 | Validation-only run | Authorization | Result |
 |---|---|---|
-| Pending trigger assessment | Not granted | pending |
+| Required on a pushed branch (triggers 1 and 2) | Not granted | pending |
 
 ## Release Notes
 
-**Status:** pending
+**Status:** complete
 
 Release is the only writer of docs/releasenotes.md. Cover the verified inventory in integration order, explaining user value and limitations.
 
@@ -222,7 +226,7 @@ Validation/build failure prevents publication. Failure after Pages deployment ca
 
 | Evidence | Value |
 |---|---|
-| Preflighted commit P | pending |
+| Preflighted commit P | 5637fa41d6055e2287d0dbb64057061d2ef97c3f |
 | Release commit on main R | pending |
 | User authorization to push main and the tag | Not granted |
 | Tag | v0.10.0 (not created) |
