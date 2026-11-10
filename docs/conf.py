@@ -4,6 +4,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 import os
+import runpy
 import sys
 import tomllib
 from pathlib import Path
@@ -24,8 +25,6 @@ def _generate_ontology_reference(app):
         data = tomllib.load(f)
 
     needs = data.get("needs", {})
-    syspilot = data.get("syspilot", {})
-
     lines = [
         "<!-- AUTO-GENERATED — do not edit manually. Regenerated on every sphinx-build. -->",
         "",
@@ -46,34 +45,6 @@ def _generate_ontology_reference(app):
             )
         lines.append("")
 
-    # --- Type Relationship Diagram ---
-    type_links = syspilot.get("type_links", [])
-    if type_links:
-        lines.append("## Type Relationships")
-        lines.append("")
-        lines.append("```{mermaid}")
-        lines.append("flowchart BT")
-        for link in type_links:
-            lines.append(f"    {link['from']} -->|{link['rel']}| {link['to']}")
-        lines.append("```")
-        lines.append("")
-
-    # --- Lifecycle Diagram ---
-    transitions = syspilot.get("status_transitions", {})
-    universal = transitions.get("universal", [])
-    universal_exit = transitions.get("universal_exit", [])
-    if universal:
-        lines.append("## Status Lifecycle")
-        lines.append("")
-        lines.append("```{mermaid}")
-        lines.append("stateDiagram-v2")
-        for tr in universal:
-            lines.append(f"    {tr['from']} --> {tr['to']}")
-        for exit_status in universal_exit:
-            lines.append(f"    [*] --> {exit_status} : from any")
-        lines.append("```")
-        lines.append("")
-
     output_path.write_text("\n".join(lines), encoding="utf-8")
 
 
@@ -85,7 +56,9 @@ def setup(app):
 project = 'syspilot'
 copyright = '2025-2026, syspilot Contributors'
 author = 'syspilot Contributors'
-release = '0.1.0'
+# The release notes are the one source of the version; the release checker reads the newest heading.
+_checker = runpy.run_path(str(Path(__file__).resolve().parents[1] / "scripts" / "check_release_version.py"))
+release = _checker["newest_release"](Path(__file__).resolve().parent / "releasenotes.md")[1:]
 
 # -- General configuration ---------------------------------------------------
 
@@ -109,7 +82,6 @@ exclude_patterns = [
     '.venv',
     'venv',
     'changes/*',
-    'syspilot/conventions.md',
 ]
 
 # -- Options for HTML output -------------------------------------------------
@@ -149,6 +121,19 @@ html_sidebars = {
 # .syspilot/ontology.toml — the single source of truth for both Sphinx and ubCode.
 
 needs_from_toml = "../.syspilot/ontology.toml"
+
+# ac/vc needs are fine-grained (one per Given/When/Then) — start them
+# collapsed by default (clean layout) so only title/ID show until clicked;
+# CSS below indents/narrows them to read as sub-items of their parent.
+needs_global_options = {
+    "collapse": {
+        "predicates": [
+            ("type == 'ac'", "True"),
+            ("type == 'vc'", "True"),
+        ],
+        "default": "False",
+    },
+}
 
 # Suppress known deprecation warnings from sphinx-needs config migration
 suppress_warnings = ["needs.deprecated"]

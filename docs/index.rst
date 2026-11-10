@@ -1,125 +1,50 @@
-Welcome to your system pilot documentation!
-===========================================
+Syspilot
+========
 
-**Your project has 5000 requirements. A change affects 5 of them. Find those 5.**
+Syspilot gives AI collaborators a traceable product model and durable process
+state. Needs describe why the product exists and what it must do, realized
+artifacts supply the implementation, and Contract Documents keep intent,
+ownership, evidence, and current responsibility visible while work progresses.
 
-syspilot is a requirements engineering toolkit that gives AI agents *focused context* —
-not your entire codebase, just the parts that matter. It uses
-`sphinx-needs <https://sphinx-needs.readthedocs.io/>`_ traceability links to navigate
-from a User Story down to exactly the affected Requirements and Design Specs.
+.. note::
 
-The result? **O(affected), not O(total).** That's what makes it scale.
+    Syspilot is an experimental project for contract-driven development.
+    Pristine Setup is implemented: it installs Syspilot into your project
+    through the Contract in the release you choose. Start with
+    :doc:`getting-started` for installation, and see :doc:`operations` for the
+    distinction between reported Setup runs and demonstrated scenario coverage.
 
+Nine persistent actors contribute through distinct areas of authority. They do
+not follow one fixed relay. The included, open artifacts in a Contract determine
+which owner can make the next useful move, while the Contract always names
+exactly one currently responsible actor.
 
-.. _getting-started:
-
-Getting Started
----------------
-
-**1. Download the setup agent** into your project:
-
-.. code-block:: bash
-
-   # Linux / Mac
-   mkdir -p .github/agents && curl -fsSL \
-     "https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/agents/syspilot.setup.agent.md" \
-     -o .github/agents/syspilot.setup.agent.md
-
-.. code-block:: powershell
-
-   # Windows (PowerShell)
-   New-Item -ItemType Directory -Force -Path .github/agents | Out-Null
-   Invoke-WebRequest `
-     -Uri "https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/agents/syspilot.setup.agent.md" `
-     -OutFile ".github/agents/syspilot.setup.agent.md"
-
-**2. Open VS Code Copilot Chat** and type ``@syspilot.setup`` — the agent does the rest.
-
-That's it. Dependencies, config, validation — all handled automatically.
-
-Prerequisites: **VS Code + GitHub Copilot**, **Python 3.10+**
+Start with :doc:`product-model` for the big picture, :doc:`change-contract` for
+the process in motion, :doc:`customization` for project tailoring, or
+:doc:`operations` for builds and maintenance.
 
 
-How It Works
-------------
-
-Three levels, connected by traceability links:
-
-.. code-block:: text
-
-   User Story (WHY)  ──links──▶  Requirements (WHAT)  ──links──▶  Design Specs (HOW)
-
-When you request a change, syspilot follows these links to find only the affected
-elements — then hands that focused context to the AI agent. No guessing, no scanning.
-
-
-Your AI Team
-------------
-
-Nine agents, each with a clear job:
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Agent
-     - What it does
-   * - ``@syspilot.design``
-     - Analyzes a change request, creates a Change Document listing all affected specs
-   * - ``@syspilot.implement``
-     - Executes approved changes with full traceability
-   * - ``@syspilot.verify``
-     - Checks implementation against the Change Document
-   * - ``@syspilot.memory``
-     - Keeps project memory (copilot-instructions.md) current
-   * - ``@syspilot.mece``
-     - Finds gaps and redundancies in your specs (one level at a time)
-   * - ``@syspilot.trace``
-     - Traces one item through all levels — up and down
-   * - ``@syspilot.release``
-     - Manages versioning, release notes, and GitHub publishing
-   * - ``@syspilot.setup``
-     - Installs or updates syspilot in your project
-
-The typical workflow: **change** → **implement** → **verify** → **memory**. Done.
-
-
-FAQ
----
-
-**Do I need to know reStructuredText?**
-   Not really. The agents write the RST for you. But it helps to understand the basics —
-   it's just text with some directives.
-
-**Can I use this with an existing project?**
-   Yes. ``@syspilot.setup`` can adopt an existing ``docs/`` folder. You can also start
-   with an empty project and grow from there.
-
-**What about Markdown?**
-   syspilot uses `myst-parser <https://myst-parser.readthedocs.io/>`_ so you can mix
-   Markdown and RST. The specs themselves use RST (because sphinx-needs requires it),
-   but your prose documentation can be Markdown.
-
-**Is this only for automotive / A-SPICE?**
-   No. The spec hierarchy (User Stories → Requirements → Design) is universal.
-   The A-SPICE alignment is optional and documented under :doc:`syspilot/process/index`.
-
-**How is this different from just using Copilot?**
-   Copilot is great at writing code. But it doesn't know *which* of your 500 requirements
-   are affected by a change. syspilot solves that navigation problem — then Copilot
-   does what it does best.
-
-
-Specification Reference
------------------------
+syspilot Actors & Processes (v2)
+---------------------------------
 
 .. toctree::
    :maxdepth: 2
-   :caption: syspilot Family
+   :caption: syspilot v2
 
-   syspilot/userstories/index
-   syspilot/requirements/index
-   syspilot/design/index
+   syspilot/index
+   Syspilot Actors/index
+   Syspilot Actors/Project Manager
+   Syspilot Actors/Architect
+   Syspilot Actors/Developer
+   Syspilot Actors/Tester
+   Syspilot Actors/Quality
+   Syspilot Actors/Release
+   Syspilot Actors/Research
+   Syspilot Actors/Technical Writer
+   Syspilot Actors/Admin
+   Syspilot Contracts/index
+   Example Actors/index
+   Example Contracts/index
 
 
 Traceability
@@ -132,22 +57,33 @@ Traceability
    traceability/index
 
 
-Guides & Process
-----------------
+User Guides
+-----------
 
 .. toctree::
    :maxdepth: 1
-   :caption: Guides
+   :caption: User Guides
 
+   getting-started
+   product-model
+   change-contract
+   customization
+   operations
+   upgrade
    methodology
-   architecture
-   workflows
-   namingconventions
-   syspilot/methodology
-   syspilot/namingconventions
-   syspilot/process/index
+   branching
+
+
+Reference
+---------
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Reference
+
    releasenotes
    ontology-reference
+   namingconventions
 
 
 Field Notes

@@ -7,9 +7,11 @@
 .syspilot/
 !.syspilot/ontology.toml
 .jarvis/
-.vscode/
-managers/
-projects/
+.jarvis-v1/
+.jarvis-v2/
+.vscode/*
+!.vscode/syspilot.code-workspace
+
 
 # Python
 __pycache__/
@@ -47,18 +49,30 @@ docs/_build/
 .env
 *.local
 
+# github files
+.github/dictation.md
+
 # temporary files
 temp/
 
 # build artifacts
 docs/build.log
 
-# jarvis temp files
-temp_messages.txt
+# vscode
+.mcp.json
 
 # jarvis runtime hooks (installed/generated locally, not product content)
 .github/hooks/
+.github/agents/
 
-# installed instructions (not yet shared in the public MIT repo)
-.github/instructions/
+# BEGIN JARVIS MANAGED (see jarvis.gitignore.autoManage)
+.jarvis/logs/
+.jarvis/messages/
+.jarvis/state/
+.jarvis/heartbeat.yaml
+.jarvis/reminders.yaml
+.jarvis/syspilot-state.json
+jarvis-*
+!packages/*/assets/**
+# END JARVIS MANAGED
 

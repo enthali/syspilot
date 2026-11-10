@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../actor-context"
+		}
+	],
+	"settings": {
+		"jarvis.scanInterval": 20,
+		"jarvis.heartbeatInterval": 300,
+		"jarvis.messages.logging": true,
+		"workbench.colorCustomizations": {
+			"titleBar.activeBackground": "#40ff1a",
+			"titleBar.activeForeground": "#111111",
+			"titleBar.inactiveBackground": "default",
+			"titleBar.inactiveForeground": "default",
+			"statusBar.background": "#1b6b0b",
+			"statusBar.foreground": "default"
+		},
+		"jarvis.actors.folder": "C:\\workspace\\actor-context\\syspilot",
+		"jarvis.actor.autoProvision": true,
+		"jarvis.mcpPort": 31413,
+		"jarvis.mcp.enabled": false,
+		"powershell.cwd": "syspilot"
+	}
+}

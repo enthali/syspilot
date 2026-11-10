@@ -6,6 +6,40 @@
 > consistent; CalVer was a brief interlude, reverted per the Release Agent
 > Tailoring Workflow (see `release-agent-tailoring-semver`).
 
+## v0.10.0 - Contract-driven source release
+
+### Summary
+
+Minor release that moves Syspilot to the v2 model: Jarvis actors, outcome-oriented Contract Documents, ownership by artifact and current responsibility instead of a prescribed actor sequence. Syspilot is delivered as source on `main`, its version tag, rendered documentation and a GitHub Release, not as an installer package.
+
+### ✨ What's new, in integration order
+
+- **v2 foundation** — Jarvis actors and Contract Documents replace the dedicated Change Manager and fixed actor sequence
+- **Documentation foundation** — the Technical Writer owns user-facing documentation, built on the established product model
+- **Direct validation provenance** — the Project Manager receives Quality's verification and the User's validation decision directly from their sources
+- **Pristine Setup** — release-bound process, Contract and product interfaces for setting up Syspilot v2 in a new customer project; the User reported successful Setup runs, while deferred practical scenarios remain undemonstrated and text, scaffold and fixture checks are not runtime proof
+- **Contract handling** — one short always-on instruction makes responsibility handoffs reliable across Contract types; the Change Process template starts a Change with only what it needs
+- **v2 skills** — Impact Python and Ontology have v2 requirements, Impact traversal works with any project ontology, and three v1-only skills are removed
+- **Setup ontology review** — the first Project Manager session after Setup reviews the chosen ontology with the User
+- **Private actor memory** — Architect and Technical Writer context files are no longer tracked in the public repository
+- **Pre-initial release review** — the whole v2 release surface was reviewed file by file for currency and public/private fit
+- **MECE and Trace** — two ontology-driven skills that Quality applies in every review
+- **Version control ownership** — branch creation and integration are a named, owned artifact of every Change Contract
+- **Contract gates and modes** — each Contract states its operation mode and tailoring options where the choice is made
+- **Actor naming** — actors lose the "Syspilot" prefix; `docs/Syspilot Processes/` becomes `docs/Syspilot Contracts/`
+- **Handoff and consultation model** — HANDOFF, ACK, CONSULT and CONSULTRESPOND over the two generic Jarvis primitives
+- **Sphinx-Needs graph alignment** — Impact and Trace use the project's configured Sphinx-Needs links, with no Syspilot-only link schema
+- **Jarvis-VSE adoption feedback** — projects with their own ontology, roles and Contract conventions can adopt Syspilot without rework
+- **Shorter handover text** — shorter Handover-log notes and HANDOFF messages
+- **Setup examples** — generic example actors and Contracts that a project copies at Setup and then owns
+- **Setup feedback** — Setup starts in an ordinary Copilot session, obtains an Admin actor through Jarvis when needed, and reports completion only after the installation is usable
+- **Release preflight** — four local checks, a conditional validation-only workflow run, one version source, and a bounded release-record rule replace the mandatory remote run
+
+### ⚠️ Known limitations
+
+- Publication is not atomic: the documentation can be deployed before the GitHub Release is created, and a failure in between needs the User's decision.
+- Local preflight does not prove execution on the Linux workflow platform; the first run of the current workflow definition is the tag run, or a validation-only run when a revalidation trigger fires.
+
 ## v0.9.1 - 2026-08-01
 
 ### Summary

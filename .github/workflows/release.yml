@@ -1,119 +1,88 @@
-# GitHub Actions Release Workflow
-# 
-# Implements: SYSPILOT_SPEC_REL_GITHUB_ACTIONS, SYSPILOT_REQ_REL_GITHUB_ACTIONS
-# 
-# Automates release validation, documentation build, and publication.
-# Triggered on Git tags matching v*.*.* pattern.
+# Validates the current v2 release surface and publishes an authorized tag.
+# Manual runs are validation-only and never publish Pages or a GitHub Release.
 
 name: Release
 
 on:
   push:
     tags:
-      - 'v*.*.*'
-  workflow_dispatch:  # Allow manual trigger for testing
+      - "v*.*.*"
+  workflow_dispatch:
 
 permissions:
-  contents: write
-  pages: write
-  id-token: write
+  contents: read
 
 jobs:
   validate:
-    name: Validate Release
+    name: Validate release
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      
-      - name: Extract version from tag
-        id: tag_version
+          python-version: "3.13"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Install documentation dependencies
         run: |
-          TAG=${GITHUB_REF#refs/tags/v}
-          echo "version=$TAG" >> $GITHUB_OUTPUT
-          echo "Tag version: $TAG"
-      
-      - name: Validate Setup Agent version
+          uv venv .venv
+          uv pip install --python .venv -r docs/requirements.txt
+
+      - name: Run documentation build tests
+        run: uv run python docs/test_docs_build.py -v
+
+      - name: Validate tag and extract release notes
+        if: github.event_name == 'push'
+        id: release
+        shell: bash
         run: |
-          AGENT_FILE="syspilot/agents/syspilot.setup.agent.md"
-          
-          if [ ! -f "$AGENT_FILE" ]; then
-            echo "ERROR: $AGENT_FILE not found"
-            exit 1
-          fi
-          
-          VERSION=$(grep '^version:' "$AGENT_FILE" | head -1 | sed 's/version:[[:space:]]*//' | sed 's/^v//')
-          TAG="${{ steps.tag_version.outputs.version }}"
-          
-          echo "Setup Agent version: $VERSION"
-          echo "Git tag: $TAG"
-          
-          if [ "$VERSION" != "$TAG" ]; then
-            echo "ERROR: Version mismatch!"
-            echo "  Setup Agent frontmatter version = $VERSION"
-            echo "  tag = $TAG"
-            exit 1
-          fi
-          
-          echo "✅ Version matches tag"
-      
-      - name: Validate release notes exist
-        run: |
-          if [ ! -f docs/releasenotes.md ]; then
-            echo "ERROR: docs/releasenotes.md not found"
-            exit 1
-          fi
-          
-          VERSION="${{ steps.tag_version.outputs.version }}"
-          if ! grep -q "## v$VERSION" docs/releasenotes.md; then
-            echo "ERROR: Release notes missing for v$VERSION"
-            exit 1
-          fi
-          
-          echo "✅ Release notes found for v$VERSION"
+          python scripts/check_release_version.py "$GITHUB_REF_NAME" --write-notes release-notes-current.md
+
+      - name: Upload release notes
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-notes
+          path: release-notes-current.md
+          retention-days: 7
   
   build-docs:
-    name: Build Documentation
+    name: Build documentation
     runs-on: ubuntu-latest
     needs: validate
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      
+          python-version: "3.13"
+
       - name: Install Graphviz
         run: sudo apt-get update && sudo apt-get install -y graphviz
-      
-      - name: Install Python dependencies
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Install documentation dependencies
         run: |
-          pip install -r docs/requirements.txt
-      
-      - name: Build Sphinx documentation
-        run: |
-          cd docs
-          sphinx-build -b html . _build/html
-      
-      - name: Check for Sphinx errors
-        run: |
-          if [ -f docs/_build/html/sphinx-build.log ]; then
-            if grep -i "error" docs/_build/html/sphinx-build.log; then
-              echo "ERROR: Sphinx build errors found"
-              exit 1
-            fi
-          fi
-          echo "✅ Documentation built successfully"
-      
+          uv venv .venv
+          uv pip install --python .venv -r docs/requirements.txt
+
+      - name: Build documentation strictly
+        run: uv run python docs/docs-build.py clean
+
+      - name: Run release QA suites
+        run: uv run python -m unittest discover -s tests -v
+
       - name: Upload documentation artifact
         uses: actions/upload-artifact@v4
         with:
@@ -122,13 +91,18 @@ jobs:
           retention-days: 7
   
   publish-docs:
-    name: Publish to GitHub Pages
+    name: Publish documentation
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     needs: build-docs
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    
+
     steps:
       - name: Download documentation artifact
         uses: actions/download-artifact@v4
@@ -139,54 +113,30 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
       
-      - name: Upload to GitHub Pages
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs-html
-      
-      - name: Deploy to GitHub Pages
+
+      - name: Deploy Pages
         id: deployment
         uses: actions/deploy-pages@v4
-  
+
   create-release:
     name: Create GitHub Release
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    needs: [validate, build-docs]
-    
+    needs: [validate, publish-docs]
+    permissions:
+      contents: write
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      
-      - name: Extract release notes
-        id: release_notes
-        run: |
-          VERSION="${GITHUB_REF#refs/tags/v}"
-          
-          # Extract from first ## to (excluding) second ##
-          awk '/^## /{if(++count==2) exit} count==1' docs/releasenotes.md > release-notes-current.md
-          
-          if [ ! -s release-notes-current.md ]; then
-            echo "ERROR: Could not extract release notes for v$VERSION"
-            echo "Looking for: ## v$VERSION"
-            echo "Available versions:"
-            grep "^## v" docs/releasenotes.md || true
-            exit 1
-          fi
-          
-          cat release-notes-current.md
-      
+      - name: Download release notes
+        uses: actions/download-artifact@v4
+        with:
+          name: release-notes
+
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           body_path: release-notes-current.md
-          draft: false
-          prerelease: ${{ contains(github.ref, '-alpha') || contains(github.ref, '-beta') || contains(github.ref, '-rc') }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Release summary
-        run: |
-          VERSION="${GITHUB_REF#refs/tags/v}"
-          echo "✅ Release v$VERSION published successfully"
-          echo "📚 Documentation: https://$(echo ${{ github.repository }} | tr '/' '.').io/$(basename ${{ github.repository }})"
-          echo "📦 Release: https://github.com/${{ github.repository }}/releases/tag/v$VERSION"

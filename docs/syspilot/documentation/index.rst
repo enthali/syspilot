@@ -1,0 +1,116 @@
+User Documentation
+==================
+
+These Needs form the Technical Writer-owned documentation ownership map. The
+realized documents remain free of Sphinx-Needs markup.
+
+.. doc:: Project README
+   :id: SYSP_DOC_README
+   :status: verified
+   :realized_by: README.md
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_SETUP
+
+   The concise project portal for project leads evaluating or returning to
+   Syspilot.
+
+.. doc:: Rendered Documentation Portal
+   :id: SYSP_DOC_PORTAL
+   :status: implemented
+   :realized_by: docs/index.rst
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_SETUP
+
+   Syspilot's own rendered documentation entry point, introducing the method,
+   supported installation and navigation to guides, product artifacts and
+   evidence limits; not the neutral index generated in an adopting project.
+
+.. doc:: Getting Started Guide
+   :id: SYSP_DOC_GETTING_STARTED
+   :status: verified
+   :realized_by: docs/getting-started.md
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_SETUP, SYSP_REQ_SETUP_NAMING, SYSP_REQ_SETUP_JARVIS, SYSP_REQ_SETUP_CONTINUATION, SYSP_REQ_SETUP_ACTORS, SYSP_REQ_SETUP_GATES, SYSP_REQ_SETUP_DOCS, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_TECHNICAL_WRITER
+
+   The shortest supported path from prerequisites to a working Syspilot
+   project and first actor interaction.
+
+.. doc:: Product Model Guide
+   :id: SYSP_DOC_PRODUCT_MODEL
+   :status: verified
+   :realized_by: docs/product-model.md
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_PROJECT_MANAGER, SYSP_REQ_ARCHITECT, SYSP_REQ_DEVELOPER, SYSP_REQ_TESTER, SYSP_REQ_QUALITY, SYSP_REQ_SETUP, SYSP_REQ_RELEASE, SYSP_REQ_RESEARCH, SYSP_REQ_TECHNICAL_WRITER, SYSP_REQ_ADMIN, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_CONTRACT_HANDLING
+
+   A user-oriented explanation of actors, authority, specifications, Contracts,
+   memory, and the product-versus-instance boundary.
+
+.. doc:: Change Contract Guide
+   :id: SYSP_DOC_CHANGE_CONTRACT
+   :status: verified
+   :realized_by: docs/change-contract.md
+   :includes: SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_CONTRACT_HANDLING, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_PROJECT_MANAGER, SYSP_REQ_ARCHITECT, SYSP_REQ_DEVELOPER, SYSP_REQ_TESTER, SYSP_REQ_QUALITY, SYSP_REQ_TECHNICAL_WRITER, SYSP_REQ_ADMIN, SYSP_REQ_IMPACT_QUERY, SYSP_REQ_MECE_ANALYSIS, SYSP_REQ_TRACE_ANALYSIS
+
+   The project lead's journey through a Change, from intent and responsibility
+   transfers to validation and closure.
+
+.. doc:: Customization Guide
+   :id: SYSP_DOC_CUSTOMIZATION
+   :status: verified
+   :realized_by: docs/customization.md
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_SETUP, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_TECHNICAL_WRITER, SYSP_REQ_ONTOLOGY_SCHEMA, SYSP_REQ_ONTOLOGY_EDITING, SYSP_REQ_PROCESS_MAINTENANCE
+
+   Practical guidance for tailoring project Contracts, ontology, documentation,
+   specialist Actors, local memory, and skills without losing clean updates.
+
+.. doc:: Operations Guide
+   :id: SYSP_DOC_OPERATIONS
+   :status: verified
+   :realized_by: docs/operations.md
+   :includes: SYSP_REQ_SETUP, SYSP_REQ_SETUP_JARVIS, SYSP_REQ_SETUP_CONTINUATION, SYSP_REQ_SETUP_ACTORS, SYSP_REQ_SETUP_GATES, SYSP_REQ_RELEASE, SYSP_REQ_RELEASE_CONTRACT, SYSP_REQ_RELEASE_VERSION, SYSP_REQ_ADMIN
+
+   Installation, updates, compatibility, recovery, and routine maintenance for
+   a Syspilot project.
+
+.. doc:: Upgrade Guide
+   :id: SYSP_DOC_UPGRADE
+   :status: verified
+   :realized_by: docs/upgrade.md
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_SETUP, SYSP_REQ_CONTRACT_HANDLING, SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_ONTOLOGY_SCHEMA, SYSP_REQ_IMPACT_QUERY, SYSP_REQ_EXAMPLES
+
+   A checklist for moving a project that predates Syspilot 0.10 to 0.10,
+   used as input to the project's update Change.
+
+.. doc:: Branching Guide
+   :id: SYSP_DOC_BRANCHING
+   :status: verified
+   :realized_by: docs/branching.md
+   :includes: SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_SETUP, SYSP_REQ_RELEASE, SYSP_REQ_RELEASE_CONTRACT, SYSP_REQ_RELEASE_VERSION
+
+   Where a Change states its branch, what the Change and Setup processes
+   prescribe, and what this repository practices beyond that.
+
+.. doc:: Methodology Guide
+   :id: SYSP_DOC_METHODOLOGY
+   :status: verified
+   :realized_by: docs/methodology.md
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_CONTRACT_HANDLING, SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_SETUP, SYSP_REQ_RELEASE, SYSP_REQ_RELEASE_CONTRACT, SYSP_REQ_PROCESS_MAINTENANCE, SYSP_REQ_EXAMPLES
+
+   Why Syspilot works through Contracts rather than a fixed workflow, and what
+   a Contract must name.
+
+.. doc:: Example Actors
+   :id: SYSP_DOC_EXAMPLE_ACTORS
+   :status: implemented
+   :realized_by: docs/Example Actors/index.md
+   :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_PROJECT_MANAGER, SYSP_REQ_ARCHITECT, SYSP_REQ_DEVELOPER, SYSP_REQ_TESTER, SYSP_REQ_QUALITY, SYSP_REQ_RELEASE, SYSP_REQ_RESEARCH, SYSP_REQ_TECHNICAL_WRITER, SYSP_REQ_ADMIN, SYSP_REQ_EXAMPLES
+
+   The generic role cards of the nine persistent actors that Setup copies into
+   an adopting project, with the declaration of deliberate deviations from
+   Syspilot's own cards.
+
+.. doc:: Example Contracts
+   :id: SYSP_DOC_EXAMPLE_CONTRACTS
+   :status: implemented
+   :realized_by: docs/Example Contracts/index.md
+   :includes: SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_RELEASE_CONTRACT, SYSP_REQ_RELEASE_VERSION, SYSP_REQ_PROCESS_MAINTENANCE, SYSP_REQ_EXAMPLES
+
+   The generic Contract processes that Setup copies into an adopting project:
+   the registry, the Contract Document method, the Change and Release
+   templates, and the process-maintenance example.

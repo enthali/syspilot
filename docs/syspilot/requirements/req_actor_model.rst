@@ -1,0 +1,43 @@
+Syspilot Actor Model
+====================
+
+.. req:: Actor Model
+   :id: SYSP_REQ_ACTOR_MODEL
+   :status: approved
+   :implements: SYSP_US_ACTOR_MODEL
+   :realized_by: docs/Syspilot Actors/index.md
+
+   Every Syspilot actor shall:
+
+   - have a public role card that defines its domain, responsibilities,
+     character, and perspective;
+   - maintain a ``context.md`` that names its public role card and the
+     process registry it follows by paths that resolve to the files, written
+     as project-root-relative paths in code spans, because an actor reads the
+     context as text and the depth of an actor folder below the project root
+     varies with the Jarvis ``jarvis.actors.folder`` setting, so that a
+     relative link written for one depth fails at another;
+   - obtain artifact ownership and current responsibility from the applicable
+     process and Contract Document rather than from a prescribed actor
+     sequence;
+   - state its role card and instructions in project-neutral wording, naming
+     no specific project, so the same card and instruction apply unchanged to
+     the project syspilot ships into;
+   - state required behavior in positive wording in its role card and
+     instructions, rather than relying on a negation to imply the bounded
+     alternative; and
+   - inherit memory, messaging, escalation, and culture from the Jarvis Actor
+     Kernel without duplicating that behavior in syspilot.
+
+.. vc:: Actor model exposes role and process authority
+   :id: SYSP_VC_ACTOR_MODEL_1
+   :status: approved
+   :verifies: SYSP_REQ_ACTOR_MODEL
+
+   Inspect each Syspilot actor's public role card and ``context.md`` and confirm
+   that its role, process registry, process-derived authority, and Jarvis
+   kernel boundary follow the common Actor Model, and that the ``context.md``
+   names its role card and the process registry as project-root-relative paths
+   that resolve to existing files. Confirm that the role card
+   and instructions name no specific project and state required behavior
+   positively rather than through a negation alone.

@@ -1,83 +1,121 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/syspilot-logo-dark.svg">
-    <img src="assets/syspilot-logo.svg" alt="syspilot" width="200">
+    <img src="assets/syspilot-logo.svg" alt="Syspilot" width="200">
   </picture>
 </p>
 
-<p align="center"><strong>Requirements Engineering that scales with AI.</strong></p>
+<p align="center"><strong>Requirements engineering that scales with AI-assisted development.</strong></p>
 
-> **⚠️ Early Research Project** — syspilot is under active development. Feel free to use it, fork it, or just study the approach. Updates may introduce breaking changes without migration paths.
+Syspilot gives AI collaborators a traceable product model and durable process
+state. Instead of asking an agent to rediscover your entire project on every
+change, you hand it explicit links, owned artifacts, and an outcome somebody can
+actually check.
 
-> Your project has 5000 requirements. A change affects 5 of them.
-> syspilot follows [sphinx-needs](https://sphinx-needs.readthedocs.io/) traceability links to find exactly those 5 — so your AI agent gets focused context, not the entire codebase.
+> Syspilot is an experimental method for contract-driven development, used to
+> build Syspilot itself and other successful projects, including
+> [Jarvis](https://github.com/enthali/Jarvis) and
+> [zonal-rc-car](https://github.com/enthali/zonal-rc-car). Expect some rough
+> edges — let us know about your experience.
 
-Cover 100% of your specs with 6x less tokens. Links are deterministic — search is probabilistic. syspilot gives your agents the map, not the flashlight. Built on [sphinx-needs](https://sphinx-needs.readthedocs.io/) by [useblocks](https://useblocks.com). Powered by [GitHub Copilot](https://github.com/features/copilot).
+## Install It
 
-## Quick Start
+Nothing to clone, nothing to copy into place. Open a GitHub Copilot chat session
+in your own project and send this:
 
-**Linux / Mac / GitHub Codespaces:**
-```bash
-mkdir -p .github/agents && curl -fsSL \
-  "https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/agents/syspilot.setup.agent.md" \
-  -o .github/agents/syspilot.setup.agent.md
+```text
+Install Syspilot into this project.
+
+1. Look up the releases of https://github.com/enthali/syspilot, tell me the
+   latest one, and ask me which version to install.
+2. Fetch `docs/Syspilot Contracts/setup.md` from that exact tag.
+3. Save it unchanged as `.syspilot/setup-contract.md` in this repository, and
+   make sure it is the only change in the working tree.
+4. Execute that Contract from top to bottom. It owns every further step,
+   question, blocker, and the final handoff.
+
+If the Contract does not describe a step you need, consult me on how to
+proceed.
 ```
 
-**Windows (PowerShell):**
-```powershell
-New-Item -ItemType Directory -Force -Path .github/agents | Out-Null
-Invoke-WebRequest `
-  -Uri "https://raw.githubusercontent.com/enthali/syspilot/main/syspilot/agents/syspilot.setup.agent.md" `
-  -OutFile ".github/agents/syspilot.setup.agent.md"
-```
+That is the entire entry point. It names a release and gets out of the way —
+everything version-specific lives in the Contract that ships with that release.
+See [Getting started](docs/getting-started.md) for what happens next, and for
+an overview of the supported setup.
 
-Then open VS Code Copilot Chat and run `@syspilot.setup`.
+## Start Here
 
-That's it. The setup agent handles dependencies, configuration, and validation automatically.
+| You want to... | Read... |
+|---|---|
+| See what works today | [Getting started](docs/getting-started.md) |
+| Understand why it works this way | [Contract Driven Development](docs/methodology.md) |
+| Understand actors, Needs, and Contracts | [The product model](docs/product-model.md) |
+| Run a change from intent to closure | [The Change Contract](docs/change-contract.md) |
+| Know which branch your work belongs on | [Branching](docs/branching.md) |
+| Tailor Syspilot to a project | [Customization](docs/customization.md) |
+| Build, update, or troubleshoot it | [Operations](docs/operations.md) |
+| Move a project from before 0.10 to 0.10 | [Upgrading to 0.10](docs/upgrade.md) |
 
-## What You Get
+The [rendered documentation](https://enthali.github.io/syspilot/index.html)
+also includes the authoritative specifications, actor roles, process
+definitions, traceability views, and historical Field Notes.
 
-Four **managers** that orchestrate the work, and seven **engineers** that execute it:
+## The Short Version
 
-| Managers | What they do |
-|----------|-------------|
-| `@syspilot.pm` | Plans features, manages backlog, delegates change requests |
-| `@syspilot.cm` | Orchestrates engineers through the change workflow |
-| `@syspilot.qm` | Runs independent quality checks |
-| `@syspilot.setup` | Installs/updates syspilot in your project |
+Syspilot connects three kinds of truth:
 
-| Engineers | What they do |
-|-----------|-------------|
-| `@syspilot.design` | Analyzes a change request, creates a Change Document |
-| `@syspilot.implement` | Executes approved changes with traceability |
-| `@syspilot.uat` | Generates user acceptance test artifacts |
-| `@syspilot.verify` | Validates implementation against the Change Document |
-| `@syspilot.docu` | Keeps project documentation current |
-| `@syspilot.mece` | Finds gaps and redundancies in your specs |
-| `@syspilot.trace` | Traces one item through all levels |
-| `@syspilot.release` | Manages versioning and release process |
+- **Needs** describe why the product exists and what it must do.
+- **Realized artifacts** are the files that make those requirements real.
+- **Contract Documents** hold the current intent, ownership, evidence, and
+  responsibility of one piece of work — so nobody has to reconstruct it from
+  chat history later.
 
-Agents are stable processes (WHAT to do). **Skills** are exchangeable tool bindings (HOW to do it) — customize syspilot by swapping skills, not agents.
+Nine persistent actors contribute through distinct areas of authority. There is
+no giant scripted relay race, because a fixed sequence eventually prescribes a
+step some change plainly does not need — and a rule nobody can follow is a rule
+everybody learns to ignore. Instead, the open artifacts in the current Contract
+decide who can make the next useful move.
 
-## How It Works
+## Current Reference Stack
 
-```
-User Story (WHY)  ──links──▶  Requirements (WHAT)  ──links──▶  Design Specs (HOW)
-```
+- VS Code with GitHub Copilot.
+- **[Jarvis](https://github.com/enthali/Jarvis)** — the framework that makes
+  persistent actors possible in the first place. It gives each actor an
+  identity, a memory that survives the session, and a way to message the
+  others. Without it, Syspilot is a filing system with strong opinions. Install
+  [`enthali.jarvis-core`](https://marketplace.visualstudio.com/items?itemName=enthali.jarvis-core)
+  and you have actors.
+- Python 3.13 or newer, and `uv`.
+- [Sphinx-Needs](https://sphinx-needs.readthedocs.io/) on top of Sphinx, which
+  turns requirements into a linked, validated graph instead of a folder of
+  hopeful prose.
 
-When you request a change, syspilot follows these links to find only the affected elements. **O(affected), not O(total).**
+Sphinx and Sphinx-Needs are the currently supported realization, and the Change
+process expects their ontology and traceability model. Backend neutrality is an
+intended direction rather than a feature you have today; a future Change has to
+establish and verify it. Syspilot installs no Python packages behind your back —
+the repository preview uses `docs/requirements.txt`.
 
-## Documentation
+The method itself travels, though. **[enthali/zonal-rc-car](https://github.com/enthali/zonal-rc-car)**
+runs the same Contract-driven actor organisation on a SysML v2 model instead of
+Sphinx-Needs — stakeholder intent, architecture, independent review and physical
+evidence, on an actual RC vehicle. What is currently tied to this stack is
+Syspilot's tooling, not the idea behind it.
 
-📖 **Full docs:** [enthali.github.io/syspilot](https://enthali.github.io/syspilot/index.html)
+## Optional Extensions
 
-Includes methodology, naming conventions, and traceability matrices.
+- **[`enthali.jarvis-flow`](https://marketplace.visualstudio.com/items?itemName=enthali.jarvis-flow)**
+  is highly recommended. It draws the messages travelling between actors, which
+  turns "who is waiting on whom?" from a guess into a picture.
+- **[`enthali.jarvis-kanban`](https://marketplace.visualstudio.com/items?itemName=enthali.jarvis-kanban)**
+  gives actors, projects, and events their own kanban boards as plain YAML in
+  the entity folder. Handy for project management, and pleasantly hard to
+  desynchronise from reality, since the board is a file the actors read and
+  write like any other.
 
-## Requirements
+`enthali.jarvis-core` and the two optional extensions above are all developed
+in the **[`enthali/Jarvis`](https://github.com/enthali/Jarvis)** repository.
 
-- **VS Code** + **GitHub Copilot** (license required)
-- **Python 3.10+** with `sphinx` and `sphinx-needs` pre-installed (`pip install sphinx sphinx-needs`)
-- **[`enthali.jarvis-core`](https://marketplace.visualstudio.com/items?itemName=enthali.jarvis-core)** VS Code extension, installed and enabled on your default agent's tool set — required for multi-agent orchestration (agents hand off work via `SEND`/session messaging). If disabled, agents silently lose this ability instead of erroring.
+## License
 
-> If `sphinx-needs` is missing, `@syspilot.setup` prints install instructions and stops — it does not auto-install packages.
-
+See [LICENSE](LICENSE).

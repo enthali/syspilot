@@ -1,0 +1,56 @@
+Contract Handling
+=================
+
+.. req:: Contract Responsibility Handling
+   :id: SYSP_REQ_CONTRACT_HANDLING
+   :status: approved
+   :implements: SYSP_US_CONTRACT_DOCUMENTS
+   :specializes: SYSP_REQ_CONTRACT_DOCUMENTS
+   :realized_by: .github/instructions/syspilot.contract-handling.instructions.md
+
+   Every actor working with a Contract Document shall receive one concise,
+   workspace-shared instruction that:
+
+   - treats ``Current responsibility`` as the temporary authority to maintain
+     the Contract instance without changing durable artifact ownership;
+   - after completing its work, selects the next logical included artifact
+     owner whose work can progress the Contract;
+   - updates Contract status, artifact evidence, and ``Current
+     responsibility``, then commits the Contract and related artifacts as one
+     consistent state before notifying the receiving owner through a named
+     ``HANDOFF`` message that realizes the Actor Kernel's ``SEND`` primitive,
+     intentionally prioritizing single-writer, consistent Contract state over
+     uninterrupted handoff communication and accepting the resulting brief
+     notification gap;
+   - names the Contract path and the committed state in the ``HANDOFF``
+     message, leaves the completed outcome to the last Handover-log line and
+     the remaining work to the open rows, and keeps notes and messages short
+     and direct, with facts and decisions, without recited evidence and
+     without instructions to a receiver who owns the next artifact, all
+     without redefining the Actor Kernel's messaging transport;
+   - requires the receiving owner, before starting the received work, to
+     re-read its own ``context.md``, public role card, and the Contract
+     instance, so that an ``ACK`` confirms current authority against current
+     state rather than cached assumptions, and then to verify that the named
+     commit's Contract header actually states ``Current responsibility`` as
+     itself, then to confirm receipt through a named ``ACK`` message that
+     realizes the Actor Kernel's ``RESPOND`` primitive when verified, or to
+     escalate instead of acknowledging when it is not;
+   - allows every actor to request advice or review from another actor at any
+     time through a named ``CONSULT`` message that realizes the Actor Kernel's
+     ``SEND`` primitive, without transferring ``Current responsibility``;
+     during that consultation, the consulting actor remains read-only with
+     respect to the Contract and versioned work artifacts and returns only
+     advice or findings through a named ``CONSULTRESPOND`` message that
+     realizes the Actor Kernel's ``RESPOND`` primitive;
+   - does not transfer ``Current responsibility`` for questions or escalation;
+     and
+   - records an actionable blocker and escalates when no included artifact
+     owner can progress the Contract.
+
+.. vc:: Contract responsibility produces a committed direct handoff
+   :id: SYSP_VC_CONTRACT_HANDLING_1
+   :status: approved
+   :verifies: SYSP_REQ_CONTRACT_HANDLING
+
+    Inspect the workspace-shared Contract-handling instruction and exercise a completed ``HANDOFF``, a receiving owner's ``ACK``, a ``CONSULT`` with its ``CONSULTRESPOND``, and a blocked Contract. Confirm that the completed ``HANDOFF`` updates evidence, status, and ``Current responsibility`` in one committed state before it is sent; the deliberate notification gap preserves single-writer, consistent Contract state; the receiving owner re-reads its ``context.md``, public role card, and the Contract instance and verifies the named commit's Contract header before confirming, and escalates instead of acknowledging on mismatch; ``CONSULT`` and ``CONSULTRESPOND`` are available between any actors without transferring responsibility or allowing the consulting actor to modify the Contract or versioned work artifacts; and an unprogressable Contract records and escalates its blocker. Confirm that the ``HANDOFF`` message names the Contract path and the commit and no more, that the completed outcome is the last Handover-log line and the remaining work is in the open rows, and that the instruction asks for short, direct notes and messages without recited evidence.
