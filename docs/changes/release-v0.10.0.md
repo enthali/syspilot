@@ -2,7 +2,7 @@
 
 **Status:** approved<br>
 **Process owner:** Release<br>
-**Current responsibility:** Technical Writer<br>
+**Current responsibility:** Release<br>
 **Current blocker:** none<br>
 **Created:** 2026-11-10<br>
 - **Operation Mode:** user-guided
@@ -17,6 +17,7 @@ The handing-over actor appends one line immediately before handing over, in the 
 |---|---|---|---|---|
 | 2026-11-10 | 11:54 | Project Manager | Release | User approved release start in user-guided mode; preparation can begin. |
 | 2026-11-10 | 11:58 | Release | Technical Writer | Inventory verified, v0.10.0 release notes written; user-facing documentation check next. |
+| 2026-11-10 | 12:50 | Technical Writer | Release | Documentation accuracy complete with User approval; stale portal/shared-Contract claims corrected, factual review clear, strict build and focused checks pass. |
 
 ## Objective And Scope
 
@@ -73,7 +74,7 @@ Publication is not atomic: Pages deployment may succeed before GitHub Release cr
 | Version | yes | Release | Tag, newest release-note heading and documentation agree | pending |
 | Preflight | yes | Release | Four local checks on P; triggered CI validation separately authorized | pending |
 | Release notes | yes | Release | One v0.10.0 heading covers all included Changes | complete: single `## v0.10.0` heading with 20 entries in integration order and known limitations; `check_release_version.py v0.10.0` passes |
-| User-facing documentation | yes | Technical Writer | Release-accuracy review in progress; User-approved portal/shared-Contract wording corrections, documentation-map coverage and Release-owned Setup-note correction | in progress |
+| User-facing documentation | yes | Technical Writer | Portal/shared-Contract corrections cc772a6 and Release-owned Setup-note correction 3d86026 reviewed; Architect factual review clear, strict build (zero warnings), 4 build tests, 27 focused checks and v0.10.0 version check pass; User approved completion on 2026-11-10 | complete |
 | Infrastructure impact | yes | Admin | Workflow inputs, environment baseline and revalidation assessment | pending |
 | Release verification | yes | Quality | Independent proceed and no open issue | pending |
 | Publication | yes | Release | Explicit push authorization, main/tag, successful workflow, Pages and GitHub Release verified | pending |
@@ -159,7 +160,7 @@ Release is the only writer of docs/releasenotes.md. Cover the verified inventory
 
 ## User-Facing Documentation
 
-**Status:** in progress
+**Status:** complete
 
 The User approved the release-accuracy check and requesting the Setup-note correction from Release on 2026-11-10. After reviewing the findings, the User also approved correcting the portal and shared-Contract explanations, explicitly retaining Syspilot's experimental status while recognizing implemented Setup. These are explanations of existing released behavior, not new release scope or authorization to push.
 
@@ -167,12 +168,18 @@ Impact queries for `SYSP_REQ_RELEASE_CONTRACT` and `SYSP_REQ_SETUP` (both direct
 
 | Document | Required update | Evidence |
 |---|---|---|
-| `docs/index.rst` | Replace obsolete unimplemented-bootstrap/repository-preview claim with implemented release-bound Setup, keeping experimental-project framing and linking evidence limits | User approved; factual review/build pending |
-| `docs/methodology.md` | Qualify tailoring by Contract kind: Release retains required headings and excludes unattended mode | Matches canonical Release and shared Contract Documents; factual review/build pending |
-| `docs/product-model.md` | State that every Contract kind carries the Handover log, not Change alone | Shared Contract rule; factual review/build pending |
-| `docs/syspilot/documentation/index.rst` | Add `SYSP_DOC_PORTAL` for the independently maintained rendered entry point; existing guide Needs/includes still cover their explanations | Map update; strict validation pending |
+| `docs/index.rst` | Replace obsolete unimplemented-bootstrap/repository-preview claim with implemented release-bound Setup, keeping experimental-project framing and linking evidence limits | Committed in `cc772a6`; Architect factual review clear; strict build and rendered `index.html` confirm the corrected text |
+| `docs/methodology.md` | Qualify tailoring by Contract kind: Release retains required headings and excludes unattended mode | `cc772a6`; Architect confirms canonical Release and shared Contract Documents alignment; strict build passes |
+| `docs/product-model.md` | State that every Contract kind carries the Handover log, not Change alone | `cc772a6`; Architect confirms the shared Contract rule; strict build passes |
+| `docs/syspilot/documentation/index.rst` | Add `SYSP_DOC_PORTAL` for the independently maintained rendered entry point; existing guide Needs/includes still cover their explanations | Strict schema/build validation passes; exported `SYSP_DOC_PORTAL` has `realized_by: docs/index.rst` and the three intended includes; it covers Syspilot's own portal, not an adopter's generated neutral index |
 | `README.md`, `docs/getting-started.md`, `docs/customization.md`, `docs/change-contract.md`, `docs/operations.md`, `docs/branching.md`, `docs/upgrade.md` | Reviewed against v0.10.0 notes: current stack, ordinary-session Setup/Admin path, project-owned examples/ontology, authority, upgrade-to-0.10 guidance, four checks, bounded record review and partial-publication limits remain applicable; no edits needed | Source review complete; no runtime installation/publication claimed |
-| `docs/releasenotes.md` (Release-owned) | Remove the new v0.10.0 entry's blanket unverified-installation claim; preserve reported-run versus deferred-scenario distinction from Operations | Release reports correction committed as `3d86026`; final source check pending |
+| `docs/releasenotes.md` (Release-owned) | Remove the new v0.10.0 entry's blanket unverified-installation claim; preserve reported-run versus deferred-scenario distinction from Operations | Release committed `3d86026`; source checked against Operations, including reported successful runs, undemonstrated deferred scenarios and the limits of automated checks |
+
+Architect's direct factual review of `cc772a6` on 2026-11-10 found no issues against `SYSP_REQ_CONTRACT_DOCUMENTS`, `SYSP_REQ_CHANGE_CONTRACT`, `SYSP_REQ_RELEASE_CONTRACT` and `SYSP_REQ_SETUP`. It confirmed the implemented/verified distinction and the portal Need's scope. No specification, canonical process or example behavior was changed.
+
+Verification on 2026-11-10: `python docs/docs-build.py clean` succeeded with zero warnings; `python docs/test_docs_build.py -v` passed 4 tests; `python -m unittest tests.test_acceptance_adoption_feedback.SharedContractRulesTests tests.test_acceptance_adoption_feedback.ReleaseProcessTests tests.test_acceptance_setup_examples.DocNeedTests` passed 27 tests; `python scripts/check_release_version.py v0.10.0` passed and confirmed the newest heading agrees with `docs/conf.py`. The rendered portal contains the implemented Setup and experimental-project wording. These checks do not replace Release's four-check preflight or prove Linux execution, installation scenario coverage or publication.
+
+After reviewing the corrections and results, the User explicitly approved completing this documentation row and returning responsibility to Release on 2026-11-10. No push or publication authorization was requested or granted.
 
 ## Infrastructure Impact
 
