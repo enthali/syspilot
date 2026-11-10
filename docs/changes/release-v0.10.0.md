@@ -2,8 +2,8 @@
 
 **Status:** approved<br>
 **Process owner:** Release<br>
-**Current responsibility:** Quality<br>
-**Current blocker:** none for Release; Quality re-review of P 174658b and the passed hosted validation run 42825367358; main/tag authorization still to be obtained<br>
+**Current responsibility:** Release<br>
+**Current blocker:** none<br>
 **Created:** 2026-11-10<br>
 - **Operation Mode:** user-guided
 
@@ -30,6 +30,7 @@ The handing-over actor appends one line immediately before handing over, in the 
 | 2026-11-10 | 14:23 | Release | Developer | Fix the Linux test failure of run 42821583430 (row Linux test fix); the mode-reset explanation is a hypothesis. |
 | 2026-11-10 | 14:23 | Developer | Release | Linux failure reproduced in WSL and fixed in the test helper (hypothesis confirmed; checker unchanged); the fix is a new commit on `development`, so a new P and a new validation run are yours. |
 | 2026-11-10 | 14:34 | Release | Quality | New P 174658b, four checks pass, validation-only run 42825367358 passed on Linux; QI-2 evidence ready, re-review needed. |
+| 2026-11-10 | 14:36 | Quality | Release | Proceed: QI-2 resolved; publication authorization and final P-to-R review remain open gates. |
 
 ## Objective And Scope
 
@@ -89,7 +90,7 @@ Publication is not atomic: Pages deployment may succeed before GitHub Release cr
 | User-facing documentation | yes | Technical Writer | Portal/shared-Contract corrections cc772a6 and Release-owned Setup-note correction 3d86026 reviewed; Architect factual review clear, strict build (zero warnings), 4 build tests, 27 focused checks and v0.10.0 version check pass; User approved completion on 2026-11-10 | complete |
 | Infrastructure impact | yes | Admin | Workflow-input and environment comparison, trigger assessment, and hosted revalidation requirement recorded in Infrastructure Impact; commit ecc8b2e | complete |
 | Linux test fix | yes | Developer | Cause demonstrated on Linux (WSL): `Repo.commit` runs `git add -A`, which with `core.fileMode` true on Linux resets the index mode set by `update-index --chmod=+x` to the working file's 644, so the mode change vanished; Windows has fileMode false. Fix: `core.fileMode=false` in `Repo.git` of `tests/test_acceptance_release_record.py`. Without the fix `tests.test_acceptance_release_record` fails 1 of 13 in WSL, with it 13 pass; the checker is unchanged. Not run: the hosted run | complete |
-| Release verification | yes | Quality | Re-review of 2cfc510 confirms QI-1 and QI-3 resolved; QI-2 remains open | blocked |
+| Release verification | yes | Quality | Independent re-review of 0775e40: QI-1 to QI-3 resolved; local preflight and hosted validation at P 174658b support proceed; final P-to-R review remains required | proceed |
 | Publication | yes | Release | Explicit push authorization, main/tag, successful workflow, Pages and GitHub Release verified | pending |
 | Closure | yes | Release | Closure checklist and publication evidence complete | pending |
 
@@ -168,8 +169,8 @@ Admin records the trigger paths/environment comparison against the last successf
 
 | Validation-only run | Authorization | Result |
 |---|---|---|
-| Required on a pushed branch (triggers 1 and 2) | Granted by the User on 2026-11-10 13:3x (approximate): push branch `release-validation-v0.10.0` at P 75cf135 and run the Release workflow manually (validation-only: no Pages, tag or GitHub Release). Acknowledged: local tests ran on the preparing platform only and Linux is first proven by this run; a failure means fix-forward. does not authorize pushing main or the tag. | failed: run 42821583430 (2026-11-10, branch at P 75cf135): validate and strict docs build passed; "Run release QA suites" failed 1 of 202 on Linux: `tests/test_acceptance_release_record.py:231` `test_rename_mode_change_and_deletion_of_another_file`, a mode change was accepted (exit 0, expected 1); passes on Windows. Fix-forward needs a new P and a new authorized run; routed to the Project Manager. |
-| Second run, fix-forward (triggers 1 and 2) | Granted by the User on 2026-11-10 (approximate 14:3x): update branch `release-validation-v0.10.0` to P 174658b and run the Release workflow manually (validation-only). Acknowledged: local tests ran on the preparing platform only, Linux is proven only by this run, a failure means fix-forward again. Does not authorize pushing main or the tag. | passed: run 42825367358 (2026-11-10, branch at P 174658b): Validate release and Build documentation (strict build and QA suites) succeeded on Linux; Pages and GitHub Release correctly skipped |
+| Required on a pushed branch (triggers 1 and 2) | Granted by the User on 2026-11-10 (time unverified): push branch `release-validation-v0.10.0` at P 75cf135 and run the Release workflow manually (validation-only: no Pages, tag or GitHub Release). Acknowledged: local tests ran on the preparing platform only and Linux is first proven by this run; a failure means fix-forward. Does not authorize pushing main or the tag. | failed: run 42821583430 (2026-11-10, branch at P 75cf135): validate and strict docs build passed; "Run release QA suites" failed 1 of 202 on Linux: `tests/test_acceptance_release_record.py:231` `test_rename_mode_change_and_deletion_of_another_file`, a mode change was accepted (exit 0, expected 1); passes on Windows. Fix-forward needs a new P and a new authorized run; routed to the Project Manager. |
+| Second run, fix-forward (triggers 1 and 2) | Granted by the User on 2026-11-10 (time unverified): update branch `release-validation-v0.10.0` to P 174658b and run the Release workflow manually (validation-only). Acknowledged: local tests ran on the preparing platform only, Linux is proven only by this run, a failure means fix-forward again. Does not authorize pushing main or the tag. | passed: run 42825367358 (2026-11-10, branch at P 174658b): Validate release and Build documentation (strict build and QA suites) succeeded on Linux; Pages and GitHub Release correctly skipped |
 
 ## Release Notes
 
@@ -208,17 +209,17 @@ Admin compared preflighted commit P `5637fa4` with the last successful tag-trigg
 
 The canonical trigger-path comparison found changes to `.github/workflows/release.yml`, `.syspilot/ontology.toml`, `docs/_static/needs-dark-mode.css`, `docs/conf.py`, and `docs/requirements.txt`, plus the addition of `scripts/check_release_version.py`. `docs/docs-build.py`, `docs/test_docs_build.py`, `docs/_templates/`, and `assets/syspilot-logo.svg` are unchanged. The environment also changed from Python 3.11 with pip to Python 3.13 with uv (`astral-sh/setup-uv@v6`); the `sphinx-needs` minimum changed from 2.0.0 to 4.1.0. A fresh dependency resolution recorded on 2026-11-09 selected Sphinx 9.2.0 and sphinx-needs 9.2.0. Both workflow definitions use `ubuntu-latest` and install Graphviz, but the unavailable prior logs prevent comparison of the actual runner image. These findings are the basis for the fired triggers above; Release remains responsible for the gate decision.
 
-The current workflow runs documentation build tests and, on tag pushes, the tag/version check before the strict documentation build and QA suite; publication and GitHub Release creation remain tag-only. The four local preflight checks passed at P, but do not prove execution on the hosted Linux runner. A validation-only run is therefore required; none has been pushed or run because User authorization to push the branch has not been granted.
+The current workflow runs documentation build tests and, on tag pushes, the tag/version check before the strict documentation build and QA suite; publication and GitHub Release creation remain tag-only. The four local preflight checks do not prove execution on the hosted Linux runner. Revalidation triggers records the authorized first run 42821583430, which failed, and authorized rerun 42825367358 at replacement P 174658b, which passed. This status synchronization was authorized by Admin on 2026-11-10; the original input/environment comparison above remains historical evidence at 5637fa4, not a new assessment or a successful tag-run baseline.
 
 | Infrastructure artifact | Impact | Required action and evidence |
 |---|---|---|
-| `.github/workflows/release.yml` and its build inputs | No workflow defect identified; prior successful run does not cover the current workflow or resolved environment | Trigger-path and environment comparison recorded above and in Revalidation Triggers; Release was consulted and retains the gate decision. Validation-only hosted run remains pending User authorization to push its branch. |
+| `.github/workflows/release.yml` and its build inputs | No workflow defect identified; prior successful run does not cover the current workflow or resolved environment | Trigger-path and environment comparison recorded above; Release was consulted and retains the gate decision. See Revalidation triggers for failed first run 42821583430 and passed authorized rerun 42825367358 at replacement P 174658b. Publication and main/tag authorization remain separate. |
 
 ## Release Verification
 
-**Status:** blocked
+**Status:** proceed
 
-**Current judgment:** blocked on QI-2. Re-review at `2cfc510` confirms QI-1 resolved: replacement P `75cf13596125d2447decd00fde0a361d7d3bce29` contains the corrected protected preparation record and `8fcb53b`, and Release records all four local checks passing there. QI-3 is resolved by Admin's completed artifact row. Required hosted validation remains pending in the committed record; local success does not substitute for it. The User authorized Quality to conduct all remaining reviews for this release autonomously on 2026-11-10; this does not change the protected operation mode for other actors or authorize any push, workflow run, tag or publication. This is not a publication-ready judgment.
+**Current judgment:** proceed at `0775e40` with preflighted commit P `174658b87bdf81b14aa91ec6072ee64c4cdc9b6f`. QI-1 and QI-3 remain resolved; QI-2 is resolved by recorded fresh local preflight and the authorized successful hosted validation-only run 42825367358 at that exact P. The Linux failure was a fixture mode-reset error, corrected without weakening the checker or its rejection assertion. Closed-Change inventory, release-note coverage, documentation accuracy and reviewed graph boundaries support this judgment. The User authorized autonomous Quality reviews for this release on 2026-11-10; other actors' mode is unchanged. Proceed enables the Publication gate, not a push: separate explicit main/tag authorization, its committed acknowledgement, the final record check and Quality/Release review of the complete P-to-R diff remain mandatory. Tag-only validation and actual publication are not demonstrated by the manual run.
 
 **Version and tag:** 0.10.0 / v0.10.0
 
@@ -234,6 +235,10 @@ Quality independently reviews Change closure, release-note coverage, documentati
 - QI-1 re-review: the Version row, Version/Change Inventory statuses and Objective inventory wording are corrected in replacement P. Verified `8fcb53b` is its ancestor. Between the original and replacement P only the workspace file and release record differ; no product, documentation, workflow, dependency or graph source changed.
 - Quality ran `python scripts/check_release_record.py 75cf135 2cfc510 v0.10.0`: exit 0. Read the complete replacement-P-to-handoff diff: responsibility, handover, preflight pointer/results and superseded-P explanation only. No protected content, release procedure or failure rule changed. Final R and its complete diff still require review before push.
 - QI-3 re-review: Admin updated its artifact-table row in `c38881f` and corrected the responsibility header in `16b71cb`; the row now agrees with the completed infrastructure section. That section's comparison was performed at the original P; unchanged infrastructure inputs between the two candidates preserve its trigger conclusion.
+- Latest candidate review: between `75cf135` and `174658b` only this record and `tests/test_acceptance_release_record.py` changed. Read the one-line test-helper fix and mode-change case: `core.fileMode=false` prevents `git add -A` from undoing the fixture's explicit executable-bit index change. The real committed-mode diff remains checked by the unchanged release checker, and the expected rejection is unchanged. Developer records the failing and passing WSL reproduction; Release records 4 build tests, strict build, 202 QA tests and version check passing at the new P.
+- QI-2 verification: `gh run view 42825367358 --repo enthali/syspilot --json headSha,event,status,conclusion,url,jobs,createdAt,updatedAt` independently confirms a completed successful `workflow_dispatch` at full SHA P: validation, strict build and release QA steps passed; Pages and GitHub Release jobs skipped. Detailed log download failed with proxy authentication required; the 202-test count rests on owner-recorded evidence, not an independently downloaded log. No redundant suite/build or remote run was started by Quality.
+- Read authorization commits `3e03bd4` and `cb4974c`: each identifies its branch, candidate and validation-only run, with no main/tag authorization. Their commit times precede the respective workflow creation times (14:06:51 before 14:07:03; 14:31:48 before 14:31:58, local). These are ordering checks, not inferred User decision times; Release authorized marking both approximate decision times unverified. Admin authorized synchronizing only obsolete run-status sentences by reference to Revalidation triggers.
+- Quality ran `python scripts/check_release_record.py 174658b 0775e40 v0.10.0`: exit 0. Read the complete P-to-handoff record diff, including the second-run authorization, results and failure disposition; changes are evidence and responsibility only, with no protected-content, procedure or failure-rule change. R does not yet exist; its full diff, including later main/tag authorization, must still be reviewed before push.
 
 ### Applied Review Methods
 
@@ -245,8 +250,9 @@ The queried scope is the same 20 starting Needs explicitly listed in the [releas
 | Horizontal coverage | `analyze_mece.py ID --scope same-document` for all 21; all queries succeeded with no structural findings. Exact documentation peer group is the prior 11-document group plus `SYSP_DOC_PORTAL`; Release Contract ACs `_1`, `_2`, `_3` remain each other's peers; other starting objects have no same-document peers | The portal owns Syspilot's rendered entry point, distinct from README, guides and the adopter's generated neutral index. Empty peer sets and unavailable structured coverage data remain limits; complete semantic peer review is deferred to the replacement-candidate review. |
 | Relationship analysis | `analyze_trace.py ID --direction both --depth 2` for all 21; all queries succeeded with no structural findings. The examined neighborhood is the prior Quality Review's explicitly enumerated 85-object union plus `SYSP_DOC_PORTAL` | Release/Admin, shared-Contract and Setup authority boundaries informed QI-1 to QI-3. Complete resolved-neighbor semantic review remains open; structural success does not establish semantic consistency, platform execution or publication. |
 | Focused re-review at `2cfc510` | Repeated all 63 Impact/MECE/Trace queries with the same arguments; exact peer sets, neighborhoods, structural findings and limitations unchanged. Reviewed every correction named by QI-1/QI-3, Admin ownership evidence and the full new-P-to-handoff diff | QI-1 and QI-3 resolved. No new structural or correction-specific semantic finding. Unchanged graph sources support retaining the prior scope; full semantic clearance remains open and no overall proceed is claimed while QI-2 is unresolved. |
+| Final candidate review at `0775e40` | Repeated all 63 queries; exact scopes, findings and limits unchanged. Compared specification/ontology source with the prior completed semantic review at `0417b49`: only the new portal Need differs. Retained that review for the unchanged 85-object baseline; read the portal, its three includes, its realization and the complete 12-document peer descriptions against the already reviewed guide corrections | Semantic scope clearance complete for this release review: no new overlap, contradiction, missing coverage or authority collision. The portal covers the rendered entry point; README, installation, operations, conceptual guides and adopter examples remain distinct realizations with deliberately shared requirements. Graph absence does not prove a missing obligation; permitted links are not inferred requirements. |
 
-These are preliminary analysis results, not a completed semantic clearance. Re-review must assess the replacement P, final evidence, remaining semantic coverage and the complete P-to-R diff before publication.
+The initial and focused rows describe earlier review stages; the final-candidate row completes their deferred semantic review using the unchanged reviewed baseline and direct review of the added portal. Depth-bounded discovery, empty peer sets and unavailable structured coverage remain limits, not defects or runtime proof. Actual publication, tag-only execution and the final P-to-R review remain outside this completed preparation judgment.
 
 ### Open Quality Issues
 
@@ -254,7 +260,7 @@ Quality maintains this table, routes issues to artifact owners and removes rows 
 
 | Artifact | Current issue | Required outcome |
 |---|---|---|
-| Triggered hosted validation (Release) | QI-2: triggers 1 and 2 fired, but the required validation-only run has neither authorization nor a result | Obtain and record explicit User authorization naming the validation-only run before pushing its branch; record a successful run of the replacement P. Main/tag publication authorization remains separate. |
+| None | None | None |
 
 ## Publication
 
