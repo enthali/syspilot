@@ -163,7 +163,7 @@ Admin records the trigger paths/environment comparison against the last successf
 
 | Validation-only run | Authorization | Result |
 |---|---|---|
-| Required on a pushed branch (triggers 1 and 2) | Not granted | pending |
+| Required on a pushed branch (triggers 1 and 2) | Granted by the User on 2026-11-10 13:3x (approximate): push branch `release-validation-v0.10.0` at P 75cf135 and run the Release workflow manually (validation-only: no Pages, tag or GitHub Release). Acknowledged: local tests ran on the preparing platform only and Linux is first proven by this run; a failure means fix-forward. Does not authorize pushing main or the tag. | pending |
 
 ## Release Notes
 
