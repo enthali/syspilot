@@ -3,7 +3,7 @@
 **Status:** approved<br>
 **Process owner:** Release<br>
 **Current responsibility:** Release<br>
-**Current blocker:** QI-2: required hosted validation pending<br>
+**Current blocker:** QI-2: hosted validation run 42821583430 failed on Linux (one test); fix, new P and new run needed<br>
 **Created:** 2026-11-10<br>
 - **Operation Mode:** user-guided
 
@@ -164,7 +164,7 @@ Admin records the trigger paths/environment comparison against the last successf
 
 | Validation-only run | Authorization | Result |
 |---|---|---|
-| Required on a pushed branch (triggers 1 and 2) | Granted by the User on 2026-11-10 13:3x (approximate): push branch `release-validation-v0.10.0` at P 75cf135 and run the Release workflow manually (validation-only: no Pages, tag or GitHub Release). Acknowledged: local tests ran on the preparing platform only and Linux is first proven by this run; a failure means fix-forward. Does not authorize pushing main or the tag. | pending |
+| Required on a pushed branch (triggers 1 and 2) | Granted by the User on 2026-11-10 13:3x (approximate): push branch `release-validation-v0.10.0` at P 75cf135 and run the Release workflow manually (validation-only: no Pages, tag or GitHub Release). Acknowledged: local tests ran on the preparing platform only and Linux is first proven by this run; a failure means fix-forward. does not authorize pushing main or the tag. | failed: run 42821583430 (2026-11-10, branch at P 75cf135): validate and strict docs build passed; "Run release QA suites" failed 1 of 202 on Linux: `tests/test_acceptance_release_record.py:231` `test_rename_mode_change_and_deletion_of_another_file`, a mode change was accepted (exit 0, expected 1); passes on Windows. Fix-forward needs a new P and a new authorized run; routed to the Project Manager. |
 
 ## Release Notes
 
