@@ -2,8 +2,8 @@
 
 **Status:** approved<br>
 **Process owner:** Release<br>
-**Current responsibility:** Release<br>
-**Current blocker:** QI-2: Linux test fixed in the test helper; new P and a new hosted validation run needed<br>
+**Current responsibility:** Quality<br>
+**Current blocker:** none for Release; Quality re-review of P 174658b and the passed hosted validation run 42825367358; main/tag authorization still to be obtained<br>
 **Created:** 2026-11-10<br>
 - **Operation Mode:** user-guided
 
@@ -29,6 +29,7 @@ The handing-over actor appends one line immediately before handing over, in the 
 | 2026-11-10 | 14:06 | Quality | Release | QI-1 and QI-3 confirmed resolved; blocked on required hosted validation. |
 | 2026-11-10 | 14:23 | Release | Developer | Fix the Linux test failure of run 42821583430 (row Linux test fix); the mode-reset explanation is a hypothesis. |
 | 2026-11-10 | 14:23 | Developer | Release | Linux failure reproduced in WSL and fixed in the test helper (hypothesis confirmed; checker unchanged); the fix is a new commit on `development`, so a new P and a new validation run are yours. |
+| 2026-11-10 | 14:34 | Release | Quality | New P 174658b, four checks pass, validation-only run 42825367358 passed on Linux; QI-2 evidence ready, re-review needed. |
 
 ## Objective And Scope
 
@@ -83,7 +84,7 @@ Publication is not atomic: Pages deployment may succeed before GitHub Release cr
 | Release start | yes | User | User: "ok go", 2026-11-10; preparation only, no push authorization | approved |
 | Change inventory | yes | Release | Integrated Changes closed; Example sync verified or justified | complete: 20 Changes verified against first-parent history on 2026-11-10, all closed (see Change Inventory) |
 | Version | yes | Release | Tag, newest release-note heading and documentation agree | complete: tag v0.10.0; newest heading and `docs/conf.py` agree (version checker passes) |
-| Preflight | yes | Release | Four local checks on P; triggered CI validation separately authorized | complete: four checks pass at P 174658b (supersedes 75cf135); second validation-only run authorized, result pending |
+| Preflight | yes | Release | Four local checks on P; triggered CI validation separately authorized | complete: four checks pass at P 174658b (supersedes 75cf135); second validation-only run passed |
 | Release notes | yes | Release | One v0.10.0 heading covers all included Changes | complete: single `## v0.10.0` heading with 20 entries in integration order and known limitations; `check_release_version.py v0.10.0` passes |
 | User-facing documentation | yes | Technical Writer | Portal/shared-Contract corrections cc772a6 and Release-owned Setup-note correction 3d86026 reviewed; Architect factual review clear, strict build (zero warnings), 4 build tests, 27 focused checks and v0.10.0 version check pass; User approved completion on 2026-11-10 | complete |
 | Infrastructure impact | yes | Admin | Workflow-input and environment comparison, trigger assessment, and hosted revalidation requirement recorded in Infrastructure Impact; commit ecc8b2e | complete |
@@ -168,7 +169,7 @@ Admin records the trigger paths/environment comparison against the last successf
 | Validation-only run | Authorization | Result |
 |---|---|---|
 | Required on a pushed branch (triggers 1 and 2) | Granted by the User on 2026-11-10 13:3x (approximate): push branch `release-validation-v0.10.0` at P 75cf135 and run the Release workflow manually (validation-only: no Pages, tag or GitHub Release). Acknowledged: local tests ran on the preparing platform only and Linux is first proven by this run; a failure means fix-forward. does not authorize pushing main or the tag. | failed: run 42821583430 (2026-11-10, branch at P 75cf135): validate and strict docs build passed; "Run release QA suites" failed 1 of 202 on Linux: `tests/test_acceptance_release_record.py:231` `test_rename_mode_change_and_deletion_of_another_file`, a mode change was accepted (exit 0, expected 1); passes on Windows. Fix-forward needs a new P and a new authorized run; routed to the Project Manager. |
-| Second run, fix-forward (triggers 1 and 2) | Granted by the User on 2026-11-10 (approximate 14:3x): update branch `release-validation-v0.10.0` to P 174658b and run the Release workflow manually (validation-only). Acknowledged: local tests ran on the preparing platform only, Linux is proven only by this run, a failure means fix-forward again. Does not authorize pushing main or the tag. | pending |
+| Second run, fix-forward (triggers 1 and 2) | Granted by the User on 2026-11-10 (approximate 14:3x): update branch `release-validation-v0.10.0` to P 174658b and run the Release workflow manually (validation-only). Acknowledged: local tests ran on the preparing platform only, Linux is proven only by this run, a failure means fix-forward again. Does not authorize pushing main or the tag. | passed: run 42825367358 (2026-11-10, branch at P 174658b): Validate release and Build documentation (strict build and QA suites) succeeded on Linux; Pages and GitHub Release correctly skipped |
 
 ## Release Notes
 
