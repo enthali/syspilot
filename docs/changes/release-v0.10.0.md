@@ -3,7 +3,7 @@
 **Status:** approved<br>
 **Process owner:** Release<br>
 **Current responsibility:** Admin<br>
-**Current blocker:** QI-1: superseded preflight candidate; QI-2: required hosted validation pending; QI-3: inconsistent infrastructure status<br>
+**Current blocker:** QI-1: superseded preflight candidate; QI-2: required hosted validation pending<br>
 **Created:** 2026-11-10<br>
 - **Operation Mode:** user-guided
 
@@ -23,6 +23,7 @@ The handing-over actor appends one line immediately before handing over, in the 
 | 2026-11-10 | 13:08 | Release | Quality | Preflight, documentation and infrastructure complete; independent release review needed. |
 | 2026-11-10 | 13:13 | Quality | Release | Blocked: corrected protected record and new P needed; hosted validation remains pending. |
 | 2026-11-10 | 13:15 | Release | Admin | QI-3: synchronize the Infrastructure artifact row with the completed section. |
+| 2026-11-10 | 13:15 | Admin | Release | Infrastructure artifact row synchronized with the completed assessment in commit ecc8b2e; hosted validation remains pending User authorization. |
 
 ## Objective And Scope
 
@@ -80,7 +81,7 @@ Publication is not atomic: Pages deployment may succeed before GitHub Release cr
 | Preflight | yes | Release | Four local checks on P; triggered CI validation separately authorized | complete: four checks pass at P 5637fa4; validation-only run required, not yet authorized |
 | Release notes | yes | Release | One v0.10.0 heading covers all included Changes | complete: single `## v0.10.0` heading with 20 entries in integration order and known limitations; `check_release_version.py v0.10.0` passes |
 | User-facing documentation | yes | Technical Writer | Portal/shared-Contract corrections cc772a6 and Release-owned Setup-note correction 3d86026 reviewed; Architect factual review clear, strict build (zero warnings), 4 build tests, 27 focused checks and v0.10.0 version check pass; User approved completion on 2026-11-10 | complete |
-| Infrastructure impact | yes | Admin | Workflow inputs, environment baseline and revalidation assessment | pending |
+| Infrastructure impact | yes | Admin | Workflow-input and environment comparison, trigger assessment, and hosted revalidation requirement recorded in Infrastructure Impact; commit ecc8b2e | complete |
 | Release verification | yes | Quality | Independent review on 2026-11-10; QI-1 to QI-3 below; Release agrees a corrected record and fresh P are needed | blocked |
 | Publication | yes | Release | Explicit push authorization, main/tag, successful workflow, Pages and GitHub Release verified | pending |
 | Closure | yes | Release | Closure checklist and publication evidence complete | pending |
