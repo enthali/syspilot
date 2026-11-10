@@ -2,7 +2,7 @@
 
 **Status:** approved<br>
 **Process owner:** Release<br>
-**Current responsibility:** Release<br>
+**Current responsibility:** Developer<br>
 **Current blocker:** QI-2: hosted validation run 42821583430 failed on Linux (one test); fix, new P and new run needed<br>
 **Created:** 2026-11-10<br>
 - **Operation Mode:** user-guided
@@ -27,6 +27,7 @@ The handing-over actor appends one line immediately before handing over, in the 
 | 2026-11-10 | 13:16 | Admin | Release | Corrected the responsibility header to Release; the infrastructure row is complete and QI-1/QI-2 remain open. |
 | 2026-11-10 | 13:22 | Release | Quality | QI-1 resolved: new P 75cf135, four checks pass; QI-2 (validation-only run) pending User authorization; re-review needed. |
 | 2026-11-10 | 14:06 | Quality | Release | QI-1 and QI-3 confirmed resolved; blocked on required hosted validation. |
+| 2026-11-10 | 14:23 | Release | Developer | Fix the Linux test failure of run 42821583430 (row Linux test fix); the mode-reset explanation is a hypothesis. |
 
 ## Objective And Scope
 
@@ -85,6 +86,7 @@ Publication is not atomic: Pages deployment may succeed before GitHub Release cr
 | Release notes | yes | Release | One v0.10.0 heading covers all included Changes | complete: single `## v0.10.0` heading with 20 entries in integration order and known limitations; `check_release_version.py v0.10.0` passes |
 | User-facing documentation | yes | Technical Writer | Portal/shared-Contract corrections cc772a6 and Release-owned Setup-note correction 3d86026 reviewed; Architect factual review clear, strict build (zero warnings), 4 build tests, 27 focused checks and v0.10.0 version check pass; User approved completion on 2026-11-10 | complete |
 | Infrastructure impact | yes | Admin | Workflow-input and environment comparison, trigger assessment, and hosted revalidation requirement recorded in Infrastructure Impact; commit ecc8b2e | complete |
+| Linux test fix | yes | Developer | Demonstrated cause of the Linux failure in `tests/test_acceptance_release_record.py:231` fixed (User approved a Release-scoped task, 2026-11-10); local tests pass; checker unchanged unless the cause is in it | pending |
 | Release verification | yes | Quality | Re-review of 2cfc510 confirms QI-1 and QI-3 resolved; QI-2 remains open | blocked |
 | Publication | yes | Release | Explicit push authorization, main/tag, successful workflow, Pages and GitHub Release verified | pending |
 | Closure | yes | Release | Closure checklist and publication evidence complete | pending |
