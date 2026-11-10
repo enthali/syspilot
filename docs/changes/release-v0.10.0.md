@@ -2,7 +2,7 @@
 
 **Status:** approved<br>
 **Process owner:** Release<br>
-**Current responsibility:** Admin<br>
+**Current responsibility:** Release<br>
 **Current blocker:** QI-1: superseded preflight candidate; QI-2: required hosted validation pending<br>
 **Created:** 2026-11-10<br>
 - **Operation Mode:** user-guided
@@ -24,6 +24,7 @@ The handing-over actor appends one line immediately before handing over, in the 
 | 2026-11-10 | 13:13 | Quality | Release | Blocked: corrected protected record and new P needed; hosted validation remains pending. |
 | 2026-11-10 | 13:15 | Release | Admin | QI-3: synchronize the Infrastructure artifact row with the completed section. |
 | 2026-11-10 | 13:15 | Admin | Release | Infrastructure artifact row synchronized with the completed assessment in commit ecc8b2e; hosted validation remains pending User authorization. |
+| 2026-11-10 | 13:16 | Admin | Release | Corrected the responsibility header to Release; the infrastructure row is complete and QI-1/QI-2 remain open. |
 
 ## Objective And Scope
 
