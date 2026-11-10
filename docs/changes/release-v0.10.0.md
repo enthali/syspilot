@@ -2,7 +2,7 @@
 
 **Status:** approved<br>
 **Process owner:** Release<br>
-**Current responsibility:** Release<br>
+**Current responsibility:** Quality<br>
 **Current blocker:** none<br>
 **Created:** 2026-11-10<br>
 - **Operation Mode:** user-guided
@@ -20,6 +20,7 @@ The handing-over actor appends one line immediately before handing over, in the 
 | 2026-11-10 | 12:50 | Technical Writer | Release | Documentation accuracy complete with User approval; stale portal/shared-Contract claims corrected, factual review clear, strict build and focused checks pass. |
 | 2026-11-10 | 13:05 | Release | Admin | Preflight passed at P 5637fa4; triggers 1 and 2 recorded; Infrastructure impact row to complete. |
 | 2026-11-10 | 13:05 | Admin | Release | Infrastructure impact recorded; changed workflow inputs and environment make validation-only CI revalidation necessary, pending User authorization to push the branch. |
+| 2026-11-10 | 13:08 | Release | Quality | Preflight, documentation and infrastructure complete; independent release review needed. |
 
 ## Objective And Scope
 
