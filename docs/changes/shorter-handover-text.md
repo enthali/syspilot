@@ -1,6 +1,6 @@
 # Change Contract: shorter-handover-text
 
-**Status:** approved<br>
+**Status:** closed<br>
 **Process owner:** Project Manager<br>
 **Current responsibility:** Project Manager<br>
 **Current blocker:** none<br>
