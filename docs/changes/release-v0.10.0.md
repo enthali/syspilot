@@ -37,7 +37,7 @@ Publish Syspilot v0.10.0: the Contract-driven source release, with project-owned
 
 ### Included Changes
 
-Initial inventory candidates below follow integration order. Release verifies completeness against the actual v0.9.1-to-development source difference, including changes without a modern Contract, and resolves missing closure or Example sync evidence before preflight. This list is not yet a verified release inventory.
+Initial inventory candidates below follow integration order. Release verified them against the actual v0.9.1-to-development source difference on 2026-11-10; the verified inventory with closure and Example sync evidence is in Change Inventory. A candidate is not a verified inventory entry by this list alone.
 
 | Candidate | Integration reference |
 |---|---|
@@ -78,7 +78,7 @@ Publication is not atomic: Pages deployment may succeed before GitHub Release cr
 | Objective and scope | yes | Project Manager | User approved the scope on 2026-11-10; Release verifies the candidate inventory | approved |
 | Release start | yes | User | User: "ok go", 2026-11-10; preparation only, no push authorization | approved |
 | Change inventory | yes | Release | Integrated Changes closed; Example sync verified or justified | complete: 20 Changes verified against first-parent history on 2026-11-10, all closed (see Change Inventory) |
-| Version | yes | Release | Tag, newest release-note heading and documentation agree | pending |
+| Version | yes | Release | Tag, newest release-note heading and documentation agree | complete: tag v0.10.0; newest heading and `docs/conf.py` agree (version checker passes) |
 | Preflight | yes | Release | Four local checks on P; triggered CI validation separately authorized | complete: four checks pass at P 5637fa4; validation-only run required, not yet authorized |
 | Release notes | yes | Release | One v0.10.0 heading covers all included Changes | complete: single `## v0.10.0` heading with 20 entries in integration order and known limitations; `check_release_version.py v0.10.0` passes |
 | User-facing documentation | yes | Technical Writer | Portal/shared-Contract corrections cc772a6 and Release-owned Setup-note correction 3d86026 reviewed; Architect factual review clear, strict build (zero warnings), 4 build tests, 27 focused checks and v0.10.0 version check pass; User approved completion on 2026-11-10 | complete |
@@ -89,7 +89,7 @@ Publication is not atomic: Pages deployment may succeed before GitHub Release cr
 
 ## Change Inventory
 
-**Status:** pending
+**Status:** complete
 
 Release verifies the candidates above, closure and Example sync, and records the final inventory here before P. No prior-release commit is included merely because it appears in branch history.
 
@@ -120,7 +120,7 @@ Verified 2026-11-10 against `git log --first-parent v0.9.1..development`: these 
 
 ## Version
 
-**Status:** pending
+**Status:** complete
 
 **Version:** 0.10.0 - User-requested minor release.
 
