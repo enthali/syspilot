@@ -279,7 +279,7 @@ Validation/build failure prevents publication. Failure after Pages deployment ca
 |---|---|
 | Preflighted commit P | 174658b87bdf81b14aa91ec6072ee64c4cdc9b6f |
 | Release commit on main R | pending |
-| User authorization to push main and the tag | Not granted |
+| User authorization to push main and the tag | Granted by the User on 2026-11-10 (time not recorded): push `main` as R and tag R `v0.10.0`, push the tag, which starts the Release workflow with Pages and GitHub Release. Acknowledged: tests ran locally on the preparing platform and Linux was proven by the validation-only run 42825367358 at P, not by the tag run; publication is not atomic and the partial-publication risk is accepted; a failed tag run means fix-forward with a new version and the tag is not moved. Recorded on development before R. |
 | Tag | v0.10.0 (not created) |
 | Workflow run | pending |
 | GitHub Release | pending |
