@@ -20,5 +20,6 @@ Release
 
    Given a set of changes intended for release,
    When Release completes delivery,
-   Then the packaged version, preflight evidence, release-facing documentation,
-   and delivery outcome are complete and consistent.
+   Then the packaged version, preflight evidence, release notes, the
+   user-facing documentation owned by the Technical Writer, and
+   delivery outcome are complete and consistent.

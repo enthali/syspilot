@@ -191,10 +191,13 @@ class ContractTextCrossChecks(unittest.TestCase):
             with self.subTest(context=context):
                 self.assertRegex(context, r"(request text as|drops an) `$")
 
-    def test_the_user_guide_says_end_to_end_installation_is_not_yet_verified(self):
-        guide = " ".join(read(ROOT / "docs" / "getting-started.md").split())
-        self.assertRegex(guide, r"End-to-end installation, actor discovery, target build, baseline[^.]*not")
-
+    def test_the_operations_guide_states_the_evidence_limits_without_the_blanket_statements(self):
+        guide = " ".join(read(ROOT / "docs" / "operations.md").split())
+        self.assertIn("Deferred practical scenarios remain undemonstrated.", guide)
+        self.assertRegex(guide, r"Automated text, scaffold, and fixture checks are not end-to-end runtime proof")
+        self.assertRegex(guide, r"a reported Setup run does not establish which individual scenarios passed")
+        for stale in ("has not yet been executed", "reference preview only", "do not claim"):
+            self.assertNotIn(stale, guide)
     def test_the_old_session_gate_is_gone_from_every_normative_artifact(self):
         for path in (SETUP, REQUIREMENTS / "req_setup.rst", ROOT / "docs" / "syspilot" / "userstories" / "us_setup.rst",
                      ROOT / "docs" / "getting-started.md", ROOT / "docs" / "operations.md"):

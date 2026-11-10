@@ -79,10 +79,10 @@ The handing-over actor appends one line as the last act before handing over, in 
 | Release start | yes | User | User authorization to start the release; no other actor may set this gate | pending / approved |
 | Change inventory | yes | Release | Every included Change Contract is closed and integrated into `development`, and its `Example sync` row reads `complete` or `not applicable` with a reason | pending / complete |
 | Version | yes | Release | The version is the tag under SemVer; the tag form and the release-notes heading agree | pending / complete |
-| Preflight | yes | Release | Documentation build tests, strict clean documentation build, release QA suites, the automated version check, and a validation-only run of the release workflow pass on the preflighted commit, with commands and results recorded | pending / passed / failed |
+| Preflight | yes | Release | Documentation build tests, strict clean documentation build, release QA suites, and the automated version check pass on the preflighted commit, with commands, commit, and results recorded; a validation-only run of the release workflow is recorded only when a revalidation trigger fired | pending / passed / failed |
 | Release notes | yes | Release | `docs/releasenotes.md` holds exactly one heading for the version and covers every included Change | pending / complete |
-| User-facing documentation | yes / not applicable: {reason; delete the corresponding empty section} | Technical Writer | User-facing documentation describes what this release ships, including its version | pending / complete / not applicable |
-| Infrastructure impact | yes / not applicable: {reason; delete the corresponding empty section} | Admin | The release workflow validates, publishes, and creates the release for everything this release ships | pending / complete / not applicable |
+| User-facing documentation | yes / not applicable: {reason; keep the section with status `not applicable`} | Technical Writer | User-facing documentation describes what this release ships, including its version | pending / complete / not applicable |
+| Infrastructure impact | yes / not applicable: {reason; keep the section with status `not applicable`} | Admin | The release workflow validates, publishes, and creates the release for everything this release ships | pending / complete / not applicable |
 | Release verification | yes | Quality | Quality reviewed the recorded preflight commands and results; current judgment is `proceed` and no open quality issue remains | pending |
 | Publication | yes | Release | `main` and the tag pushed with the User's recorded authorization, the release workflow succeeded, and the GitHub Release and the published documentation at its Pages URL show the version | pending / published |
 | Closure | yes | Release | Closure checklist complete | pending |
@@ -105,23 +105,48 @@ Semantic versioning. The version of a release is its tag, which has the form `vM
 
 **Version:** {version} - {reason}
 
+This section, the `Change Inventory`, and the `Objective And Scope` section are final before the preflight: they are protected content, and the record comparison in Publication fails on any change to them after the preflighted commit.
+
 ## Preflight
 
 **Status:** pending | passed | failed
 
-Run in order on the preflighted commit, which is the `development` commit to be released, and stop at the first failure, before `main` or a tag moves. The release notes in `docs/releasenotes.md` and the release-facing documentation are committed on `development` before the preflight, because check 4 reads the release-notes heading and the tree check in Publication step 1 compares the release commit with this commit; any later commit on `development` needs a new preflight.
+Run in order on the preflighted commit P, which is the `development` commit to be released, and stop at the first failure, before `main` or a tag moves. The release notes in `docs/releasenotes.md`, the version heading, and the user-facing documentation are committed on `development` before the preflight, because check 4 reads the release-notes heading and the record comparison in Publication compares the release commit R with P. Any difference between P and R other than this release record needs a new preflight on the new commit.
+
+**Preflighted commit P:** {full sha}
+
+The list below is protected content: it does not change after P.
 
 1. `uv run python docs/test_docs_build.py -v`
 2. `uv run python docs/docs-build.py clean`, which builds strictly with zero warnings
 3. `uv run python -m unittest discover -s tests -v`
-4. `uv run python scripts/check_release_version.py v{version}`, the automated version check, which verifies the tag form `vMAJOR.MINOR.PATCH` and exactly one release-notes heading for the version and writes nothing; the release workflow otherwise checks both only after the tag is pushed
-5. A validation-only `workflow_dispatch` run of `release.yml` on a pushed branch of the preflighted commit, which never publishes. It exercises the `validate` and `build-docs` jobs; tag validation, release-notes extraction, documentation publication, and release creation run only on a tag push, so a passing run does not show that publication works. Pushing the branch is the one exception to keeping feature branches local and requires the User's explicit authorization, recorded in the row
+4. `uv run python scripts/check_release_version.py v{version}`, the automated version check, which verifies the tag form `vMAJOR.MINOR.PATCH`, exactly one release-notes heading for the version, and the consistency of the version with the documentation's version metadata, and writes nothing; the release workflow runs the same check after the tag is pushed
+
+The strict build needs network access, because the documentation configuration fetches an external inventory from `docs.python.org`; in an environment without it the build fails for that reason and not for the content.
 
 | Check | Command and commit | Result |
 |---|---|---|
 | {check} | {command} @ {sha} | pass / fail: {failing item} |
 
 A failure becomes a row in Open Quality Issues and responsibility goes to the owner of the affected artifact.
+
+### What local evidence does not show
+
+The preflight does not run on the workflow's platform. Platform-specific failures such as path case, line endings, or tools installed only on the runner may appear first after the tag exists, and publication is not exercised. This trade-off is accepted, and the User's authorization in Publication acknowledges it. A failure of the validation or of the documentation build after the tag publishes nothing, because publication follows them. A failure after the documentation was published, as when the GitHub Release is not created after the Pages deployment, leaves a partial publication that the failure path in Publication handles; the User accepted that risk and publication is not atomic.
+
+### Revalidation triggers
+
+At the release start Release decides, as the mandatory consultee of the Admin's Infrastructure Impact statement, whether the trigger path list and the environment-change statement are sufficient, and records here whether a trigger fired. A validation-only `workflow_dispatch` run of `release.yml` on a pushed branch of P, which never publishes, is required only when a trigger fired. It exercises the `validate` and `build-docs` jobs; tag validation, release-notes extraction, documentation publication, and release creation run only on a tag push. Pushing the branch is the one exception to keeping feature branches local and requires the User's explicit authorization, which names the run and is recorded before the push.
+
+| Trigger | Observable test | Fired |
+|---|---|---|
+| Workflow input changed | `git diff --name-only {last tag-run commit} P -- {trigger path list}`; the list names at least the workflow definition, the version checker, the dependency and lock files, the Python and Sphinx versions the workflow installs, and every file the documentation configuration reads, except `docs/releasenotes.md`, which changes with every release and whose heading format the automated version check verifies; this exception holds only while release-heading parsing stays in `scripts/check_release_version.py` and `docs/conf.py`, and a file that takes over such parsing joins the list | yes / no |
+| Environment change | The Admin's recorded environment-change statement since the last successful tag run, compared with the baseline in the release record of that run | yes / no |
+| No tag-run evidence | No successful tag-triggered run of the immediately preceding release | yes / no |
+
+| Validation-only run | Authorization | Result |
+|---|---|---|
+| {run id, or not required} | {User authorization reference, or not required} | {result} |
 
 ## Release Notes
 
@@ -151,6 +176,8 @@ Release is the only writer of `docs/releasenotes.md`. Add one entry per included
 
 **Current judgment:** {holistic assessment}
 
+**Version and tag:** {version} / v{version} (protected content: not changed after the preflighted commit)
+
 Quality verifies independently that every included Change is closed and represented in the release notes, that release-facing documentation describes the release honestly, and that the preflight evidence is complete and current. Quality reviews the recorded commands and results and executes a check itself only when a recorded result cannot support its judgment, recording the reason here. Quality communicates its judgment directly to Release.
 
 ### Open Quality Issues
@@ -167,33 +194,42 @@ Keep this table synchronized with currently open issues. For each issue, Quality
 
 Publish only when `Release verification` is `proceed` and Open Quality Issues is `None`.
 
-1. Merge `development` into `main` as the release commit, then verify that the release commit carries the tree of the preflighted commit (`git diff --quiet {preflighted commit} main` exits 0). A difference means the preflight did not cover the release commit and stops the release.
-2. Record the User's explicit authorization to push `main` and the tag in the table below. `Release start` authorizes starting the release and does not authorize the push.
-3. Push `main` first, then tag that release commit `v{version}` and push the tag. The tag sits only on the release commit on `main`, because `release.yml` publishes any pushed tag of the form `v*.*.*`. The workflow's own validation and documentation build then run on the tagged commit, after the push, and do not replace the preflight.
+1. Record the User's explicit authorization to push `main` and the tag in the table below, separately from `Release start`, which authorizes starting the release and not the push, and commit it on `development` as a commit that changes only this record, after P and before the merge, so that R contains it and the review in step 2 covers it. The authorization states that the tests ran locally on the preparing platform only, that execution on the workflow's platform is first proven by the tag run, that a failed tag run is corrected by a new version and the tag is not moved, and, when a trigger fired, the validation-only run that precedes the push. The acknowledgement must be present in the record at R; Quality's review protects it, and no append-only mechanism does.
+2. Merge `development` into `main` as the release commit R, then verify the record rule with `uv run python scripts/check_release_record.py {preflighted commit} {release commit} v{version}`, which reads P and R from git and exits 0 or 1 with the failing condition first on stderr. It checks that P is an ancestor of R, that the difference from P to R is exactly `docs/changes/release-v{version}.md` (no other file, rename, mode change, or deletion), that the record is present at R, that the full SHA of P is present in the record at R, that the `Version` row equals the release-notes heading, that every second-level heading of the Release Contract template is present at R (presence only, not order or content, so that a deleted evidence section fails), that the template's headings and rows the check reads are found, and that the comparison of this record at P and at R finds no change in the protected content, naming the block that differs. The protected content is the Operation Mode, the sections `Objective And Scope`, `Version`, and `Change Inventory`, the columns `Artifact or gate`, `Included`, and `Owner` of every row of the artifact table, every cell of the rows `Objective and scope`, `Release start`, and `Version`, the list of preflight commands, and the version and tag text of `Release Verification`. Any failure means the preflight did not cover R and stops the release. The header status, responsibility and blocker, the Handover log, the preflight results, Release Verification and Open Quality Issues, the publication evidence, the Closure, the status and evidence cells of the other rows, and the narrative of the unprotected sections may differ at R. The check is bounded automation: it cannot see a changed procedure, failure rule, or narrative in unprotected text and does not prove that R differs from P only in evidence. Quality and Release therefore review the complete difference from P to R before publication, and a change that alters release content, a procedure, or a failure rule is rejected or receives a new preflight and does not inherit the old one.
+3. Push `main` first, then tag R `v{version}` and push the tag. The tag sits only on the release commit on `main`, because `release.yml` publishes any pushed tag of the form `v*.*.*`. The workflow's own validation and documentation build then run on the tagged commit, after the push, and do not replace the preflight.
 4. Watch `release.yml` to completion: validation, strict documentation build with the QA suites, documentation publication, and the GitHub Release.
 5. Verify that the GitHub Release text is the version's release-notes entry and that the published documentation at its Pages URL shows the version.
+6. After the tag run, record the evidence that cannot exist in R (R's commit, the tag, the workflow run, the GitHub Release, the Pages URL, the outcome) in a later commit that changes only this record. It does not move the tag. After a successful tag run, also record its baseline: run id, commit, runner image version, the resolved package list, and the `uv` and Python versions. The Admin's environment comparison for the next release reads this baseline, because the platform log of an old run does not stay available.
 
-If `release.yml` fails after the tag is pushed, stop, record the failure as the Contract's blocker, and escalate to the User. The tag stays where it is; moving or deleting it and any force-push need the User's explicit decision, and the usual fix is a new patch version.
+If `release.yml` fails after the tag is pushed, stop, record the failure as the Contract's blocker, and escalate to the User. This includes a partial publication, in which the documentation was published and a later job failed, for example when the GitHub Release is not created after the Pages deployment. The tag stays where it is; moving or deleting it and any force-push need the User's explicit decision, and the usual fix is a new patch version.
+
+Recorded before R, in the commit of step 1 or earlier (P as its full 40-character SHA):
 
 | Evidence | Value |
 |---|---|
-| Preflighted commit | {sha} |
-| Release commit on `main` | {sha} |
-| User authorization to push `main` and the tag | {reference} |
+| Preflighted commit P | {sha} |
+| User authorization to push `main` and the tag, with the acknowledgement above | {reference} |
+
+Recorded after the tag, in the record-only commit of step 6:
+
+| Evidence | Value |
+|---|---|
+| Release commit R on `main` | {sha} |
 | Tag | v{version} |
 | Workflow run | {link or id} |
 | GitHub Release | {link} |
 | Pages URL | {link} |
+| Tag-run baseline (run id, commit, runner image, resolved packages, `uv` and Python) | {baseline} |
 
 ## Closure
 
 **Status:** pending | closed
 
 - [ ] Every included artifact or gate has terminal status and completion evidence.
-- [ ] Preflight passed on a commit whose tree equals the release commit's tree.
+- [ ] Preflight passed on P, R differs from P only in this record with no change in the protected content, and Quality and Release reviewed the complete difference from P to R.
 - [ ] Quality has recorded `proceed`.
 - [ ] Open Quality Issues contains `None`.
-- [ ] Publication evidence is recorded.
+- [ ] Publication evidence is recorded after the tag, including the tag-run baseline.
 - [ ] Current blocker is `none`.
 
 **Final outcome:** {published version and workflow run}

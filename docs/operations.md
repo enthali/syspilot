@@ -1,9 +1,8 @@
 # Operating Syspilot
 
-Syspilot v2 defines a release-bound Pristine Setup process alongside product
-development and repository preview workflows. The Setup process has passed
-semantic and blocker review, but its end-to-end runtime path has not yet been
-executed in an isolated Jarvis or VS Code Extension Host environment.
+Syspilot defines a release-bound Pristine Setup process alongside product
+development and repository preview workflows. The User has reported successful
+Setup runs; this does not establish coverage of every practical scenario.
 
 ## Current Tooling
 
@@ -68,10 +67,11 @@ project intake without an ontology Change. A requested adjustment starts a
 normal Change before modification and uses the existing Ontology skill only as
 technical guidance.
 
-These steps define supported behavior, not completed runtime evidence. Until a
-follow-up Change executes the deferred target scenarios, use the repository
-checkout only as the [reference preview](getting-started.md)
-and do not claim that a customer installation has completed successfully.
+Deferred practical scenarios remain undemonstrated. Automated text, scaffold,
+and fixture checks are not end-to-end runtime proof, and a reported Setup run
+does not establish which individual scenarios passed. Keep those evidence
+limits separate from the supported installation steps in
+[Getting Started](getting-started.md).
 
 ## Updates Are Separate Changes
 
@@ -91,21 +91,49 @@ analysis, and the User's authorization.
 
 ## Release Responsibility
 
-The Release actor owns packaging, release delivery, preflight checks, and
-release-facing user documentation. A release should not move because the
-calendar is impatient; it moves when its artifacts and evidence say it is
-ready.
+The Release actor owns packaging, release delivery, preflight verification, and
+the release notes. The Technical Writer owns the guides and project portal;
+Release checks that owner's completed artifact rather than writing it. A release
+should not move because the calendar is impatient; it moves when its artifacts
+and evidence say it is ready.
 
 Each publication runs under a Release Contract, defined by the
 [Release process](Syspilot%20Contracts/release.md). Its preflight runs on the
-`development` commit to be released, in this order: the documentation tests, the
-strict documentation build, the release QA suites, the automated version check
-(`uv run python scripts/check_release_version.py v{version}`), and a
-validation-only run of the release workflow. The first failure stops the release
-before `main` or a tag moves and becomes an open quality issue for the owner of
-the affected artifact. Release is the only writer of the release notes, and the
-tag is the version of a release. [Branching](branching.md) describes the
-publication steps.
+`development` commit to be released, with release notes and user documentation
+already committed. Four local checks run in order: documentation tests, the
+strict clean documentation build, release QA suites, and the version check
+(`uv run python scripts/check_release_version.py v{version}`). The strict build
+needs network access to `docs.python.org`. The first failure stops the release
+before `main` or a tag moves and becomes an open quality issue for its owner.
+
+The newest release-notes version heading is the version source.
+`docs/conf.py` derives the documentation's `release` from it. The same checker
+is used locally and by the tag workflow to reject a malformed tag, a missing or
+duplicate heading, an older heading, or inconsistent documentation metadata.
+
+A separate validation-only workflow run is required only when workflow inputs
+changed since the last successful tag run, Admin records an environment change,
+or the immediately preceding release has no successful tag run. Release checks
+Admin's trigger list and environment evidence at release start. A triggered run
+needs a pushed branch and the User's explicit authorization. Local checks do not
+prove execution on the Linux runner or publication; platform-specific failures
+may first appear after the tag exists. The User's push authorization acknowledges
+that trade-off. Failed validation or documentation-build prerequisites publish
+nothing, but publication is not atomic: Pages may already be deployed when
+GitHub Release creation fails. Any failure after the tag, including partial
+publication, stops the release, becomes a recorded blocker and is escalated to
+the User; the tag stays in place.
+
+Commit the push authorization in the release record after the preflighted
+commit P and before merging to release commit R. The separate, write-free check
+`uv run python scripts/check_release_record.py P R v{version}` checks the
+ancestor/path rule, protected content, version, P's full SHA and required
+template headings. It does not establish evidence-only changes: Quality and
+Release must review the complete P-to-R diff before publication, including
+unprotected procedure and failure-rule text. Non-evidence changes are rejected
+or require a new preflight. Evidence unavailable in R is recorded after the tag
+in a later record-only commit, without moving the tag.
+[Branching](branching.md) explains the sequence and comparison in more detail.
 
 Release notes remain release-facing documentation rather than part of the
 Technical Writer's documentation ownership map. The Technical Writer may still

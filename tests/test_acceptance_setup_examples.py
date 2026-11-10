@@ -181,7 +181,7 @@ class DocNeedTests(unittest.TestCase):
           "SYSP_REQ_TECHNICAL_WRITER", "SYSP_REQ_ADMIN", "SYSP_REQ_EXAMPLES"]),
         ("SYSP_DOC_EXAMPLE_CONTRACTS", "docs/Example Contracts/index.md",
          ["SYSP_REQ_CONTRACT_DOCUMENTS", "SYSP_REQ_CHANGE_CONTRACT", "SYSP_REQ_RELEASE_CONTRACT",
-          "SYSP_REQ_PROCESS_MAINTENANCE", "SYSP_REQ_EXAMPLES"]),
+          "SYSP_REQ_RELEASE_VERSION", "SYSP_REQ_PROCESS_MAINTENANCE", "SYSP_REQ_EXAMPLES"]),
     )
 
     def test_each_folder_is_a_doc_need_that_includes_the_requirements_it_carries(self):

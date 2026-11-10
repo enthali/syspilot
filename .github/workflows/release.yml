@@ -42,39 +42,7 @@ jobs:
         id: release
         shell: bash
         run: |
-          python - <<'PY'
-          import os
-          import re
-          from pathlib import Path
-
-          tag = os.environ["GITHUB_REF_NAME"]
-          match = re.fullmatch(
-              r"v(?:0|[1-9]\d*)\."
-              r"(?:0|[1-9]\d*)\."
-              r"(?:0|[1-9]\d*)",
-              tag,
-          )
-          if match is None:
-              raise SystemExit(f"Invalid release tag: {tag}")
-
-          lines = Path("docs/releasenotes.md").read_text(encoding="utf-8").splitlines()
-          heading = re.compile(rf"^## {re.escape(tag)}(?:\s+-\s+.+)?$")
-          starts = [index for index, line in enumerate(lines) if heading.fullmatch(line)]
-          if len(starts) != 1:
-              raise SystemExit(
-                  f"Expected exactly one release-note heading for {tag}, found {len(starts)}"
-              )
-
-          start = starts[0]
-          end = next(
-              (index for index in range(start + 1, len(lines)) if lines[index].startswith("## ")),
-              len(lines),
-          )
-          Path("release-notes-current.md").write_text(
-              "\n".join(lines[start:end]).rstrip() + "\n",
-              encoding="utf-8",
-          )
-          PY
+          python scripts/check_release_version.py "$GITHUB_REF_NAME" --write-notes release-notes-current.md
 
       - name: Upload release notes
         if: github.event_name == 'push'

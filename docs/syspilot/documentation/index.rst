@@ -53,7 +53,7 @@ realized documents remain free of Sphinx-Needs markup.
    :id: SYSP_DOC_OPERATIONS
    :status: verified
    :realized_by: docs/operations.md
-   :includes: SYSP_REQ_SETUP, SYSP_REQ_SETUP_JARVIS, SYSP_REQ_SETUP_CONTINUATION, SYSP_REQ_SETUP_ACTORS, SYSP_REQ_SETUP_GATES, SYSP_REQ_RELEASE, SYSP_REQ_RELEASE_CONTRACT, SYSP_REQ_ADMIN
+   :includes: SYSP_REQ_SETUP, SYSP_REQ_SETUP_JARVIS, SYSP_REQ_SETUP_CONTINUATION, SYSP_REQ_SETUP_ACTORS, SYSP_REQ_SETUP_GATES, SYSP_REQ_RELEASE, SYSP_REQ_RELEASE_CONTRACT, SYSP_REQ_RELEASE_VERSION, SYSP_REQ_ADMIN
 
    Installation, updates, compatibility, recovery, and routine maintenance for
    a Syspilot project.
@@ -71,7 +71,7 @@ realized documents remain free of Sphinx-Needs markup.
    :id: SYSP_DOC_BRANCHING
    :status: verified
    :realized_by: docs/branching.md
-   :includes: SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_SETUP, SYSP_REQ_RELEASE, SYSP_REQ_RELEASE_CONTRACT
+   :includes: SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_SETUP, SYSP_REQ_RELEASE, SYSP_REQ_RELEASE_CONTRACT, SYSP_REQ_RELEASE_VERSION
 
    Where a Change states its branch, what the Change and Setup processes
    prescribe, and what this repository practices beyond that.
@@ -99,7 +99,7 @@ realized documents remain free of Sphinx-Needs markup.
    :id: SYSP_DOC_EXAMPLE_CONTRACTS
    :status: implemented
    :realized_by: docs/Example Contracts/index.md
-   :includes: SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_RELEASE_CONTRACT, SYSP_REQ_PROCESS_MAINTENANCE, SYSP_REQ_EXAMPLES
+   :includes: SYSP_REQ_CONTRACT_DOCUMENTS, SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_RELEASE_CONTRACT, SYSP_REQ_RELEASE_VERSION, SYSP_REQ_PROCESS_MAINTENANCE, SYSP_REQ_EXAMPLES
 
    The generic Contract processes that Setup copies into an adopting project:
    the registry, the Contract Document method, the Change and Release

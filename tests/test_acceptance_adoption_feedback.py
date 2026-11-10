@@ -198,19 +198,21 @@ class ReleaseVersionCheckTests(unittest.TestCase):
 
     CHECKER = ROOT / "scripts" / "check_release_version.py"
 
-    def run_check(self, tag, notes_text):
-        with tempfile.TemporaryDirectory() as folder:
+    def run_check(self, tag, notes_text, conf_text="matching", extra=()):
+        """Run the checker on a notes file and a documentation configuration that live outside the checked folder."""
+        with tempfile.TemporaryDirectory() as folder, tempfile.TemporaryDirectory() as other:
             root = Path(folder)
             notes = root / "releasenotes.md"
             notes.write_bytes(notes_text.encode("utf-8"))
+            conf = Path(other) / "conf.py"
+            conf.write_text(f'release = "{tag[1:]}"\n' if conf_text == "matching" else conf_text, encoding="utf-8")
             result = subprocess.run(
-                [sys.executable, str(self.CHECKER), tag, "--notes", str(notes)],
+                [sys.executable, str(self.CHECKER), tag, "--notes", str(notes), "--conf", str(conf), *extra],
                 cwd=root, capture_output=True, text=True,
             )
             self.assertEqual(sorted(path.name for path in root.iterdir()), ["releasenotes.md"], "check wrote a file")
             self.assertEqual(notes.read_bytes(), notes_text.encode("utf-8"))
             return result
-
     def test_one_heading_with_or_without_title_passes(self):
         for heading in ("## v1.2.3", "## v1.2.3 - Title"):
             with self.subTest(heading=heading):
@@ -230,6 +232,32 @@ class ReleaseVersionCheckTests(unittest.TestCase):
                 self.assertNotEqual(result.returncode, 0)
                 self.assertNotIn("Traceback", result.stderr)
 
+    def test_a_tag_that_is_not_the_newest_heading_fails_and_names_it(self):
+        result = self.run_check("v1.2.3", "## v1.2.4\n\n## v1.2.3\n")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("v1.2.4", result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_a_documentation_release_that_differs_from_the_tag_fails_and_names_both(self):
+        for label, conf in {"other version": 'release = "1.2.2"\n', "no release": "project = 'x'\n"}.items():
+            with self.subTest(case=label):
+                result = self.run_check("v1.2.3", "## v1.2.3\n", conf_text=conf)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("1.2.3", result.stderr)
+                self.assertNotIn("Traceback", result.stderr)
+
+    def test_the_release_text_is_written_only_after_a_passing_check(self):
+        notes = "## v1.2.3 - T\n\nBody\n\n## v1.2.2\n\nOld\n"
+        for label, tag_conf, expected in (("pass", "matching", "## v1.2.3 - T\n\nBody\n"), ("fail", 'release = "9.9.9"\n', None)):
+            with self.subTest(case=label), tempfile.TemporaryDirectory() as out:
+                target = Path(out) / "current.md"
+                result = self.run_check("v1.2.3", notes, conf_text=tag_conf, extra=("--write-notes", str(target)))
+                if expected is None:
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertFalse(target.exists())
+                else:
+                    self.assertEqual(result.returncode, 0, result.stderr)
+                    self.assertEqual(target.read_text(encoding="utf-8"), expected)
     def test_malformed_tags_fail_even_with_a_matching_heading(self):
         for tag in ("v1.2", "1.2.3", "v01.2.3", "v1.2.3-rc1", "V1.2.3", "v1.2.3.4", ""):
             with self.subTest(tag=tag):
@@ -378,18 +406,61 @@ class ReleaseProcessTests(unittest.TestCase):
         ]
         self.assertEqual(order, sorted(order))
 
-    def test_publication_verifies_the_release_commit_tree_before_the_push(self):
+    def test_publication_verifies_the_record_rule_before_the_push(self):
         publication = self.process.split("## Publication")[1]
-        verify = publication.index("git diff --quiet")
-        self.assertLess(verify, publication.index("Push `main` first"))
-        self.assertLess(publication.index("authorization to push `main` and the tag"), publication.index("Push `main` first"))
+        auth = publication.split("\n1. ", 1)[1].split("\n2. ", 1)[0]
+        check = publication.split("\n2. ", 1)[1].split("\n3. ", 1)[0]
+        later = publication.split("\n6. ", 1)[1].split("\n\n", 1)[0]
+        for fragment in ("commit it on `development` as a commit that changes only this record",
+                         "after P and before the merge", "so that R contains it"):
+            self.assertIn(fragment, auth)
+        for fragment in ("P is an ancestor of R", "exactly `docs/changes/release-v{version}.md`",
+                         "no change in the protected content", "stops the release",
+                         "every second-level heading of the Release Contract template is present at R",
+                         "Quality and Release therefore review the complete difference from P to R before publication",
+                         "uv run python scripts/check_release_record.py {preflighted commit} {release commit} v{version}",
+                         "exits 0 or 1 with the failing condition first on stderr"):
+            self.assertIn(fragment, check)
+        self.assertIn("a later commit that changes only this record", later)
+        self.assertIn("It does not move the tag", later)
+        self.assertNotIn("git diff --quiet", publication)
+        self.assertLess(publication.index("Record the User's explicit authorization"), publication.index("Merge `development` into `main`"))
+        self.assertLess(publication.index("P is an ancestor of R"), publication.index("Push `main` first"))
 
+    def test_the_failure_guarantee_is_limited_to_prerequisites_and_a_partial_publication_is_named(self):
+        process = " ".join(self.process.split())
+        self.assertIn("This includes a partial publication, in which the documentation was published and a later job failed", process)
+        requirement = " ".join(read(ROOT / "docs" / "syspilot" / "requirements" / "req_release_contract.rst").split())
+        self.assertIn("A failure of the validation or of the documentation build after the tag publishes nothing", process)
+        self.assertIn("leaves a partial publication that the failure path in Publication handles", process)
+        self.assertIn("a failure of the validation or of the documentation build after the tag publishes nothing", requirement)
+        self.assertIn("leaves a partial publication", requirement)
+        for text in (process, requirement):
+            self.assertNotRegex(text, r"(?i)(?<!validation or of the documentation build )after the tag publishes (nothing|anything)(?!, because publication follows)")
     def test_workflow_supports_the_validation_only_run_the_process_relies_on(self):
         self.assertIn("workflow_dispatch:", self.workflow)
         for job in ("publish-docs", "create-release"):
             with self.subTest(job=job):
                 block = self.workflow.split(f"  {job}:")[1].split("\n  create-release:")[0]
                 self.assertIn("github.event_name == 'push'", block)
+
+    def test_trigger_list_excepts_the_release_notes_only_while_heading_parsing_stays_in_two_files(self):
+        row = next(line for line in self.process.splitlines() if line.startswith("| Workflow input changed |"))
+        self.assertIn("except `docs/releasenotes.md`", row)
+        self.assertIn("only while release-heading parsing stays in `scripts/check_release_version.py` and `docs/conf.py`", row)
+        self.assertIn("a file that takes over such parsing joins the list", row)
+
+    def test_release_headings_are_parsed_only_by_the_version_checker_and_imported_by_the_documentation_configuration(self):
+        conf = read(ROOT / "docs" / "conf.py")
+        self.assertIn("check_release_version.py", conf)
+        self.assertIn('_checker["newest_release"]', conf)
+        parsers = []
+        for folder in ("scripts", "docs", ".github"):
+            for path in (ROOT / folder).rglob("*"):
+                if path.suffix in (".py", ".yml", ".toml") and path.is_file():
+                    if re.search(r"## v|newest_release", path.read_text(encoding="utf-8", errors="replace")):
+                        parsers.append(path.relative_to(ROOT).as_posix())
+        self.assertEqual(sorted(parsers), ["docs/conf.py", "scripts/check_release_record.py", "scripts/check_release_version.py"])
 
     def test_release_notes_headings_follow_the_published_form(self):
         headings = re.findall(r"(?m)^## (v\d+\.\d+\.\d+.*)$", read(ROOT / "docs" / "releasenotes.md"))

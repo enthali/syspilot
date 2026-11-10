@@ -13,6 +13,7 @@ Requirements
    req_setup
    req_release
    req_release_contract
+   req_release_version
    req_process_maintenance
    req_examples
    req_research

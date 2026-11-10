@@ -11,8 +11,12 @@ Release
    The Release actor shall:
 
    - own packaging and release delivery assigned by the applicable process;
-   - own release preflight verification and release-facing user
-     documentation;
+   - own packaging and release delivery assigned by the applicable process;
+   - own release preflight verification and the release notes, the one
+     release-facing document, while the user-facing documentation, meaning the
+     guides, the project portal, and the documentation ownership map, stays
+     with the Technical Writer and Release ensures its completeness for a
+     release through that owner's terminal artifact row and not by writing it;
    - own what the release gate must check and publish, namely preflight
      content, the release run, and tag authorization, and decide as mandatory
      consultee whether a change to a release workflow definition is
@@ -28,6 +32,8 @@ Release
    :verifies: SYSP_REQ_RELEASE
 
    Inspect the Release role card and completed release evidence and confirm
-   that packaging, preflight verification, user documentation, unresolved
-   inputs, and delivery outcome are explicit, and that a change to a release
+   that packaging, preflight verification, release notes, unresolved
+   inputs, and delivery outcome are explicit, that the user-facing
+   documentation of the release is recorded as the Technical Writer's
+   artifact and not as Release's, and that a change to a release
    workflow definition records Release's consultation and decision.

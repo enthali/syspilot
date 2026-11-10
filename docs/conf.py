@@ -4,6 +4,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 import os
+import runpy
 import sys
 import tomllib
 from pathlib import Path
@@ -55,7 +56,9 @@ def setup(app):
 project = 'syspilot'
 copyright = '2025-2026, syspilot Contributors'
 author = 'syspilot Contributors'
-release = '0.1.0'
+# The release notes are the one source of the version; the release checker reads the newest heading.
+_checker = runpy.run_path(str(Path(__file__).resolve().parents[1] / "scripts" / "check_release_version.py"))
+release = _checker["newest_release"](Path(__file__).resolve().parent / "releasenotes.md")[1:]
 
 # -- General configuration ---------------------------------------------------
 

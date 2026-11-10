@@ -107,18 +107,53 @@ The [Release process](Syspilot%20Contracts/release.md) runs that promotion in a
 Release Contract at `docs/changes/release-v{version}.md`. Its preflight runs on
 the `development` commit to be released, with the release notes already
 committed there, before `main` or a tag moves: the documentation tests, the
-strict documentation build, the release QA suites, an automated check of the tag
-form and the release-notes heading, and a validation-only run of the release
-workflow. That run exercises only validation and the documentation build, so a
-pass does not show that publication works. It needs a pushed branch, which is
-the one exception to keeping feature branches local and needs the User's
-explicit authorization.
+strict documentation build, the release QA suites, and the automated version
+check. The newest release-notes heading supplies the version, and the
+documentation metadata is derived from it.
 
-Publication then merges `development` into `main` and checks that the release
-commit carries the preflighted commit's tree; a difference stops the release.
+The validation-only workflow run is conditional: it is required when the files
+Admin lists as inputs of the Linux run changed, Admin records an environment
+change, or the immediately preceding release has no successful tag run. Release
+assesses the trigger evidence at release start. That run exercises validation and the
+documentation build, not publication. It needs a pushed branch, which is the
+exception to keeping feature branches local and needs the User's explicit
+authorization naming the run.
+
+Before the merge, commit the User's explicit authorization to push `main` and
+the tag on `development`, after the preflighted commit P, changing only that
+release's `docs/changes/release-v{version}.md`. This authorization is separate
+from permission to start the release and acknowledges the local evidence
+limits and any triggered validation-only run.
+
+Publication then merges `development` into `main` as release commit R, so R
+contains the authorization. Run
+`uv run python scripts/check_release_record.py P R v{version}` with the two
+commit references. It reads committed state and writes nothing. P must be an
+ancestor of R, with exactly that record changed and no rename, mode change or
+deletion. Both records must exist; R must contain P's full SHA in an evidence
+row, a version matching the tag and newest release-notes heading, and every
+second-level heading of the Release Contract template. The heading check
+establishes presence, not order or content. Non-applicable artifact sections
+stay with status `not applicable` and the reason in their artifact row. The
+protected-content comparison covers scope, version, inventory, artifact owners,
+start authorization, preflight commands, and verification version/tag. A failing check exits with
+status 1 and names its condition on stderr.
+
+This is bounded automation, not proof that every difference is evidence.
+Quality and Release must review the complete P-to-R diff before publication,
+including the push authorization and unprotected procedure, failure-rule and
+narrative text. A change to release content, a procedure or a failure rule is
+rejected or requires a new preflight; it cannot inherit the earlier results.
+
 `main` is pushed first and the tag second, and the tag sits only on the release
 commit on `main`, because the workflow publishes any pushed `v*.*.*` tag. The
-User's authorization to push `main` and the tag is recorded apart from the
-authorization to start the release. If the workflow fails after the tag is
-pushed, the release stops with a recorded blocker and the User decides; the tag
-stays where it is, and the usual fix is a new patch version.
+workflow publishes nothing if validation or the documentation build fails.
+Later failures can leave a partial publication: Pages may be deployed even
+though GitHub Release creation fails. In either case the release stops with a
+recorded blocker and the User decides; the tag stays where it is, and the usual
+fix is a new patch version.
+
+Evidence unavailable in R, such as R's SHA and the workflow/publication outcome,
+is recorded after the tag in a later commit changing only the release record.
+That commit does not move the tag. A successful tag run also records its
+environment baseline for the next release.
