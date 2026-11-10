@@ -52,11 +52,7 @@ Initial inventory candidates below follow integration order. Release verifies co
 
 ### Known Limitations
 
-- Deferred practical Setup, language, Jarvis-installation and project-naming scenarios remain undemonstrated under the User's explicit disposition in setup-feedback-2. Reported experimental success is not scenario-level test coverage.
-- The isolated test environment is experimental, not specified product tooling.
-- Direct existing-Admin queue and auto-delivery updates retain the explicitly accepted concurrent-update risks.
-- Linux validation of the current workflow and actual publication have not been established by the completed Changes. Admin and Release assess revalidation triggers; a required branch push/workflow run needs separate User authorization.
-- Pages deployment may succeed before GitHub Release creation fails. The User accepted this partial-publication risk; publication is not atomic.
+Publication is not atomic: Pages deployment may succeed before GitHub Release creation fails. The User accepted this risk.
 
 ## Artifacts, Ownership And Process Gates
 
