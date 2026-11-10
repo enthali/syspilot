@@ -1,6 +1,6 @@
 # Change Contract: release-contract-preflight
 
-**Status:** accepted<br>
+**Status:** closed<br>
 **Process owner:** Project Manager<br>
 **Current responsibility:** Project Manager<br>
 **Current blocker:** none<br>
@@ -83,13 +83,13 @@ A release promotes a verified source state to `main` and a version tag, publishe
 **Applicability:** Each artifact owner decides and updates its own row.<br>
 **Scope change:** A widened approved intent returns to draft until approved again; affected owners reassess terminal rows.<br>
 **Ownership:** The Owner column is the only statement of artifact and gate ownership.<br>
-**Status:** pending
+**Status:** complete
 
 | Artifact or gate | Included | Owner | Completion evidence | Status |
 |---|---|---|---|---|
 | Intent and outcome | yes | Project Manager | User agreement to discussed intent on 2026-11-09 | approved |
 | Contract release | yes | User | User explicitly approved release in autonomous mode on 2026-11-09 | approved |
-| Version control | yes | Project Manager | Branch `feature/release-contract-preflight`; squash integration into `development` at closure | active |
+| Version control | yes | Project Manager | Branch `feature/release-contract-preflight` squash-integrated into `development` at `eded12d`; local only, not pushed | merged |
 | Infrastructure impact | yes | Admin | Linux CI validation, revalidation triggers and any workflow wiring, with Release consultation | complete |
 | Product specification and architecture decisions | yes | Architect | Ownership, preflight, version authority and evidence semantics specified | complete |
 | Release-gate decisions and Contract | yes | Release | Release Contract revised against approved specification; gate decisions and Admin consultation recorded | complete |
@@ -99,7 +99,7 @@ A release promotes a verified source state to `main` and a version tag, publishe
 | Acceptance test design and results | yes | Tester | Requirement-level scenarios and results recorded | complete |
 | Quality review | yes | Quality | Re-review at `0417b49` confirms QI-1 to QI-3 resolved across specification, checker, process, tests, guides and example; recorded local evidence supports readiness for User validation | proceed |
 | User validation and approval | yes | User | User directly accepted the presented outcome and limits for closure and integration on 2026-11-10 at 02:51 | accepted |
-| Closure decision | yes | Project Manager | Final validation and integration recorded | pending |
+| Closure decision | yes | Project Manager | Direct User acceptance, Quality proceed and squash integration at `eded12d` recorded | complete |
 
 ## Architecture And Specification
 
@@ -312,14 +312,14 @@ Quality's proceed verifies readiness, not user value. The User directly communic
 
 ## Closure
 
-**Status:** pending
+**Status:** closed
 
-- [ ] Every included artifact/gate has terminal status and completion evidence.
-- [ ] Intent is approved.
-- [ ] Quality has recorded proceed.
-- [ ] Open Quality Issues contains None.
-- [ ] User validation is accepted or explicitly delegated.
-- [ ] Current blocker is none.
-- [ ] Observable outcome is demonstrated.
+- [x] Every included artifact/gate has terminal status and completion evidence.
+- [x] Intent is approved.
+- [x] Quality has recorded proceed.
+- [x] Open Quality Issues contains None.
+- [x] User validation is accepted or explicitly delegated.
+- [x] Current blocker is none.
+- [x] Observable outcome is demonstrated at the recorded text, fixture and command-line level; real publication and Linux execution are not claimed.
 
-**Final outcome:** pending
+**Final outcome:** Closed on 2026-11-10 after direct User acceptance at 02:51 and Quality's proceed at `aa3da2b`. Squash-integrated into `development` at `eded12d`: ownership, local preflight and Linux revalidation triggers, version consistency, bounded record checking with full-diff review, and explicit partial-publication limits. No branch push, remote workflow execution, tag or publication was performed as part of this Change.
