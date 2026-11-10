@@ -2,7 +2,7 @@
 
 **Status:** approved<br>
 **Process owner:** Release<br>
-**Current responsibility:** Release<br>
+**Current responsibility:** Admin<br>
 **Current blocker:** QI-1: superseded preflight candidate; QI-2: required hosted validation pending; QI-3: inconsistent infrastructure status<br>
 **Created:** 2026-11-10<br>
 - **Operation Mode:** user-guided
@@ -22,6 +22,7 @@ The handing-over actor appends one line immediately before handing over, in the 
 | 2026-11-10 | 13:05 | Admin | Release | Infrastructure impact recorded; changed workflow inputs and environment make validation-only CI revalidation necessary, pending User authorization to push the branch. |
 | 2026-11-10 | 13:08 | Release | Quality | Preflight, documentation and infrastructure complete; independent release review needed. |
 | 2026-11-10 | 13:13 | Quality | Release | Blocked: corrected protected record and new P needed; hosted validation remains pending. |
+| 2026-11-10 | 13:15 | Release | Admin | QI-3: synchronize the Infrastructure artifact row with the completed section. |
 
 ## Objective And Scope
 
