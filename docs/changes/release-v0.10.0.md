@@ -2,8 +2,8 @@
 
 **Status:** approved<br>
 **Process owner:** Release<br>
-**Current responsibility:** Quality<br>
-**Current blocker:** QI-2: required hosted validation pending; Quality re-review of new P<br>
+**Current responsibility:** Release<br>
+**Current blocker:** QI-2: required hosted validation pending<br>
 **Created:** 2026-11-10<br>
 - **Operation Mode:** user-guided
 
@@ -26,6 +26,7 @@ The handing-over actor appends one line immediately before handing over, in the 
 | 2026-11-10 | 13:15 | Admin | Release | Infrastructure artifact row synchronized with the completed assessment in commit ecc8b2e; hosted validation remains pending User authorization. |
 | 2026-11-10 | 13:16 | Admin | Release | Corrected the responsibility header to Release; the infrastructure row is complete and QI-1/QI-2 remain open. |
 | 2026-11-10 | 13:22 | Release | Quality | QI-1 resolved: new P 75cf135, four checks pass; QI-2 (validation-only run) pending User authorization; re-review needed. |
+| 2026-11-10 | 14:06 | Quality | Release | QI-1 and QI-3 confirmed resolved; blocked on required hosted validation. |
 
 ## Objective And Scope
 
@@ -84,7 +85,7 @@ Publication is not atomic: Pages deployment may succeed before GitHub Release cr
 | Release notes | yes | Release | One v0.10.0 heading covers all included Changes | complete: single `## v0.10.0` heading with 20 entries in integration order and known limitations; `check_release_version.py v0.10.0` passes |
 | User-facing documentation | yes | Technical Writer | Portal/shared-Contract corrections cc772a6 and Release-owned Setup-note correction 3d86026 reviewed; Architect factual review clear, strict build (zero warnings), 4 build tests, 27 focused checks and v0.10.0 version check pass; User approved completion on 2026-11-10 | complete |
 | Infrastructure impact | yes | Admin | Workflow-input and environment comparison, trigger assessment, and hosted revalidation requirement recorded in Infrastructure Impact; commit ecc8b2e | complete |
-| Release verification | yes | Quality | Independent review on 2026-11-10; QI-1 to QI-3 below; Release agrees a corrected record and fresh P are needed | blocked |
+| Release verification | yes | Quality | Re-review of 2cfc510 confirms QI-1 and QI-3 resolved; QI-2 remains open | blocked |
 | Publication | yes | Release | Explicit push authorization, main/tag, successful workflow, Pages and GitHub Release verified | pending |
 | Closure | yes | Release | Closure checklist and publication evidence complete | pending |
 
@@ -212,7 +213,7 @@ The current workflow runs documentation build tests and, on tag pushes, the tag/
 
 **Status:** blocked
 
-**Current judgment:** blocked. The User authorized independent review only on 2026-11-10, not a push, workflow run, tag or publication. P `5637fa4` cannot cover the current candidate: protected sections still record unfinished preparation, and subsequent commit `8fcb53b` changes a non-record path. Release agreed through consultation to correct the record, include that commit in a new P and repeat the four local checks. The triggered validation-only run remains required and unperformed. This is not a publication-ready judgment.
+**Current judgment:** blocked on QI-2. Re-review at `2cfc510` confirms QI-1 resolved: replacement P `75cf13596125d2447decd00fde0a361d7d3bce29` contains the corrected protected preparation record and `8fcb53b`, and Release records all four local checks passing there. QI-3 is resolved by Admin's completed artifact row. Required hosted validation remains pending in the committed record; local success does not substitute for it. The User authorized Quality to conduct all remaining reviews for this release autonomously on 2026-11-10; this does not change the protected operation mode for other actors or authorize any push, workflow run, tag or publication. This is not a publication-ready judgment.
 
 **Version and tag:** 0.10.0 / v0.10.0
 
@@ -222,10 +223,12 @@ Quality independently reviews Change closure, release-note coverage, documentati
 
 - Inventory checks confirmed all 20 listed Change headers are closed; the three Contracts carrying an Example sync row record it complete. The 20 release-note entries follow the integration order. First-parent history includes earlier branch history already represented in v0.9.1; its presence alone does not add release scope.
 - Reviewed the release-facing corrections at `3d86026` and `cc772a6` and the Technical Writer's terminal evidence. The revised portal distinguishes implemented Setup from demonstrated practical coverage, and the guide corrections agree with shared Contract and Release rules. No new documentation defect identified in these corrections.
-- Reviewed the four recorded local results at P: 4 documentation-build tests, strict clean build, 202 QA tests and version check. Omitting unittest's verbosity flag does not change the discovered suite. These results remain evidence for that P, not for an enlarged candidate or the hosted runner. No build or suite rerun by Quality; fresh preflight belongs to Release.
+- Reviewed the four recorded local results at replacement P `75cf135`: 4 documentation-build tests, strict clean build, 202 QA tests and version check. Omitting unittest's verbosity flag does not change the discovered suite. These results remain evidence for that P, not for an enlarged candidate or the hosted runner. No build or suite rerun by Quality.
 - Quality ran `python scripts/check_release_record.py 5637fa4 efd1936 v0.10.0`: exit 0. Reviewed the complete record diff; it records responsibility, local results and infrastructure/trigger evidence without changing procedure or release content. This intermediate pass is not the final P-to-R review.
 - HEAD advanced during review to `8fcb53b453001dd4628fcd87f7b7046110f3d849`. Because this added an unreviewed non-record path after P, Quality ran `python scripts/check_release_record.py 5637fa4 8fcb53b v0.10.0`: exit 1, `path other than the record in the difference from P to R: .vscode/syspilot.code-workspace`. The workspace change was not modified or reverted by Quality.
-- The pending Version row and Version/Change Inventory section statuses, and the Objective's unverified-inventory wording, are protected at P. Release must settle them before choosing the replacement P; changing them afterward cannot inherit the old preflight.
+- QI-1 re-review: the Version row, Version/Change Inventory statuses and Objective inventory wording are corrected in replacement P. Verified `8fcb53b` is its ancestor. Between the original and replacement P only the workspace file and release record differ; no product, documentation, workflow, dependency or graph source changed.
+- Quality ran `python scripts/check_release_record.py 75cf135 2cfc510 v0.10.0`: exit 0. Read the complete replacement-P-to-handoff diff: responsibility, handover, preflight pointer/results and superseded-P explanation only. No protected content, release procedure or failure rule changed. Final R and its complete diff still require review before push.
+- QI-3 re-review: Admin updated its artifact-table row in `c38881f` and corrected the responsibility header in `16b71cb`; the row now agrees with the completed infrastructure section. That section's comparison was performed at the original P; unchanged infrastructure inputs between the two candidates preserve its trigger conclusion.
 
 ### Applied Review Methods
 
@@ -236,6 +239,7 @@ The queried scope is the same 20 starting Needs explicitly listed in the [releas
 | Impact discovery | `get_need_links.py ID --direction both --depth 2 --flat --no-build` for all 21 starting Needs, using the built Needs from the recorded final documentation build; all queries succeeded | 86-object union. Discovery is candidate evidence, not an exhaustive filesystem scope or a release judgment. |
 | Horizontal coverage | `analyze_mece.py ID --scope same-document` for all 21; all queries succeeded with no structural findings. Exact documentation peer group is the prior 11-document group plus `SYSP_DOC_PORTAL`; Release Contract ACs `_1`, `_2`, `_3` remain each other's peers; other starting objects have no same-document peers | The portal owns Syspilot's rendered entry point, distinct from README, guides and the adopter's generated neutral index. Empty peer sets and unavailable structured coverage data remain limits; complete semantic peer review is deferred to the replacement-candidate review. |
 | Relationship analysis | `analyze_trace.py ID --direction both --depth 2` for all 21; all queries succeeded with no structural findings. The examined neighborhood is the prior Quality Review's explicitly enumerated 85-object union plus `SYSP_DOC_PORTAL` | Release/Admin, shared-Contract and Setup authority boundaries informed QI-1 to QI-3. Complete resolved-neighbor semantic review remains open; structural success does not establish semantic consistency, platform execution or publication. |
+| Focused re-review at `2cfc510` | Repeated all 63 Impact/MECE/Trace queries with the same arguments; exact peer sets, neighborhoods, structural findings and limitations unchanged. Reviewed every correction named by QI-1/QI-3, Admin ownership evidence and the full new-P-to-handoff diff | QI-1 and QI-3 resolved. No new structural or correction-specific semantic finding. Unchanged graph sources support retaining the prior scope; full semantic clearance remains open and no overall proceed is claimed while QI-2 is unresolved. |
 
 These are preliminary analysis results, not a completed semantic clearance. Re-review must assess the replacement P, final evidence, remaining semantic coverage and the complete P-to-R diff before publication.
 
@@ -245,9 +249,7 @@ Quality maintains this table, routes issues to artifact owners and removes rows 
 
 | Artifact | Current issue | Required outcome |
 |---|---|---|
-| Preflight and protected preparation record (Release) | QI-1: protected Version/Inventory statuses and Objective wording are not final; `8fcb53b` also introduces a non-record change after P | Finalize protected preparation content, commit the corrected candidate including current development changes, select a new P and pass all four local checks there; obtain Quality re-review. |
 | Triggered hosted validation (Release) | QI-2: triggers 1 and 2 fired, but the required validation-only run has neither authorization nor a result | Obtain and record explicit User authorization naming the validation-only run before pushing its branch; record a successful run of the replacement P. Main/tag publication authorization remains separate. |
-| Infrastructure artifact status (Admin) | QI-3: Admin's completed section and handoff disagree with the pending artifact-table row | Admin confirmed through consultation that its row requires an owner update, not a Release edit on its behalf. Release hands the Contract to Admin to synchronize that row against `ecc8b2e`, then receives it back before the next gate. |
 
 ## Publication
 
