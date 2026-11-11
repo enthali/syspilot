@@ -1,6 +1,6 @@
 # Change Contract: release-contract-archive
 
-**Status:** accepted<br>
+**Status:** closed<br>
 **Process owner:** Project Manager<br>
 **Current responsibility:** Project Manager<br>
 **Current blocker:** none<br>
@@ -64,7 +64,7 @@ Lightweight crew by User decision of 2026-11-11: Architect, Developer, Quality. 
 |---|---|---|---|---|
 | Intent and outcome | yes | Project Manager | Goal, value, scope, and observable outcome are explicit and approved | approved |
 | Contract release | yes | User | User released the Contract on 2026-11-11 | approved |
-| Version control | yes | Project Manager | Feature branch `feature/release-contract-archive`; squash-integrated into `development` at closure | active |
+| Version control | yes | Project Manager | Feature branch `feature/release-contract-archive`; squash-integrated into `development` at closure | merged |
 | Infrastructure impact | not applicable: the release workflow reads no Contract path | Admin | Affected workflow, CI, and packaging artifacts are updated, confirmed by their current owner rather than inferred from a Needs-only impact query | not applicable |
 | Product specification and architecture decisions | yes | Architect | Changed specification and architecture artifacts are linked and checked | complete |
 | User-facing documentation | not applicable: crew limited by User decision; the Architect names any guide that states the old path as an open issue | Technical Writer | Agreed documentation surface is coherent and user-oriented; factual-owner review is recorded; `doc` Needs and `includes` links are current; documentation builds cleanly | not applicable |
@@ -73,7 +73,7 @@ Lightweight crew by User decision of 2026-11-11: Architect, Developer, Quality. 
 | Acceptance test design and results | not applicable: Quality reviews the VCs directly | Tester | Requirement tests written and run by the Tester, with their commands and results, and the means for User validation trace to the intended outcome | not applicable |
 | Quality review | yes | Quality | Re-review at c81d57f confirms both branching-guide path corrections; canonical/example process and checker agree; recorded strict build, 202 tests and 76 focused tests support the bounded judgment | proceed |
 | User validation and approval | yes | User | The User accepted the outcome on 2026-11-11 | accepted |
-| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | accepted |
+| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | complete |
 
 ## Architecture And Specification
 
@@ -170,7 +170,7 @@ Quality's `proceed` judgment verifies that the change is ready for validation; i
 
 ## Closure
 
-**Status:** accepted
+**Status:** closed
 
 - [x] Every included artifact or gate has terminal status and completion evidence.
 - [x] Intent and outcome are `approved`.
@@ -180,4 +180,4 @@ Quality's `proceed` judgment verifies that the change is ready for validation; i
 - [x] Current blocker is `none`.
 - [x] The observable outcome is demonstrated.
 
-**Final outcome:** Release Contracts live at `docs/releases/v{version}.md`; Release archives the included Change Contracts to `docs/changes/v{version}/` before the preflight. Process, example, checker, tests, requirement, story and branching guide agree. The User accepted on 2026-11-11. Not proven: the archive move itself runs first at the next release; Requirement and VC tightening is a separate Change.
+**Final outcome:** Release Contracts live at `docs/releases/v{version}.md`; Release archives the included Change Contracts to `docs/changes/v{version}/` before the preflight. Process, example, checker, tests, requirement, story and branching guide agree. The User accepted on 2026-11-11. Integrated by squash into `development` from `feature/release-contract-archive` as `03e63d9`, not pushed. Not proven: the archive move itself runs first at the next release; Requirement and VC tightening is a separate Change.
