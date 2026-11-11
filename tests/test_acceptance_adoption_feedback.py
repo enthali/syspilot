@@ -414,7 +414,7 @@ class ReleaseProcessTests(unittest.TestCase):
         for fragment in ("commit it on `development` as a commit that changes only this record",
                          "after P and before the merge", "so that R contains it"):
             self.assertIn(fragment, auth)
-        for fragment in ("P is an ancestor of R", "exactly `docs/changes/release-v{version}.md`",
+        for fragment in ("P is an ancestor of R", "exactly `docs/releases/v{version}.md`",
                          "no change in the protected content", "stops the release",
                          "every second-level heading of the Release Contract template is present at R",
                          "Quality and Release therefore review the complete difference from P to R before publication",

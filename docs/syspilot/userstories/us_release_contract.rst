@@ -50,3 +50,15 @@ Release Contract
    When the automated check runs,
    Then it passes only when the three agree, and a recorded preflight result
    does not force a new preflight while any change to other paths does.
+
+.. ac:: A published release leaves a clean tree
+   :id: SYSP_AC_RELEASE_CONTRACT_4
+   :status: approved
+   :validates: SYSP_US_RELEASE_CONTRACT
+
+   Given a release has been published,
+   When a stakeholder looks for the Contracts of that release in the
+   repository,
+   Then the Release Contract is at ``docs/releases/v{version}.md``, the Change
+   Contracts it shipped are in ``docs/changes/v{version}/``, and none of them
+   remains directly in ``docs/changes/``.

@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RELEASE_PROCESS = ROOT / "docs" / "Syspilot Contracts" / "release.md"
 SCRIPT = ROOT / "scripts" / "check_release_record.py"
 TAG = "v1.2.3"
-RECORD = f"docs/changes/release-{TAG}.md"
+RECORD = f"docs/releases/{TAG}.md"
 NOTES = "# Release notes\n\n## v1.2.3 - New\n\nText\n\n## v1.2.2 - Old\n\nOld\n"
 HAND_PLACEHOLDER = "| Preflighted commit P | {sha} |"
 
@@ -300,10 +300,11 @@ class ReleaseRecordAcceptanceTests(unittest.TestCase):
     def test_the_published_repository_has_the_one_reader_of_the_record_and_the_build_excludes_it(self):
         conf = (ROOT / "docs" / "conf.py").read_text(encoding="utf-8")
         self.assertRegex(conf, r"exclude_patterns\s*=\s*\[[^\]]*changes")
+        self.assertRegex(conf, r"exclude_patterns\s*=\s*\[[^\]]*releases")
         readers = []
         for folder in ("scripts", "docs", ".github"):
             for path in (ROOT / folder).rglob("*"):
-                if path.suffix in (".py", ".yml", ".toml") and path.is_file() and "changes/release-" in path.read_text(encoding="utf-8", errors="replace"):
+                if path.suffix in (".py", ".yml", ".toml") and path.is_file() and "docs/releases/" in path.read_text(encoding="utf-8", errors="replace"):
                     readers.append(path.relative_to(ROOT).as_posix())
         self.assertEqual(readers, ["scripts/check_release_record.py"])
 

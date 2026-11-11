@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "check_release_record.py"
 MODULE = runpy.run_path(str(SCRIPT))
 TAG = "v1.2.3"
-RECORD = f"docs/changes/release-{TAG}.md"
+RECORD = f"docs/releases/{TAG}.md"
 NOTES = "# Notes\n\n## v1.2.3 - New\nText\n\n## v1.2.2 - Old\nOld\n"
 
 RECORD_TEXT = """# Release Contract: 1.2.3

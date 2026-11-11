@@ -2,13 +2,13 @@
 
 Use this process for every publication of a release of this project. A release takes a state of `{integration branch}` whose Changes are already closed and makes it public. Publication is irreversible: pushing a `{tag form}` tag on `{release branch}` triggers `{publication workflow}`, which publishes `{publication target}`. Everything this process checks is therefore true before the tag is pushed. The Release actor owns this process and its canonical template. Tailor every `{...}` value to the project when adopting this example.
 
-This process applies the [Contract Documents](contract-documents.md) method. The canonical Release Contract template lives here. A concrete release starts as a tailored copy at `docs/changes/release-v{version}.md`, next to the Change Contracts it ships.
+This process applies the [Contract Documents](contract-documents.md) method. The canonical Release Contract template lives here. A concrete release starts as a tailored copy at `docs/releases/v{version}.md`; the Change Contracts it ships are archived at `docs/changes/v{version}/` before the preflight.
 
 ## Process Definition
 
 - **Applicability:** Every publication of a project version, meaning every promotion of `{integration branch}` to `{release branch}` together with a version tag.
 - **Canonical template:** The `Canonical Release Contract Template` section in this document.
-- **Concrete instances:** `docs/changes/release-v{version}.md`.
+- **Concrete instances:** `docs/releases/v{version}.md`.
 - **Initial responsibility:** Project Manager, who creates the Release Contract, completes its objective and scope, and prepares it for the User-owned `Release start` gate.
 - **First handoff:** Release.
 - **Closure responsibility:** Release.
@@ -20,7 +20,7 @@ Release work starts only after the User sets the `Release start` gate to `approv
 
 The Project Manager initializes a release as one consistent version-controlled state on `{integration branch}`:
 
-1. Copy the canonical template from `# Release Contract: {VERSION}` through the end of this file to `docs/changes/release-v{version}.md`, using the intended version.
+1. Copy the canonical template from `# Release Contract: {VERSION}` through the end of this file to `docs/releases/v{version}.md`, using the intended version.
 2. Select the agreed Operation Mode, remove the template note and the non-applicable mode rule, and complete the header, `Objective And Scope`, and the list of included Changes.
 3. Ask the User to set the User-owned `Release start` gate to `approved`, and in that same step open the Contract document in the User's editor, because the User reviews it before deciding; no other actor may set the gate, and release work remains blocked until it reads `approved`.
 4. Commit the initialized Release Contract.
@@ -97,6 +97,8 @@ A Change is release-ready when its Change Contract is closed. Including a Change
 |---|---|---|
 | {change} | {sha} | yes / no |
 
+Archiving: before the preflight, move the Change Contract of every Change listed here to `docs/changes/v{version}/` in a commit on `{integration branch}`, by a move that changes no content; relative links inside a moved Contract are not rewritten, because an archived Contract is a closed historical record. P then already carries the archive layout, and the difference from P to R stays this record alone.
+
 ## Version
 
 **Status:** pending | complete
@@ -111,7 +113,7 @@ This section, the `Change Inventory`, and the `Objective And Scope` section are 
 
 **Status:** pending | passed | failed
 
-Run in order on the preflighted commit P, which is the `{integration branch}` commit to be released, and stop at the first failure, before `{release branch}` or a tag moves. The release notes, version heading, and user-facing documentation are committed on `{integration branch}` before the preflight, because the version check reads the heading and Publication compares the release commit R with P. Any difference between P and R other than this release record needs a new preflight on the new commit.
+Run in order on the preflighted commit P, which is the `{integration branch}` commit to be released, and stop at the first failure, before `{release branch}` or a tag moves. The release notes, version heading, and user-facing documentation are committed on `{integration branch}`, and the included Change Contracts are archived as described in `Change Inventory`, before the preflight, because the version check reads the heading and Publication compares the release commit R with P. Any difference between P and R other than this release record needs a new preflight on the new commit.
 
 **Preflighted commit P:** {sha}
 
@@ -203,7 +205,7 @@ Keep this table synchronized with currently open issues. For each issue, Quality
 Publish only when `Release verification` is `proceed` and Open Quality Issues is `None`.
 
 1. Record the User's explicit authorization to push `{release branch}` and the tag in the table below, separately from `Release start`, which does not authorize a push. Commit it on `{integration branch}` after P and before the merge, changing only this record, so R contains it and the review in step 2 covers it. The authorization states that tests ran locally on the preparing platform only, that execution on the workflow's platform is first proven by the tag run, that a failed tag run is corrected by a new version and the tag is not moved, and, when a trigger fired, the validation-only run that precedes the push. This acknowledgement must be present in the record at R and is reviewed by Quality; it is not an append-only mechanism.
-2. Merge `{integration branch}` into `{release branch}` as the release commit R, then verify the record rule with `{release-record check command} P R {tag form}`. The project-tailored checker reads committed state with `git`, writes nothing, exits 0 on success or 1 on failure, and begins its stderr diagnostic with the failing condition. P is an ancestor of R, and the difference from P to R is exactly `docs/changes/release-v{version}.md`, with no other file, rename, mode change, or deletion. The automated comparison of this record at P and R rejects changes to protected content: Operation Mode; the sections `Objective And Scope`, `Version`, and `Change Inventory`; the columns `Artifact or gate`, `Included`, and `Owner` of every artifact-table row; every cell of the rows `Objective and scope`, `Release start`, and `Version`; the list of preflight commands; and the version/tag text of `Release Verification`. The checker also fails if the record is absent at P or R, the full SHA of P is missing from an evidence row at R, the `**Version:**` line of its Version section disagrees with the tag's version or the newest release-notes heading, any second-level heading of the project's Release Contract template at R is missing (presence only, not order or content), or expected headings and rows read by the check are missing; it names a missing heading or changed protected block. Any failure stops the release. Header status, responsibility and blocker, Handover log, preflight results, Release Verification and Open Quality Issues, publication evidence, Closure, status/evidence cells of other rows, and narrative in unprotected sections may differ at R. This is bounded automation: it cannot detect changed procedures, failure rules or narrative in unprotected text, and does not prove evidence-only differences. Quality and Release must review the complete P-to-R diff before publication. A change that alters release content, a procedure or a failure rule is rejected or requires a new preflight and cannot inherit the earlier results.
+2. Merge `{integration branch}` into `{release branch}` as the release commit R, then verify the record rule with `{release-record check command} P R {tag form}`. The project-tailored checker reads committed state with `git`, writes nothing, exits 0 on success or 1 on failure, and begins its stderr diagnostic with the failing condition. P is an ancestor of R, and the difference from P to R is exactly `docs/releases/v{version}.md`, with no other file, rename, mode change, or deletion. The automated comparison of this record at P and R rejects changes to protected content: Operation Mode; the sections `Objective And Scope`, `Version`, and `Change Inventory`; the columns `Artifact or gate`, `Included`, and `Owner` of every artifact-table row; every cell of the rows `Objective and scope`, `Release start`, and `Version`; the list of preflight commands; and the version/tag text of `Release Verification`. The checker also fails if the record is absent at P or R, the full SHA of P is missing from an evidence row at R, the `**Version:**` line of its Version section disagrees with the tag's version or the newest release-notes heading, any second-level heading of the project's Release Contract template at R is missing (presence only, not order or content), or expected headings and rows read by the check are missing; it names a missing heading or changed protected block. Any failure stops the release. Header status, responsibility and blocker, Handover log, preflight results, Release Verification and Open Quality Issues, publication evidence, Closure, status/evidence cells of other rows, and narrative in unprotected sections may differ at R. This is bounded automation: it cannot detect changed procedures, failure rules or narrative in unprotected text, and does not prove evidence-only differences. Quality and Release must review the complete P-to-R diff before publication. A change that alters release content, a procedure or a failure rule is rejected or requires a new preflight and cannot inherit the earlier results.
 3. Push `{release branch}` first, then tag R with the version in `{tag form}` and push the tag. The tag sits only on the release commit on `{release branch}`, because `{publication workflow}` publishes any pushed tag of the form `{tag form}`. The workflow's own validation and build then run on the tagged commit, after the push, and do not replace the preflight.
 4. Watch `{publication workflow}` to completion.
 5. Verify that the published release text is the version's release-notes entry and that `{publication target}` shows the version.

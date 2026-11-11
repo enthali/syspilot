@@ -138,7 +138,7 @@ def record_version(text):
 def check(repo, preflighted, release, tag):
     if TAG_FORM.fullmatch(tag) is None:
         raise Failure(f"invalid release tag: {tag}")
-    record = f"docs/changes/release-{tag}.md"
+    record = f"docs/releases/{tag}.md"
     p, r = resolve(repo, preflighted), resolve(repo, release)
 
     if git(repo, "merge-base", "--is-ancestor", p, r, check=False).returncode != 0:
@@ -209,7 +209,7 @@ def main(argv=None):
     except (Failure, UnicodeError) as error:
         print(str(error), file=sys.stderr)
         return 1
-    print(f"PASS: {args.release} differs from {args.preflighted} only in docs/changes/release-{args.tag}.md, protected content unchanged")
+    print(f"PASS: {args.release} differs from {args.preflighted} only in docs/releases/{args.tag}.md, protected content unchanged")
     return 0
 
 

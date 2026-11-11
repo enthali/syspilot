@@ -11,7 +11,7 @@ Release Contract
    Every publication of a syspilot version shall use a Release Contract that:
 
    - is initialized by the Project Manager as a tailored copy of the canonical
-     template at ``docs/changes/release-v{version}.md`` and committed before
+     template at ``docs/releases/v{version}.md`` and committed before
      the first responsibility transfer;
    - names Release as process owner and closure owner, transfers first
      responsibility to Release, and carries an ``Operation Mode`` field that
@@ -39,6 +39,14 @@ Release Contract
      included Change Contract that carries one as ``complete`` or as
      ``not applicable`` with its reason, instead of merging the example
      changes at the release;
+   - requires Release to move every included Change Contract to
+     ``docs/changes/v{version}/`` in a commit on the ``development`` branch
+     before the preflight, by a move that changes no content, so that the
+     preflighted commit already carries the archive layout, a published
+     release leaves no Contract of it directly in ``docs/changes/``, and the
+     difference from the preflighted commit to the release commit stays the
+     Release Contract alone; relative links inside a moved Contract are not
+     rewritten, because the archived Contract is a closed historical record;
    - requires the preflight to run on the ``development`` commit to be
      released, the preflighted commit, after the release notes, the version
      heading, and the user-facing documentation of the release are committed
@@ -100,7 +108,7 @@ Release Contract
      tag-triggered workflow, so that the preflight and the workflow cannot
      disagree;
    - records the preflight evidence in the Release Contract of the release,
-     ``docs/changes/release-v{version}.md``, which is the one path that may
+     ``docs/releases/v{version}.md``, which is the one path that may
      differ between the preflighted commit P and the release commit R, with
      the difference bounded to that one file, checked by one automated record
      check, ``scripts/check_release_record.py``, which Release runs at
@@ -150,12 +158,12 @@ Release Contract
      release-notes, or another Change Contract, requires a new preflight on
      the new commit, so that recording results cannot cause a recheck loop
      and an untested change cannot inherit earlier evidence; this holds
-     only while the documentation build excludes ``docs/changes/`` and the
+     only while the documentation build excludes ``docs/releases/`` and the
      record check is the only reader of the record, which the
      documentation configuration's exclusion and a recorded run of the
      documentation build and of the release QA suites with an altered record,
      made once for the Change that introduces the rule and again by any later
-     Change that adds a reader of ``docs/changes/``, establish, and not a
+     Change that adds a reader of ``docs/releases/``, establish, and not a
      scan of the repository for references;
    - requires, before publication, the User's explicit authorization to
      push ``main`` and the tag recorded separately from the ``Release start``
@@ -245,9 +253,17 @@ Release Contract
    in place, that Quality's judgment is direct and rests on
    recorded commands and results, and that the publication table records the
    preflighted commit, release commit, authorization, tag, workflow run,
-   GitHub Release, and Pages URL. Confirm that the documentation build
-   excludes ``docs/changes/``, that the record check is the only reader of the
-   record, and that a build and a QA run with an altered record are recorded
+   GitHub Release, and Pages URL. Confirm that the Release Contract of a
+   release lives at ``docs/releases/v{version}.md`` in the Release Process,
+   its initialization, the record check, and its tests, that the Release
+   Process has Release move every included Change Contract to
+   ``docs/changes/v{version}/`` with no content change, in a commit on
+   ``development`` before the preflight, and that the record check rejects a
+   difference from P to R in any other path, including a Change Contract
+   moved after the preflight. Confirm that the documentation build
+   excludes ``docs/releases/`` and the archived Change Contracts, that the
+   record check is the only reader of the record, and that a build and a QA run
+   with an altered record are recorded
    for the Change that introduces the rule. Confirm that the Change inventory records
    the ``Example sync`` disposition of each included Change that carries the
    row. Confirm that the Release Process is listed

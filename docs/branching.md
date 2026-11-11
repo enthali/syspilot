@@ -104,7 +104,7 @@ That is why `main` is never a working branch. Its history is meant to read as a
 list of releases and nothing else.
 
 The [Release process](Syspilot%20Contracts/release.md) runs that promotion in a
-Release Contract at `docs/changes/release-v{version}.md`. Its preflight runs on
+Release Contract at `docs/releases/v{version}.md`. Its preflight runs on
 the `development` commit to be released, with the release notes already
 committed there, before `main` or a tag moves: the documentation tests, the
 strict documentation build, the release QA suites, and the automated version
@@ -121,7 +121,7 @@ authorization naming the run.
 
 Before the merge, commit the User's explicit authorization to push `main` and
 the tag on `development`, after the preflighted commit P, changing only that
-release's `docs/changes/release-v{version}.md`. This authorization is separate
+release's `docs/releases/v{version}.md`. This authorization is separate
 from permission to start the release and acknowledges the local evidence
 limits and any triggered validation-only run.
 
