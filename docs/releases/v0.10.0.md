@@ -1,6 +1,6 @@
 # Release Contract: 0.10.0
 
-**Status:** approved<br>
+**Status:** closed<br>
 **Process owner:** Release<br>
 **Current responsibility:** Release<br>
 **Current blocker:** none<br>
@@ -91,8 +91,8 @@ Publication is not atomic: Pages deployment may succeed before GitHub Release cr
 | Infrastructure impact | yes | Admin | Workflow-input and environment comparison, trigger assessment, and hosted revalidation requirement recorded in Infrastructure Impact; commit ecc8b2e | complete |
 | Linux test fix | yes | Developer | Cause demonstrated on Linux (WSL): `Repo.commit` runs `git add -A`, which with `core.fileMode` true on Linux resets the index mode set by `update-index --chmod=+x` to the working file's 644, so the mode change vanished; Windows has fileMode false. Fix: `core.fileMode=false` in `Repo.git` of `tests/test_acceptance_release_record.py`. Without the fix `tests.test_acceptance_release_record` fails 1 of 13 in WSL, with it 13 pass; the checker is unchanged. Not run: the hosted run | complete |
 | Release verification | yes | Quality | Independent re-review of 0775e40: QI-1 to QI-3 resolved; local preflight and hosted validation at P 174658b support proceed; final P-to-R review remains required | proceed |
-| Publication | yes | Release | Explicit push authorization, main/tag, successful workflow, Pages and GitHub Release verified | pending |
-| Closure | yes | Release | Closure checklist and publication evidence complete | pending |
+| Publication | yes | Release | Explicit push authorization, main/tag, successful workflow, Pages and GitHub Release verified | complete: R 4672c7f pushed, tag v0.10.0, tag run 42852081490 succeeded; see Publication |
+| Closure | yes | Release | Closure checklist and publication evidence complete | complete |
 
 ## Change Inventory
 
@@ -264,7 +264,7 @@ Quality maintains this table, routes issues to artifact owners and removes rows 
 
 ## Publication
 
-**Status:** pending
+**Status:** complete
 
 Follow the canonical Release Process. Release start does not authorize publication.
 
@@ -278,22 +278,23 @@ Validation/build failure prevents publication. Failure after Pages deployment ca
 | Evidence | Value |
 |---|---|
 | Preflighted commit P | 174658b87bdf81b14aa91ec6072ee64c4cdc9b6f |
-| Release commit on main R | pending |
+| Release commit on main R | 4672c7fb1aee3a998a9897bf391e63d2f84c620f (merge of development b34782a; pushed to origin/main 2026-11-10) |
+| Quality judgment on P..R | proceed for exact R, given by Quality in the consultation answer of 2026-11-10: full P..R diff read, only the release record changes, record checker exit 0, authorization committed before R |
 | User authorization to push main and the tag | Granted by the User on 2026-11-10 (time not recorded): push `main` as R and tag R `v0.10.0`, push the tag, which starts the Release workflow with Pages and GitHub Release. Acknowledged: tests ran locally on the preparing platform and Linux was proven by the validation-only run 42825367358 at P, not by the tag run; publication is not atomic and the partial-publication risk is accepted; a failed tag run means fix-forward with a new version and the tag is not moved. Recorded on development before R. |
-| Tag | v0.10.0 (not created) |
-| Workflow run | pending |
-| GitHub Release | pending |
-| Pages URL | https://enthali.github.io/syspilot/index.html (deployment not verified for this release) |
+| Tag | v0.10.0 on R, pushed 2026-11-10 |
+| Workflow run | https://github.com/enthali/syspilot/actions/runs/42852081490: success (Validate release, Build documentation, Publish documentation, Create GitHub Release); first tag run of the current workflow, baseline for the next release's revalidation triggers (Python 3.13, uv; the runner image was not recorded) |
+| GitHub Release | https://github.com/enthali/syspilot/releases/tag/v0.10.0 (not draft); body starts with the v0.10.0 heading and summary of docs/releasenotes.md |
+| Pages URL | https://enthali.github.io/syspilot/index.html: the github-pages deployment for sha 4672c7f was created 2026-11-10 and the Publish documentation job succeeded; the rendered page could not be fetched from the preparing environment, so the published version text is not independently read |
 
 ## Closure
 
-**Status:** pending
+**Status:** complete
 
-- [ ] Every included artifact/gate has terminal status and evidence.
-- [ ] Preflight and release-record checks passed; Quality reviewed the complete record diff.
-- [ ] Quality recorded proceed.
-- [ ] Open Quality Issues contains None.
-- [ ] Publication evidence is recorded.
-- [ ] Current blocker is none.
+- [x] Every included artifact/gate has terminal status and evidence.
+- [x] Preflight and release-record checks passed; Quality reviewed the complete record diff.
+- [x] Quality recorded proceed.
+- [x] Open Quality Issues contains None.
+- [x] Publication evidence is recorded.
+- [x] Current blocker is none.
 
-**Final outcome:** pending
+**Final outcome:** v0.10.0 published on 2026-11-10: R 4672c7f on main, tag v0.10.0, tag run 42852081490 succeeded, GitHub Release created, Pages deployment created. The rendered Pages text was not independently read from the preparing environment.
