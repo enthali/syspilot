@@ -179,5 +179,5 @@ human reads them.
 Later Syspilot updates are not routine setup work. Each update requires a
 separate project-specific Change that records the old and proposed baselines,
 impact analysis, revalidation scope, authorization, and technical executor.
-A project that runs a version before 0.10 finds a starting checklist in
-[Upgrading to 0.10](upgrade.md).
+A project moving from an earlier setup to Contract-driven actors finds a
+starting checklist in [the upgrade guide](upgrade.md).

@@ -1,6 +1,6 @@
 [syspilot]
 schema_version = "2.0"
-description = "syspilot v2 ontology — sphinx-needs reads [needs] directly; the [syspilot] schema version labels the baseline."
+description = "syspilot ontology — sphinx-needs reads [needs] directly; the [syspilot] schema version labels the baseline."
 
 # ---------------------------------------------------------------------------
 # sphinx-needs configuration (read directly by sphinx-needs via needs_from_toml)
@@ -21,7 +21,7 @@ flow_engine = "graphviz"
 # Extra option fields available on all need directives.
 # "realized_by" holds a plain path reference (not a need link) to the file
 # that IS the HOW — an agent file, skill file, or code location. There is no
-# separate SPEC type in v2: a written HOW would duplicate the file verbatim.
+# separate SPEC type: a written HOW would duplicate the file verbatim.
 extra_options = ["priority", "rationale", "realized_by"]
 
 # ---------------------------------------------------------------------------

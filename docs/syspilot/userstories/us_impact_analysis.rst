@@ -25,7 +25,7 @@ Impact Analysis
    :status: approved
    :validates: SYSP_US_IMPACT_QUERY
 
-   Given an active project ontology declares standard, v2, or customer-defined
+   Given an active project ontology declares standard or project-configured
    Sphinx-Needs link options,
    When a participant queries an existing Need in either direction to a chosen
    depth,

@@ -36,7 +36,7 @@ Quality Review Methods
 
    Run focused automated tests that confirm peer discovery returns the exact
    expected set for the same-document scope and the all-peers scope, both on
-   current v2 data and on a synthetic ontology whose type names differ from
+   current project data and on a synthetic ontology whose type names differ from
    Syspilot's; that repeated runs over unchanged data return an identical peer
    set; and that fixtures containing overlapping obligation, contradiction,
    and missing coverage are reported as findings. Confirm that missing peer
@@ -87,7 +87,7 @@ Quality Review Methods
    Run focused automated tests that confirm a caller-selected depth returns
    the corresponding relationship neighborhood for depths one through four and
    a deeper requested value; that named forward and backward links preserve
-   observed source and target on current v2 data and a synthetic project
+   observed source and target on current project data and a synthetic project
    ontology without Syspilot graph metadata; and that unresolved targets are
    reported without inferring missing optional links, orphan status, graph
    completeness, or semantic correctness of a same-type link. Confirm that

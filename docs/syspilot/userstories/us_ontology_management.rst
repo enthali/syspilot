@@ -29,6 +29,6 @@ Ontology Management
    Given an applicable Contract records an ontology decision and responsibility,
    When the responsible participant uses the Ontology skill to inspect or edit
    the project ontology,
-   Then the guidance matches the current v2 schema, the resulting documentation
+   Then the guidance matches the active project schema, the resulting documentation
    build validates the configuration strictly, and the skill does not introduce
    a separate governance authority.

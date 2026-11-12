@@ -36,7 +36,7 @@ timing.
 
 ```{mermaid}
 gitGraph
-    commit id: "release v0.9.0" tag: "v0.9.0"
+    commit id: "previous release" tag: "previous release tag"
     branch development
     checkout development
     branch feature/contract-handling
@@ -47,7 +47,7 @@ gitGraph
     checkout development
     merge feature/contract-handling id: "squash merge"
     checkout main
-    merge development id: "release v0.9.1" tag: "v0.9.1"
+    merge development id: "next release" tag: "next release tag"
 ```
 
 ## What Each Branch Means

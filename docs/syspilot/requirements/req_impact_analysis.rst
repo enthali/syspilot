@@ -36,7 +36,7 @@ Impact Analysis
    :verifies: SYSP_REQ_IMPACT_QUERY
 
     Run focused automated tests that confirm standard links and active-ontology
-    extra links are traversed in both directions; current v2 typed links and a
+    extra links are traversed in both directions; configured Syspilot links and a
     synthetic customer-defined link type are discovered; direction, depth,
     output modes, de-duplication, and cycle protection behave consistently; and
     unknown Needs, missing or invalid ontology, missing built data, and failed

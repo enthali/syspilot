@@ -1,6 +1,6 @@
 # Syspilot Actors
 
-Actor definitions for syspilot v2. Each file describes one actor's identity, guardrails, and operational facts.
+Actor definitions for Syspilot. Each file describes one actor's identity, guardrails, and operational facts.
 
 ## Actor Model
 

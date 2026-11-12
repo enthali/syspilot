@@ -25,10 +25,10 @@ criteria ask whether a requirement was implemented correctly. User
 documentation has its own `doc` Needs, which point to readable documents and
 declare the requirements they contain in user-oriented form.
 
-There is no separate v2 directory full of prose design specifications. The
-`realized_by` link points to the actual role card, process, skill, instruction,
-or code artifact that supplies the how. Less duplicate truth means less stale
-truth.
+The `realized_by` link points directly to the role card, process, skill,
+instruction, or code artifact that supplies the how, rather than duplicating
+that realization in a separate prose design specification. Less duplicate
+truth means less stale truth.
 
 ## Why Actors?
 

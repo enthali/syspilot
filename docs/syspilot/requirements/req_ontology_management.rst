@@ -1,7 +1,7 @@
 Ontology Management
 ===================
 
-.. req:: Current V2 Ontology Schema Guidance
+.. req:: Current Ontology Schema Guidance
    :id: SYSP_REQ_ONTOLOGY_SCHEMA
    :status: approved
    :implements: SYSP_US_ONTOLOGY_MANAGEMENT
@@ -12,25 +12,25 @@ Ontology Management
 
    - the separation between Sphinx-Needs configuration under ``[needs]`` and
      optional syspilot-specific metadata under ``[syspilot]``;
-   - the v2 Need types, statuses, extra options, and extra links;
+   - the configured Need types, statuses, extra options, and extra links;
    - the absence of a required Syspilot type-pair or status-transition schema;
      configured link kinds and statuses come from ``[needs]``; and
    - the absence of centralized artifact-owner or actor-name assignments,
      because applicable Contracts declare ownership and responsibility.
 
    The guidance shall not describe removed Need types, obsolete actors, or
-   schema fields that are absent from the current v2 ontology.
+   schema fields that are absent from the active project ontology.
 
 .. vc:: Ontology guidance matches the current schema
    :id: SYSP_VC_ONTOLOGY_SCHEMA_1
    :status: approved
    :verifies: SYSP_REQ_ONTOLOGY_SCHEMA
 
-   Compare the realized Ontology skill with ``.syspilot/ontology.toml`` and
-   confirm that every described section and example exists in the v2 schema,
-   removed v1 types, mandatory Syspilot graph and transition metadata, and
-   actor ownership are absent, and ownership is assigned to applicable
-   Contracts rather than the ontology.
+   Compare the realized Ontology skill with ``.syspilot/ontology.toml``.
+   Every described section and example matches the configured schema; the
+   guidance introduces no removed Need types, obsolete actors, absent fields,
+   or mandatory Syspilot graph and transition metadata. It assigns artifact
+   ownership and responsibility to applicable Contracts, not the ontology.
 
 .. req:: Contract-Owned Ontology Editing And Validation
    :id: SYSP_REQ_ONTOLOGY_EDITING

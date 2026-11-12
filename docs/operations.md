@@ -84,7 +84,7 @@ technical executor.
 Jarvis installation, compatibility, and extension updates have their own
 lifecycle and are outside Syspilot's project-update policy.
 
-A project that runs a Syspilot version before 0.10 can use the
+A project moving from an earlier setup to Contract-driven actors can use the
 [upgrade checklist](upgrade.md) as input for that Change. The checklist does
 not replace the Change: the Change still owns the baselines, the impact
 analysis, and the User's authorization.

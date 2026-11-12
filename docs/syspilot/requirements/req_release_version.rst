@@ -22,8 +22,7 @@ Release Version Consistency
    - derive the documentation configuration's ``release`` value from that
      newest heading when the documentation is built, and not state it as a
      literal, so that the published documentation shows the latest released
-     version and the value cannot drift from the release notes, which the
-     literal ``0.1.0`` of the earlier configuration did;
+     version and the value cannot drift independently of the release notes;
    - provide one automated check, run with the tag as its argument and
      writing nothing, that fails with a message naming the failing condition
      unless the tag has the form ``vMAJOR.MINOR.PATCH``, exactly one

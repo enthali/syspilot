@@ -132,7 +132,7 @@ outgoing = "customer outgoing"
             command.append("--no-build")
         return subprocess.run(command, capture_output=True, text=True, env=env)
 
-    def test_flat_traverses_standard_v2_and_customer_links_once(self):
+    def test_flat_traverses_standard_and_customer_links_once(self):
         result = self.run_cli("ROOT", "--direction", "out", "--depth", "1", "--flat")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(json.loads(result.stdout), ["CUSTOM", "STANDARD", "TYPED"])

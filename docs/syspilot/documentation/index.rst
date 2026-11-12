@@ -74,7 +74,7 @@ realized documents remain free of Sphinx-Needs markup.
    :realized_by: docs/upgrade.md
    :includes: SYSP_REQ_ACTOR_MODEL, SYSP_REQ_SETUP, SYSP_REQ_CONTRACT_HANDLING, SYSP_REQ_CHANGE_CONTRACT, SYSP_REQ_ONTOLOGY_SCHEMA, SYSP_REQ_IMPACT_QUERY, SYSP_REQ_EXAMPLES
 
-   A checklist for moving a project that predates Syspilot 0.10 to 0.10,
+   A checklist for moving an existing project to Contract-driven actors,
    used as input to the project's update Change.
 
 .. doc:: Branching Guide

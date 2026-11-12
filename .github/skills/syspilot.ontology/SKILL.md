@@ -1,6 +1,6 @@
 ---
 name: syspilot.ontology
-description: "Technical guidance for reading and editing the current Syspilot v2 ontology. USE FOR: Need types, statuses, options, named links, and strict ontology validation."
+description: "Technical guidance for reading and editing the current Syspilot ontology. USE FOR: Need types, statuses, options, named links, and strict ontology validation."
 requirements: [SYSP_REQ_ONTOLOGY_SCHEMA, SYSP_REQ_ONTOLOGY_EDITING]
 ---
 
@@ -8,7 +8,7 @@ requirements: [SYSP_REQ_ONTOLOGY_SCHEMA, SYSP_REQ_ONTOLOGY_EDITING]
 
 Use this skill when an applicable Contract includes reading or changing `.syspilot/ontology.toml`. The Contract owns the decision, responsibility, affected artifacts, and evidence; this skill provides the technical schema and validation procedure.
 
-## Current V2 Schema
+## Current Schema
 
 Sphinx-Needs reads `[needs]` directly through `needs_from_toml` in `docs/conf.py`. The sibling `[syspilot]` schema version is a descriptive baseline label, not a required graph input.
 

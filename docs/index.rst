@@ -24,12 +24,12 @@ the process in motion, :doc:`customization` for project tailoring, or
 :doc:`operations` for builds and maintenance.
 
 
-syspilot Actors & Processes (v2)
----------------------------------
+Syspilot Actors & Processes
+---------------------------
 
 .. toctree::
    :maxdepth: 2
-   :caption: syspilot v2
+   :caption: Syspilot
 
    syspilot/index
    Syspilot Actors/index

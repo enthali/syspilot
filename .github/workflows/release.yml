@@ -1,4 +1,4 @@
-# Validates the current v2 release surface and publishes an authorized tag.
+# Validates the current release surface and publishes an authorized tag.
 # Manual runs are validation-only and never publish Pages or a GitHub Release.
 
 name: Release
