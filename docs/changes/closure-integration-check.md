@@ -1,6 +1,6 @@
 # Change Contract: closure-integration-check
 
-**Status:** accepted<br>
+**Status:** closed<br>
 **Process owner:** Project Manager<br>
 **Current responsibility:** Project Manager<br>
 **Current blocker:** none<br>
@@ -63,7 +63,7 @@ Lightweight crew by User decision of 2026-11-12: Architect, Developer, Quality. 
 |---|---|---|---|---|
 | Intent and outcome | yes | Project Manager | Goal, value, scope, and observable outcome are explicit and approved | approved |
 | Contract release | yes | User | User released the Contract on 2026-11-12 | approved |
-| Version control | yes | Project Manager | Feature branch `feature/closure-integration-check`; squash-integrated into `development` at closure | active |
+| Version control | yes | Project Manager | Feature branch `feature/closure-integration-check`; squash-integrated into `development` at closure | merged |
 | Infrastructure impact | not applicable: no workflow, CI or packaging artifact changes | Admin | Affected workflow, CI, and packaging artifacts are updated, confirmed by their current owner rather than inferred from a Needs-only impact query | not applicable |
 | Product specification and architecture decisions | yes | Architect | `e6fe284` adds the integration item and `SYSP_VC_CHANGE_INTEGRATION_1`; strict build has zero warnings, 33 relevant existing checks pass and fresh Impact links resolve; guide discrepancy is recorded below | complete |
 | User-facing documentation | not applicable: crew limited by User decision; the Architect names any guide that states the closure checklist as an open issue | Technical Writer | Agreed documentation surface is coherent and user-oriented; factual-owner review is recorded; `doc` Needs and `includes` links are current; documentation builds cleanly | not applicable |
@@ -72,7 +72,7 @@ Lightweight crew by User decision of 2026-11-12: Architect, Developer, Quality. 
 | Acceptance test design and results | not applicable: Quality reviews the artifacts directly | Tester | Requirement tests written and run by the Tester, with their commands and results, and the means for User validation trace to the intended outcome | not applicable |
 | Quality review | yes | Quality | Review at `e33231c`: proceed; canonical/example items, focused VC and corrected guide agree, Q1 cleared | complete |
 | User validation and approval | yes | User | The User accepted the outcome on 2026-11-12 | accepted |
-| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | accepted |
+| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | complete |
 
 ## Architecture And Specification
 
@@ -179,7 +179,7 @@ Quality's `proceed` judgment verifies that the change is ready for validation; i
 
 ## Closure
 
-**Status:** accepted
+**Status:** closed
 
 - [x] Every included artifact or gate has terminal status and completion evidence.
 - [x] Intent and outcome are `approved`.
@@ -188,6 +188,6 @@ Quality's `proceed` judgment verifies that the change is ready for validation; i
 - [x] User validation is `accepted`.
 - [x] Current blocker is `none`.
 - [x] The observable outcome is demonstrated.
-- [ ] The feature branch is squash-integrated into `development`.
+- [x] The feature branch is squash-integrated into `development`.
 
-**Final outcome:** The Change Contract closure checklist in the canonical template and the example requires that the feature branch is squash-integrated into the integration branch, or that the Version control row is `not applicable` with its reason; the Requirement and the closure sentence in `docs/change-contract.md` agree. The User accepted on 2026-11-12.
+**Final outcome:** The Change Contract closure checklist in the canonical template and the example requires that the feature branch is squash-integrated into the integration branch, or that the Version control row is `not applicable` with its reason; the Requirement and the closure sentence in `docs/change-contract.md` agree. The User accepted on 2026-11-12. Integrated by squash into `development` from `feature/closure-integration-check` as `827497b`, not pushed.
