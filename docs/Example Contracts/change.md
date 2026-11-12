@@ -223,6 +223,7 @@ Set this artifact to `not applicable` only when the User explicitly delegates va
 - [ ] Quality has recorded a `proceed` judgment.
 - [ ] Open Quality Issues contains `None`.
 - [ ] User validation is `accepted`, or its `not applicable` status and explicit User delegation are recorded in the artifact row.
+- [ ] The feature branch is squash-integrated into `{integration branch}`, or the `Version control` row is `not applicable` with its recorded reason.
 - [ ] Current blocker is `none`.
 - [ ] The observable outcome is demonstrated.
 

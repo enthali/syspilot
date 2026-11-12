@@ -142,12 +142,14 @@ Change Contract
      the intended outcome is demonstrated, the user-validation disposition is
      explicit, and the integration state is recorded.
 
-   All actors share one working tree, so a branch switch changes state for every
-   actor at once. Branch creation and integration therefore stay with the single
-   actor that holds responsibility at exactly those two moments. Because
-   ``merged`` is a terminal status, the existing closure condition that every
-   included artifact or gate carries a terminal status already enforces
-   integration, and no separate integration rule is required.
+   The Closure checklist shall explicitly require the feature branch to be
+   squash-integrated into ``development`` before closure. A ``Version control``
+   row marked ``not applicable`` shall satisfy that item only with its recorded
+   reason. The generic example shall use ``{integration branch}`` for the
+   corresponding target.
+
+   Branch creation and integration shall stay with the single actor holding
+   current responsibility at those moments.
 
 .. vc:: Change Contract exposes a complete outcome-driven change state
    :id: SYSP_VC_CHANGE_CONTRACT_1
@@ -204,3 +206,13 @@ Change Contract
    section heading names an artifact owner; and that the artifact table carries
    an ``Example sync`` row owned by the Technical Writer, included by default,
    with ``not applicable`` allowed only with a recorded reason.
+
+.. vc:: Change closure explicitly checks integration
+   :id: SYSP_VC_CHANGE_INTEGRATION_1
+   :status: approved
+   :verifies: SYSP_REQ_CHANGE_CONTRACT
+
+   Both Closure checklists contain the integration item: ``development`` in
+   the canonical template and ``{integration branch}`` in the example. An
+   active, unintegrated branch does not satisfy it; completed squash integration
+   or a reasoned ``not applicable`` Version control row does.

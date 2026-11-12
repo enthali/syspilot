@@ -231,8 +231,9 @@ either — the decision stays pending until the user returns.
 
 After validation has an explicit disposition, responsibility returns to the
 Project Manager for Closure. The Contract closes only when included artifacts
-have terminal evidence, Quality can proceed, blockers are gone, and integration
-or publication is complete or its next authorized owner is explicit.
+have terminal evidence, Quality can proceed, blockers are gone, and the feature
+branch is squash-integrated into the integration branch, unless the Version
+control row is `not applicable` with its reason recorded.
 
 A closed Contract is worth more than a finished one. It is the record a future
 reader consults when they need to know why the system looks the way it does.
