@@ -1,6 +1,6 @@
 # Change Contract: version-free-text
 
-**Status:** accepted<br>
+**Status:** closed<br>
 **Process owner:** Project Manager<br>
 **Current responsibility:** Project Manager<br>
 **Current blocker:** none<br>
@@ -64,7 +64,7 @@ Crew by User decision of 2026-11-11: Architect and Technical Writer; the Develop
 |---|---|---|---|---|
 | Intent and outcome | yes | Project Manager | Goal, value, scope, and observable outcome are explicit and approved | approved |
 | Contract release | yes | User | User released the Contract on 2026-11-12 | approved |
-| Version control | yes | Project Manager | Feature branch `feature/version-free-text`; squash-integrated into `development` at closure | active |
+| Version control | yes | Project Manager | Feature branch `feature/version-free-text`; squash-integrated into `development` at closure | merged |
 | Infrastructure impact | not applicable: the workflow change is a comment owned by the Developer | Admin | Affected workflow, CI, and packaging artifacts are updated, confirmed by their current owner rather than inferred from a Needs-only impact query | not applicable |
 | Product specification and architecture decisions | yes | Architect | Ten specification/architecture files corrected; broader numeric scan retains only external-tool versions; isolated strict build, four build-runner tests and 11 release-version tests pass. Evidence remains valid for the approved test-name extension: no specification obligation changes | complete |
 | User-facing documentation | yes | Technical Writer | Eleven files corrected; Architect factual review of 15989f7 has no findings; current documentation scan retains only SysML v2, strict isolated build has zero warnings, 4 build-runner and 26 focused checks pass | complete |
@@ -73,7 +73,7 @@ Crew by User decision of 2026-11-11: Architect and Technical Writer; the Develop
 | Acceptance test design and results | not applicable: the outcome is checked by search and review | Tester | Requirement tests written and run by the Tester, with their commands and results, and the means for User validation trace to the intended outcome | not applicable |
 | Quality review | yes | Quality | Independent review at 2fd16d4: full text delta and remaining-label scan reviewed; parsed ontology and AST checks confirm preserved behavior; 72 graph queries succeed; recorded isolated strict builds and final 202-test pass support proceed | proceed |
 | User validation and approval | yes | User | The User accepted the outcome on 2026-11-12 | accepted |
-| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | accepted |
+| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | complete |
 
 ## Architecture And Specification
 
@@ -204,7 +204,7 @@ Quality's `proceed` judgment verifies that the change is ready for validation; i
 
 ## Closure
 
-**Status:** accepted
+**Status:** closed
 
 - [x] Every included artifact or gate has terminal status and completion evidence.
 - [x] Intent and outcome are `approved`.
@@ -214,4 +214,4 @@ Quality's `proceed` judgment verifies that the change is ready for validation; i
 - [x] Current blocker is `none`.
 - [x] The observable outcome is demonstrated.
 
-**Final outcome:** Current Syspilot documents, specifications, the ontology skill, the workflow comment and four test method names carry no product version label; the Release mechanism is unchanged. The User accepted on 2026-11-12.
+**Final outcome:** Current Syspilot documents, specifications, the ontology skill, the workflow comment and four test method names carry no product version label; the Release mechanism is unchanged. The User accepted on 2026-11-12. Integrated by squash into `development` from `feature/version-free-text` as `9fde4cf`, not pushed.
