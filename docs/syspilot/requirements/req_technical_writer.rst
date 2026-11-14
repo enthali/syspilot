@@ -22,22 +22,41 @@ Technical Writer
    - consult factual artifact owners directly for clarification and for review
      of accuracy and understandability; and
    - keep consultation distinct from Contract handoff so that messaging alone
-     transfers neither current responsibility nor artifact ownership; and
+     transfers neither current responsibility nor artifact ownership;
    - maintain ``docs/Example Actors/`` and ``docs/Example Contracts/`` in
      every Change through its ``Example sync`` row, deciding for each changed
      role card or Contract process whether the change also holds for a general
      project, and declaring each deliberate deviation of an example role card
      in the ``Deviations`` table of ``docs/Example Actors/index.md``.
 
-.. vc:: Technical Writer preserves documentation authority boundaries
+.. vc:: Technical Writer maintains complete documentation traceability
    :id: SYSP_VC_TECHNICAL_WRITER_1
    :status: approved
    :verifies: SYSP_REQ_TECHNICAL_WRITER
 
-   Inspect the Technical Writer role card, ``doc`` Needs, and their realized
-   user-facing documentation and confirm that each surface has a path and
-   requirement traceability, changed requirements expose incoming
-   ``included_in`` impact, source authority is preserved, factual review is
-   recorded, and consultation did not implicitly transfer responsibility.
-   Confirm that the role card names the example maintenance duty and that the
-   ``Example sync`` row of a closed Change records its result.
+   Each independently maintained user-facing surface has a ``doc`` Need with
+   a valid realization path and complete ``includes`` links; changed
+   requirements expose it through ``included_in``.
+
+.. vc:: Documentation preserves factual authority
+   :id: SYSP_VC_TECHNICAL_WRITER_2
+   :status: approved
+   :verifies: SYSP_REQ_TECHNICAL_WRITER
+
+   Documentation evidence records direct factual-owner review of accuracy and
+   understandability; consultation transfers neither ownership nor responsibility.
+
+.. vc:: Documentation maintenance includes generic examples
+   :id: SYSP_VC_TECHNICAL_WRITER_3
+   :status: approved
+   :verifies: SYSP_REQ_TECHNICAL_WRITER
+
+   The role card assigns example maintenance; a closed Change's ``Example
+   sync`` row records its result and declared role-card deviations.
+
+.. vc:: Realized user documentation remains markup-free
+   :id: SYSP_VC_TECHNICAL_WRITER_4
+   :status: approved
+   :verifies: SYSP_REQ_TECHNICAL_WRITER
+
+   Realized user-facing documents contain no Needs markup.

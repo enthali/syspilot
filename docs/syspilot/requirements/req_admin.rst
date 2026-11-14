@@ -22,13 +22,9 @@ Admin
    - own release workflow definitions as tooling, meaning job and step wiring,
      runners, and dependencies, and treat Release as a mandatory consultee on
      every change to them;
-   - state, when a release process relies on that workflow's runs for a
-     platform on which its preflight does not run, the facts of those runs
-     that the reliance rests on, namely what the workflow's jobs execute
-     compared with the preflight commands, the evidence of the last
-     successful run, and the repository paths and environment changes that
-     make that evidence stale, so that the process can name its revalidation
-     triggers;
+   - supply workflow/preflight comparison, last successful run evidence and
+     stale-evidence paths and environment changes when a release relies on
+     workflow runs from a different platform;
    - continue a pristine Setup record that the Setup Contract transfers to it
      because the initiating session lacks the Jarvis messaging tools, by
      re-reading its context, its role card, and the record, verifying that the
@@ -44,12 +40,29 @@ Admin
    :status: approved
    :verifies: SYSP_REQ_ADMIN
 
-   Inspect the Admin role card and a completed infrastructure artifact in a
-   Contract and confirm that the affected infrastructure, the action taken,
-   and the confirming evidence are explicit, that a change to a release
-   workflow definition records Release as consulted, and that release gate
-   content and delivery remain with Release. Confirm that the role card names
-   the continuation of a transferred Setup record, with the acknowledgement
-   recorded in that record, and that a release process relying on the
-   workflow's runs finds the facts, last successful run, and stale-evidence
-   conditions in the Admin's infrastructure artifact.
+   Infrastructure evidence identifies affected tooling, actions and confirming
+   observations from the infrastructure, not Needs-only inference.
+
+.. vc:: Admin provides remote workflow evidence
+   :id: SYSP_VC_ADMIN_2
+   :status: approved
+   :verifies: SYSP_REQ_ADMIN
+
+   A release relying on remote runs has Admin's workflow/preflight comparison,
+   successful-run evidence and stale-evidence conditions.
+
+.. vc:: Admin acknowledges Setup in the transferred record
+   :id: SYSP_VC_ADMIN_3
+   :status: approved
+   :verifies: SYSP_REQ_ADMIN
+
+   The role card requires context, role and record refresh, executor-header
+   verification and acknowledgement in the Setup record before continuing.
+
+.. vc:: Admin preserves Release workflow-gate authority
+   :id: SYSP_VC_ADMIN_4
+   :status: approved
+   :verifies: SYSP_REQ_ADMIN
+
+   Every workflow change records Release's consultation; gate content remains
+   Release's while Admin owns wiring.

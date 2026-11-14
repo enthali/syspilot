@@ -34,15 +34,33 @@ Quality Review Methods
    :status: approved
    :verifies: SYSP_REQ_MECE_ANALYSIS
 
-   Run focused automated tests that confirm peer discovery returns the exact
-   expected set for the same-document scope and the all-peers scope, both on
-   current project data and on a synthetic ontology whose type names differ from
-   Syspilot's; that repeated runs over unchanged data return an identical peer
-   set; and that fixtures containing overlapping obligation, contradiction,
-   and missing coverage are reported as findings. Confirm that missing peer
-   data yields an explicit limitation rather than a silent empty result.
-   Inspect ``SKILL.md`` and confirm it claims no authority to modify
-   artifacts, decide scope, or transfer responsibility.
+   Automated discovery returns the exact same-document and all-type peer sets
+   for current project data and synthetic type names; repeated runs agree.
+
+.. vc:: MECE reports semantic findings and data limits
+   :id: SYSP_VC_MECE_ANALYSIS_2
+   :status: approved
+   :verifies: SYSP_REQ_MECE_ANALYSIS
+
+   Fixtures with overlap, contradiction and missing coverage yield findings.
+   Incomplete or missing peer data yields an explicit limitation, not a clean
+   empty result.
+
+.. vc:: MECE reports its exact coverage scope
+   :id: SYSP_VC_MECE_ANALYSIS_3
+   :status: approved
+   :verifies: SYSP_REQ_MECE_ANALYSIS
+
+   Reports identify the exact peer set, scope, coverage and responsibility
+   boundaries.
+
+.. vc:: MECE retains read-only authority
+   :id: SYSP_VC_MECE_ANALYSIS_4
+   :status: approved
+   :verifies: SYSP_REQ_MECE_ANALYSIS
+
+   The skill remains read-only and claims no artifact correction, scope
+   decision or handoff authority.
 
 .. req:: Trace Relationship And Chain Analysis
    :id: SYSP_REQ_TRACE_ANALYSIS
@@ -84,14 +102,39 @@ Quality Review Methods
    :status: approved
    :verifies: SYSP_REQ_TRACE_ANALYSIS
 
-   Run focused automated tests that confirm a caller-selected depth returns
-   the corresponding relationship neighborhood for depths one through four and
-   a deeper requested value; that named forward and backward links preserve
-   observed source and target on current project data and a synthetic project
-   ontology without Syspilot graph metadata; and that unresolved targets are
-   reported without inferring missing optional links, orphan status, graph
-   completeness, or semantic correctness of a same-type link. Confirm that
-   the traversal is obtained from the discovery realized for
-   ``SYSP_REQ_IMPACT_QUERY`` rather than a second traversal implementation,
-   and that ``SKILL.md`` claims no authority to modify artifacts, decide
-   scope, or transfer responsibility.
+   Automated fixtures return exact neighborhoods for depths one through four
+   and a deeper value, preserving forward/backward sources and targets with
+   both current and synthetic ontologies.
+
+.. vc:: Trace uses the shared impact traversal
+   :id: SYSP_VC_TRACE_ANALYSIS_2
+   :status: approved
+   :verifies: SYSP_REQ_TRACE_ANALYSIS
+
+   Trace obtains traversal from ``SYSP_REQ_IMPACT_QUERY``; it introduces no
+   second depth, de-duplication or cycle implementation.
+
+.. vc:: Trace distinguishes observed links from semantic conclusions
+   :id: SYSP_VC_TRACE_ANALYSIS_3
+   :status: approved
+   :verifies: SYSP_REQ_TRACE_ANALYSIS
+
+   Reports state depth, exact neighborhood and unresolved targets without
+   inferring required links, orphan status or graph completeness; an absent-link
+   defect requires an explicit requiredness rule.
+
+.. vc:: Trace preserves artifact and Contract authority
+   :id: SYSP_VC_TRACE_ANALYSIS_4
+   :status: approved
+   :verifies: SYSP_REQ_TRACE_ANALYSIS
+
+   The skill remains read-only and claims no correction, scope or handoff
+   authority.
+
+.. vc:: Trace assesses linked-content consistency
+   :id: SYSP_VC_TRACE_ANALYSIS_5
+   :status: approved
+   :verifies: SYSP_REQ_TRACE_ANALYSIS
+
+   The semantic assessment includes linked content reached through untouched
+   and same-type relationships, separately from observed edge data.

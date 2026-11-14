@@ -8,49 +8,75 @@ Contract Handling
    :specializes: SYSP_REQ_CONTRACT_DOCUMENTS
    :realized_by: .github/instructions/syspilot.contract-handling.instructions.md
 
-   Every actor working with a Contract Document shall receive one concise,
-   workspace-shared instruction that:
+   Every actor shall receive one concise workspace-shared instruction that:
 
-   - treats ``Current responsibility`` as the temporary authority to maintain
-     the Contract instance without changing durable artifact ownership;
-   - after completing its work, selects the next logical included artifact
-     owner whose work can progress the Contract;
-   - updates Contract status, artifact evidence, and ``Current
-     responsibility``, then commits the Contract and related artifacts as one
-     consistent state before notifying the receiving owner through a named
-     ``HANDOFF`` message that realizes the Actor Kernel's ``SEND`` primitive,
-     intentionally prioritizing single-writer, consistent Contract state over
-     uninterrupted handoff communication and accepting the resulting brief
-     notification gap;
-   - names the Contract path and the committed state in the ``HANDOFF``
-     message, leaves the completed outcome to the last Handover-log line and
-     the remaining work to the open rows, and keeps notes and messages short
-     and direct, with facts and decisions, without recited evidence and
-     without instructions to a receiver who owns the next artifact, all
-     without redefining the Actor Kernel's messaging transport;
-   - requires the receiving owner, before starting the received work, to
-     re-read its own ``context.md``, public role card, and the Contract
-     instance, so that an ``ACK`` confirms current authority against current
-     state rather than cached assumptions, and then to verify that the named
-     commit's Contract header actually states ``Current responsibility`` as
-     itself, then to confirm receipt through a named ``ACK`` message that
-     realizes the Actor Kernel's ``RESPOND`` primitive when verified, or to
-     escalate instead of acknowledging when it is not;
-   - allows every actor to request advice or review from another actor at any
-     time through a named ``CONSULT`` message that realizes the Actor Kernel's
-     ``SEND`` primitive, without transferring ``Current responsibility``;
-     during that consultation, the consulting actor remains read-only with
-     respect to the Contract and versioned work artifacts and returns only
-     advice or findings through a named ``CONSULTRESPOND`` message that
-     realizes the Actor Kernel's ``RESPOND`` primitive;
-   - does not transfer ``Current responsibility`` for questions or escalation;
-     and
-   - records an actionable blocker and escalates when no included artifact
-     owner can progress the Contract.
+   - treats ``Current responsibility`` as temporary Contract authority,
+     preserving durable artifact ownership;
+   - selects the next logical included owner able to progress the Contract;
+   - commits Contract status, evidence, responsibility and owned artifacts as
+     one consistent state before notification;
+   - names the Contract path and the committed state in the ``HANDOFF`` message
+     and nothing else, leaving outcome in the last log line and work in open rows;
+   - requires, before starting received work, receiver refresh of its own
+     ``context.md``, role card and
+     Contract, then verification that the named commit's header names itself,
+     before ``ACK``; mismatch requires escalation instead;
+   - permits ``CONSULT`` and ``CONSULTRESPOND`` between any actors without
+     responsibility transfer or consultation writes to Contract/versioned artifacts;
+   - keeps notes and messages short, factual and direct, without recited
+     evidence or instructions to the next artifact's owner; and
+   - records an actionable blocker and escalates when no included owner can
+     progress; questions and escalation transfer no responsibility.
 
-.. vc:: Contract responsibility produces a committed direct handoff
+   ``HANDOFF`` and ``CONSULT`` shall use the Kernel's ``SEND``;
+   ``ACK`` and ``CONSULTRESPOND`` shall use ``RESPOND``. The instruction shall
+   not redefine transport. Committed single-writer consistency takes priority
+   over uninterrupted communication; the brief notification gap is accepted.
+
+.. vc:: Handoff refers to an already committed consistent state
    :id: SYSP_VC_CONTRACT_HANDLING_1
    :status: approved
    :verifies: SYSP_REQ_CONTRACT_HANDLING
 
-    Inspect the workspace-shared Contract-handling instruction and exercise a completed ``HANDOFF``, a receiving owner's ``ACK``, a ``CONSULT`` with its ``CONSULTRESPOND``, and a blocked Contract. Confirm that the completed ``HANDOFF`` updates evidence, status, and ``Current responsibility`` in one committed state before it is sent; the deliberate notification gap preserves single-writer, consistent Contract state; the receiving owner re-reads its ``context.md``, public role card, and the Contract instance and verifies the named commit's Contract header before confirming, and escalates instead of acknowledging on mismatch; ``CONSULT`` and ``CONSULTRESPOND`` are available between any actors without transferring responsibility or allowing the consulting actor to modify the Contract or versioned work artifacts; and an unprogressable Contract records and escalates its blocker. Confirm that the ``HANDOFF`` message names the Contract path and the commit and no more, that the completed outcome is the last Handover-log line and the remaining work is in the open rows, and that the instruction asks for short, direct notes and messages without recited evidence.
+   A completed handoff names only the Contract path and commit; that commit
+   contains the status, evidence, owned work and next responsibility.
+
+.. vc:: Acknowledgement verifies the receiver's current authority
+   :id: SYSP_VC_CONTRACT_HANDLING_2
+   :status: approved
+   :verifies: SYSP_REQ_CONTRACT_HANDLING
+
+   Receiver evidence shows context, role and Contract refresh before header
+   verification. A matching committed header permits ACK; a mismatch escalates.
+
+.. vc:: Consultation returns advice without state transfer
+   :id: SYSP_VC_CONTRACT_HANDLING_3
+   :status: approved
+   :verifies: SYSP_REQ_CONTRACT_HANDLING
+
+   A consultation returns advice/findings without changing responsibility or
+   versioned artifacts, using Kernel SEND/RESPOND rather than a new transport.
+
+.. vc:: An unprogressable Contract escalates an actionable blocker
+   :id: SYSP_VC_CONTRACT_HANDLING_4
+   :status: approved
+   :verifies: SYSP_REQ_CONTRACT_HANDLING
+
+   A blocked Contract names the needed action and escalation; questions and
+   escalation transfer no responsibility.
+
+.. vc:: Handoff communication leaves detail in the Contract
+   :id: SYSP_VC_CONTRACT_HANDLING_5
+   :status: approved
+   :verifies: SYSP_REQ_CONTRACT_HANDLING
+
+   Notes and messages contain short facts and decisions, not repeated evidence
+   or owner instructions; the last log line and open rows carry outcome and work.
+
+.. vc:: Handoff policy accepts the notification gap
+   :id: SYSP_VC_CONTRACT_HANDLING_6
+   :status: approved
+   :verifies: SYSP_REQ_CONTRACT_HANDLING
+
+   The instruction explicitly prioritizes committed single-writer consistency
+   over uninterrupted notification, rather than authorizing a second writer.

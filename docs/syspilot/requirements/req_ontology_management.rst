@@ -26,11 +26,17 @@ Ontology Management
    :status: approved
    :verifies: SYSP_REQ_ONTOLOGY_SCHEMA
 
-   Compare the realized Ontology skill with ``.syspilot/ontology.toml``.
-   Every described section and example matches the configured schema; the
-   guidance introduces no removed Need types, obsolete actors, absent fields,
-   or mandatory Syspilot graph and transition metadata. It assigns artifact
-   ownership and responsibility to applicable Contracts, not the ontology.
+   Every skill section and example matches ``.syspilot/ontology.toml``;
+   removed types, obsolete actors and absent fields are not taught.
+
+.. vc:: Ontology guidance leaves governance with Contracts
+   :id: SYSP_VC_ONTOLOGY_SCHEMA_2
+   :status: approved
+   :verifies: SYSP_REQ_ONTOLOGY_SCHEMA
+
+   Guidance distinguishes ``[needs]`` configuration from optional metadata;
+   neither mandatory graph/transition metadata nor centralized actor ownership
+   is introduced.
 
 .. req:: Contract-Owned Ontology Editing And Validation
    :id: SYSP_REQ_ONTOLOGY_EDITING
@@ -55,14 +61,34 @@ Ontology Management
    Establishing a project-specific ontology immediately after Setup is outside
    this capability unless a future Contract explicitly includes that work.
 
-.. vc:: Contract-owned ontology edits validate strictly
+.. vc:: Contract-owned ontology edits preserve unrelated configuration
    :id: SYSP_VC_ONTOLOGY_EDITING_1
    :status: approved
    :verifies: SYSP_REQ_ONTOLOGY_EDITING
 
-   Inspect the realized skill and exercise a representative Contract-owned
-   ontology edit. Confirm that the instructions cover only current schema
-   surfaces without a mandatory Syspilot graph or transition schema, preserve
-   unrelated content and Setup baseline behavior, place governance and evidence
-   in the Contract, contain no separate CR or migration gate, and require a
-   strict documentation build with zero schema warnings.
+   A representative edit changes only Contract-included current-schema
+   surfaces and preserves unrelated ontology content and Setup baseline behavior.
+
+.. vc:: Ontology editing records governance in the Contract
+   :id: SYSP_VC_ONTOLOGY_EDITING_2
+   :status: approved
+   :verifies: SYSP_REQ_ONTOLOGY_EDITING
+
+   Skill instructions record decision, responsibility, affected artifacts and
+   evidence in the applicable Contract, with no separate CR or migration gate.
+
+.. vc:: Ontology editing requires strict validation
+   :id: SYSP_VC_ONTOLOGY_EDITING_3
+   :status: approved
+   :verifies: SYSP_REQ_ONTOLOGY_EDITING
+
+   The edit's documentation and schema validation report zero warnings before
+   completion.
+
+.. vc:: Post-Setup ontology establishment needs explicit scope
+   :id: SYSP_VC_ONTOLOGY_EDITING_4
+   :status: approved
+   :verifies: SYSP_REQ_ONTOLOGY_EDITING
+
+   Establishing a project-specific ontology immediately after Setup is included
+   only by explicit Contract scope, not assumed from the editing capability.

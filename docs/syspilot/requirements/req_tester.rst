@@ -27,8 +27,21 @@ Tester
    :status: approved
    :verifies: SYSP_REQ_TESTER
 
-   Inspect the Tester role card and applicable acceptance-test evidence and
-   confirm that scenarios trace to specified outcomes, avoid implementation
-   knowledge, exercise adverse conditions, and record reproducible results.
-   Confirm that the Tester wrote and ran the requirement tests, recorded their
-   commands and results, and provided the means for User validation.
+   Acceptance scenarios trace to specified outcomes, cover normal, boundary
+   and adverse cases, and require no implementation knowledge.
+
+.. vc:: Tester delivers reproducible validation support
+   :id: SYSP_VC_TESTER_2
+   :status: approved
+   :verifies: SYSP_REQ_TESTER
+
+   Applicable test evidence records the Tester's commands and results, the
+   reproducible outcome and means for User validation.
+
+.. vc:: Tester returns specification questions to their owner
+   :id: SYSP_VC_TESTER_3
+   :status: approved
+   :verifies: SYSP_REQ_TESTER
+
+   Unclear or inconsistent specifications have explicit questions for their
+   owner rather than unowned assumptions in the test result.

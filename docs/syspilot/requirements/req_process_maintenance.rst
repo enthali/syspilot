@@ -2,80 +2,80 @@ Process Maintenance Example
 ===========================
 
 .. req:: Process Maintenance Contract Example
-  :id: SYSP_REQ_PROCESS_MAINTENANCE
-  :status: approved
-  :implements: SYSP_US_PROCESS_MAINTENANCE
-  :specializes: SYSP_REQ_CONTRACT_DOCUMENTS
-  :realized_by: docs/Example Contracts/process-maintenance.md
+   :id: SYSP_REQ_PROCESS_MAINTENANCE
+   :status: approved
+   :implements: SYSP_US_PROCESS_MAINTENANCE
+   :specializes: SYSP_REQ_CONTRACT_DOCUMENTS
+   :realized_by: docs/Example Contracts/process-maintenance.md
 
-   Syspilot shall provide a Process Maintenance Contract example that:
+   Syspilot shall provide an optional Process Maintenance example that:
 
-   - follows the Contract Document method, including its shared rules for
-     every Contract kind, declaring its applicability, its canonical template
-     and concrete instance locations, its initial responsibility, its first
-     handoff, its closure responsibility, one owner and completion evidence
-     for every artifact, and checkable closure conditions, and refers to the
-     adopting project's own mode definitions for its Operation Mode;
-   - applies to a project's own process documents, meaning its Contract
-     templates, process registry, role cards, and the instructions and skills
-     that govern those processes, enumerates the included paths in each
-     instance, and names the Admin as owner of the process documents a change
-     modifies;
-   - requires the Admin to consult each affected process owner and, for a
-     changed role card, the actor whose domain the card describes, and to
-     record their responses and dispositions, while consultation transfers no
-     responsibility;
-   - records the User-agreed integration target and the integration commit in
-     a Version control row and requires the integration commit at closure;
-   - includes a Quality review in which Quality compares each affected
-     process document with its peers of the same kind for overlapping or
-     duplicated obligation, contradiction, missing coverage, and
-     responsibility-boundary collision, and records the selected peer set, the
-     evidence, the findings, and the limits in its review-methods table;
-   - states the limits of that manual comparison in the example itself: the
-     peer set is enumerated by the reviewer and is not discovered by a script,
-     because the Needs-based analysis reads specification Needs and not
-     Markdown Contracts; a peer the reviewer did not list is not examined; the
-     judgment rests on a recorded reading and a second reader may reach a
-     different result; and a clean comparison shows that nothing was found
-     among the listed peers and nothing beyond them, with build, link, and
-     schema checks and any mechanical inventory of the listed peers recorded
-     separately as supporting checks that do not establish semantic
-     consistency;
-   - states its boundary: it is an optional example Contract that the User may
-     select at Setup, whose authority extends to the adopting project once it
-     is installed, it requires the Change Process and Contract Documents, a
-     project's registry lists it among its processes only after the project
-     installed it, and Syspilot's own process documents change
-     through the Change process, where the Needs graph covers the
-     specification Needs and their realization links and Quality's recorded
-     review verifies the Markdown content;
+   - declares the inherited method's process fields and shared rules, with
+     Operation Mode defined by the adopting project;
+   - enumerates included templates, registry, role cards, governing instructions
+     and skills, assigning changed process documents to Admin;
+   - requires Admin's recorded consultation and disposition with every affected
+     process owner and, for changed role cards, the described actor, without
+     transferring responsibility;
+   - records the User-agreed integration target and integration commit in a
+     Version control row,
+     with the commit required at closure;
+   - requires Quality's same-kind peer comparison for duplication, overlap,
+     contradiction, missing coverage and responsibility collision, recording
+     peer set, evidence, findings and limits;
+   - states that the reviewer enumerates peers manually, unlisted peers are
+     unexamined, reading-based judgments may differ, and a clean result applies
+     only to listed peers;
+   - records build, link, schema and mechanical inventories separately as
+     supporting checks, not proof of semantic consistency;
+   - gains adopter authority only when installed, requires Change and Contract
+     Documents, and appears in an adopting registry only after installation; and
    - names the Project Manager as the actor that presents the verified outcome
-     to the User after Quality communicates its ``proceed`` judgment directly
-     to the Project Manager, as the Change process does; and
-   - lives at ``docs/Example Contracts/process-maintenance.md``, directly in
-     the flat example folder and listed in the example registry used by the
-     documentation build.
+     after Quality's direct ``proceed`` judgment and evidence.
 
-.. vc:: Process Maintenance example is a bounded adopter example
+   The example shall live at ``docs/Example Contracts/process-maintenance.md``
+   and be listed in that folder's documentation registry. Syspilot's own process
+   changes shall continue through Change; its Needs graph covers specification
+   and realization links, while Quality's review verifies Markdown content.
+
+.. vc:: Process Maintenance is an optional adopter Contract
    :id: SYSP_VC_PROCESS_MAINTENANCE_1
    :status: approved
    :verifies: SYSP_REQ_PROCESS_MAINTENANCE
 
-   Inspect the example and the registry index and confirm that the example
-   declares the Contract Document method's process fields and carries every
-   shared rule, names the Admin as owner of the changed process documents,
-   covers instructions and skills as well as templates, registry, and role
-   cards, requires the consultation of each affected process owner and of the
-   described actor for a changed role card, records the integration target
-   and commit, carries a Quality review whose review-methods table records
-   peer set, evidence, findings, and limits, states the four limits of manual
-   comparison, and states its adopter boundary without claiming that the
-   Needs graph verifies Markdown content, and names the Project Manager as the
-   presenter of the verified outcome to the User. Confirm that the example
-   lies directly in ``docs/Example Contracts/``, that its relative links point
-   only to ``contract-documents.md`` and ``change.md``, that the registry of
-   an installing project lists it among its processes only when installed,
-   that Syspilot's own process changes still use the
-   Change process, and that the realization link of this Requirement names the
-   example.
+   The example has the inherited process fields and shared rules at the stated
+   flat-folder path; links target only Contract Documents and Change. Adopter
+   registries list it only when installed, while Syspilot still uses Change.
+
+.. vc:: Process Maintenance consultations preserve factual authority
+   :id: SYSP_VC_PROCESS_MAINTENANCE_2
+   :status: approved
+   :verifies: SYSP_REQ_PROCESS_MAINTENANCE
+
+   Admin's evidence enumerates affected paths and records responses and
+   dispositions from each process owner and described actor, without transfer.
+
+.. vc:: Process Maintenance review states its semantic limits
+   :id: SYSP_VC_PROCESS_MAINTENANCE_3
+   :status: approved
+   :verifies: SYSP_REQ_PROCESS_MAINTENANCE
+
+   Quality records same-kind peers and semantic findings with all four manual
+   limits; automated supporting checks are separate and claim no Markdown
+   consistency guarantee from the Needs graph.
+
+.. vc:: Process Maintenance has evidenced integration
+   :id: SYSP_VC_PROCESS_MAINTENANCE_4
+   :status: approved
+   :verifies: SYSP_REQ_PROCESS_MAINTENANCE
+
+   Closure evidence includes the agreed integration target and actual
+   integration commit.
+
+.. vc:: Process Maintenance presents Quality's direct result
+   :id: SYSP_VC_PROCESS_MAINTENANCE_5
+   :status: approved
+   :verifies: SYSP_REQ_PROCESS_MAINTENANCE
+
+   Quality communicates proceed and evidence directly to Project Manager before
+   that actor presents the verified outcome to the User.

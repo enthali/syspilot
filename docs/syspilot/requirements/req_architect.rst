@@ -24,7 +24,13 @@ Architect
    :status: approved
    :verifies: SYSP_REQ_ARCHITECT
 
-   Inspect the Architect role card, Change Process, and a completed
-   architecture artifact and confirm that applicability, specifications,
-   decisions, realization links, and relevant checks are explicit and
-   coherent.
+   The role card and Change Process assign architecture, specification
+   applicability and first responsibility to Architect.
+
+.. vc:: Architecture evidence resolves intent into realization
+   :id: SYSP_VC_ARCHITECT_2
+   :status: approved
+   :verifies: SYSP_REQ_ARCHITECT
+
+   A completed architecture artifact links coherent intent, specifications,
+   realization and checks; ambiguities have explicit decisions or escalations.
