@@ -1,6 +1,6 @@
 # Change Contract: requirement-cleanup
 
-**Status:** accepted<br>
+**Status:** closed<br>
 **Process owner:** Project Manager<br>
 **Current responsibility:** Project Manager<br>
 **Current blocker:** none<br>
@@ -67,7 +67,7 @@ Crew by User decision of 2026-11-12: Architect and Quality.
 |---|---|---|---|---|
 | Intent and outcome | yes | Project Manager | Goal, value, scope, and observable outcome are explicit and approved | approved |
 | Contract release | yes | User | User released the Contract on 2026-11-12 | approved |
-| Version control | yes | Project Manager | Feature branch `feature/requirement-cleanup`; squash-integrated into `development` at closure | active |
+| Version control | yes | Project Manager | Feature branch `feature/requirement-cleanup`; squash-integrated into `development` at closure | merged |
 | Infrastructure impact | not applicable: no workflow, CI or packaging artifact changes | Admin | Affected workflow, CI, and packaging artifacts are updated, confirmed by their current owner rather than inferred from a Needs-only impact query | not applicable |
 | Product specification and architecture decisions | yes | Architect | `689b874` preserves `827497b`'s closure obligation, current-actor boundary and focused VC in the split; 71 REQs / 188 VCs. Source and combined-development preview build without warnings; 33 focused tests and 28 Impact starts pass. Prior full-suite evidence remains tied to `9f77643` | complete |
 | User-facing documentation | not applicable: realized prose stays unchanged; User-approved map reference updates are included in architecture | Technical Writer | Agreed documentation surface is coherent and user-oriented; factual-owner review is recorded; `doc` Needs and `includes` links are current; documentation builds cleanly | not applicable |
@@ -76,7 +76,7 @@ Crew by User decision of 2026-11-12: Architect and Quality.
 | Acceptance test design and results | not applicable: Quality reviews the requirements directly | Tester | Requirement tests written and run by the Tester, with their commands and results, and the means for User validation trace to the intended outcome | not applicable |
 | Quality review | yes | Quality | Proceed at `b34bbd7`: prior full review retained; reconciled Change file independently rechecked against `827497b` and tested combined preview; no open issue | complete |
 | User validation and approval | yes | User | The User accepted the outcome on 2026-11-14 | accepted |
-| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | pending |
+| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | complete |
 
 ## Architecture And Specification
 
@@ -391,7 +391,7 @@ Quality's `proceed` judgment verifies that the change is ready for validation; i
 
 ## Closure
 
-**Status:** accepted
+**Status:** closed
 
 - [x] Every included artifact or gate has terminal status and completion evidence.
 - [x] Intent and outcome are `approved`.
@@ -400,6 +400,6 @@ Quality's `proceed` judgment verifies that the change is ready for validation; i
 - [x] User validation is `accepted`.
 - [x] Current blocker is `none`.
 - [x] The observable outcome is demonstrated.
-- [ ] The feature branch is squash-integrated into `development`.
+- [x] The feature branch is squash-integrated into `development`.
 
-**Final outcome:** The requirements and VCs in `docs/syspilot/requirements/` follow the Architect and Quality rule: compound requirements are split into topic requirements that keep the old IDs as anchors, and each VC covers one topic. The realized Markdown artifacts, skills and scripts are unchanged. The User accepted on 2026-11-14.
+**Final outcome:** The requirements and VCs in `docs/syspilot/requirements/` follow the Architect and Quality rule: compound requirements are split into topic requirements that keep the old IDs as anchors, and each VC covers one topic. The realized Markdown artifacts, skills and scripts are unchanged. The User accepted on 2026-11-14. Integrated by squash into `development` from `feature/requirement-cleanup` as `95f29b7`, not pushed. The textual conflict in `req_change_contract.rst` with `closure-integration-check` was resolved to the branch version that Quality reviewed, which carries the integration closure obligation.
