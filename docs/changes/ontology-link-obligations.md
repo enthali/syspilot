@@ -1,6 +1,6 @@
 # Change Contract: ontology-link-obligations
 
-**Status:** active<br>
+**Status:** closed<br>
 **Process owner:** Project Manager<br>
 **Current responsibility:** Project Manager<br>
 **Current blocker:** none<br>
@@ -61,13 +61,13 @@ Automatic checks make agreed minimum relationships visible when they are missing
 **Applicability:** Each artifact owner decides and updates its own row.<br>
 **Scope change:** When the approved intent widens after a row reached a terminal status, `Intent and outcome` returns to `draft` until it is approved again, and each owner whose terminal row the wider intent may affect reassesses it: the owner sets the row back to `pending` or records in the row why its evidence still holds.<br>
 **Ownership:** The `Owner` column of this table is the only statement of artifact and gate ownership in the Contract; section headings name no artifact owner.<br>
-**Status:** pending
+**Status:** complete
 
 | Artifact or gate | Included | Owner | Completion evidence | Status |
 |---|---|---|---|---|
 | Intent and outcome | yes | Project Manager | Goal, value, scope, and observable outcome are explicit and approved | approved |
 | Contract release | yes | User | User authorized release directly to the Project Manager on 2026-11-16 | approved |
-| Version control | yes | Project Manager | Branch `feature/ontology-link-obligations`; squash-integrated into `development` at closure | active |
+| Version control | yes | Project Manager | Branch `feature/ontology-link-obligations` squash-integrated into `development` as `233a03d`; integrated tree matches reviewed tip | merged |
 | Infrastructure impact | not applicable: the agreed scope is checks in the existing strict build, not workflow, CI or packaging changes; reassess if that scope changes | Admin | Affected workflow, CI, and packaging artifacts are updated, confirmed by their current owner rather than inferred from a Needs-only impact query | not applicable |
 | Product specification and architecture decisions | yes | Architect | Decisions agreed with the User and changed specifications are linked and checked | approved |
 | User-facing documentation | yes | Technical Writer | Typed-enforcement revision at 24b9b42: Example Ontology, Customization and Operations describe presence filters, endpoint schemas and diagnostics. Architect and Developer confirmed accuracy; strict clean build and 31 targeted tests pass; existing `doc` links remain current | complete |
@@ -76,7 +76,7 @@ Automatic checks make agreed minimum relationships visible when they are missing
 | Acceptance test design and results | not applicable: User selected a lightweight crew without Tester; Developer verifies the agreed behavior and Quality reviews the evidence | Tester | Requirement tests written and run by the Tester, with their commands and results, and the means for User validation trace to the intended outcome | not applicable |
 | Quality review | yes | Quality | Quality reviewed the recorded commands and results and re-ran the build and module; judgment `proceed` at 5cc7c1f, no open quality issue | complete |
 | User validation and approval | not applicable: on 2026-11-16 the User explicitly delegated validation of this Change only to the Project Manager, who confirmed the decision directly at 22:45 | User | User validation did not occur. PM completed the delegated review after Quality `proceed`; User intends to inspect the outcome tomorrow | not applicable |
-| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | pending |
+| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded below | complete |
 
 ## Architecture And Specification
 
@@ -211,15 +211,15 @@ Set this artifact to `not applicable` only when the User explicitly delegates va
 
 ## Closure
 
-**Status:** pending
+**Status:** closed
 
-- [ ] Every included artifact or gate has terminal status and completion evidence.
-- [ ] Intent and outcome are `approved`.
-- [ ] Quality has recorded a `proceed` judgment.
-- [ ] Open Quality Issues contains `None`.
-- [ ] User validation is `accepted`, or its `not applicable` status and explicit User delegation are recorded in the artifact row.
-- [ ] The feature branch is squash-integrated into `development`, or the `Version control` row is `not applicable` with its recorded reason.
-- [ ] Current blocker is `none`.
-- [ ] The observable outcome is demonstrated.
+- [x] Every included artifact or gate has terminal status and completion evidence.
+- [x] Intent and outcome are `approved`.
+- [x] Quality has recorded a `proceed` judgment.
+- [x] Open Quality Issues contains `None`.
+- [x] User validation is `accepted`, or its `not applicable` status and explicit User delegation are recorded in the artifact row.
+- [x] The feature branch is squash-integrated into `development`, or the `Version control` row is `not applicable` with its recorded reason.
+- [x] Current blocker is `none`.
+- [x] The observable outcome is demonstrated.
 
-**Final outcome:** {accepted result, integration reference, or reason for closure without integration}
+**Final outcome:** Typed link obligations are enforced in the Syspilot and Example ontologies and were squash-integrated into `development` at `233a03d`. Quality reported `proceed` with a clean strict build and 31 targeted tests; the Developer recorded 233 passing tests. The User explicitly delegated validation; the PM reviewed the result, and User validation did not occur. **USER REVIEW REQUIRED:** the Architect interpreted "req needs outbound req" as `req` implementing a `story`, not a required `req`-to-`req` link; the User will review this interpretation. Nothing was pushed.
