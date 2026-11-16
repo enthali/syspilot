@@ -30,7 +30,7 @@ them:
   rather than letting two elements quietly share a name.
 - **Each type declares a `prefix`** — `ROOT_`, `US_`, `REQ_`, `AC_`, `VC_`,
   `DOC_` in the baseline ontology. Read the current values in the
-  [Ontology Reference](ontology-reference.md).
+  [Ontology Reference](<Syspilot Ontology/ontology.md>).
 
 That last point is easy to misread. Sphinx-Needs uses a type `prefix` when it
 *generates* an ID. Because Syspilot requires explicit IDs, the prefix is not a

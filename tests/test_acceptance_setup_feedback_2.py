@@ -42,7 +42,7 @@ def setup_text():
     return read(SETUP).replace("\r\n", "\n")
 
 
-def scaffold_conf(ontology="../.syspilot/ontology.toml", name=PROJECT):
+def scaffold_conf(ontology=f"{PROJECT} Ontology/ontology.toml", name=PROJECT):
     """The docs/conf.py that Setup generates, filled from the definition the Contract carries."""
     section = setup_text().split("### Documentation Scaffold", 1)[1]
     template = re.search(r"```python\n(.*?)```", section, re.S).group(1)
@@ -50,8 +50,8 @@ def scaffold_conf(ontology="../.syspilot/ontology.toml", name=PROJECT):
 
 
 def scaffold_index(name=PROJECT):
-    """The generated docs/index.rst: the project name as title and a table of contents of the two registries."""
-    return f"{name}\n{'=' * len(name)}\n\n.. toctree::\n   :maxdepth: 1\n\n   {PROJECT} Actors/index\n   {PROJECT} Contracts/index\n"
+    """The generated docs/index.rst: the project name as title and a table of contents of the two registries and the ontology page."""
+    return f"{name}\n{'=' * len(name)}\n\n.. toctree::\n   :maxdepth: 1\n\n   {PROJECT} Actors/index\n   {PROJECT} Contracts/index\n   {PROJECT} Ontology/ontology\n"
 
 
 def registry_actors():
@@ -71,8 +71,7 @@ def build_target(folder, installed, hidden_actor_toctree=True, extra_conf=""):
     """Lay out a pristine target as Setup describes it and return the strict build's result."""
     root = Path(folder)
     docs = root / "docs"
-    (root / ".syspilot").mkdir(parents=True)
-    shutil.copy(ROOT / ".syspilot" / "ontology.toml", root / ".syspilot" / "ontology.toml")
+    shutil.copytree(ROOT / "docs" / "Example Ontology", docs / f"{PROJECT} Ontology")
     (docs / f"{PROJECT} Actors").mkdir(parents=True)
     (docs / f"{PROJECT} Contracts").mkdir(parents=True)
     (docs / "conf.py").write_text(scaffold_conf() + extra_conf, encoding="utf-8")
@@ -112,7 +111,7 @@ class GeneratedScaffoldBuildTests(unittest.TestCase):
                 self.assertNotIn("WARNING", result.stdout + result.stderr)
 
     def test_the_only_warnings_of_the_generated_scaffold_are_the_ontology_deprecations(self):
-        # Locates the cause of a failure above: the shipped ontology uses options that the current Sphinx-Needs deprecates,
+        # Locates the cause of a failure above: the Example Ontology uses options that the current Sphinx-Needs deprecates,
         # and Syspilot's own docs/conf.py suppresses them while the generated conf.py does not.
         for label, installed in SELECTIONS.items():
             with self.subTest(selection=label), tempfile.TemporaryDirectory() as folder:
@@ -138,8 +137,8 @@ class GeneratedScaffoldBuildTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             docs = Path(folder) / "docs"
             docs.mkdir()
-            (Path(folder) / ".syspilot").mkdir()
-            ontology = Path(folder) / ".syspilot" / "ontology.toml"
+            (docs / f"{PROJECT} Ontology").mkdir()
+            ontology = docs / f"{PROJECT} Ontology" / "ontology.toml"
             ontology.write_text("", encoding="utf-8")
             (docs / "conf.py").write_text(scaffold_conf(), encoding="utf-8")
             self.assertEqual(load_resolver()(docs / "conf.py"), ontology.resolve())
@@ -159,16 +158,16 @@ class GeneratedScaffoldBuildTests(unittest.TestCase):
         project = [n.value.value for n in tree.body if isinstance(n, ast.Assign) and n.targets[0].id == "project"]
         self.assertEqual(project, [PROJECT])
         self.assertEqual(assigned, {"project", "extensions", "exclude_patterns", "needs_from_toml", "suppress_warnings"})
-        # The ontology path itself names the .syspilot folder, which the target has after installation.
         for value in ("Syspilot", "logo", "templates", "static", "intersphinx", "ontology-reference"):
             self.assertNotIn(value, conf)
-        self.assertNotIn("syspilot", conf.replace(".syspilot/ontology.toml", ""))
+        self.assertNotIn("syspilot", conf)
         self.assertNotIn("ontology-reference", scaffold_index())
 
     def test_the_scaffold_extensions_are_provided_by_the_installed_requirements(self):
         requirements = read(ROOT / "docs" / "requirements.txt")
         self.assertIn("myst-parser", requirements)
         self.assertIn("sphinx-needs", requirements)
+        self.assertIn("sphinxcontrib-mermaid", requirements)
 
 
 class ContractTextCrossChecks(unittest.TestCase):

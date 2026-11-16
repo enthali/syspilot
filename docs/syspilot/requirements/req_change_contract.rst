@@ -186,8 +186,9 @@ Change Contract
    documentation from authoritative textual artifacts.
 
    The ``Example sync`` row shall be included by default and owned by Technical
-   Writer. It shall require generic changes in ``docs/Example Actors/`` and
-   ``docs/Example Contracts/``, declared role-card deviations and a clean build;
+   Writer. It shall require generic changes in ``docs/Example Actors/``,
+   ``docs/Example Contracts/`` and ``docs/Example Ontology/``, declared
+   role-card deviations and a clean build;
    ``not applicable`` shall require a reason in the row.
 
 .. vc:: Change documentation evidence covers its declared surfaces

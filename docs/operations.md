@@ -149,7 +149,7 @@ Common checks:
 1. Confirm the virtual environment is active and dependencies are installed.
 2. Run the clean build so stale generated output cannot hide the real state.
 3. For an unknown Need ID, inspect the source directive and its link fields.
-4. For a schema warning, check `.syspilot/ontology.toml` and the relevant Need
+4. For a schema warning, check the `ontology.toml` that `needs_from_toml` in `docs/conf.py` names, and the relevant Need
    type rather than patching generated output.
 5. For a broken page, confirm it appears in a toctree and its links are relative
    to the source file.

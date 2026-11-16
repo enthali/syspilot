@@ -45,6 +45,7 @@ Syspilot Actors & Processes
    Syspilot Contracts/index
    Example Actors/index
    Example Contracts/index
+   Example Ontology/ontology
 
 
 Traceability
@@ -82,7 +83,7 @@ Reference
    :caption: Reference
 
    releasenotes
-   ontology-reference
+   Syspilot Ontology/ontology
    namingconventions
 
 

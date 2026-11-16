@@ -31,8 +31,10 @@ It is an example to adopt and tailor, not a process Syspilot imposes.
 
 The ontology defines what the project can trace: artifact types, statuses,
 options, and named link kinds. Syspilot currently realizes its own
-ontology with Sphinx-Needs and `.syspilot/ontology.toml`. This is the currently
-supported realization.
+ontology with Sphinx-Needs, as `ontology.toml` in the folder `docs/Syspilot Ontology/`
+that sits beside the specifications. A project keeps its ontology the same
+way, in `docs/<Project name> Ontology/` with a reader-oriented `ontology.md`.
+This is the currently supported realization.
 
 The `[needs]` configuration declares Need types, statuses, options, and named
 link kinds. Links stored on Needs point outward; Sphinx-Needs also exports
@@ -52,8 +54,10 @@ Treat ontology editing as technical Contract work. Preserve unrelated project
 content, change only schema surfaces represented by the current file, and run
 the strict documentation and schema build afterward. Resolve every ontology
 warning before completing the artifact. Pristine Setup preserves an existing
-ontology or installs the baseline when none exists; it does not evaluate or
-redesign that ontology. At handoff, the Project Manager explains the selected
+ontology. When none exists it copies the [Example Ontology](Example%20Ontology/ontology.md)
+to `docs/<Project name> Ontology/`: a general-purpose starting point that adds
+a `design` level between requirements and their realization to Syspilot's
+own types. Setup does not evaluate or redesign an ontology. At handoff, the Project Manager explains the selected
 ontology's artifact types, statuses, and relationships and asks the User whether
 it fits. Acceptance continues normal intake without an ontology Change. A
 requested adjustment starts a normal Change before modification, with the

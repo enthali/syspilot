@@ -1,0 +1,185 @@
+[syspilot]
+schema_version = "2.0"
+description = "syspilot ontology — sphinx-needs reads [needs] directly; the [syspilot] schema version labels the baseline."
+
+# Descriptive only: endpoint types of each link, drawn in the generated link diagram.
+# They constrain and validate nothing; [[needs.extra_links]] names no endpoint types.
+[[syspilot.diagram_edges]]
+link = "tracked_by"
+from = "story"
+to = "root"
+
+[[syspilot.diagram_edges]]
+link = "implements"
+from = "req"
+to = "story"
+
+[[syspilot.diagram_edges]]
+link = "specializes"
+from = "req"
+to = "req"
+
+[[syspilot.diagram_edges]]
+link = "validates"
+from = "ac"
+to = "story"
+
+[[syspilot.diagram_edges]]
+link = "verifies"
+from = "vc"
+to = "req"
+
+[[syspilot.diagram_edges]]
+link = "includes"
+from = "doc"
+to = "req"
+
+# ---------------------------------------------------------------------------
+# sphinx-needs configuration (read directly by sphinx-needs via needs_from_toml)
+# ---------------------------------------------------------------------------
+
+[needs]
+
+# Require explicit IDs on every need directive
+id_required = true
+
+# Build needs.json and per-ID JSON files for tooling (ubCode, impact scripts)
+build_json = true
+build_json_per_id = true
+
+# Use Graphviz for needflow diagrams
+flow_engine = "graphviz"
+
+# Extra option fields available on all need directives.
+# "realized_by" holds a plain path reference (not a need link) to the file
+# that IS the HOW — an agent file, skill file, or code location. There is no
+# separate SPEC type: a written HOW would duplicate the file verbatim.
+extra_options = ["priority", "rationale", "realized_by"]
+
+# ---------------------------------------------------------------------------
+# Need Types
+# ---------------------------------------------------------------------------
+
+# The single graph root. Exactly one instance per project. Every User Story
+# self-declares membership via :tracked_by:, so impact analysis and orphan
+# detection can start from one deterministic node instead of a "type == story"
+# convention.
+[[needs.types]]
+directive = "root"
+title = "Graph Root"
+prefix = "ROOT_"
+color = "#4A4A4A"
+style = "node"
+
+[[needs.types]]
+directive = "story"
+title = "User Story"
+prefix = "US_"
+color = "#E8D5B7"
+style = "node"
+
+[[needs.types]]
+directive = "req"
+title = "Requirement"
+prefix = "REQ_"
+color = "#BFD8D2"
+style = "node"
+
+# Validation — did we build the right thing. User-facing, human-judged.
+# One per Given/When/Then, linked to the User Story it validates.
+[[needs.types]]
+directive = "ac"
+title = "Acceptance Criterion"
+prefix = "AC_"
+color = "#A8E6CF"
+style = "node"
+
+# Verification — did we build it right. Testable, linked to the Requirement
+# it verifies.
+[[needs.types]]
+directive = "vc"
+title = "Verification Criterion"
+prefix = "VC_"
+color = "#FFD3B6"
+style = "node"
+
+# A user-facing documentation surface maintained independently by the
+# Technical Writer. The Need remains in the specification graph while
+# "realized_by" points to documentation that contains no Needs markup.
+[[needs.types]]
+directive = "doc"
+title = "User Documentation"
+prefix = "DOC_"
+color = "#C9C2E8"
+style = "node"
+
+# ---------------------------------------------------------------------------
+# Statuses
+# ---------------------------------------------------------------------------
+
+[[needs.statuses]]
+name = "draft"
+description = "Draft - Work in progress"
+
+[[needs.statuses]]
+name = "open"
+description = "Open - Identified but not yet started"
+
+[[needs.statuses]]
+name = "approved"
+description = "Approved - Ready for implementation"
+
+[[needs.statuses]]
+name = "implemented"
+description = "Implemented - Code exists"
+
+[[needs.statuses]]
+name = "verified"
+description = "Verified - Tested and validated"
+
+[[needs.statuses]]
+name = "deprecated"
+description = "Deprecated - No longer used"
+
+# ---------------------------------------------------------------------------
+# Extra Link Types
+# ---------------------------------------------------------------------------
+
+# US -> root. Self-declared entry-point membership.
+[[needs.extra_links]]
+option = "tracked_by"
+incoming = "tracks"
+outgoing = "tracked_by"
+
+# REQ -> US. A requirement implements the user story's WHY.
+[[needs.extra_links]]
+option = "implements"
+incoming = "is implemented by"
+outgoing = "implements"
+
+# REQ -> REQ. A concrete requirement applies a more general one.
+# Direction is always concrete -> general; never sideways between two
+# unrelated concrete requirements.
+[[needs.extra_links]]
+option = "specializes"
+incoming = "is specialized by"
+outgoing = "specializes"
+
+# AC -> US. Validates that the user story's intent is satisfied.
+[[needs.extra_links]]
+option = "validates"
+incoming = "is validated by"
+outgoing = "validates"
+
+# VC -> REQ. Verifies that the requirement is correctly implemented.
+[[needs.extra_links]]
+option = "verifies"
+incoming = "is verified by"
+outgoing = "verifies"
+
+# DOC -> REQ. Declares which requirements a user-facing documentation surface
+# contains in user-oriented form; the incoming relation exposes impact from REQ.
+[[needs.extra_links]]
+option = "includes"
+incoming = "included_in"
+outgoing = "includes"

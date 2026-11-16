@@ -83,7 +83,10 @@ leave before new actors arrive, for the reason given under Pitfalls.
    Each `needs_<name>` setting in `conf.py`, such as `needs_types`,
    `needs_statuses`, `needs_extra_links`, and `needs_extra_options`, becomes the
    matching entry without the prefix under the `[needs]` table, for example
-   `[[needs.types]]`. The ontology skill describes the format. The Impact, MECE,
+   `[[needs.types]]`. Keeping it in `docs/<Project name> Ontology/` beside your
+   specifications matches what Setup does; the selected release's
+   `docs/Example Ontology/` is a ready starting point if you want a `design` level.
+   The ontology skill describes the format. The Impact, MECE,
    and Trace scripts read `docs/conf.py`, take the ontology path from that
    literal, and resolve a relative path against the directory of `conf.py`. If
    your binding is computed, pass `--ontology` explicitly; `--ontology` always

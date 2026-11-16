@@ -81,7 +81,7 @@ The following list is the Contract-owned installation inventory. The `Class` col
 | Sphinx-Needs environment | preserve or install | Existing project environment, or verified-commit `docs/requirements.txt` | Existing environment, or project-local `.venv/` | user-owned or generated instance | Existing Sphinx-Needs remains unchanged, or `uv venv .venv` and `uv pip install --python .venv -r {verified commit tree}/docs/requirements.txt` succeed; the Sphinx-Needs version of the environment in use is recorded |
 | Project baseline | generate | Provided release tag, verified commit, and Contract state | `.syspilot/project.toml` | generated instance | Required baseline fields parse and match the provided release |
 | Syspilot actor persistence | inspect then ask | Git ignore result and User decision | Project Git policy | user-owned | User explicitly decides whether the nine generated Syspilot actor directories are versioned; resulting rules match that decision |
-| Project ontology | detect, then preserve or copy | Existing configured ontology, or verified-commit `.syspilot/ontology.toml` | Existing configured path, or `.syspilot/ontology.toml` | user-owned or generated instance | Existing ontology remains unchanged, or baseline TOML is copied only when no ontology exists; the target documentation build succeeds |
+| Project ontology | detect, then preserve or copy folder | Existing configured ontology, or `docs/Example Ontology/` | Existing configured path, or `docs/<Project name> Ontology/` | user-owned or seeded copy | Existing ontology remains unchanged, or the folder with `ontology.toml` and `ontology.md` is copied only when no ontology exists, identical to its source; the target documentation build succeeds |
 | Setup script | generate temporarily | This inventory and Contract rules | Executor-selected system temporary path | transient | Platform-appropriate script supports `--dry-run`; dry-run and execution share one planning path; file remains available for inspection |
 | Syspilot actors | create nine Actors through Jarvis | Actor definitions below | The Actors folder, at the path `jarvis_createActor` returns for each Actor it creates or finds, or the path the second folder scan finds for an Actor the User created | generated instance | Nine Actors exist, each recorded as created or pre-existing with its recorded path; each created `context.md` names both project-root-relative paths and they resolve to installed files; Jarvis lists all nine |
 
@@ -97,7 +97,7 @@ baseline_status = "preparing"
 
 Inspect the target independently for its configured ontology, Sphinx-Needs availability, dependency files, documentation structure, and build command.
 
-1. Detect an ontology in `conf.py`, `ubproject.toml`, or another TOML source. Preserve it unchanged when present. Copy the verified commit's `.syspilot/ontology.toml` only when no ontology exists.
+1. Detect an ontology in `conf.py`, `ubproject.toml`, or another TOML source. Preserve it unchanged when present. Only when no ontology exists, copy `docs/Example Ontology/` of the verified commit to `docs/<Project name> Ontology/` and bind its `ontology.toml`; copy no Syspilot-owned ontology.
 2. Detect Sphinx-Needs independently. Preserve its environment when available. When unavailable, run `uv venv .venv` and `uv pip install --python .venv -r {verified commit tree}/docs/requirements.txt`. Record the Sphinx-Needs version of the environment in use. When Setup itself has to bind an ontology through `needs_from_toml`, namely in a generated `docs/conf.py` or an approved additive edit, and that version is older than 4.1.0, the first release with that configuration, stop with a recorded blocker and User guidance, and bind nothing against that environment. An existing configured ontology and its environment stay untouched whatever the version.
 3. Preserve existing dependency and documentation files. Ask the User to approve the exact additive dependency, configuration, and navigation edits required to use the selected environment and ontology and expose installed Syspilot documentation; in the same step show the confirmed project name from the header of this record, which the scaffold uses, and let the User change it only as Phase 1 step 6 allows. Copy `docs/docs-build.py` and generate `docs/conf.py` or `docs/index.rst` from the scaffold definitions below only where those build or documentation files are absent. Never overwrite an existing file.
 4. Run the target documentation build with the selected ontology and require zero warnings.
@@ -106,12 +106,12 @@ Ontology evaluation or modification is not part of Setup.
 
 ### Documentation Scaffold
 
-The generated `docs/conf.py` carries no Syspilot project name, author, release, copyright, logo, or other Syspilot metadata, and refers only to files and settings that the target has after installation: no template folder, static folder, logo, stylesheet, source-project path, or intersphinx inventory fetched from the network. It loads only `myst_parser` and `sphinx_needs`, which the installed `docs/requirements.txt` provides, and has no hook that writes `docs/ontology-reference.md`; that page is Syspilot's own internal reference, and the closed Change `sphinx-needs-graph-alignment` decided not to deliver it to installed projects. `needs_from_toml` is a literal string assignment, because the shipped Impact, MECE, and Trace skills read that literal without executing `conf.py` and fail on a computed binding. `changes/*` is excluded, because Change Contracts are process records and not pages. `needs.deprecated` is suppressed, because the shipped `.syspilot/ontology.toml` uses Needs options that Sphinx-Needs reports as deprecated and the strict build would fail on them, as Syspilot's own `docs/conf.py` also suppresses.
+The generated `docs/conf.py` carries no Syspilot project name, author, release, copyright, logo, or other Syspilot metadata, and refers only to files and settings that the target has after installation: no template folder, static folder, logo, stylesheet, source-project path, or intersphinx inventory fetched from the network. It loads only `myst_parser`, `sphinx_needs` and `sphinxcontrib.mermaid`, which the installed `docs/requirements.txt` provides. Mermaid is loaded because it renders the link diagram of the installed ontology page, which a plain code block would not. The file has no hook that writes `docs/Syspilot Ontology/ontology.md`; that page is Syspilot's own generated reference, and the closed Change `sphinx-needs-graph-alignment` decided not to deliver it to installed projects. `needs_from_toml` is a literal string assignment, because the shipped Impact, MECE, and Trace skills read that literal without executing `conf.py` and fail on a computed binding. `changes/*` is excluded, because Change Contracts are process records and not pages. `needs.deprecated` is suppressed, because the Example Ontology uses Needs options that Sphinx-Needs reports as deprecated and the strict build would fail on them, as Syspilot's own `docs/conf.py` also suppresses.
 
 ```python
 project = "{confirmed project name}"
 
-extensions = ["myst_parser", "sphinx_needs"]
+extensions = ["myst_parser", "sphinx_needs", "sphinxcontrib.mermaid"]
 
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", ".venv", "venv", "changes/*"]
 
@@ -120,7 +120,7 @@ needs_from_toml = "{ontology path relative to conf.py}"
 suppress_warnings = ["needs.deprecated"]
 ```
 
-The generated `docs/index.rst` has the project name as title and one table of contents that lists only `<Project name> Actors/index` and `<Project name> Contracts/index`, with the recorded name and its space in each entry. Each generated registry has the title `<Project name> Actors` or `<Project name> Contracts` and also carries a hidden table of contents, so the build with `-W` has no orphaned page:
+The generated `docs/index.rst` has the project name as title and one table of contents that lists only `<Project name> Actors/index`, `<Project name> Contracts/index` and, when Setup installed the ontology, `<Project name> Ontology/ontology`, with the recorded name and its space in each entry. Each generated registry has the title `<Project name> Actors` or `<Project name> Contracts` and also carries a hidden table of contents, so the build with `-W` has no orphaned page:
 
 ````markdown
 ```{toctree}
@@ -130,7 +130,7 @@ The generated `docs/index.rst` has the project name as title and one table of co
 ```
 ````
 
-Install no `docs/ontology-reference.md`. For a target that already has a documentation build, offer the registries and the changed navigation entries only as additive edits that the User approves.
+Install no `docs/Syspilot Ontology/ontology.md`. For a target that already has a documentation build, offer the registries, the changed navigation entries and, for the installed ontology page, the `sphinxcontrib.mermaid` extension only as additive edits that the User approves.
 
 ### Syspilot Actor Setup
 

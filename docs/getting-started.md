@@ -120,12 +120,14 @@ record stays unchanged and Setup tells you to give the Project Manager's chat th
 path of the record.
 
 The documentation Setup generates is deliberately plain. Its `docs/conf.py` has
-no Syspilot project metadata, loads only the two extensions the installed
-requirements provide, and binds the ontology with a literal `needs_from_toml`
+no Syspilot project metadata, loads MyST, Sphinx-Needs, and Mermaid from the installed
+requirements, and binds the ontology with a literal `needs_from_toml`
 setting, because Syspilot's skills read that setting directly. Its
-`docs/index.rst` lists only the Actor and Contract registries. Setup does not
-install Syspilot's own ontology reference page, and Change Contracts stay out of
-the rendered site.
+`docs/index.rst` lists only the Actor and Contract registries and, when Setup
+installed an ontology, its page. A project without an ontology receives a copy
+of the general-purpose Example Ontology in `docs/<Project name> Ontology/`;
+Setup never copies Syspilot's own ontology or its generated reference page, and
+Change Contracts stay out of the rendered site.
 
 That handoff identifies the selected ontology and its configured path. The
 Project Manager first re-reads its own context, its role card, and the Setup

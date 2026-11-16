@@ -177,8 +177,9 @@ Pristine Syspilot Setup
    :realized_by: docs/Syspilot Contracts/setup.md
 
    Setup shall preserve existing ontology configuration in ``conf.py``,
-   ``ubproject.toml`` or another TOML source; it shall copy the baseline only
-   when none exists.
+   ``ubproject.toml`` or another TOML source; when none exists it shall copy
+   the Example Ontology folder to ``docs/<Project name> Ontology/`` and bind
+   its ``ontology.toml``, and it shall copy no Syspilot-owned ontology.
    Independently, it shall preserve an existing Sphinx-Needs environment or
    install a supported project-local one when absent, recording the version used.
    A Setup-created ``needs_from_toml`` binding shall require Sphinx-Needs 4.1.0
@@ -194,6 +195,8 @@ Pristine Syspilot Setup
 
    Existing ontology/environment cases remain unchanged; absent components
    alone are installed, without overwriting project dependency or documentation files.
+   Without an existing ontology the installed folder equals the Example Ontology
+   under the project-named folder and the generated binding names it.
 
 .. vc:: Setup does not create an unsupported ontology binding
    :id: SYSP_VC_SETUP_ONTOLOGY_2
@@ -684,12 +687,15 @@ Pristine Syspilot Setup
    ``docs/conf.py`` shall contain no Syspilot metadata, source-project paths,
    unavailable assets, network inventory or ontology-reference hook.
    It shall load only extensions supplied by installed requirements and needed
-   by installed pages, bind the selected ontology
-   with literal ``needs_from_toml = "<path relative to conf.py>"``, and exclude
-   ``changes/*``.
-   The root shall list only existing project-named Actor/Contract registries;
+   by installed pages; ``sphinxcontrib.mermaid`` is one of them, because the
+   installed ontology page contains a link diagram.
+   It shall bind the selected ontology
+   with literal ``needs_from_toml = "<path relative to conf.py>"``.
+   It shall exclude ``changes/*``.
+   The root shall list only existing project-named Actor/Contract registries
+   and, when Setup installed it, the project-named ontology page;
    each registry shall carry a hidden toctree of exactly installed pages.
-   ``docs/ontology-reference.md`` shall neither be installed nor generated.
+   Syspilot's generated ontology reference page shall neither be installed nor generated.
    Existing documentation shall be preserved; navigation integration shall be
    User-approved and additive. Target documentation shall build with zero warnings.
 
@@ -725,6 +731,16 @@ Pristine Syspilot Setup
    Generated configuration binds the selected ontology through a literal
    ``needs_from_toml`` string relative to ``conf.py``, not computed configuration.
 
+.. vc:: Installed ontology diagram renders under the strict build
+   :id: SYSP_VC_SETUP_DOCS_5
+   :status: approved
+   :verifies: SYSP_REQ_SETUP_DOCS
+
+   A target without ontology gets ``sphinxcontrib.mermaid`` loaded in the
+   generated configuration and supplied by the installed requirements; an
+   existing build receives it only as an approved additive edit, and the
+   strict build of the installed ontology page reports zero warnings.
+
 .. req:: Setup Names The Installed Folders After The Project
    :id: SYSP_REQ_SETUP_NAMING
    :status: approved
@@ -740,7 +756,8 @@ Pristine Syspilot Setup
    names shall be rejected by asking again, never silently altered.
 
    Role cards and selected Contracts shall use ``docs/<Project name> Actors/``
-   and ``docs/<Project name> Contracts/`` with matching registry titles.
+   and ``docs/<Project name> Contracts/`` with matching registry titles; a
+   copied ontology uses ``docs/<Project name> Ontology/``.
    Registries, root navigation, Actor summaries, handoff and evidence paths,
    and additive navigation proposals shall derive from the same name.
    Seeded files shall remain byte-identical to their examples with no substitution.

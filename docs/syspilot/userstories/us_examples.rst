@@ -9,8 +9,9 @@ Example Actors And Contracts
    :tracked_by: ROOT_SYSPILOT
 
    **As** a project that adopts syspilot and adapts its actors and processes,
-   **I want** to receive generic example role cards and Contract processes at
-   Setup, kept current by the Technical Writer in every Change,
+   **I want** to receive generic example role cards and Contract processes, and
+   a general-purpose example ontology, at Setup, kept current by the Technical
+   Writer in every Change,
    **so that** my starting point holds for a general project and I own it
    afterwards, I install only the Contracts I use, and a release needs no
    manual merge of accumulated process changes.
@@ -37,6 +38,18 @@ Example Actors And Contracts
    Then the project receives the chosen Contracts, the ones they require, and
    a registry that lists exactly those, without any link that does not
    resolve.
+
+.. ac:: Adopter without an ontology receives a fuller starting ontology
+   :id: SYSP_AC_EXAMPLES_4
+   :status: approved
+   :validates: SYSP_US_EXAMPLES
+
+   Given a target project that has no ontology,
+   When Setup completes,
+   Then the project owns a copy of the Example Ontology, including a design
+   level between requirements and realization, its documentation builds with
+   that ontology, and a project that already had an ontology keeps it
+   unchanged.
 
 .. ac:: Every Change states who maintains the examples
    :id: SYSP_AC_EXAMPLES_2

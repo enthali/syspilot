@@ -82,7 +82,7 @@ class MeceCliTests(unittest.TestCase):
     def test_current_data_discovers_requirement_peers(self):
         project_root = PROJECT_ROOT
         result = subprocess.run(
-            [sys.executable, str(SCRIPT), "SYSP_REQ_QUALITY", "--scope", "same-document", "--ontology", str(project_root / ".syspilot" / "ontology.toml"), "--needs-dir", str(project_root / "docs" / "_build" / "html" / "needs_id")],
+            [sys.executable, str(SCRIPT), "SYSP_REQ_QUALITY", "--scope", "same-document", "--ontology", str(project_root / "docs" / "Syspilot Ontology" / "ontology.toml"), "--needs-dir", str(project_root / "docs" / "_build" / "html" / "needs_id")],
             capture_output=True,
             text=True,
         )

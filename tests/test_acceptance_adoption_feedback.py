@@ -293,9 +293,9 @@ class SkillBindingFailureTests(unittest.TestCase):
             (self.root / relative).parent.mkdir(parents=True)
             shutil.copyfile(ROOT / relative, self.root / relative)
         (self.root / "docs").mkdir()
-        # A fixed default location must not rescue a failed binding.
-        (self.root / ".syspilot").mkdir()
-        shutil.copyfile(ROOT / ".syspilot" / "ontology.toml", self.root / ".syspilot" / "ontology.toml")
+        # A default location must not rescue a failed binding.
+        (self.root / "docs" / "Syspilot Ontology").mkdir()
+        shutil.copyfile(ROOT / "docs" / "Syspilot Ontology" / "ontology.toml", self.root / "docs" / "Syspilot Ontology" / "ontology.toml")
 
     def run_cli(self, skill, script, args):
         path = self.root / ".github" / "skills" / skill / "scripts" / script

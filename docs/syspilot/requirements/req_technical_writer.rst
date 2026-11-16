@@ -23,10 +23,12 @@ Technical Writer
      of accuracy and understandability; and
    - keep consultation distinct from Contract handoff so that messaging alone
      transfers neither current responsibility nor artifact ownership;
-   - maintain ``docs/Example Actors/`` and ``docs/Example Contracts/`` in
+   - maintain ``docs/Example Actors/``, ``docs/Example Contracts/`` and
+     ``docs/Example Ontology/`` in
      every Change through its ``Example sync`` row, deciding for each changed
-     role card or Contract process whether the change also holds for a general
-     project, and declaring each deliberate deviation of an example role card
+     role card, Contract process or ontology type or link whether the change
+     also holds for a general project, and declaring each deliberate deviation
+     of an example role card
      in the ``Deviations`` table of ``docs/Example Actors/index.md``.
 
 .. vc:: Technical Writer maintains complete documentation traceability

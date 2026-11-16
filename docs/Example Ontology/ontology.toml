@@ -1,6 +1,6 @@
 [syspilot]
 schema_version = "2.0"
-description = "syspilot ontology — sphinx-needs reads [needs] directly; the [syspilot] schema version labels the baseline."
+description = "Example ontology - sphinx-needs reads [needs] directly; the [syspilot] schema version labels the baseline."
 
 # ---------------------------------------------------------------------------
 # sphinx-needs configuration (read directly by sphinx-needs via needs_from_toml)
@@ -20,8 +20,8 @@ flow_engine = "graphviz"
 
 # Extra option fields available on all need directives.
 # "realized_by" holds a plain path reference (not a need link) to the file
-# that IS the HOW — an agent file, skill file, or code location. There is no
-# separate SPEC type: a written HOW would duplicate the file verbatim.
+# that IS the realization - code, configuration, or another artifact the
+# project keeps outside the specification graph.
 extra_options = ["priority", "rationale", "realized_by"]
 
 # ---------------------------------------------------------------------------
@@ -30,8 +30,7 @@ extra_options = ["priority", "rationale", "realized_by"]
 
 # The single graph root. Exactly one instance per project. Every User Story
 # self-declares membership via :tracked_by:, so impact analysis and orphan
-# detection can start from one deterministic node instead of a "type == story"
-# convention.
+# detection can start from one deterministic node.
 [[needs.types]]
 directive = "root"
 title = "Graph Root"
@@ -39,6 +38,7 @@ prefix = "ROOT_"
 color = "#4A4A4A"
 style = "node"
 
+# WHY - the user need a requirement serves.
 [[needs.types]]
 directive = "story"
 title = "User Story"
@@ -46,6 +46,7 @@ prefix = "US_"
 color = "#E8D5B7"
 style = "node"
 
+# WHAT - an observable obligation of the product.
 [[needs.types]]
 directive = "req"
 title = "Requirement"
@@ -53,7 +54,15 @@ prefix = "REQ_"
 color = "#BFD8D2"
 style = "node"
 
-# Validation — did we build the right thing. User-facing, human-judged.
+# HOW in detail - the detailed design that realizes one requirement.
+[[needs.types]]
+directive = "design"
+title = "Detailed Design"
+prefix = "DES_"
+color = "#B5D3E7"
+style = "node"
+
+# Validation - did we build the right thing. User-facing, human-judged.
 # One per Given/When/Then, linked to the User Story it validates.
 [[needs.types]]
 directive = "ac"
@@ -62,8 +71,8 @@ prefix = "AC_"
 color = "#A8E6CF"
 style = "node"
 
-# Verification — did we build it right. Testable, linked to the Requirement
-# it verifies.
+# Verification - did we build it right. Testable, linked to the Requirement
+# or Detailed Design it verifies.
 [[needs.types]]
 directive = "vc"
 title = "Verification Criterion"
@@ -71,9 +80,9 @@ prefix = "VC_"
 color = "#FFD3B6"
 style = "node"
 
-# A user-facing documentation surface maintained independently by the
-# Technical Writer. The Need remains in the specification graph while
-# "realized_by" points to documentation that contains no Needs markup.
+# A user-facing documentation surface. The Need remains in the specification
+# graph while "realized_by" points to documentation that contains no Needs
+# markup.
 [[needs.types]]
 directive = "doc"
 title = "User Documentation"
@@ -133,13 +142,20 @@ option = "specializes"
 incoming = "is specialized by"
 outgoing = "specializes"
 
+# DES -> REQ. A detailed design elaborates how one requirement is realized.
+[[needs.extra_links]]
+option = "details"
+incoming = "is detailed by"
+outgoing = "details"
+
 # AC -> US. Validates that the user story's intent is satisfied.
 [[needs.extra_links]]
 option = "validates"
 incoming = "is validated by"
 outgoing = "validates"
 
-# VC -> REQ. Verifies that the requirement is correctly implemented.
+# VC -> REQ or DES. Verifies that the requirement or design is correctly
+# implemented.
 [[needs.extra_links]]
 option = "verifies"
 incoming = "is verified by"
