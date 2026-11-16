@@ -21,3 +21,17 @@ Processes assign artifact ownership, and each Contract Document records current 
 | [Research](Research.md) | Investigation, technical due diligence |
 | [Technical Writer](Technical%20Writer.md) | User-facing product documentation |
 | [Admin](Admin.md) | Tools, repository infrastructure, process maintenance |
+
+```{toctree}
+:hidden:
+
+Project Manager
+Architect
+Developer
+Tester
+Quality
+Release
+Research
+Technical Writer
+Admin
+```
