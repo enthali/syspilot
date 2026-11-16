@@ -157,6 +157,32 @@ Common checks:
 Generated files under `docs/_build/` are evidence, not source. Fix the source
 and rebuild.
 
+### Missing or Mistyped Mandatory Links
+
+Syspilot's ontology and the Example Ontology use `[needs.warnings]` filters for
+minimum link presence and `[[needs.schema_definitions.schemas]]` rules for the
+source and target types of mandatory links. Both kinds of violation fail the
+strict build. The non-quiet output names the offending Need and a rule key or
+schema ID, such as `req_lacks_incoming_verifies` or `validates_from_ac`.
+For a missing-link filter, if a quiet run shows only
+`warnings were raised [needs.warnings]`, rerun without `-q` to see the details.
+
+Stories need incoming `validates` and `implements`; requirements need incoming
+`verifies` and outgoing `implements`. In the Example Ontology, detailed designs
+also need incoming `verifies` and outgoing `details`. Each needs at least one
+link of each named kind; `includes` and `specializes` remain optional.
+
+For an incoming-link warning, edit the linking Need, not a generated backlink.
+For example, a requirement missing incoming `verifies` needs a `vc` whose
+`verifies` points to that requirement. Restore meaningful traceability and rerun
+the strict build rather than adding a placeholder link to silence the warning.
+For a type violation, check both the linking Need and its target against the
+[Example Ontology's link table](Example%20Ontology/ontology.md): `validates` runs
+from `ac` to `story`, `implements` from `req` to `story`, `verifies` from `vc` to
+`req` (or `design` in the Example Ontology), and `details` from `design` to `req`.
+The checks establish presence and permitted endpoint types, not semantic
+correctness. An existing project ontology gains none of these checks from Setup.
+
 ## When Actor Messaging Fails
 
 Check that Jarvis Core 0.32.0 or newer is installed in the VS Code instance and

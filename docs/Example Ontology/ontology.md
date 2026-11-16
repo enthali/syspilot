@@ -76,8 +76,33 @@ exports the incoming side, so every link can be followed in both directions.
 | `verifies` | `vc` | `req` or `design` | `is verified by` | The criterion shows that the requirement or design is correctly implemented. |
 | `includes` | `doc` | `req` | `included_in` | The surface explains the requirement in user-oriented form. The incoming side exposes which documents deserve review when the requirement changes. |
 
-A `design` that details no requirement, or a requirement that implements no
-story, shows up when Trace reviews the observed links.
+## Required Links
+
+The strict documentation build fails when any of these minimum links is missing:
+
+| Need | Required incoming links | Required outgoing links |
+|---|---|---|
+| `story` | At least one `validates` from an `ac` and at least one `implements` from a `req` | No additional obligation from these checks |
+| `req` | At least one `verifies` from a `vc` | At least one `implements` to a `story` |
+| `design` | At least one `verifies` from a `vc` | At least one `details` to a `req` |
+
+`includes` and `specializes` are optional. Specializing another requirement
+does not replace a requirement's own `implements` or incoming `verifies` link.
+
+The ontology file combines two checks: `[needs.warnings]` filters detect missing
+links, and `[[needs.schema_definitions.schemas]]` rules check the source and
+target types of `validates`, `implements`, `verifies`, and `details`. A wrong-type
+link also fails the strict build; for example, a `vc` cannot supply a story's
+required `validates` link, because only an `ac` can be its source.
+
+The non-quiet build output names the offending Need and the rule key or schema
+ID, such as `req_lacks_incoming_verifies` or `validates_from_ac`. An incoming link
+is written on its source Need: to resolve a missing incoming `verifies`, a `vc`
+points its `verifies` at the requirement.
+
+The checks establish minimum link presence and the permitted endpoint types,
+not whether the relationship is semantically correct. Review still checks that
+the links connect the intended artifacts and supply meaningful evidence.
 
 ## Options
 

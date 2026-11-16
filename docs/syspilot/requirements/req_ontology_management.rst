@@ -146,3 +146,43 @@ Ontology Management
    per ``[[syspilot.diagram_edges]]`` entry; every entry names a configured
    link and configured types, every configured link has an edge, and every
    (type, link, type) triple observed in the built Needs data has an edge.
+
+.. req:: Mandatory Link Obligations Fail The Strict Build
+   :id: SYSP_REQ_ONTOLOGY_LINK_OBLIGATIONS
+   :status: approved
+   :implements: SYSP_US_ONTOLOGY_MANAGEMENT
+
+   The strict documentation build of Syspilot's own documentation and of a
+   project seeded with the Example Ontology shall fail, naming the offending
+   Need and the missing link, when a Need lacks one of these links:
+
+   - a ``story`` has an incoming ``validates`` from an ``ac`` and an incoming
+     ``implements`` from a ``req``;
+   - a ``req`` has an incoming ``verifies`` from a ``vc`` and an outgoing
+     ``implements`` to a ``story``; and
+   - a ``design`` (Example Ontology only) has an incoming ``verifies`` from a
+     ``vc`` and an outgoing ``details`` to a ``req``.
+
+   ``doc`` to ``req`` via ``includes`` and ``req`` to ``req`` via ``specializes``
+   stay optional. The obligations apply to the Syspilot ontology and the
+   Example Ontology; an existing project ontology is user-owned and gains no
+   obligation from installing Syspilot. The checks establish that the minimum
+   links exist with the named endpoint types, not that they are semantically
+   right.
+
+.. vc:: A model lacking a mandatory link fails the strict build
+   :id: SYSP_VC_ONTOLOGY_LINK_OBLIGATIONS_1
+   :status: approved
+   :verifies: SYSP_REQ_ONTOLOGY_LINK_OBLIGATIONS
+
+   For each obligation, a model that omits the link fails the strict build
+   with a message naming the Need and the link; the same model with the link
+   present builds with zero warnings.
+
+.. vc:: Existing intended builds satisfy the obligations
+   :id: SYSP_VC_ONTOLOGY_LINK_OBLIGATIONS_2
+   :status: approved
+   :verifies: SYSP_REQ_ONTOLOGY_LINK_OBLIGATIONS
+
+   Syspilot's own documentation and the seeded Example Ontology project build
+   with zero warnings, and a project with its own ontology gains no obligation.

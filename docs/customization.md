@@ -45,6 +45,25 @@ input. The ontology does not assign artifacts to actors: the applicable
 Contract declares ownership, Current responsibility, decisions, and evidence
 for each change.
 
+Syspilot's ontology and the Example Ontology also define minimum link checks:
+a story needs incoming `validates` and `implements`;
+a requirement needs incoming `verifies` and outgoing `implements`; the Example
+Ontology's detailed design needs incoming `verifies` and outgoing `details`.
+Each named list must contain at least one link. `includes` and `specializes`
+remain optional. A missing mandatory link fails the strict build; its non-quiet
+output names the Need and the rule key or schema ID. The
+[Example Ontology](Example%20Ontology/ontology.md) explains where each link belongs.
+The ontology's `[needs.warnings]` filters check presence, and its
+`[[needs.schema_definitions.schemas]]` rules enforce source and target types for
+`validates`, `implements`, `verifies`, and `details` (Example only). A link to or
+from the wrong type fails the strict build too. Neither check proves semantic
+correctness.
+
+These checks travel with a copied Example Ontology. Installing Syspilot into
+a project with its own ontology adds no such obligations to that ontology.
+Agree project-specific obligations with the User and Architect through the
+applicable Change before adjusting them.
+
 This is the one level worth slowing down for. The ontology decides what the
 project is able to say about its artifacts, including the ones already written.
 Changing it is never a local edit — it reaches backwards through everything the

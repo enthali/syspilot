@@ -60,7 +60,7 @@ SAMPLE = """Spec
 .. vc:: Verifies a requirement
    :id: SMP_VC_REQ
    :status: approved
-   :verifies: SMP_REQ_CON
+   :verifies: SMP_REQ_CON, SMP_REQ_GEN
 
 .. vc:: Verifies a design
    :id: SMP_VC_DES
@@ -86,9 +86,10 @@ def load(path):
     return tomllib.loads(Path(path).read_text(encoding="utf-8"))
 
 
-def build(root):
+def build(root, quiet=True):
+    # The details of a needs.warnings failure are printed only without -q.
     return subprocess.run(
-        [sys.executable, "-m", "sphinx", "-b", "html", "docs", "build", "-W", "--keep-going", "-q"],
+        [sys.executable, "-m", "sphinx", "-b", "html", "docs", "build", "-W", "--keep-going", *(["-q"] if quiet else [])],
         cwd=root, capture_output=True, text=True,
     )
 
@@ -121,7 +122,7 @@ class ExampleOntologyDefinitionTests(unittest.TestCase):
         own, example = load(OWN / "ontology.toml")["needs"], load(EXAMPLE / "ontology.toml")["needs"]
         self.assertEqual(own["statuses"], example["statuses"])
         self.assertEqual(own["extra_options"], example["extra_options"])
-        for key in set(own) - {"types", "statuses", "extra_links", "extra_options"}:
+        for key in set(own) - {"types", "statuses", "extra_links", "extra_options", "warnings", "schema_definitions"}:
             with self.subTest(setting=key):
                 self.assertEqual(own[key], example.get(key))
 
@@ -219,6 +220,83 @@ class SampleProjectTests(unittest.TestCase):
                             "--needs-dir", str(self.needs), cwd=self.root)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(out["type"], "design")
+
+
+def block(kind, title, ident, **links):
+    lines = [f".. {kind}:: {title}", f"   :id: {ident}", "   :status: approved"]
+    lines += [f"   :{option}: {target}" for option, target in links.items()]
+    return "\n".join(lines) + "\n\n"
+
+
+class LinkObligationTests(unittest.TestCase):
+    """SYSP_VC_ONTOLOGY_LINK_OBLIGATIONS_1: a Need lacking a mandatory link fails the strict build and is named."""
+
+    CASES = {
+        "story_lacks_incoming_validates": ("SMP_US_X", block("story", "S", "SMP_US_X", tracked_by="SMP_ROOT")
+                                           + block("req", "R", "SMP_REQ_X", implements="SMP_US_X")
+                                           + block("vc", "V", "SMP_VC_X", verifies="SMP_REQ_X")),
+        "story_lacks_incoming_implements": ("SMP_US_X", block("story", "S", "SMP_US_X", tracked_by="SMP_ROOT")
+                                            + block("ac", "A", "SMP_AC_X", validates="SMP_US_X")),
+        "req_lacks_incoming_verifies": ("SMP_REQ_X", block("req", "R", "SMP_REQ_X", implements="SMP_US_ONE")),
+        "req_lacks_outgoing_implements": ("SMP_REQ_X", block("req", "R", "SMP_REQ_X")
+                                          + block("vc", "V", "SMP_VC_X", verifies="SMP_REQ_X")),
+        "design_lacks_incoming_verifies": ("SMP_DES_X", block("design", "D", "SMP_DES_X", details="SMP_REQ_CON")),
+        "design_lacks_outgoing_details": ("SMP_DES_X", block("design", "D", "SMP_DES_X")
+                                          + block("vc", "V", "SMP_VC_X", verifies="SMP_DES_X")),
+    }
+
+    def test_each_missing_link_fails_the_strict_build_naming_the_need_and_the_link(self):
+        for key, (need, extra) in self.CASES.items():
+            with self.subTest(obligation=key), tempfile.TemporaryDirectory() as folder:
+                result = build(sample_project(folder, SAMPLE + "\n" + extra), quiet=False)
+                output = result.stdout + result.stderr
+                self.assertNotEqual(result.returncode, 0, output)
+                self.assertIn(need, output)
+                self.assertIn(key, output)
+
+    WRONG_TYPE = {
+        # A vc validating a story must not satisfy the story's incoming `validates` from an ac.
+        "validates_from_ac": ("SMP_VC_W", block("story", "S", "SMP_US_W", tracked_by="SMP_ROOT")
+                              + block("req", "R", "SMP_REQ_W", implements="SMP_US_W")
+                              + block("vc", "V", "SMP_VC_W", verifies="SMP_REQ_W", validates="SMP_US_W")),
+        "validates_to_story": ("SMP_AC_W", block("ac", "A", "SMP_AC_W", validates="SMP_REQ_CON")),
+        # A design implementing a story must not satisfy the story's incoming `implements` from a req.
+        "implements_from_req": ("SMP_DES_W", block("story", "S", "SMP_US_W", tracked_by="SMP_ROOT")
+                                + block("ac", "A", "SMP_AC_W", validates="SMP_US_W")
+                                + block("design", "D", "SMP_DES_W", details="SMP_REQ_CON", implements="SMP_US_W")
+                                + block("vc", "V", "SMP_VC_W", verifies="SMP_DES_W")),
+        "implements_to_story": ("SMP_REQ_W", block("req", "R", "SMP_REQ_W", implements="SMP_REQ_CON")
+                                + block("vc", "V", "SMP_VC_W", verifies="SMP_REQ_W")),
+        "verifies_from_vc": ("SMP_AC_W", block("ac", "A", "SMP_AC_W", validates="SMP_US_ONE", verifies="SMP_REQ_GEN")),
+        "verifies_to_req_or_design": ("SMP_VC_W", block("vc", "V", "SMP_VC_W", verifies="SMP_US_ONE")),
+        "details_from_design": ("SMP_REQ_W", block("req", "R", "SMP_REQ_W", implements="SMP_US_ONE", details="SMP_REQ_GEN")
+                                + block("vc", "V", "SMP_VC_W", verifies="SMP_REQ_W")),
+        "details_to_req": ("SMP_DES_W", block("design", "D", "SMP_DES_W", details="SMP_US_ONE")
+                           + block("vc", "V", "SMP_VC_W", verifies="SMP_DES_W")),
+    }
+
+    def test_a_link_with_a_wrong_endpoint_type_fails_the_strict_build_naming_the_need_and_the_rule(self):
+        for key, (need, extra) in self.WRONG_TYPE.items():
+            with self.subTest(rule=key), tempfile.TemporaryDirectory() as folder:
+                result = build(sample_project(folder, SAMPLE + "\n" + extra), quiet=False)
+                output = result.stdout + result.stderr
+                self.assertNotEqual(result.returncode, 0, output)
+                self.assertIn(need, output)
+                self.assertIn(key, output)
+
+    def test_the_complete_sample_builds_clean(self):
+        with tempfile.TemporaryDirectory() as folder:
+            result = build(sample_project(folder))
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_syspilots_ontology_carries_the_obligations_without_design(self):
+        warnings = load(OWN / "ontology.toml")["needs"]["warnings"]
+        self.assertEqual(len(warnings), 4)
+        self.assertFalse([name for name in warnings if name.startswith("design")])
+        self.assertEqual(len(load(EXAMPLE / "ontology.toml")["needs"]["warnings"]), 6)
+        schemas = {s["id"] for s in load(OWN / "ontology.toml")["needs"]["schema_definitions"]["schemas"]}
+        self.assertFalse([name for name in schemas if name.startswith("details")])
+        self.assertIn("details_to_req", {s["id"] for s in load(EXAMPLE / "ontology.toml")["needs"]["schema_definitions"]["schemas"]})
 
 
 class SampleProjectNegativeControls(unittest.TestCase):
