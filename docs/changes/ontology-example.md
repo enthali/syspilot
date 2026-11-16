@@ -1,6 +1,6 @@
 # Change Contract: ontology-example
 
-**Status:** accepted<br>
+**Status:** closed<br>
 **Process owner:** Project Manager<br>
 **Current responsibility:** Project Manager<br>
 **Current blocker:** none<br>
@@ -83,13 +83,13 @@ A training run showed that Syspilot's own ontology is too thin as a starting poi
 **Applicability:** Each artifact owner decides and updates its own row.<br>
 **Scope change:** When the approved intent widens after a row reached a terminal status, `Intent and outcome` returns to `draft` until it is approved again, and each owner whose terminal row the wider intent may affect reassesses it: the owner sets the row back to `pending` or records in the row why its evidence still holds.<br>
 **Ownership:** The `Owner` column of this table is the only statement of artifact and gate ownership in the Contract; section headings name no artifact owner.<br>
-**Status:** pending
+**Status:** complete
 
 | Artifact or gate | Included | Owner | Completion evidence | Status |
 |---|---|---|---|---|
 | Intent and outcome | yes | Project Manager | Goal, value, scope, and observable outcome are explicit and approved | approved |
 | Contract release | yes | User | User released the Contract on 2026-11-15 00:42 by answering "ok" in the Project Manager chat to the request to release it | approved |
-| Version control | yes | Project Manager | Feature branch `feature/ontology-example`; squash-integrated into `development` at closure | active |
+| Version control | yes | Project Manager | Feature branch `feature/ontology-example`; squash-integrated into `development` as `a3e1a4c`; integrated tree identical to the validated tip `f22ccac` | merged |
 | Infrastructure impact | not applicable: no workflow, CI, or packaging artifact references the ontology path or the example folders | Admin | Affected workflow, CI, and packaging artifacts are updated, confirmed by their current owner rather than inferred from a Needs-only impact query | not applicable |
 | Product specification and architecture decisions | yes | Architect | Example Ontology types and links defined in `docs/Example Ontology/ontology.toml`; changed requirements and VCs for location, Setup fallback, and skill are linked and checked | approved |
 | User-facing documentation | yes | Technical Writer | User validation revision implemented in 11ded97: Example diagram has one node per type and `req` self-edge; Architect confirmed semantics and aligned specification at cd81d0d. Strict build clean; 27 targeted tests pass after alignment | complete |
@@ -98,7 +98,7 @@ A training run showed that Syspilot's own ontology is too thin as a starting poi
 | Acceptance test design and results | yes | Tester | Setup with and without existing ontology, strict build of the Example Ontology with every type and link, and Impact/MECE/Trace on it; commands and results recorded | complete |
 | Quality review | yes | Quality | Quality reviewed the recorded commands and results; current verification judgment is `proceed` and no open quality issue remains | complete |
 | User validation and approval | yes | User | User accepted the outcome on 2026-11-16 22:17 at `5a7b601`, after one changes-requested round on the Example diagram | accepted |
-| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | pending |
+| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded below | complete |
 
 ## Architecture And Specification
 
@@ -263,15 +263,15 @@ Set this artifact to `not applicable` only when the User explicitly delegates va
 
 ## Closure
 
-**Status:** pending
+**Status:** closed
 
-- [ ] Every included artifact or gate has terminal status and completion evidence.
-- [ ] Intent and outcome are `approved`.
-- [ ] Quality has recorded a `proceed` judgment.
-- [ ] Open Quality Issues contains `None`.
-- [ ] User validation is `accepted`, or its `not applicable` status and explicit User delegation are recorded in the artifact row.
-- [ ] The feature branch is squash-integrated into `development`, or the `Version control` row is `not applicable` with its recorded reason.
-- [ ] Current blocker is `none`.
-- [ ] The observable outcome is demonstrated.
+- [x] Every included artifact or gate has terminal status and completion evidence.
+- [x] Intent and outcome are `approved`.
+- [x] Quality has recorded a `proceed` judgment.
+- [x] Open Quality Issues contains `None`.
+- [x] User validation is `accepted`, or its `not applicable` status and explicit User delegation are recorded in the artifact row.
+- [x] The feature branch is squash-integrated into `development`, or the `Version control` row is `not applicable` with its recorded reason.
+- [x] Current blocker is `none`.
+- [x] The observable outcome is demonstrated.
 
-**Final outcome:** {accepted result, integration reference, or reason for closure without integration}
+**Final outcome:** Accepted by the User on 2026-11-16 and squash-integrated into `development` as `a3e1a4c` (not pushed). Ontologies live in `docs/Syspilot Ontology/` and `docs/Example Ontology/`, each with `ontology.toml` and an `ontology.md` carrying a type-level link diagram; Syspilot has no `.syspilot/` folder; Setup seeds the Example Ontology as `docs/{Project} Ontology/` when a project has none and loads Mermaid in its scaffold. Evidence: 229 tests and the strict build pass; the Project Manager checked browser rendering of both diagrams on 2026-11-16. Record note: the Handover-log rows of the Architect at 00:58 and 21:24 were rewritten in `659e01c` from estimated times 01:10 and 21:45, and the row at 21:42 was committed at 21:37; the log rows are left as they stand, and the Architect now reads the clock before appending. Follow-ups held as Project Manager drafts: `impact-artifact-list`, `ontology-link-obligations`; the sidebar labels of the Example pages ("Contracts", "Ontology") versus "Ontology Reference" were noted and not required by the User.
