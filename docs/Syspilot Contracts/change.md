@@ -89,7 +89,7 @@ The handing-over actor appends one line as the last act before handing over, in 
 | Contract release | yes | User | User authorization to start the Change; no other actor may set this gate | pending / approved |
 | Version control | yes / not applicable: {reason; delete the corresponding empty section} | Project Manager | Feature branch name and integration state; the branch is squash-integrated into `development` at closure | active / merged / not applicable |
 | Infrastructure impact | yes / not applicable: {reason; delete the corresponding empty section} | Admin | Affected workflow, CI, and packaging artifacts are updated, confirmed by their current owner rather than inferred from a Needs-only impact query | pending / complete / not applicable |
-| Product specification and architecture decisions | yes / not applicable: {reason; delete the corresponding empty section} | Architect | Changed specification and architecture artifacts are linked and checked | pending / not applicable |
+| Product specification and architecture decisions | yes / not applicable: {reason; delete the corresponding empty section} | Architect | Changed specification and architecture artifacts are linked and checked; Affected Artifacts built from the impact query, every reported ID dispositioned | pending / not applicable |
 | User-facing documentation | yes / not applicable: {reason; delete the corresponding empty section} | Technical Writer | Agreed documentation surface is coherent and user-oriented; factual-owner review is recorded; `doc` Needs and `includes` links are current; documentation builds cleanly | pending / complete / not applicable |
 | Example sync | yes (default) / not applicable: {reason; delete the corresponding empty section} | Technical Writer | Changes of this Change that also hold for a general project are carried into `docs/Example Actors/`, `docs/Example Contracts/`, and `docs/Example Ontology/`; each deliberate deviation of an example role card is declared in the `Deviations` table of `docs/Example Actors/index.md`; documentation builds cleanly | pending / complete / not applicable |
 | Implementation and unit verification | yes / not applicable: {reason; delete the corresponding empty section} | Developer | Changed artifacts and durable technical decisions are linked; the Developer wrote and ran the unit tests, and their commands and results are recorded | pending / not applicable |
@@ -104,9 +104,13 @@ The handing-over actor appends one line as the last act before handing over, in 
 
 ### Affected Artifacts
 
+Built with the project's impact skill. Record the query and give every reported ID one row with its disposition; add by hand the artifacts the query cannot report, such as new ones. The query output is a candidate list, not a complete scope.
+
+Impact query: {start IDs; direction; depth}
+
 | Artifact | Change | Rationale |
 |---|---|---|
-| {path or specification ID} | {add / modify / remove} | {why} |
+| {path or specification ID} | {no change / modified / added / removed} | {why} |
 
 ### Decisions And Evidence
 

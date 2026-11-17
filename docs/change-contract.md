@@ -56,6 +56,15 @@ The first handoff goes to the Architect. The Architect decides which product
 model, specifications, authority boundaries, and realized artifacts are
 affected.
 
+The Architect builds the `Affected Artifacts` table with the project's impact
+skill and records an `Impact query` line: start IDs, direction, and depth.
+Every reported ID gets its own row with one disposition: `no change`, `modified`,
+`added`, or `removed`, and a rationale. The Architect adds by hand the artifacts
+the query cannot report, such as new ones. This is how the existing table is
+filled, not a separate artifact or gate, and it forms part of the Architect's
+completion evidence. The Contract names the skill by purpose, so a project can
+replace its implementation without rewriting the Contract.
+
 This is the point where a request becomes a checkable change rather than a
 plausible collection of edits.
 
@@ -104,7 +113,7 @@ User documentation is included when users need a new or changed explanation.
 Incoming `included_in` links on changed requirements tell the Technical Writer
 which documentation surfaces deserve an impact review.
 
-Impact Python answers the same question for the rest of the graph. It queries a
+The project's impact skill answers the same question for the rest of the graph. It queries a
 built Need by ID and follows standard links plus every link option the active
 ontology declares, incoming or outgoing, to a chosen depth — so project-defined
 relationships work without hard-coded names. What comes back is a list of

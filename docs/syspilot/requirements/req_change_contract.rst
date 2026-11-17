@@ -116,6 +116,15 @@ Change Contract
    Contract roles to realized kinds only when the active ontology lacks ``doc``
    Needs or typed links.
 
+   The Architect shall build the ``Affected Artifacts`` table with the
+   project's impact skill, naming it by purpose and not by skill name or
+   file. The table shall carry an ``Impact query`` line with the start IDs,
+   direction and depth, give every reported ID one row with the disposition
+   ``no change``, ``modified``, ``added`` or ``removed``, and add by hand the
+   artifacts the query cannot report, such as new ones. The query output is a
+   candidate list, not a complete scope. The Architect's completion evidence
+   shall require this table.
+
 .. vc:: Change artifacts have owner-decided applicability
    :id: SYSP_VC_CHANGE_ARTIFACTS_1
    :status: approved
@@ -146,6 +155,15 @@ Change Contract
 
    Only optional elements carry omission choices, reasons and editing
    instructions at their point of use; no central list duplicates them.
+
+.. vc:: Change affected artifacts come from the impact query
+   :id: SYSP_VC_CHANGE_ARTIFACTS_5
+   :status: approved
+   :verifies: SYSP_REQ_CHANGE_ARTIFACTS
+
+   The template and example name the impact skill by purpose, carry an
+   ``Impact query`` line, offer the four dispositions and require the table in
+   the Architect's completion evidence.
 
 .. req:: Change Version Control
    :id: SYSP_REQ_CHANGE_VERSION_CONTROL
