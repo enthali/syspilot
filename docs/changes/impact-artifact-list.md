@@ -1,6 +1,6 @@
 # Change Contract: impact-artifact-list
 
-**Status:** accepted<br>
+**Status:** closed<br>
 **Process owner:** Project Manager<br>
 **Current responsibility:** Project Manager<br>
 **Current blocker:** none<br>
@@ -58,13 +58,13 @@ No Syspilot artifact currently assigns anyone to determine what a Change affects
 **Applicability:** Each artifact owner decides and updates its own row.<br>
 **Scope change:** When the approved intent widens after a row reached a terminal status, `Intent and outcome` returns to `draft` until it is approved again, and each owner whose terminal row the wider intent may affect reassesses it: the owner sets the row back to `pending` or records in the row why its evidence still holds.<br>
 **Ownership:** The `Owner` column of this table is the only statement of artifact and gate ownership in the Contract; section headings name no artifact owner.<br>
-**Status:** pending
+**Status:** complete
 
 | Artifact or gate | Included | Owner | Completion evidence | Status |
 |---|---|---|---|---|
 | Intent and outcome | yes | Project Manager | Goal, value, scope, and observable outcome are explicit and approved | approved |
 | Contract release | yes | User | User reviewed the draft and directed the Change to start unattended on 2026-11-16 after the preceding Change | approved |
-| Version control | yes | Project Manager | Feature branch `feature/impact-artifact-list`; squash-integrated into `development` at closure | active |
+| Version control | yes | Project Manager | Feature branch `feature/impact-artifact-list` squash-integrated into `development` as `3c8e838`; integrated tree matches the accepted tip | merged |
 | Infrastructure impact | not applicable: no workflow, CI, or packaging artifact changes | Admin | Affected workflow, CI, and packaging artifacts are updated, confirmed by their current owner rather than inferred from a Needs-only impact query | not applicable |
 | Product specification and architecture decisions | yes | Architect | Affected Artifacts built from the impact query, every reported ID dispositioned; changed requirement and VC linked and checked | approved |
 | User-facing documentation | yes | Technical Writer | Guide updated at e3b90a3; Architect confirmed fidelity to SYSP_REQ_CHANGE_ARTIFACTS and VC_5; current `doc` links remain applicable, strict build zero warnings | complete |
@@ -73,7 +73,7 @@ No Syspilot artifact currently assigns anyone to determine what a Change affects
 | Acceptance test design and results | not applicable: a Markdown process artifact without executable behavior; Quality's review covers it | Tester | Requirement tests written and run by the Tester, with their commands and results, and the means for User validation trace to the intended outcome | not applicable |
 | Quality review | yes | Quality | Quality reviewed the recorded commands and results; Quality reviewed the recorded commands and results and re-ran the build and setup-example tests; judgment `proceed` at e9e6071, no open quality issue | complete |
 | User validation and approval | yes | User | User accepted the Impact Change directly on 2026-11-17 | accepted |
-| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | pending |
+| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded below | complete |
 
 ## Architecture And Specification
 
@@ -197,15 +197,15 @@ Set this artifact to `not applicable` only when the User explicitly delegates va
 
 ## Closure
 
-**Status:** pending
+**Status:** closed
 
-- [ ] Every included artifact or gate has terminal status and completion evidence.
-- [ ] Intent and outcome are `approved`.
-- [ ] Quality has recorded a `proceed` judgment.
-- [ ] Open Quality Issues contains `None`.
-- [ ] User validation is `accepted`, or its `not applicable` status and explicit User delegation are recorded in the artifact row.
-- [ ] The feature branch is squash-integrated into `development`, or the `Version control` row is `not applicable` with its recorded reason.
-- [ ] Current blocker is `none`.
-- [ ] The observable outcome is demonstrated.
+- [x] Every included artifact or gate has terminal status and completion evidence.
+- [x] Intent and outcome are `approved`.
+- [x] Quality has recorded a `proceed` judgment.
+- [x] Open Quality Issues contains `None`.
+- [x] User validation is `accepted`, or its `not applicable` status and explicit User delegation are recorded in the artifact row.
+- [x] The feature branch is squash-integrated into `development`, or the `Version control` row is `not applicable` with its recorded reason.
+- [x] Current blocker is `none`.
+- [x] The observable outcome is demonstrated.
 
-**Final outcome:** {accepted result, integration reference, or reason for closure without integration}
+**Final outcome:** The User accepted the impact-sourced artifact list on 2026-11-17; the Change was squash-integrated into `development` as `3c8e838`. Both Change templates name the project's impact skill by purpose, record the query and disposition each reported ID. Quality reported `proceed` with a clean strict build and 29 targeted tests; the Developer recorded 233 passing tests. The Developer's earlier note that the Example held old wording is superseded by the Technical Writer's Example sync. This Contract records its query under Decisions And Evidence because it was created from the previous template. Nothing was pushed.
