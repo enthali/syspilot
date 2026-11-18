@@ -1,6 +1,6 @@
 # Change Contract: contract-statistics
 
-**Status:** active<br>
+**Status:** closed<br>
 **Process owner:** Project Manager<br>
 **Current responsibility:** Project Manager<br>
 **Current blocker:** none<br>
@@ -68,13 +68,13 @@ The User wants statistics of Changes: which actors took part, how many credits (
 **Applicability:** Each artifact owner decides and updates its own row.<br>
 **Scope change:** When the approved intent widens after a row reached a terminal status, `Intent and outcome` returns to `draft` until it is approved again, and each owner whose terminal row the wider intent may affect reassesses it: the owner sets the row back to `pending` or records in the row why its evidence still holds.<br>
 **Ownership:** The `Owner` column of this table is the only statement of artifact and gate ownership in the Contract; section headings name no artifact owner.<br>
-**Status:** pending
+**Status:** complete
 
 | Artifact or gate | Included | Owner | Completion evidence | Status |
 |---|---|---|---|---|
 | Intent and outcome | yes | Project Manager | Goal, value, scope, and observable outcome are explicit and approved | approved |
 | Contract release | yes | User | User authorization to start the Change; no other actor may set this gate | approved: the User read the Contract and approved the release in the Project Manager chat on 2026-11-18 |
-| Version control | yes | Project Manager | Feature branch `feature/contract-statistics`; squash-integrated into `development` at closure | active |
+| Version control | yes | Project Manager | Feature branch `feature/contract-statistics`; squash-integrated into `development` at closure | complete: squash commit 73e0b10 `feat: contract-statistics` |
 | Infrastructure impact | yes | Admin | Skill files are tracked and present in the HEAD source archive; Setup's recursive skill-copy and statistics-folder jobs cover installation. No workflow change is required; a live Setup run has not been performed | complete |
 | Product specification and architecture decisions | yes | Architect | Affected Artifacts built from the impact query, every reported ID dispositioned; User Story, Requirements, and VCs linked and checked; the window start rule decided | approved |
 | User-facing documentation | yes | Technical Writer | New guide and `doc` Need; closure, Setup and Upgrade guidance updated; affected `includes` links current. Architect and Developer confirmed e976650, factual clarifications at b91a494. Strict build clean, 242 tests pass | complete |
@@ -83,7 +83,7 @@ The User wants statistics of Changes: which actors took part, how many credits (
 | Acceptance test design and results | yes | Tester | Requirement tests written and run by the Tester, with their commands and results, and the means for User validation trace to the intended outcome | complete |
 | Quality review | yes | Quality | Quality reviewed the recorded commands and results and re-ran the build and tests; judgment `proceed` at 9ca80b7, no open quality issue | complete |
 | User validation and approval | not applicable: the User delegated validation of the finished outcome to the Project Manager in the Project Manager chat on 2026-11-18 | User | A delegated `not applicable` status records that User validation did not occur | not applicable |
-| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | pending |
+| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | complete |
 
 ## Architecture And Specification
 
@@ -262,15 +262,15 @@ Quality's `proceed` judgment verifies that the change is ready for validation; i
 
 ## Closure
 
-**Status:** pending
+**Status:** closed
 
-- [ ] Every included artifact or gate has terminal status and completion evidence.
-- [ ] Intent and outcome are `approved`.
-- [ ] Quality has recorded a `proceed` judgment.
-- [ ] Open Quality Issues contains `None`.
-- [ ] User validation is `accepted`, or its `not applicable` status and explicit User delegation are recorded in the artifact row.
-- [ ] The feature branch is squash-integrated into `development`, or the `Version control` row is `not applicable` with its recorded reason.
-- [ ] Current blocker is `none`.
-- [ ] The observable outcome is demonstrated.
+- [x] Every included artifact or gate has terminal status and completion evidence.
+- [x] Intent and outcome are `approved`.
+- [x] Quality has recorded a `proceed` judgment.
+- [x] Open Quality Issues contains `None`.
+- [x] User validation is `accepted`, or its `not applicable` status and explicit User delegation are recorded in the artifact row.
+- [x] The feature branch is squash-integrated into `development`, or the `Version control` row is `not applicable` with its recorded reason.
+- [x] Current blocker is `none`.
+- [x] The observable outcome is demonstrated.
 
-**Final outcome:** {accepted result, integration reference, or reason for closure without integration}
+**Final outcome:** The Change shipped the skill `syspilot.contract-statistics`, which writes the per-actor usage record of a Contract to the git-ignored `.syspilot/stats/`. It was squash-integrated into `development` as `73e0b10`. The Project Manager validated it by delegation (the User did not validate) against the Observable Outcome: the real store gives 79 calls and 158.4 AIU for the 2026-11-16 window, failures are explicit, the Change and Release templates carry the checkout step, and Setup installs the skill and ignores the folder. Quality reported `proceed` at 8e8e4c0 with a clean strict build. The checkout run of this Contract was the first live use: 7 actors, 209 calls and 778.9 AIU, with 70% before the first handover to Quality. The Project Manager accepted both `USER REVIEW REQUIRED` flags: the phase split at Quality's first responsibility, as now specified in SYSP_REQ_CONTRACT_STATISTICS_RECORD, and the fixture-store VC for the validated figures, with the real-store check as a manual Project Manager check. The Tester and Developer handover stamps were corrected to their commit times. Limits: no live Setup run was performed, and the sub-agent column is verified by fixture only. Nothing was pushed.
