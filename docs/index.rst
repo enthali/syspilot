@@ -60,6 +60,7 @@ User Guides
    getting-started
    product-model
    change-contract
+   contract-statistics
    customization
    operations
    upgrade

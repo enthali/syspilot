@@ -233,5 +233,6 @@ Recorded after the tag, in the record-only commit of step 6:
 - [ ] Open Quality Issues contains `None`.
 - [ ] Publication evidence is recorded after the tag, including the tag-run baseline.
 - [ ] Current blocker is `none`.
+- [ ] The Project Manager ran the `syspilot.contract-statistics` skill after validation and the record exists in `.syspilot/stats/`.
 
 **Final outcome:** {published version and workflow run}

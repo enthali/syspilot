@@ -75,9 +75,14 @@ leave before new actors arrive, for the reason given under Pitfalls.
    knowledge in actor memory or in the project-owned levels that
    [Customization](customization.md) describes.
 7. **Replace old skills** with the selected release's skills for impact, MECE,
-   trace, and the ontology. Copy each skill's `SKILL.md` and runtime scripts
-   only. You can copy them before step 8, but they run only once the binding from step 8 exists,
-   or when you pass `--ontology` with a path to an existing TOML file.
+   trace, the ontology, and Contract statistics. Copy each skill's `SKILL.md` and
+   runtime scripts only. You can copy them before step 8; Impact, MECE and Trace
+   run only once that step's binding exists, or when you pass `--ontology` with
+   a path to an existing TOML file. The
+   [statistics skill](contract-statistics.md) instead reads the local Copilot
+   session store and Git history; its record goes in the ignored
+   `.syspilot/stats/` folder. This upgrade runs no Setup, so include preparation
+   of that folder and its additive Git ignore entry in the update Change.
 8. **Move the ontology** out of `conf.py` into its own TOML file that
    `conf.py` reads through a top-level literal string `needs_from_toml` binding.
    Each `needs_<name>` setting in `conf.py`, such as `needs_types`,

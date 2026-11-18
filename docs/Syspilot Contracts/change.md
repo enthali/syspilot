@@ -241,5 +241,6 @@ Set this artifact to `not applicable` only when the User explicitly delegates va
 - [ ] The feature branch is squash-integrated into `development`, or the `Version control` row is `not applicable` with its recorded reason.
 - [ ] Current blocker is `none`.
 - [ ] The observable outcome is demonstrated.
+- [ ] The Project Manager ran the `syspilot.contract-statistics` skill after validation and the record exists in `.syspilot/stats/`.
 
 **Final outcome:** {accepted result, integration reference, or reason for closure without integration}

@@ -244,6 +244,13 @@ have terminal evidence, Quality can proceed, blockers are gone, and the feature
 branch is squash-integrated into the integration branch, unless the Version
 control row is `not applicable` with its reason recorded.
 
+At checkout, after validation, the Project Manager runs the
+`syspilot.contract-statistics` skill. It writes the usage record to
+`.syspilot/stats/<contract-name>-stat.md`, outside the Contract and ignored by
+Git. This is a closure-checklist step, not a separate artifact or gate.
+[Contract Statistics](contract-statistics.md) explains the window, commands,
+figures and attribution limits.
+
 A closed Contract is worth more than a finished one. It is the record a future
 reader consults when they need to know why the system looks the way it does.
 

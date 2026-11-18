@@ -25,3 +25,4 @@ Requirements
    req_impact_analysis
    req_ontology_management
    req_quality_methods
+   req_contract_statistics

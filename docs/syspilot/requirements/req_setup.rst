@@ -102,7 +102,8 @@ Pristine Syspilot Setup
    preamble and list exactly the installed Contracts.
 
    Instructions and skills shall be copied additively into occupied destinations,
-   preserving unrelated content. Ignored generated destinations shall block.
+   preserving unrelated content. Ignored generated destinations shall block,
+   except the ignored ``.syspilot/stats/`` folder that Setup itself prepares.
    The version-controlled ``.syspilot/project.toml`` shall record supplied tag,
    full source commit and approved project baseline.
 

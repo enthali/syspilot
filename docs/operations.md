@@ -60,6 +60,15 @@ it occurs and to the Project Manager, in its own Handover log. If a User decisio
 passed, the executor sets the affected gates back to open and passes them again
 before sealing the project state.
 
+Setup also installs the `syspilot.contract-statistics` skill, creates
+`.syspilot/stats/`, and prepares its Git ignore entry. That edit is additive:
+existing `.gitignore` content stays intact, and an existing entry or rule that
+already ignores the folder is not duplicated. This intentionally ignored
+folder is exempt from the blocker for ignored generated destinations.
+The Project Manager uses the skill after validation at Contract checkout;
+see [Contract Statistics](contract-statistics.md) for running it and interpreting
+the local record.
+
 The successful handoff identifies the selected ontology and its configured
 path. The Project Manager explains its artifact types, statuses, and
 relationships and asks the User whether it fits. Acceptance continues normal
