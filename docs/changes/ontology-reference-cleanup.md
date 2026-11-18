@@ -1,6 +1,6 @@
 # Change Contract: ontology-reference-cleanup
 
-**Status:** active<br>
+**Status:** closed<br>
 **Process owner:** Project Manager<br>
 **Current responsibility:** Project Manager<br>
 **Current blocker:** none<br>
@@ -66,13 +66,13 @@ The current build-time generator gives Syspilot a private ontology path that dif
 **Applicability:** Each artifact owner decides and updates its own row.<br>
 **Scope change:** When the approved intent widens after a row reached a terminal status, `Intent and outcome` returns to `draft` until it is approved again, and each affected terminal row is reassessed by its owner.<br>
 **Ownership:** The `Owner` column is the only statement of artifact and gate ownership in this Contract.<br>
-**Status:** pending
+**Status:** complete
 
 | Artifact or gate | Included | Owner | Completion evidence | Status |
 |---|---|---|---|---|
 | Intent and outcome | yes | Project Manager | Goal, value, scope and observable outcome are explicit and approved | approved |
 | Contract release | yes | User | The User reviews and authorizes this Contract to start | approved: the User released it in the Project Manager chat on 2026-11-18 with "ok go ahead" |
-| Version control | yes | Project Manager | Feature branch `feature/ontology-reference-cleanup`; squash-integrated into `development` at closure | active |
+| Version control | yes | Project Manager | Feature branch `feature/ontology-reference-cleanup`; squash-integrated into `development` at closure | complete: squash commit 7f99299 `feat: ontology reference cleanup` |
 | Infrastructure impact | yes | Admin | Source archive includes the tracked reference and Example page; Setup's selection boundary and existing release workflow remain applicable, as recorded below | complete |
 | Product specification and architecture decisions | yes | Architect | Affected Artifacts is sourced from the impact queries, every candidate is dispositioned, and the requirements and VCs define the tracked-page behavior | approved |
 | User-facing documentation | yes | Technical Writer | Live generated-reference claims corrected; reference has its own `doc` Need; Architect and Developer factual reviews accepted; strict build and 260 tests pass | complete |
@@ -81,7 +81,7 @@ The current build-time generator gives Syspilot a private ontology path that dif
 | Acceptance test design and results | yes | Tester | Observable outcomes and no-write/no-generator behavior are tested and results recorded | complete |
 | Quality review | yes | Quality | Quality reviews the Contract, implementation and evidence and records `proceed` or actionable findings | complete |
 | User validation and approval | yes | User | The User validates the finished outcome after Quality's `proceed` judgment | accepted |
-| Closure decision | yes | Project Manager | Final outcome, validation disposition and integration state are recorded | pending |
+| Closure decision | yes | Project Manager | Final outcome, validation disposition and integration state are recorded | complete |
 
 ## Architecture And Specification
 
@@ -239,15 +239,15 @@ Quality's `proceed` judgment verifies readiness; it does not replace User valida
 
 ## Closure
 
-**Status:** pending
+**Status:** closed
 
-- [ ] Every included artifact or gate has terminal status and completion evidence.
-- [ ] Intent and outcome are `approved`.
-- [ ] Quality has recorded a `proceed` judgment.
-- [ ] Open Quality Issues contains `None`.
-- [ ] User validation is `accepted`.
-- [ ] The feature branch is squash-integrated into `development`.
-- [ ] Current blocker is `none`.
-- [ ] The observable outcome is demonstrated.
+- [x] Every included artifact or gate has terminal status and completion evidence.
+- [x] Intent and outcome are `approved`.
+- [x] Quality has recorded a `proceed` judgment.
+- [x] Open Quality Issues contains `None`.
+- [x] User validation is `accepted`.
+- [x] The feature branch is squash-integrated into `development`.
+- [x] Current blocker is `none`.
+- [x] The observable outcome is demonstrated.
 
-**Final outcome:** {accepted result, integration reference, or reason for closure without integration}
+**Final outcome:** The User accepted the Change on 2026-11-18 and it was squash-integrated into `development` as `7f99299`. Syspilot's ontology reference is now a tracked, hand-maintained page; the build-time generator, hook, generator-only `diagram_edges` metadata and matching ignore rule are removed. Requirements, VCs, current guides and tests align with this model while Setup continues to seed the Example Ontology and does not deliver an automatic reference generator. Quality reported `proceed` at 13c8176: strict build clean, page unchanged by the build, 268 tests pass, and MECE/Trace found no issue. Checkout statistics recorded 7 actors, 152 calls and 420.3 AIU, with 82% before the first handover to Quality. Documented limits: no browser rendering and no live Setup run. Nothing was pushed.
