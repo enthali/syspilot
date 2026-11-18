@@ -126,8 +126,9 @@ setting, because Syspilot's skills read that setting directly. Its
 `docs/index.rst` lists only the Actor and Contract registries and, when Setup
 installed an ontology, its page. A project without an ontology receives a copy
 of the general-purpose Example Ontology in `docs/<Project name> Ontology/`;
-Setup never copies Syspilot's own ontology or its generated reference page, and
-Change Contracts stay out of the rendered site.
+Setup never copies Syspilot's own ontology or its hand-maintained reference
+page, and installs no automatic ontology-reference generator. Change Contracts
+stay out of the rendered site.
 
 That handoff identifies the selected ontology and its configured path. The
 Project Manager first re-reads its own context, its role card, and the Setup

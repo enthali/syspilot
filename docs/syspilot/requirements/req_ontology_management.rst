@@ -14,10 +14,9 @@ Ontology Management
    - the separation between Sphinx-Needs configuration under ``[needs]`` and
      optional syspilot-specific metadata under ``[syspilot]``;
    - the configured Need types, statuses, extra options, and extra links;
-   - the absence of a required Syspilot type-pair or status-transition schema;
-     the optional ``[[syspilot.diagram_edges]]`` entries only feed the
-     generated link diagram and neither constrain nor validate links;
-     configured link kinds and statuses come from ``[needs]``; and
+   - the absence of a required Syspilot type-pair or status-transition schema
+     under ``[syspilot]``; configured link kinds and statuses come from
+     ``[needs]``; and
    - the absence of centralized artifact-owner or actor-name assignments,
      because applicable Contracts declare ownership and responsibility.
 
@@ -108,17 +107,19 @@ Ontology Management
 
    - Syspilot's own ontology is ``docs/Syspilot Ontology/``; ``docs/conf.py``
      binds its ``ontology.toml`` through ``needs_from_toml``;
-   - the documentation build generates ``docs/Syspilot Ontology/ontology.md``
-     from that ``ontology.toml`` on every run, so the page cannot drift from
-     the ontology; it carries the type catalogue and a Mermaid link diagram
-     whose nodes are the configured types and whose edges are the descriptive
-     ``[[syspilot.diagram_edges]]`` entries (``link``, ``from``, ``to``) of
-     that file, because ``[[needs.extra_links]]`` does not name endpoint
-     types and Syspilot defines no type-pair rule;
+   - the documentation build does not write ``docs/Syspilot Ontology/ontology.md``;
+     it is a tracked, hand-maintained page beside ``ontology.toml``, like the
+     Example Ontology's, with the type catalogue and a Mermaid link diagram
+     whose nodes are the configured types and whose edges are written in the
+     page, because ``[[needs.extra_links]]`` does not name endpoint types and
+     Syspilot defines no type-pair rule; ``ontology.toml`` carries no diagram
+     metadata and ``.gitignore`` does not exclude the page;
    - an installed project's ``ontology.md`` is hand-written prose seeded from
      the Example Ontology; and
-   - Syspilot's repository has no ``.syspilot/`` folder, because that folder
-     in an installed project holds only the baseline and Setup records.
+   - Syspilot's repository tracks no file under ``.syspilot/`` and holds no
+     ontology there, because that folder is untracked local state: in an
+     installed project the baseline and Setup records, and in a working
+     checkout the statistics records.
 
 .. vc:: Syspilot binds its ontology in the specification tree
    :id: SYSP_VC_ONTOLOGY_LOCATION_1
@@ -129,23 +130,25 @@ Ontology Management
    ``docs/Syspilot Ontology/ontology.toml``, and no tracked file remains at
    ``.syspilot/ontology.toml`` or ``docs/ontology-reference.md``.
 
-.. vc:: The generated ontology page follows the ontology
+.. vc:: The tracked ontology page follows the ontology
    :id: SYSP_VC_ONTOLOGY_LOCATION_2
    :status: approved
    :verifies: SYSP_REQ_ONTOLOGY_LOCATION
 
-   After a build, ``docs/Syspilot Ontology/ontology.md`` lists every configured
-   Need type of ``docs/Syspilot Ontology/ontology.toml`` and is not tracked.
+   ``docs/Syspilot Ontology/ontology.md`` is tracked, is not ignored, lists
+   every configured Need type and every configured link of
+   ``docs/Syspilot Ontology/ontology.toml``, and a strict build leaves it
+   unchanged; ``docs/conf.py`` contains no hook that writes it.
 
-.. vc:: The generated link diagram matches the ontology and the graph
+.. vc:: The link diagram matches the ontology and the graph
    :id: SYSP_VC_ONTOLOGY_LOCATION_3
    :status: approved
    :verifies: SYSP_REQ_ONTOLOGY_LOCATION
 
-   The generated Mermaid diagram has one node per configured type and one edge
-   per ``[[syspilot.diagram_edges]]`` entry; every entry names a configured
-   link and configured types, every configured link has an edge, and every
-   (type, link, type) triple observed in the built Needs data has an edge.
+   The page's Mermaid diagram has one node per configured type; every edge
+   names a configured link and configured types, every configured link has an
+   edge, and the edges equal the (type, link, type) triples observed in the
+   built Needs data. ``ontology.toml`` holds no ``[[syspilot.diagram_edges]]``.
 
 .. req:: Mandatory Link Obligations Fail The Strict Build
    :id: SYSP_REQ_ONTOLOGY_LINK_OBLIGATIONS

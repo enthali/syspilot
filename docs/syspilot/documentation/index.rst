@@ -115,6 +115,16 @@ realized documents remain free of Sphinx-Needs markup.
    an adopting project, with the declaration of deliberate deviations from
    Syspilot's own cards.
 
+.. doc:: Syspilot Ontology Reference
+   :id: SYSP_DOC_SYSPILOT_ONTOLOGY
+   :status: implemented
+   :realized_by: docs/Syspilot Ontology/ontology.md
+   :includes: SYSP_REQ_ONTOLOGY_LOCATION, SYSP_REQ_ONTOLOGY_LINK_OBLIGATIONS
+
+   Syspilot's tracked, hand-maintained ontology reference: types, named links,
+   diagram, mandatory relationships, options and statuses, kept beside the
+   configuration it explains.
+
 .. doc:: Example Ontology
    :id: SYSP_DOC_EXAMPLE_ONTOLOGY
    :status: implemented

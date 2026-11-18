@@ -696,7 +696,8 @@ Pristine Syspilot Setup
    The root shall list only existing project-named Actor/Contract registries
    and, when Setup installed it, the project-named ontology page;
    each registry shall carry a hidden toctree of exactly installed pages.
-   Syspilot's generated ontology reference page shall neither be installed nor generated.
+   Syspilot's own ontology page is neither installed nor generated; Setup
+   installs only the Example Ontology's page.
    Existing documentation shall be preserved; navigation integration shall be
    User-approved and additive. Target documentation shall build with zero warnings.
 

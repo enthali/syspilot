@@ -21,7 +21,6 @@ __pycache__/
 dist/
 
 # Auto-generated docs
-docs/Syspilot Ontology/ontology.md
 build/
 .eggs/
 

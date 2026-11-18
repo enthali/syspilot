@@ -36,6 +36,13 @@ that sits beside the specifications. A project keeps its ontology the same
 way, in `docs/<Project name> Ontology/` with a reader-oriented `ontology.md`.
 This is the currently supported realization.
 
+Syspilot's [ontology reference](Syspilot%20Ontology/ontology.md), like the Example
+Ontology's page, is tracked and maintained by hand beside its definition.
+The documentation build does not rewrite it. Tests check the type and link
+inventory and, after a documentation build, compare the drawn relationships
+with the built graph to catch drift without generating the page. Setup seeds
+the Example page when needed; it installs no automatic reference generator.
+
 The `[needs]` configuration declares Need types, statuses, options, and named
 link kinds. Links stored on Needs point outward; Sphinx-Needs also exports
 incoming backlinks for traversal. Neither Syspilot type-pair rules nor status

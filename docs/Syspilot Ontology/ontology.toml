@@ -2,38 +2,6 @@
 schema_version = "2.0"
 description = "syspilot ontology — sphinx-needs reads [needs] directly; the [syspilot] schema version labels the baseline."
 
-# Descriptive only: endpoint types of each link, drawn in the generated link diagram.
-# They constrain and validate nothing; [[needs.extra_links]] names no endpoint types.
-[[syspilot.diagram_edges]]
-link = "tracked_by"
-from = "story"
-to = "root"
-
-[[syspilot.diagram_edges]]
-link = "implements"
-from = "req"
-to = "story"
-
-[[syspilot.diagram_edges]]
-link = "specializes"
-from = "req"
-to = "req"
-
-[[syspilot.diagram_edges]]
-link = "validates"
-from = "ac"
-to = "story"
-
-[[syspilot.diagram_edges]]
-link = "verifies"
-from = "vc"
-to = "req"
-
-[[syspilot.diagram_edges]]
-link = "includes"
-from = "doc"
-to = "req"
-
 # ---------------------------------------------------------------------------
 # sphinx-needs configuration (read directly by sphinx-needs via needs_from_toml)
 # ---------------------------------------------------------------------------

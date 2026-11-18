@@ -6,66 +6,8 @@
 import os
 import runpy
 import sys
-import tomllib
 from pathlib import Path
 
-
-# -- Ontology reference page generator ----------------------------------------
-# Generates docs/Syspilot Ontology/ontology.md from its ontology.toml on each build.
-
-def _generate_ontology_reference(app):
-    """builder-inited hook: generate ontology.md from ontology.toml."""
-    ontology_path = Path(app.srcdir) / "Syspilot Ontology" / "ontology.toml"
-    output_path = ontology_path.with_name("ontology.md")
-
-    if not ontology_path.exists():
-        return
-
-    with ontology_path.open("rb") as f:
-        data = tomllib.load(f)
-
-    needs = data.get("needs", {})
-    lines = [
-        "<!-- AUTO-GENERATED — do not edit manually. Regenerated on every sphinx-build. -->",
-        "",
-        "# Ontology Reference",
-        "",
-    ]
-
-    # --- Type Catalogue ---
-    types = needs.get("types", [])
-    if types:
-        lines.append("## Type Catalogue")
-        lines.append("")
-        lines.append("| Directive | Title | Prefix | Color |")
-        lines.append("|-----------|-------|--------|-------|")
-        for t in types:
-            lines.append(
-                f"| `{t['directive']}` | {t['title']} | {t['prefix']} | {t['color']} |"
-            )
-        lines.append("")
-
-    # --- Link Diagram ---
-    edges = data.get("syspilot", {}).get("diagram_edges", [])
-    if types and edges:
-        lines.append("## Link Diagram")
-        lines.append("")
-        lines.append("Arrows show stored outgoing links.")
-        lines.append("")
-        lines.append("```{mermaid}")
-        lines.append("flowchart BT")
-        for t in types:
-            lines.append(f'    {t["directive"]}["{t["directive"]}: {t["title"]}"]')
-        for e in edges:
-            lines.append(f'    {e["from"]} -->|{e["link"]}| {e["to"]}')
-        lines.append("```")
-        lines.append("")
-
-    output_path.write_text("\n".join(lines), encoding="utf-8")
-
-
-def setup(app):
-    app.connect("builder-inited", _generate_ontology_reference)
 
 # -- Project information -----------------------------------------------------
 
