@@ -1,6 +1,6 @@
 # Change Contract: revalidation-baseline
 
-**Status:** active<br>
+**Status:** closed<br>
 **Process owner:** Project Manager<br>
 **Current responsibility:** Project Manager<br>
 **Current blocker:** none<br>
@@ -56,7 +56,7 @@ The third trigger, "No tag-run evidence", tested the preceding release, while th
 **Applicability:** Each artifact owner decides and updates its own row.<br>
 **Scope change:** When the approved intent widens after a row reached a terminal status, `Intent and outcome` returns to `draft` until it is approved again, and each owner whose terminal row the wider intent may affect reassesses it: the owner sets the row back to `pending` or records in the row why its evidence still holds.<br>
 **Ownership:** The `Owner` column of this table is the only statement of artifact and gate ownership in the Contract; section headings name no artifact owner.<br>
-**Status:** pending
+**Status:** complete
 
 Lightweight crew, as in `release-contract-archive`: Architect, Developer, Quality. The Developer produces the Markdown process artifacts, including the example, in this Change.
 
@@ -64,7 +64,7 @@ Lightweight crew, as in `release-contract-archive`: Architect, Developer, Qualit
 |---|---|---|---|---|
 | Intent and outcome | yes | Project Manager | Goal, value, scope, and observable outcome are explicit and approved | approved |
 | Contract release | yes | User | The User released the Contract in chat on 2026-11-19 at 23:17 ("go ahead du hast mein ok") after reviewing it in the editor; the Project Manager recorded the User's statement and set the gate on that instruction | approved |
-| Version control | yes | Project Manager | Feature branch `feature/revalidation-baseline`; squash-integrated into `development` at closure | active |
+| Version control | yes | Project Manager | Feature branch `feature/revalidation-baseline`; squash-integrated into `development` at closure | complete: squash commit 70f7602 `feat: revalidation-baseline` |
 | Infrastructure impact | not applicable: the release workflow and its trigger path list do not change | Admin | Affected workflow, CI, and packaging artifacts are updated, confirmed by their current owner rather than inferred from a Needs-only impact query | not applicable |
 | Product specification and architecture decisions | yes | Architect | Changed specification and architecture artifacts are linked and checked; Affected Artifacts built from the impact query, every reported ID dispositioned | approved |
 | User-facing documentation | not applicable: no guide states the trigger list; the Architect names any guide that does as an open issue | Technical Writer | Agreed documentation surface is coherent and user-oriented; factual-owner review is recorded; `doc` Needs and `includes` links are current; documentation builds cleanly | not applicable |
@@ -73,7 +73,7 @@ Lightweight crew, as in `release-contract-archive`: Architect, Developer, Qualit
 | Acceptance test design and results | not applicable: Quality reviews the VC directly | Tester | Requirement tests written and run by the Tester, with their commands and results, and the means for User validation trace to the intended outcome | not applicable |
 | Quality review | yes | Quality | Quality reviewed the recorded commands and results; current verification judgment is `proceed` and no open quality issue remains | complete |
 | User validation and approval | yes | User | The User accepted the outcome on 2026-11-19 | accepted |
-| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | pending |
+| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | complete |
 
 ## Architecture And Specification
 
@@ -170,16 +170,16 @@ Set this artifact to `not applicable` only when the User explicitly delegates va
 
 ## Closure
 
-**Status:** accepted
+**Status:** closed
 
-- [ ] Every included artifact or gate has terminal status and completion evidence.
-- [ ] Intent and outcome are `approved`.
-- [ ] Quality has recorded a `proceed` judgment.
-- [ ] Open Quality Issues contains `None`.
-- [ ] User validation is `accepted`, or its `not applicable` status and explicit User delegation are recorded in the artifact row.
-- [ ] The feature branch is squash-integrated into `development`, or the `Version control` row is `not applicable` with its recorded reason.
-- [ ] Current blocker is `none`.
-- [ ] The observable outcome is demonstrated.
-- [ ] The Project Manager ran the `syspilot.contract-statistics` skill after validation and the record exists in `.syspilot/stats/`.
+- [x] Every included artifact or gate has terminal status and completion evidence.
+- [x] Intent and outcome are `approved`.
+- [x] Quality has recorded a `proceed` judgment.
+- [x] Open Quality Issues contains `None`.
+- [x] User validation is `accepted`, or its `not applicable` status and explicit User delegation are recorded in the artifact row.
+- [x] The feature branch is squash-integrated into `development`, or the `Version control` row is `not applicable` with its recorded reason.
+- [x] Current blocker is `none`.
+- [x] The observable outcome is demonstrated.
+- [x] The Project Manager ran the `syspilot.contract-statistics` skill after validation and the record exists in `.syspilot/stats/`.
 
-**Final outcome:** {accepted result, integration reference, or reason for closure without integration}
+**Final outcome:** The User accepted the Change on 2026-11-19 and it was squash-integrated into `development` as `70f7602`. The third revalidation trigger "No tag-run evidence" is replaced by a baseline rule: when no successful tag run exists to compare against, triggers 1 and 2 count as fired. `SYSP_REQ_RELEASE_REVALIDATION`, `SYSP_VC_RELEASE_REVALIDATION_1`, the Release Process and its example carry the rule; code, workflow and the v0.10.0 record are unchanged. Quality reported `proceed` at 5474d68 with strict build, MECE and Trace clean; no test suite was run because no code or test changed. Checkout statistics recorded 4 actors, 74 calls and 239.6 AIU, with 52% before the first handover to Quality; the window starts at the release gate, so the earlier discussion is not counted. Advisory not acted on: the rule says "triggers 1 and 2" while the table rows are unnumbered. Nothing was pushed.
