@@ -144,10 +144,11 @@ Release Contract
    :realized_by: docs/Syspilot Contracts/release.md
 
    A validation-only workflow run on a pushed branch of P shall be required
-   only when an input path differs from the last successful tag run, Admin
-   records an environment change since that run, or the immediately preceding
-   release has no successful tag run. Before pushing the branch, the Contract
-   shall record the User's explicit authorization naming that run.
+   only when an input path differs from the last successful tag run or Admin
+   records an environment change since that run. When no successful tag run
+   exists to compare against, both triggers count as fired. Before pushing the
+   branch, the Contract shall record the User's explicit authorization naming
+   that run.
 
    The trigger list shall include workflow definition, version checker,
    dependency/lock files, installed Python/Sphinx versions and all documentation
@@ -166,8 +167,9 @@ Release Contract
    :status: approved
    :verifies: SYSP_REQ_RELEASE_REVALIDATION
 
-   Trigger dispositions reference the last successful run and explicit
-   path/environment/no-run conditions; no unconditional extra run is required.
+   Trigger dispositions reference the last successful run and the explicit
+   path and environment conditions; when no successful tag run exists, both
+   are recorded as fired; no unconditional extra run is required.
 
 .. vc:: Revalidation paths preserve the notes exception boundary
    :id: SYSP_VC_RELEASE_REVALIDATION_2

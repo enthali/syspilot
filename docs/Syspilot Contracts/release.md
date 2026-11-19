@@ -140,11 +140,12 @@ The preflight does not run on the workflow's platform. Platform-specific failure
 
 At the release start Release decides, as the mandatory consultee of the Admin's Infrastructure Impact statement, whether the trigger path list and the environment-change statement are sufficient, and records here whether a trigger fired. A validation-only `workflow_dispatch` run of `release.yml` on a pushed branch of P, which never publishes, is required only when a trigger fired. It exercises the `validate` and `build-docs` jobs; tag validation, release-notes extraction, documentation publication, and release creation run only on a tag push. Pushing the branch is the one exception to keeping feature branches local and requires the User's explicit authorization, which names the run and is recorded before the push.
 
+When no successful tag run exists to compare against, triggers 1 and 2 count as fired.
+
 | Trigger | Observable test | Fired |
 |---|---|---|
 | Workflow input changed | `git diff --name-only {last tag-run commit} P -- {trigger path list}`; the list names at least the workflow definition, the version checker, the dependency and lock files, the Python and Sphinx versions the workflow installs, and every file the documentation configuration reads, except `docs/releasenotes.md`, which changes with every release and whose heading format the automated version check verifies; this exception holds only while release-heading parsing stays in `scripts/check_release_version.py` and `docs/conf.py`, and a file that takes over such parsing joins the list | yes / no |
 | Environment change | The Admin's recorded environment-change statement since the last successful tag run, compared with the baseline in the release record of that run | yes / no |
-| No tag-run evidence | No successful tag-triggered run of the immediately preceding release | yes / no |
 
 | Validation-only run | Authorization | Result |
 |---|---|---|

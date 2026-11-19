@@ -148,11 +148,12 @@ Except `{release notes file}` from that list: it changes with every release, and
 
 A validation-only run of `{publication workflow}` on a pushed branch of P is required only when a trigger below fired. It must not publish. State which validation and build jobs it exercises; a passing run does not prove tag-only validation or publication. Pushing the branch requires the User's explicit authorization naming the run, recorded before the push.
 
+When no successful tag run exists to compare against, triggers 1 and 2 count as fired.
+
 | Trigger | Observable test | Fired |
 |---|---|---|
 | Workflow input changed | `git diff --name-only {last tag-run commit} P -- {trigger path list}` | yes / no |
 | Environment change | Admin's recorded environment-change comparison with the last tag-run baseline | yes / no |
-| No tag-run evidence | No successful tag-triggered run of the immediately preceding release | yes / no |
 
 | Validation-only run | Authorization | Result |
 |---|---|---|
