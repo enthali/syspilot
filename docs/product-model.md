@@ -70,6 +70,11 @@ The current base roster is deliberately compact:
 | Technical Writer | User-facing product documentation |
 | Admin | Tools, repository infrastructure, process maintenance |
 
+The Technical Writer also maintains the dated
+[model considerations](model-considerations.md). Changed recommendations
+require User agreement before the Admin updates the agent files; model choice
+does not change an actor's authority.
+
 The [actor registry](Syspilot%20Actors/index.md) and individual role cards are
 the authority for these roles. This guide explains the model; it does not get
 to quietly rewrite anyone's job description. A customer project may add a

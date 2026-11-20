@@ -23,6 +23,11 @@ Technical Writer
      of accuracy and understandability; and
    - keep consultation distinct from Contract handoff so that messaging alone
      transfers neither current responsibility nor artifact ownership;
+   - own the model considerations guide ``docs/model-considerations.md``,
+     which carries its date, gives the reasoning for choosing a Copilot model and a starting model per Syspilot actor
+     with the reasons, and holds the refresh steps; refresh it monthly, agree
+     with the User every refresh that changes a recommendation, and only then
+     leave the change of the ``model:`` lines of the agent files to the Admin;
    - maintain ``docs/Example Actors/``, ``docs/Example Contracts/`` and
      ``docs/Example Ontology/`` in
      every Change through its ``Example sync`` row, deciding for each changed

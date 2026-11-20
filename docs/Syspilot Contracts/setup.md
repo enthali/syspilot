@@ -64,6 +64,10 @@ Before generating the script, ask the User which example Contracts to install, r
 
 The nine role cards are installed whichever Contracts are selected, because a role card names no Contract process. An actor whose process is not installed, such as Release without the Release Process, has no assignment from that process until the project adopts it.
 
+### Model Considerations Adoption
+
+In the same step, ask the User whether to adopt `docs/model-considerations.md`, the dated guide that explains which Copilot model fits which Syspilot actor and how the Technical Writer refreshes that choice monthly. Say that a yes places only the guide in the project's documentation and asks the Technical Writer to run steps 1 to 3 of the guide and to set a monthly heartbeat, and that Setup changes no `model:` line of any agent file and pre-approves no later model switch. Install the guide only on a yes, and record the answer in the Evidence Summary row `Model Considerations`. A no, or no answer, installs nothing and sends nothing; the project can adopt the guide later by copying it from `docs/` of its pinned release.
+
 ### Installation Jobs
 
 The following list is the Contract-owned installation inventory. The `Class` column is the only statement of who owns an installed artifact, and section headings name no artifact owner; the executor named in the header holds the Setup record until handoff. A `seeded copy` is copied from the example folders of the verified commit, is identical to its source when Setup verifies it, and belongs to the project from the handoff on; later adaptation is not a deviation, and Setup does not check it again. Directory jobs recurse over all release-owned or seeded files below the source path while excluding generated build output, virtual environments, caches, and Change instances.
@@ -74,6 +78,7 @@ The following list is the Contract-owned installation inventory. The `Class` col
 | Actor registry | generate | Nine-actor list below | `docs/<Project name> Actors/index.md`, titled `<Project name> Actors` | generated instance | Registry links exactly the nine installed role cards and carries a hidden table of contents naming exactly those cards |
 | Contract processes | copy selected files | The files named by the Contract selection, directly below `docs/Example Contracts/`; `index.md` and `setup.md` of `docs/Syspilot Contracts/` are not among them | `docs/<Project name> Contracts/`, each under its own file name | seeded copy | `contract-documents.md` and every selected Contract exist, each identical to its source; no unselected Contract file exists |
 | Contract registry | generate | Preamble of `docs/Example Contracts/index.md` above its `Processes` heading, and the Contract selection | `docs/<Project name> Contracts/index.md`, titled `<Project name> Contracts` | generated instance | Registry links exactly the installed Contracts and carries a hidden table of contents naming exactly those Contracts |
+| Model Considerations guide | copy one file, only when the User adopted it | `docs/model-considerations.md` | `docs/model-considerations.md` | seeded copy | On a yes the file exists and is identical to its source and the table of contents of the target `docs/index.rst` lists `model-considerations`; on a no the file does not exist; no agent file changed |
 | Syspilot skills | copy directory, additive | `.github/skills/` | `.github/skills/` | release-owned | Every release skill contains `SKILL.md` and declared supporting files; existing unrelated files in an occupied directory are preserved |
 | Statistics folder | create folder, add ignore entry | Target root | `.syspilot/stats/` and one `.syspilot/stats/` line in the target `.gitignore`, added only when no existing rule already ignores that folder | generated instance | The folder exists; `git check-ignore .syspilot/stats/x` reports it ignored; existing `.gitignore` lines are unchanged and the entry is not duplicated on a second run |
 | Syspilot instructions | copy directory, additive | `.github/instructions/` | `.github/instructions/` | release-owned | Every release instruction matches its verified-commit source identity and `syspilot.contract-handling.instructions.md` exists; existing unrelated files in an occupied directory are preserved |
@@ -121,7 +126,7 @@ needs_from_toml = "{ontology path relative to conf.py}"
 suppress_warnings = ["needs.deprecated"]
 ```
 
-The generated `docs/index.rst` has the project name as title and one table of contents that lists only `<Project name> Actors/index`, `<Project name> Contracts/index` and, when Setup installed the ontology, `<Project name> Ontology/ontology`, with the recorded name and its space in each entry. Each generated registry has the title `<Project name> Actors` or `<Project name> Contracts` and also carries a hidden table of contents, so the build with `-W` has no orphaned page:
+The generated `docs/index.rst` has the project name as title and one table of contents that lists exactly `<Project name> Actors/index`, `<Project name> Contracts/index` and, when Setup installed the ontology, `<Project name> Ontology/ontology`, plus `model-considerations` when the User adopted the guide, with the recorded name and its space in each entry. Each generated registry has the title `<Project name> Actors` or `<Project name> Contracts` and also carries a hidden table of contents, so the build with `-W` has no orphaned page:
 
 ````markdown
 ```{toctree}
@@ -131,7 +136,7 @@ The generated `docs/index.rst` has the project name as title and one table of co
 ```
 ````
 
-Install no `docs/Syspilot Ontology/ontology.md`. For a target that already has a documentation build, offer the registries, the changed navigation entries and, for the installed ontology page, the `sphinxcontrib.mermaid` extension only as additive edits that the User approves.
+Install no `docs/Syspilot Ontology/ontology.md`. For a target that already has a documentation build, offer the registries, the changed navigation entries, the entry for an adopted `model-considerations` guide and, for the installed ontology page, the `sphinxcontrib.mermaid` extension only as additive edits that the User approves.
 
 ### Syspilot Actor Setup
 
@@ -223,11 +228,12 @@ Each gate has exactly one status: `pending`, `passed`, or `failed`, recorded in 
 	- the installed Contracts and the actors that have no installed process yet;
 	- the project-root-relative paths of the two installed folders, `docs/<Project name> Actors/` and `docs/<Project name> Contracts/`, with the recorded name; and
 	- instructions to explain the selected ontology's artifact types, statuses, and relationships to the User and ask whether it fits the project.
-3. The Project Manager re-reads its `context.md`, its role card, and this Setup record, and verifies that the committed header names it, before it acts on the message. After it has acknowledged the message, the Project Manager's own first commit on the record sets Contract status `handed off` and the row `PM handoff` to `passed`.
-4. The executor reports completion to the User only after that acknowledgement. Before it, the executor says that the message was sent and that the acknowledgement is awaited.
-5. If the User accepts the selected ontology, continue normal project intake without creating an ontology Change.
-6. If the User requests an adjustment, start a normal Change before modifying the ontology. Use the existing `syspilot.ontology` skill only as technical guidance inside that Change.
-7. If sending the message fails, leave the record unchanged, because the executor makes no change to a record it no longer holds: status `verified` with the Project Manager named and `PM handoff` `pending` is the visible state of an unacknowledged handoff. Report the failure to the User with the manual path: tell the chat of the Project Manager the path of this Setup record and ask it to perform the refresh and header check. Keep the verified integrated installation.
+3. When the User adopted the Model Considerations guide, send the Technical Writer a message with the task to run steps 1 to 3 of `docs/model-considerations.md` and to set a monthly heartbeat, and the statement that every changed model choice is agreed with the User before the Admin changes a `model:` line. Record the message in the Evidence Summary row `Model Considerations`; the Technical Writer's acknowledgement is not a gate of this record. A failed send is recorded there and does not block the handoff to the Project Manager; tell the User to give the Technical Writer's chat that task manually.
+4. The Project Manager re-reads its `context.md`, its role card, and this Setup record, and verifies that the committed header names it, before it acts on the message. After it has acknowledged the message, the Project Manager's own first commit on the record sets Contract status `handed off` and the row `PM handoff` to `passed`.
+5. The executor reports completion to the User only after that acknowledgement. Before it, the executor says that the message was sent and that the acknowledgement is awaited.
+6. If the User accepts the selected ontology, continue normal project intake without creating an ontology Change.
+7. If the User requests an adjustment, start a normal Change before modifying the ontology. Use the existing `syspilot.ontology` skill only as technical guidance inside that Change.
+8. If sending the message fails, leave the record unchanged, because the executor makes no change to a record it no longer holds: status `verified` with the Project Manager named and `PM handoff` `pending` is the visible state of an unacknowledged handoff. Report the failure to the User with the manual path: tell the chat of the Project Manager the path of this Setup record and ask it to perform the refresh and header check. Keep the verified integrated installation.
 
 ## Failure And Resume Rules
 
@@ -250,6 +256,7 @@ The mandatory gates are the Phase 5 rows. The row `PM handoff` is a delivery row
 | Actors folder scan before | pending | pending |
 | Contract inventory | pending | pending |
 | Contract selection | pending | pending |
+| Model Considerations | pending | pending |
 | Script dry-run and audit | pending | pending |
 | Script execution | pending | pending |
 | Actor creation | pending | pending |

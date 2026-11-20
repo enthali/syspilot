@@ -6,6 +6,11 @@ Setup runs; this does not establish coverage of every practical scenario.
 
 ## Current Tooling
 
+For actor model choices, see the dated
+[model considerations](model-considerations.md). The Technical Writer reviews
+them monthly; the User agrees changed recommendations before the Admin updates
+agent files. Prices and cache reuse need checking in the project's own environment.
+
 For local development and documentation builds, use:
 
 - VS Code with GitHub Copilot;

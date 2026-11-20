@@ -25,6 +25,9 @@ Admin
    - supply workflow/preflight comparison, last successful run evidence and
      stale-evidence paths and environment changes when a release relies on
      workflow runs from a different platform;
+   - change the ``model:`` lines of the agent files after the User has agreed
+     a changed recommendation in the Technical Writer's model considerations
+     guide;
    - continue a pristine Setup record that the Setup Contract transfers to it
      because the initiating session lacks the Jarvis messaging tools, by
      re-reading its context, its role card, and the record, verifying that the

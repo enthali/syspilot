@@ -65,10 +65,11 @@ prompt itself never goes out of date. A bootstrap that knew how to install
 Syspilot would have to be updated in lockstep with it forever.
 
 From there, the Setup Contract guides the installation. It checks the release,
-preserves existing project content, and asks which example Contracts to
-include. It creates the Actor and Contract folders using a project name you
-confirm, and asks before resolving file conflicts. If Setup cannot proceed, it
-records a blocker and explains how to continue.
+preserves existing project content, and asks which example Contracts to include
+and whether to adopt the [Model Considerations](model-considerations.md) guide.
+It creates the Actor and Contract folders using a project name you confirm, and
+asks before resolving file conflicts. If Setup cannot proceed, it records a
+blocker and explains how to continue.
 
 Setup checks for Jarvis Core 0.32.0 or newer in the VS Code instance hosting
 your session. If needed, it explains why Jarvis is required and asks your
@@ -123,8 +124,9 @@ The documentation Setup generates is deliberately plain. Its `docs/conf.py` has
 no Syspilot project metadata, loads MyST, Sphinx-Needs, and Mermaid from the installed
 requirements, and binds the ontology with a literal `needs_from_toml`
 setting, because Syspilot's skills read that setting directly. Its
-`docs/index.rst` lists only the Actor and Contract registries and, when Setup
-installed an ontology, its page. A project without an ontology receives a copy
+`docs/index.rst` lists only the Actor and Contract registries, the ontology
+page when Setup installed one, and `model-considerations` when you chose to
+adopt that guide. A project without an ontology receives a copy
 of the general-purpose Example Ontology in `docs/<Project name> Ontology/`;
 Setup never copies Syspilot's own ontology or its hand-maintained reference
 page, and installs no automatic ontology-reference generator. Change Contracts
@@ -137,7 +139,11 @@ ontology's artifact types, statuses, and relationships, and asks whether it fits
 the project. If the User accepts it, normal project intake
 continues without an ontology Change. If the User requests an adjustment, the
 Project Manager starts a normal Change before anyone modifies the ontology;
-the existing Ontology skill supplies technical guidance inside that Change.
+the existing Ontology skill supplies technical guidance inside that Change. When
+you adopted `docs/model-considerations.md`, Setup changes no agent file's
+`model:` line and sends the Technical Writer a separate task to run steps 1 to 3
+and set a monthly heartbeat, recording any send failure without blocking the
+Project Manager handoff.
 
 ## Read the Reference Implementation
 

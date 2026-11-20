@@ -61,6 +61,7 @@ User Guides
    product-model
    change-contract
    contract-statistics
+   model-considerations
    customization
    operations
    upgrade

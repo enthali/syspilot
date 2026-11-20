@@ -60,6 +60,15 @@ realized documents remain free of Sphinx-Needs markup.
    window and interprets the local record without treating usage as a judgment
    of work or as exclusive attribution to one Contract.
 
+.. doc:: Model Considerations
+   :id: SYSP_DOC_MODEL_RECOMMENDATION
+   :status: implemented
+   :realized_by: docs/model-considerations.md
+   :includes: SYSP_REQ_TECHNICAL_WRITER, SYSP_REQ_ADMIN
+
+   Dated actor-model recommendations, their workload and pricing rationale,
+   and the monthly refresh with User agreement before Admin changes models.
+
 .. doc:: Customization Guide
    :id: SYSP_DOC_CUSTOMIZATION
    :status: verified
