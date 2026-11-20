@@ -69,7 +69,6 @@ docs/build.log
 .jarvis/state/
 .jarvis/heartbeat.yaml
 .jarvis/reminders.yaml
-.jarvis/syspilot-state.json
 jarvis-*
 !packages/*/assets/**
 # END JARVIS MANAGED
