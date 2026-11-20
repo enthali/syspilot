@@ -1,6 +1,6 @@
 # Change Contract: model-recommendation
 
-**Status:** active<br>
+**Status:** closed<br>
 **Process owner:** Project Manager<br>
 **Current responsibility:** Project Manager<br>
 **Current blocker:** none<br>
@@ -26,7 +26,7 @@ The handing-over actor appends one line as the last act before handing over, in 
 | 2026-11-20 | 05:10 | Quality | Developer | Verdict revise: two Developer-owned issues, see Open Quality Issues. |
 | 2026-11-20 | 05:11 | Quality | User | Verdict proceed; both issues resolved and re-checked. Validation is the User's. |
 | 2026-11-20 | 05:10 | Developer | Quality | Stale note marked resolved and my earlier log stamp corrected to the commit time 05:00. |
-| 2026-11-20 | 12:44 | User | Project Manager | The User validated the outcome ("validation passed"); closure follows. |
+| 2026-11-20 | 12:43 | User | Project Manager | The User validated the outcome ("validation passed"); closure follows. |
 
 ## Intent And Outcome
 
@@ -67,7 +67,7 @@ Order of work: Architect (ownership entry, location of the document), Technical 
 |---|---|---|---|---|
 | Intent and outcome | yes | Project Manager | Goal, value, scope, and observable outcome are explicit and approved | approved |
 | Contract release | yes | User | The User released the Contract in chat on 2026-11-20 at 04:31 ("ok proceed") and confirmed in a follow-up question that the Project Manager may record it; the Project Manager set the gate on that instruction | approved |
-| Version control | yes | Project Manager | Feature branch `feature/model-recommendation`; squash-integrated into `development` at closure | active |
+| Version control | yes | Project Manager | Feature branch `feature/model-recommendation`; squash-integrated into `development` at closure | complete: squash commit abb1ae9 `feat: model-recommendation` |
 | Infrastructure impact | yes | Admin | The guide is tracked in the current source archive, Setup selects it from the verified release commit, and the documentation build includes it; evidence and release limitations are recorded below | complete |
 | Product specification and architecture decisions | yes | Architect | Changed specification and architecture artifacts are linked and checked; Affected Artifacts built from the impact query, every reported ID dispositioned | approved |
 | User-facing documentation | yes | Technical Writer | `docs/model-considerations.md` accepted directly by the User on 2026-11-20 (`a43e0bd`) and target-link-clean; `docs/getting-started.md` aligned with `setup.md`; `doc` Needs and `includes` links current; Syspilot strict build, 80 Setup/Example tests, and pristine target `-W` build pass | complete |
@@ -76,7 +76,7 @@ Order of work: Architect (ownership entry, location of the document), Technical 
 | Acceptance test design and results | not applicable: Quality reviews the Markdown process artifacts and the requirement directly | Tester | Requirement tests written and run by the Tester, with their commands and results, and the means for User validation trace to the intended outcome | not applicable |
 | Quality review | yes | Quality | Quality reviewed the recorded commands and results; current verification judgment is `proceed` and no open quality issue remains | complete |
 | User validation and approval | yes | User | The User validated the outcome in chat on 2026-11-20 at 12:43 ("validation passed") | accepted |
-| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | pending |
+| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | complete |
 
 ## Architecture And Specification
 
@@ -228,16 +228,16 @@ Current responsibility remains with the User from Quality's handoff until the va
 
 ## Closure
 
-**Status:** accepted
+**Status:** closed
 
-- [ ] Every included artifact or gate has terminal status and completion evidence.
-- [ ] Intent and outcome are `approved`.
-- [ ] Quality has recorded a `proceed` judgment.
-- [ ] Open Quality Issues contains `None`.
-- [ ] User validation is `accepted`, or its `not applicable` status and explicit User delegation are recorded in the artifact row.
-- [ ] The feature branch is squash-integrated into `development`, or the `Version control` row is `not applicable` with its recorded reason.
-- [ ] Current blocker is `none`.
-- [ ] The observable outcome is demonstrated.
-- [ ] The Project Manager ran the `syspilot.contract-statistics` skill after validation and the record exists in `.syspilot/stats/`.
+- [x] Every included artifact or gate has terminal status and completion evidence.
+- [x] Intent and outcome are `approved`.
+- [x] Quality has recorded a `proceed` judgment.
+- [x] Open Quality Issues contains `None`.
+- [x] User validation is `accepted`, or its `not applicable` status and explicit User delegation are recorded in the artifact row.
+- [x] The feature branch is squash-integrated into `development`, or the `Version control` row is `not applicable` with its recorded reason.
+- [x] Current blocker is `none`.
+- [x] The observable outcome is demonstrated.
+- [x] The Project Manager ran the `syspilot.contract-statistics` skill after validation and the record exists in `.syspilot/stats/`.
 
-**Final outcome:** pending
+**Final outcome:** The User validated the outcome on 2026-11-20. `docs/model-considerations.md` is the dated, Technical Writer-owned model guide, with ownership in `SYSP_REQ_TECHNICAL_WRITER` and `SYSP_REQ_ADMIN`, and Setup offers it, installs it on a yes and messages the Technical Writer. Squash commit `abb1ae9` on `development`. Checkout statistics: 602.5 AIU, 6 actors, 73% before the first handover to Quality.
