@@ -169,9 +169,11 @@ first stops are:
 
 ## Follow One Real Contract
 
-Open any file in `docs/changes/`. Each one is a Contract that actually governed
-a piece of this project: approved intent, artifact owners, decisions, review
-evidence, and the actor who was responsible at each point.
+Open any file in `docs/changes/` (where shipped Changes are archived under
+`docs/changes/v<version>/`, alongside active Changes at the folder root). Each
+one is a Contract that actually governed a piece of this project: approved
+intent, artifact owners, decisions, review evidence, and the actor who was
+responsible at each point.
 
 This is more representative than a perfect toy example. Real work has pending
 reviews, explicit boundaries, and occasional sentences that improve after a

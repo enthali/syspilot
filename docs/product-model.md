@@ -132,11 +132,11 @@ single short line: what the owner did and what changes for the next owner. The h
 `Current responsibility` stays the only authority.
 
 Syspilot's [Change process](Syspilot%20Contracts/change.md) is the canonical
-Contract definition for modifying versioned artifacts. The repository file
-`docs/changes/documentation-foundation.md` is a concrete instance: it records
-the real decisions, ownership, reviews, and evidence behind these guides. One
-defines the reusable agreement; the other shows that agreement doing actual
-work.
+Contract definition for modifying versioned artifacts. The archived repository
+file `docs/changes/v0.10.0/documentation-foundation.md` is a concrete instance:
+it records the real decisions, ownership, reviews, and evidence behind these
+guides. One defines the reusable agreement; the other shows that agreement doing
+actual work.
 
 ## The Document Drives the Work
 

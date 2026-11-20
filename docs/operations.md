@@ -113,12 +113,14 @@ and evidence say it is ready.
 
 Each publication runs under a Release Contract, defined by the
 [Release process](Syspilot%20Contracts/release.md). Its preflight runs on the
-`development` commit to be released, with release notes and user documentation
-already committed. Four local checks run in order: documentation tests, the
-strict clean documentation build, release QA suites, and the version check
-(`uv run python scripts/check_release_version.py v{version}`). The strict build
-needs network access to `docs.python.org`. The first failure stops the release
-before `main` or a tag moves and becomes an open quality issue for its owner.
+`development` commit to be released, with release notes, user documentation, and
+the content-unchanged archive moves of shipped Change Contracts to
+`docs/changes/v{version}/` already committed. Four local checks run in order:
+documentation tests, the strict clean documentation build, release QA suites,
+and the version check (`uv run python scripts/check_release_version.py v{version}`).
+The strict build needs network access to `docs.python.org`. The first failure
+stops the release before `main` or a tag moves and becomes an open quality issue
+for its owner.
 
 The newest release-notes version heading is the version source.
 `docs/conf.py` derives the documentation's `release` from it. The same checker
@@ -126,17 +128,17 @@ is used locally and by the tag workflow to reject a malformed tag, a missing or
 duplicate heading, an older heading, or inconsistent documentation metadata.
 
 A separate validation-only workflow run is required only when workflow inputs
-changed since the last successful tag run, Admin records an environment change,
-or the immediately preceding release has no successful tag run. Release checks
-Admin's trigger list and environment evidence at release start. A triggered run
-needs a pushed branch and the User's explicit authorization. Local checks do not
-prove execution on the Linux runner or publication; platform-specific failures
-may first appear after the tag exists. The User's push authorization acknowledges
-that trade-off. Failed validation or documentation-build prerequisites publish
-nothing, but publication is not atomic: Pages may already be deployed when
-GitHub Release creation fails. Any failure after the tag, including partial
-publication, stops the release, becomes a recorded blocker and is escalated to
-the User; the tag stays in place.
+changed since the last successful tag run or Admin records an environment change
+since that run; when no successful tag run exists to compare against, both
+triggers count as fired. Release checks Admin's trigger list and environment
+evidence at release start. A triggered run needs a pushed branch and the User's
+explicit authorization. Local checks do not prove execution on the Linux runner
+or publication; platform-specific failures may first appear after the tag exists.
+The User's push authorization acknowledges that trade-off. Failed validation or
+documentation-build prerequisites publish nothing, but publication is not
+atomic: Pages may already be deployed when GitHub Release creation fails. Any
+failure after the tag, including partial publication, stops the release, becomes
+a recorded blocker and is escalated to the User; the tag stays in place.
 
 Commit the push authorization in the release record after the preflighted
 commit P and before merging to release commit R. The separate, write-free check

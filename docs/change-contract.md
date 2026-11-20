@@ -254,7 +254,8 @@ figures and attribution limits.
 A closed Contract is worth more than a finished one. It is the record a future
 reader consults when they need to know why the system looks the way it does.
 
-The Contracts in `docs/changes/` are real instances rather than tidy examples,
+The Contracts in `docs/changes/` (with shipped Changes archived under
+`docs/changes/v<version>/`) are real instances rather than tidy examples,
 which is why they stay in the repository instead of the rendered documentation.
 Open one there to see the shape of actual work, then start the next change from
 the canonical template in the Change process.

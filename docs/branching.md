@@ -54,7 +54,7 @@ gitGraph
 
 | Branch | What lives there |
 |---|---|
-| `feature/<change-name>` | One Change, from its first commit to its last. The name matches the Contract in `docs/changes/`. |
+| `feature/<change-name>` | One Change, from its first commit to its last. The name matches the Contract in `docs/changes/` (moved to `docs/changes/v{version}/` before a release's preflight). |
 | `development` | The integration branch. Each completed Change arrives as one squashed commit. |
 | `main` | Released state only. Every commit is a release and carries its version tag. |
 
@@ -105,15 +105,17 @@ list of releases and nothing else.
 
 The [Release process](Syspilot%20Contracts/release.md) runs that promotion in a
 Release Contract at `docs/releases/v{version}.md`. Its preflight runs on
-the `development` commit to be released, with the release notes already
-committed there, before `main` or a tag moves: the documentation tests, the
-strict documentation build, the release QA suites, and the automated version
-check. The newest release-notes heading supplies the version, and the
-documentation metadata is derived from it.
+the `development` commit to be released, with the release notes, user
+documentation, and content-unchanged moves of shipped Change Contracts into
+`docs/changes/v{version}/` already committed there, before `main` or a tag
+moves: the documentation tests, the strict documentation build, the release QA
+suites, and the automated version check. The newest release-notes heading
+supplies the version, and the documentation metadata is derived from it.
 
 The validation-only workflow run is conditional: it is required when the files
-Admin lists as inputs of the Linux run changed, Admin records an environment
-change, or the immediately preceding release has no successful tag run. Release
+Admin lists as inputs of the Linux run changed since the last successful tag
+run, or Admin records an environment change since that run; when no successful
+tag run exists to compare against, both triggers count as fired. Release
 assesses the trigger evidence at release start. That run exercises validation and the
 documentation build, not publication. It needs a pushed branch, which is the
 exception to keeping feature branches local and needs the User's explicit
