@@ -51,10 +51,12 @@ an overview of the supported setup.
 | Understand why it works this way | [Contract Driven Development](docs/methodology.md) |
 | Understand actors, Needs, and Contracts | [The product model](docs/product-model.md) |
 | Run a change from intent to closure | [The Change Contract](docs/change-contract.md) |
+| Inspect actor usage and cost per Contract | [Contract Statistics](docs/contract-statistics.md) |
+| Choose and refresh Copilot models per actor | [Model Considerations](docs/model-considerations.md) |
 | Know which branch your work belongs on | [Branching](docs/branching.md) |
 | Tailor Syspilot to a project | [Customization](docs/customization.md) |
 | Build, update, or troubleshoot it | [Operations](docs/operations.md) |
-| Move a project from before 0.10 to 0.10 | [Upgrading to 0.10](docs/upgrade.md) |
+| Move an existing project to Contract-driven actors | [Upgrade checklist](docs/upgrade.md) |
 
 The [rendered documentation](https://enthali.github.io/syspilot/index.html)
 also includes the authoritative specifications, actor roles, process

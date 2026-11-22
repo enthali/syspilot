@@ -97,10 +97,10 @@ outgoing = "bad to"
         edges = json.loads(result.stdout)["edges"]
         self.assertTrue(any(edge["source"] == "N0" and edge["target"] == "N1" and edge["option"] == "flows_to" and edge["direction"] == "in" for edge in edges))
 
-    def test_current_v2_uses_typed_impact_discovery(self):
+    def test_current_data_uses_typed_impact_discovery(self):
         project_root = PROJECT_ROOT
         result = subprocess.run(
-            [sys.executable, str(SCRIPT), "SYSP_REQ_QUALITY", "--depth", "1", "--direction", "both", "--ontology", str(project_root / ".syspilot" / "ontology.toml"), "--needs-dir", str(project_root / "docs" / "_build" / "html" / "needs_id")],
+            [sys.executable, str(SCRIPT), "SYSP_REQ_QUALITY", "--depth", "1", "--direction", "both", "--ontology", str(project_root / "docs" / "Syspilot Ontology" / "ontology.toml"), "--needs-dir", str(project_root / "docs" / "_build" / "html" / "needs_id")],
             capture_output=True,
             text=True,
         )
@@ -109,10 +109,10 @@ outgoing = "bad to"
         self.assertIn("implements", options)
         self.assertIn("specializes", options)
 
-    def test_current_v2_requirement_without_specializes_has_no_missing_finding(self):
+    def test_current_requirement_without_specializes_has_no_missing_finding(self):
         project_root = PROJECT_ROOT
         result = subprocess.run(
-            [sys.executable, str(SCRIPT), "SYSP_REQ_MECE_ANALYSIS", "--depth", "1", "--direction", "both", "--ontology", str(project_root / ".syspilot" / "ontology.toml"), "--needs-dir", str(project_root / "docs" / "_build" / "html" / "needs_id")],
+            [sys.executable, str(SCRIPT), "SYSP_REQ_MECE_ANALYSIS", "--depth", "1", "--direction", "both", "--ontology", str(project_root / "docs" / "Syspilot Ontology" / "ontology.toml"), "--needs-dir", str(project_root / "docs" / "_build" / "html" / "needs_id")],
             capture_output=True,
             text=True,
         )

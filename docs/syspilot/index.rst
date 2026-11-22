@@ -1,10 +1,10 @@
-Syspilot Specification (v2)
-============================
+Syspilot Specification
+======================
 
 The live spec tree: Graph Root, User Stories (WHY), Requirements (WHAT).
-There is no separate Design Spec level in v2 — HOW is the file itself,
+HOW is the realization artifact itself, not a separate Design Spec level,
 referenced via ``:realized_by:`` on the Requirement (see
-:doc:`../ontology-reference`).
+:doc:`../Syspilot Ontology/ontology`).
 
 .. toctree::
    :maxdepth: 2

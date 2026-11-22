@@ -31,8 +31,17 @@ It is an example to adopt and tailor, not a process Syspilot imposes.
 
 The ontology defines what the project can trace: artifact types, statuses,
 options, and named link kinds. Syspilot currently realizes its own
-ontology with Sphinx-Needs and `.syspilot/ontology.toml`. This is the currently
-supported realization.
+ontology with Sphinx-Needs, as `ontology.toml` in the folder `docs/Syspilot Ontology/`
+that sits beside the specifications. A project keeps its ontology the same
+way, in `docs/<Project name> Ontology/` with a reader-oriented `ontology.md`.
+This is the currently supported realization.
+
+Syspilot's [ontology reference](Syspilot%20Ontology/ontology.md), like the Example
+Ontology's page, is tracked and maintained by hand beside its definition.
+The documentation build does not rewrite it. Tests check the type and link
+inventory and, after a documentation build, compare the drawn relationships
+with the built graph to catch drift without generating the page. Setup seeds
+the Example page when needed; it installs no automatic reference generator.
 
 The `[needs]` configuration declares Need types, statuses, options, and named
 link kinds. Links stored on Needs point outward; Sphinx-Needs also exports
@@ -43,6 +52,25 @@ input. The ontology does not assign artifacts to actors: the applicable
 Contract declares ownership, Current responsibility, decisions, and evidence
 for each change.
 
+Syspilot's ontology and the Example Ontology also define minimum link checks:
+a story needs incoming `validates` and `implements`;
+a requirement needs incoming `verifies` and outgoing `implements`; the Example
+Ontology's detailed design needs incoming `verifies` and outgoing `details`.
+Each named list must contain at least one link. `includes` and `specializes`
+remain optional. A missing mandatory link fails the strict build; its non-quiet
+output names the Need and the rule key or schema ID. The
+[Example Ontology](Example%20Ontology/ontology.md) explains where each link belongs.
+The ontology's `[needs.warnings]` filters check presence, and its
+`[[needs.schema_definitions.schemas]]` rules enforce source and target types for
+`validates`, `implements`, `verifies`, and `details` (Example only). A link to or
+from the wrong type fails the strict build too. Neither check proves semantic
+correctness.
+
+These checks travel with a copied Example Ontology. Installing Syspilot into
+a project with its own ontology adds no such obligations to that ontology.
+Agree project-specific obligations with the User and Architect through the
+applicable Change before adjusting them.
+
 This is the one level worth slowing down for. The ontology decides what the
 project is able to say about its artifacts, including the ones already written.
 Changing it is never a local edit — it reaches backwards through everything the
@@ -52,8 +80,10 @@ Treat ontology editing as technical Contract work. Preserve unrelated project
 content, change only schema surfaces represented by the current file, and run
 the strict documentation and schema build afterward. Resolve every ontology
 warning before completing the artifact. Pristine Setup preserves an existing
-ontology or installs the baseline when none exists; it does not evaluate or
-redesign that ontology. At handoff, the Project Manager explains the selected
+ontology. When none exists it copies the [Example Ontology](Example%20Ontology/ontology.md)
+to `docs/<Project name> Ontology/`: a general-purpose starting point that adds
+a `design` level between requirements and their realization to Syspilot's
+own types. Setup does not evaluate or redesign an ontology. At handoff, the Project Manager explains the selected
 ontology's artifact types, statuses, and relationships and asks the User whether
 it fits. Acceptance continues normal intake without an ontology Change. A
 requested adjustment starts a normal Change before modification, with the

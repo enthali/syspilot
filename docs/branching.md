@@ -36,7 +36,7 @@ timing.
 
 ```{mermaid}
 gitGraph
-    commit id: "release v0.9.0" tag: "v0.9.0"
+    commit id: "previous release" tag: "previous release tag"
     branch development
     checkout development
     branch feature/contract-handling
@@ -47,14 +47,14 @@ gitGraph
     checkout development
     merge feature/contract-handling id: "squash merge"
     checkout main
-    merge development id: "release v0.9.1" tag: "v0.9.1"
+    merge development id: "next release" tag: "next release tag"
 ```
 
 ## What Each Branch Means
 
 | Branch | What lives there |
 |---|---|
-| `feature/<change-name>` | One Change, from its first commit to its last. The name matches the Contract in `docs/changes/`. |
+| `feature/<change-name>` | One Change, from its first commit to its last. The name matches the Contract in `docs/changes/` (moved to `docs/changes/v{version}/` before a release's preflight). |
 | `development` | The integration branch. Each completed Change arrives as one squashed commit. |
 | `main` | Released state only. Every commit is a release and carries its version tag. |
 
@@ -104,16 +104,18 @@ That is why `main` is never a working branch. Its history is meant to read as a
 list of releases and nothing else.
 
 The [Release process](Syspilot%20Contracts/release.md) runs that promotion in a
-Release Contract at `docs/changes/release-v{version}.md`. Its preflight runs on
-the `development` commit to be released, with the release notes already
-committed there, before `main` or a tag moves: the documentation tests, the
-strict documentation build, the release QA suites, and the automated version
-check. The newest release-notes heading supplies the version, and the
-documentation metadata is derived from it.
+Release Contract at `docs/releases/v{version}.md`. Its preflight runs on
+the `development` commit to be released, with the release notes, user
+documentation, and content-unchanged moves of shipped Change Contracts into
+`docs/changes/v{version}/` already committed there, before `main` or a tag
+moves: the documentation tests, the strict documentation build, the release QA
+suites, and the automated version check. The newest release-notes heading
+supplies the version, and the documentation metadata is derived from it.
 
 The validation-only workflow run is conditional: it is required when the files
-Admin lists as inputs of the Linux run changed, Admin records an environment
-change, or the immediately preceding release has no successful tag run. Release
+Admin lists as inputs of the Linux run changed since the last successful tag
+run, or Admin records an environment change since that run; when no successful
+tag run exists to compare against, both triggers count as fired. Release
 assesses the trigger evidence at release start. That run exercises validation and the
 documentation build, not publication. It needs a pushed branch, which is the
 exception to keeping feature branches local and needs the User's explicit
@@ -121,7 +123,7 @@ authorization naming the run.
 
 Before the merge, commit the User's explicit authorization to push `main` and
 the tag on `development`, after the preflighted commit P, changing only that
-release's `docs/changes/release-v{version}.md`. This authorization is separate
+release's `docs/releases/v{version}.md`. This authorization is separate
 from permission to start the release and acknowledges the local evidence
 limits and any triggered validation-only run.
 

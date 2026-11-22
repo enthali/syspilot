@@ -29,12 +29,21 @@ Quality
    :status: approved
    :verifies: SYSP_REQ_QUALITY
 
-   Inspect the Quality role card and a completed quality artifact and confirm
-   that the judgment covers all applicable evidence, remains independent, and
-   contains either no open issue or an actionable correction for each issue.
-   Confirm that the role card states the obligation to apply horizontal
-   coverage analysis and relationship analysis, and that the quality artifact
-   records both analyses with their selected scope, evidence, findings, and
-   stated limits. Confirm that the role card and the quality artifact state
-   Quality's default of reviewing recorded commands and results, with any
-   execution by Quality recorded together with its reason.
+   A completed review records an independent holistic ``proceed`` or ``blocked``
+   judgment and only current issues, each with a correction and artifact owner.
+
+.. vc:: Quality records both required review methods
+   :id: SYSP_VC_QUALITY_2
+   :status: approved
+   :verifies: SYSP_REQ_QUALITY
+
+   For impacted objects, review evidence records horizontal coverage and
+   relationship analyses with scope, evidence, findings and limits.
+
+.. vc:: Quality reviews existing verification before executing checks
+   :id: SYSP_VC_QUALITY_3
+   :status: approved
+   :verifies: SYSP_REQ_QUALITY
+
+   Recorded commands and results support the judgment; each check executed
+   by Quality has a recorded reason why existing evidence was insufficient.

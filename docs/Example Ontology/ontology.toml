@@ -1,0 +1,233 @@
+[syspilot]
+schema_version = "2.0"
+description = "Example ontology - sphinx-needs reads [needs] directly; the [syspilot] schema version labels the baseline."
+
+# ---------------------------------------------------------------------------
+# sphinx-needs configuration (read directly by sphinx-needs via needs_from_toml)
+# ---------------------------------------------------------------------------
+
+[needs]
+
+# Require explicit IDs on every need directive
+id_required = true
+
+# Build needs.json and per-ID JSON files for tooling (ubCode, impact scripts)
+build_json = true
+build_json_per_id = true
+
+# Use Graphviz for needflow diagrams
+flow_engine = "graphviz"
+
+# Extra option fields available on all need directives.
+# "realized_by" holds a plain path reference (not a need link) to the file
+# that IS the realization - code, configuration, or another artifact the
+# project keeps outside the specification graph.
+extra_options = ["priority", "rationale", "realized_by"]
+
+# ---------------------------------------------------------------------------
+# Need Types
+# ---------------------------------------------------------------------------
+
+# The single graph root. Exactly one instance per project. Every User Story
+# self-declares membership via :tracked_by:, so impact analysis and orphan
+# detection can start from one deterministic node.
+[[needs.types]]
+directive = "root"
+title = "Graph Root"
+prefix = "ROOT_"
+color = "#4A4A4A"
+style = "node"
+
+# WHY - the user need a requirement serves.
+[[needs.types]]
+directive = "story"
+title = "User Story"
+prefix = "US_"
+color = "#E8D5B7"
+style = "node"
+
+# WHAT - an observable obligation of the product.
+[[needs.types]]
+directive = "req"
+title = "Requirement"
+prefix = "REQ_"
+color = "#BFD8D2"
+style = "node"
+
+# HOW in detail - the detailed design that realizes one requirement.
+[[needs.types]]
+directive = "design"
+title = "Detailed Design"
+prefix = "DES_"
+color = "#B5D3E7"
+style = "node"
+
+# Validation - did we build the right thing. User-facing, human-judged.
+# One per Given/When/Then, linked to the User Story it validates.
+[[needs.types]]
+directive = "ac"
+title = "Acceptance Criterion"
+prefix = "AC_"
+color = "#A8E6CF"
+style = "node"
+
+# Verification - did we build it right. Testable, linked to the Requirement
+# or Detailed Design it verifies.
+[[needs.types]]
+directive = "vc"
+title = "Verification Criterion"
+prefix = "VC_"
+color = "#FFD3B6"
+style = "node"
+
+# A user-facing documentation surface. The Need remains in the specification
+# graph while "realized_by" points to documentation that contains no Needs
+# markup.
+[[needs.types]]
+directive = "doc"
+title = "User Documentation"
+prefix = "DOC_"
+color = "#C9C2E8"
+style = "node"
+
+# ---------------------------------------------------------------------------
+# Statuses
+# ---------------------------------------------------------------------------
+
+[[needs.statuses]]
+name = "draft"
+description = "Draft - Work in progress"
+
+[[needs.statuses]]
+name = "open"
+description = "Open - Identified but not yet started"
+
+[[needs.statuses]]
+name = "approved"
+description = "Approved - Ready for implementation"
+
+[[needs.statuses]]
+name = "implemented"
+description = "Implemented - Code exists"
+
+[[needs.statuses]]
+name = "verified"
+description = "Verified - Tested and validated"
+
+[[needs.statuses]]
+name = "deprecated"
+description = "Deprecated - No longer used"
+
+# ---------------------------------------------------------------------------
+# Extra Link Types
+# ---------------------------------------------------------------------------
+
+# US -> root. Self-declared entry-point membership.
+[[needs.extra_links]]
+option = "tracked_by"
+incoming = "tracks"
+outgoing = "tracked_by"
+
+# REQ -> US. A requirement implements the user story's WHY.
+[[needs.extra_links]]
+option = "implements"
+incoming = "is implemented by"
+outgoing = "implements"
+
+# REQ -> REQ. A concrete requirement applies a more general one.
+# Direction is always concrete -> general; never sideways between two
+# unrelated concrete requirements.
+[[needs.extra_links]]
+option = "specializes"
+incoming = "is specialized by"
+outgoing = "specializes"
+
+# DES -> REQ. A detailed design elaborates how one requirement is realized.
+[[needs.extra_links]]
+option = "details"
+incoming = "is detailed by"
+outgoing = "details"
+
+# AC -> US. Validates that the user story's intent is satisfied.
+[[needs.extra_links]]
+option = "validates"
+incoming = "is validated by"
+outgoing = "validates"
+
+# VC -> REQ or DES. Verifies that the requirement or design is correctly
+# implemented.
+[[needs.extra_links]]
+option = "verifies"
+incoming = "is verified by"
+outgoing = "verifies"
+
+# DOC -> REQ. Declares which requirements a user-facing documentation surface
+# contains in user-oriented form; the incoming relation exposes impact from REQ.
+[[needs.extra_links]]
+option = "includes"
+incoming = "included_in"
+outgoing = "includes"
+
+# Mandatory link obligations: a Need matching a filter below is reported as a warning
+# that names the Need and the warning key, so the strict build fails. The checks
+# establish that the minimum links exist, not that they are semantically right.
+[needs.warnings]
+story_lacks_incoming_validates = "type == 'story' and not validates_back"
+story_lacks_incoming_implements = "type == 'story' and not implements_back"
+req_lacks_incoming_verifies = "type == 'req' and not verifies_back"
+req_lacks_outgoing_implements = "type == 'req' and not implements"
+design_lacks_incoming_verifies = "type == 'design' and not verifies_back"
+design_lacks_outgoing_details = "type == 'design' and not details"
+
+# Endpoint types of the obligation links. A filter above sees only one Need, so presence
+# is checked there; these schemas fix the type at each end of the link. A link can only
+# leave a Need of the named source type and only reach a Need of the named target type,
+# so a nonempty incoming list proves the source type and a nonempty outgoing list the
+# target type. A violation is reported as a warning, which fails the strict build.
+[[needs.schema_definitions.schemas]]
+id = "validates_from_ac"
+message = "validates may only leave an ac"
+select = { required = ["validates"], properties = { validates = { minItems = 1 } } }
+validate = { local = { properties = { type = { const = "ac" } } } }
+
+[[needs.schema_definitions.schemas]]
+id = "validates_to_story"
+message = "validates must reach a story"
+select = { properties = { type = { const = "ac" } } }
+validate = { network = { validates = { items = { local = { properties = { type = { const = "story" } } } } } } }
+
+[[needs.schema_definitions.schemas]]
+id = "implements_from_req"
+message = "implements may only leave a req"
+select = { required = ["implements"], properties = { implements = { minItems = 1 } } }
+validate = { local = { properties = { type = { const = "req" } } } }
+
+[[needs.schema_definitions.schemas]]
+id = "implements_to_story"
+message = "implements must reach a story"
+select = { properties = { type = { const = "req" } } }
+validate = { network = { implements = { items = { local = { properties = { type = { const = "story" } } } } } } }
+
+[[needs.schema_definitions.schemas]]
+id = "verifies_from_vc"
+message = "verifies may only leave a vc"
+select = { required = ["verifies"], properties = { verifies = { minItems = 1 } } }
+validate = { local = { properties = { type = { const = "vc" } } } }
+
+[[needs.schema_definitions.schemas]]
+id = "verifies_to_req_or_design"
+message = "verifies must reach a req or a design"
+select = { properties = { type = { const = "vc" } } }
+validate = { network = { verifies = { items = { local = { properties = { type = { enum = ["req", "design"] } } } } } } }
+
+[[needs.schema_definitions.schemas]]
+id = "details_from_design"
+message = "details may only leave a design"
+select = { required = ["details"], properties = { details = { minItems = 1 } } }
+validate = { local = { properties = { type = { const = "design" } } } }
+
+[[needs.schema_definitions.schemas]]
+id = "details_to_req"
+message = "details must reach a req"
+select = { properties = { type = { const = "design" } } }
+validate = { network = { details = { items = { local = { properties = { type = { const = "req" } } } } } } }

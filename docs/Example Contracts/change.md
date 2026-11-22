@@ -89,7 +89,7 @@ The handing-over actor appends one line as the last act before handing over, in 
 | Contract release | yes | User | User authorization to start the Change; no other actor may set this gate | pending / approved |
 | Version control | yes / not applicable: {reason; delete the corresponding empty section} | Project Manager | Feature branch name and integration state; the branch is squash-integrated into `{integration branch}` at closure | active / merged / not applicable |
 | Infrastructure impact | yes / not applicable: {reason; delete the corresponding empty section} | Admin | Affected workflow, CI, and packaging artifacts are updated, confirmed by their current owner rather than inferred from a Needs-only impact query | pending / complete / not applicable |
-| Product specification and architecture decisions | yes / not applicable: {reason; delete the corresponding empty section} | Architect | Changed specification and architecture artifacts are linked and checked | pending / not applicable |
+| Product specification and architecture decisions | yes / not applicable: {reason; delete the corresponding empty section} | Architect | Changed specification and architecture artifacts are linked and checked; Affected Artifacts built from the impact query, every reported ID dispositioned | pending / not applicable |
 | User-facing documentation | yes / not applicable: {reason; delete the corresponding empty section} | Technical Writer | Agreed documentation surface is coherent and user-oriented; factual-owner review is recorded; `doc` Needs and `includes` links are current; documentation builds cleanly | pending / complete / not applicable |
 | Implementation and unit verification | yes / not applicable: {reason; delete the corresponding empty section} | Developer | Changed artifacts and durable technical decisions are linked; the Developer wrote and ran the unit tests, and their commands and results are recorded | pending / not applicable |
 | Acceptance test design and results | yes / not applicable: {reason; delete the corresponding empty section} | Tester | Requirement tests written and run by the Tester, with their commands and results, and the means for User validation trace to the intended outcome | pending / not applicable |
@@ -103,9 +103,13 @@ The handing-over actor appends one line as the last act before handing over, in 
 
 ### Affected Artifacts
 
+Built with the project's impact skill. Record the query and give every reported ID one row with its disposition; add by hand the artifacts the query cannot report, such as new ones. The query output is a candidate list, not a complete scope.
+
+Impact query: {start IDs; direction; depth}
+
 | Artifact | Change | Rationale |
 |---|---|---|
-| {path or specification ID} | {add / modify / remove} | {why} |
+| {path or specification ID} | {no change / modified / added / removed} | {why} |
 
 ### Decisions And Evidence
 
@@ -223,7 +227,9 @@ Set this artifact to `not applicable` only when the User explicitly delegates va
 - [ ] Quality has recorded a `proceed` judgment.
 - [ ] Open Quality Issues contains `None`.
 - [ ] User validation is `accepted`, or its `not applicable` status and explicit User delegation are recorded in the artifact row.
+- [ ] The feature branch is squash-integrated into `{integration branch}`, or the `Version control` row is `not applicable` with its recorded reason.
 - [ ] Current blocker is `none`.
 - [ ] The observable outcome is demonstrated.
+- [ ] The Project Manager ran the `syspilot.contract-statistics` skill after validation and the record exists in `.syspilot/stats/`.
 
 **Final outcome:** {accepted result, integration reference, or reason for closure without integration}

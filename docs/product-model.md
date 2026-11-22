@@ -25,10 +25,10 @@ criteria ask whether a requirement was implemented correctly. User
 documentation has its own `doc` Needs, which point to readable documents and
 declare the requirements they contain in user-oriented form.
 
-There is no separate v2 directory full of prose design specifications. The
-`realized_by` link points to the actual role card, process, skill, instruction,
-or code artifact that supplies the how. Less duplicate truth means less stale
-truth.
+The `realized_by` link points directly to the role card, process, skill,
+instruction, or code artifact that supplies the how, rather than duplicating
+that realization in a separate prose design specification. Less duplicate
+truth means less stale truth.
 
 ## Why Actors?
 
@@ -69,6 +69,11 @@ The current base roster is deliberately compact:
 | Research | Investigation and technical due diligence |
 | Technical Writer | User-facing product documentation |
 | Admin | Tools, repository infrastructure, process maintenance |
+
+The Technical Writer also maintains the dated
+[model considerations](model-considerations.md). Changed recommendations
+require User agreement before the Admin updates the agent files; model choice
+does not change an actor's authority.
 
 The [actor registry](Syspilot%20Actors/index.md) and individual role cards are
 the authority for these roles. This guide explains the model; it does not get
@@ -127,11 +132,11 @@ single short line: what the owner did and what changes for the next owner. The h
 `Current responsibility` stays the only authority.
 
 Syspilot's [Change process](Syspilot%20Contracts/change.md) is the canonical
-Contract definition for modifying versioned artifacts. The repository file
-`docs/changes/documentation-foundation.md` is a concrete instance: it records
-the real decisions, ownership, reviews, and evidence behind these guides. One
-defines the reusable agreement; the other shows that agreement doing actual
-work.
+Contract definition for modifying versioned artifacts. The archived repository
+file `docs/changes/v0.10.0/documentation-foundation.md` is a concrete instance:
+it records the real decisions, ownership, reviews, and evidence behind these
+guides. One defines the reusable agreement; the other shows that agreement doing
+actual work.
 
 ## The Document Drives the Work
 

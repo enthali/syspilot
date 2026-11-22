@@ -5,7 +5,6 @@
 # .syspilot/ is created by setup agent
 # ======================================
 .syspilot/
-!.syspilot/ontology.toml
 .jarvis/
 .jarvis-v1/
 .jarvis-v2/
@@ -22,7 +21,6 @@ __pycache__/
 dist/
 
 # Auto-generated docs
-docs/ontology-reference.md
 build/
 .eggs/
 
@@ -71,7 +69,6 @@ docs/build.log
 .jarvis/state/
 .jarvis/heartbeat.yaml
 .jarvis/reminders.yaml
-.jarvis/syspilot-state.json
 jarvis-*
 !packages/*/assets/**
 # END JARVIS MANAGED

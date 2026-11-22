@@ -65,10 +65,11 @@ prompt itself never goes out of date. A bootstrap that knew how to install
 Syspilot would have to be updated in lockstep with it forever.
 
 From there, the Setup Contract guides the installation. It checks the release,
-preserves existing project content, and asks which example Contracts to
-include. It creates the Actor and Contract folders using a project name you
-confirm, and asks before resolving file conflicts. If Setup cannot proceed, it
-records a blocker and explains how to continue.
+preserves existing project content, and asks which example Contracts to include
+and whether to adopt the [Model Considerations](model-considerations.md) guide.
+It creates the Actor and Contract folders using a project name you confirm, and
+asks before resolving file conflicts. If Setup cannot proceed, it records a
+blocker and explains how to continue.
 
 Setup checks for Jarvis Core 0.32.0 or newer in the VS Code instance hosting
 your session. If needed, it explains why Jarvis is required and asks your
@@ -120,12 +121,16 @@ record stays unchanged and Setup tells you to give the Project Manager's chat th
 path of the record.
 
 The documentation Setup generates is deliberately plain. Its `docs/conf.py` has
-no Syspilot project metadata, loads only the two extensions the installed
-requirements provide, and binds the ontology with a literal `needs_from_toml`
+no Syspilot project metadata, loads MyST, Sphinx-Needs, and Mermaid from the installed
+requirements, and binds the ontology with a literal `needs_from_toml`
 setting, because Syspilot's skills read that setting directly. Its
-`docs/index.rst` lists only the Actor and Contract registries. Setup does not
-install Syspilot's own ontology reference page, and Change Contracts stay out of
-the rendered site.
+`docs/index.rst` lists only the Actor and Contract registries, the ontology
+page when Setup installed one, and `model-considerations` when you chose to
+adopt that guide. A project without an ontology receives a copy
+of the general-purpose Example Ontology in `docs/<Project name> Ontology/`;
+Setup never copies Syspilot's own ontology or its hand-maintained reference
+page, and installs no automatic ontology-reference generator. Change Contracts
+stay out of the rendered site.
 
 That handoff identifies the selected ontology and its configured path. The
 Project Manager first re-reads its own context, its role card, and the Setup
@@ -134,7 +139,11 @@ ontology's artifact types, statuses, and relationships, and asks whether it fits
 the project. If the User accepts it, normal project intake
 continues without an ontology Change. If the User requests an adjustment, the
 Project Manager starts a normal Change before anyone modifies the ontology;
-the existing Ontology skill supplies technical guidance inside that Change.
+the existing Ontology skill supplies technical guidance inside that Change. When
+you adopted `docs/model-considerations.md`, Setup changes no agent file's
+`model:` line and sends the Technical Writer a separate task to run steps 1 to 3
+and set a monthly heartbeat, recording any send failure without blocking the
+Project Manager handoff.
 
 ## Read the Reference Implementation
 
@@ -160,9 +169,11 @@ first stops are:
 
 ## Follow One Real Contract
 
-Open any file in `docs/changes/`. Each one is a Contract that actually governed
-a piece of this project: approved intent, artifact owners, decisions, review
-evidence, and the actor who was responsible at each point.
+Open any file in `docs/changes/` (where shipped Changes are archived under
+`docs/changes/v<version>/`, alongside active Changes at the folder root). Each
+one is a Contract that actually governed a piece of this project: approved
+intent, artifact owners, decisions, review evidence, and the actor who was
+responsible at each point.
 
 This is more representative than a perfect toy example. Real work has pending
 reviews, explicit boundaries, and occasional sentences that improve after a
@@ -179,5 +190,5 @@ human reads them.
 Later Syspilot updates are not routine setup work. Each update requires a
 separate project-specific Change that records the old and proposed baselines,
 impact analysis, revalidation scope, authorization, and technical executor.
-A project that runs a version before 0.10 finds a starting checklist in
-[Upgrading to 0.10](upgrade.md).
+A project moving from an earlier setup to Contract-driven actors finds a
+starting checklist in [the upgrade guide](upgrade.md).

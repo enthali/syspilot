@@ -187,7 +187,7 @@ supported path rather than an incidental detail.
 |---|---|
 | The roles | [docs/Syspilot Actors/](Syspilot%20Actors/index.md) |
 | The processes and their canonical templates | [docs/Syspilot Contracts/](Syspilot%20Contracts/index.md) |
-| Generic role cards and processes that Setup copies into a project | [docs/Example Actors/](Example%20Actors/index.md), [docs/Example Contracts/](Example%20Contracts/index.md) |
+| Generic role cards, processes, and starting ontology that Setup copies into a project | [docs/Example Actors/](Example%20Actors/index.md), [docs/Example Contracts/](Example%20Contracts/index.md), [docs/Example Ontology/](Example%20Ontology/ontology.md) |
 | What a Contract Document must contain | [Contract Documents](Syspilot%20Contracts/contract-documents.md) |
 | One bounded change | [The Change process](Syspilot%20Contracts/change.md) |
 | Installing Syspilot into a project | [Pristine Setup](Syspilot%20Contracts/setup.md) |

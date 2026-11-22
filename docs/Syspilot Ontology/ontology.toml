@@ -1,6 +1,6 @@
 [syspilot]
 schema_version = "2.0"
-description = "syspilot v2 ontology — sphinx-needs reads [needs] directly; the [syspilot] schema version labels the baseline."
+description = "syspilot ontology — sphinx-needs reads [needs] directly; the [syspilot] schema version labels the baseline."
 
 # ---------------------------------------------------------------------------
 # sphinx-needs configuration (read directly by sphinx-needs via needs_from_toml)
@@ -21,7 +21,7 @@ flow_engine = "graphviz"
 # Extra option fields available on all need directives.
 # "realized_by" holds a plain path reference (not a need link) to the file
 # that IS the HOW — an agent file, skill file, or code location. There is no
-# separate SPEC type in v2: a written HOW would duplicate the file verbatim.
+# separate SPEC type: a written HOW would duplicate the file verbatim.
 extra_options = ["priority", "rationale", "realized_by"]
 
 # ---------------------------------------------------------------------------
@@ -151,3 +151,53 @@ outgoing = "verifies"
 option = "includes"
 incoming = "included_in"
 outgoing = "includes"
+
+# Mandatory link obligations: a Need matching a filter below is reported as a warning
+# that names the Need and the warning key, so the strict build fails. The checks
+# establish that the minimum links exist, not that they are semantically right.
+[needs.warnings]
+story_lacks_incoming_validates = "type == 'story' and not validates_back"
+story_lacks_incoming_implements = "type == 'story' and not implements_back"
+req_lacks_incoming_verifies = "type == 'req' and not verifies_back"
+req_lacks_outgoing_implements = "type == 'req' and not implements"
+
+# Endpoint types of the obligation links. A filter above sees only one Need, so presence
+# is checked there; these schemas fix the type at each end of the link. A link can only
+# leave a Need of the named source type and only reach a Need of the named target type,
+# so a nonempty incoming list proves the source type and a nonempty outgoing list the
+# target type. A violation is reported as a warning, which fails the strict build.
+[[needs.schema_definitions.schemas]]
+id = "validates_from_ac"
+message = "validates may only leave an ac"
+select = { required = ["validates"], properties = { validates = { minItems = 1 } } }
+validate = { local = { properties = { type = { const = "ac" } } } }
+
+[[needs.schema_definitions.schemas]]
+id = "validates_to_story"
+message = "validates must reach a story"
+select = { properties = { type = { const = "ac" } } }
+validate = { network = { validates = { items = { local = { properties = { type = { const = "story" } } } } } } }
+
+[[needs.schema_definitions.schemas]]
+id = "implements_from_req"
+message = "implements may only leave a req"
+select = { required = ["implements"], properties = { implements = { minItems = 1 } } }
+validate = { local = { properties = { type = { const = "req" } } } }
+
+[[needs.schema_definitions.schemas]]
+id = "implements_to_story"
+message = "implements must reach a story"
+select = { properties = { type = { const = "req" } } }
+validate = { network = { implements = { items = { local = { properties = { type = { const = "story" } } } } } } }
+
+[[needs.schema_definitions.schemas]]
+id = "verifies_from_vc"
+message = "verifies may only leave a vc"
+select = { required = ["verifies"], properties = { verifies = { minItems = 1 } } }
+validate = { local = { properties = { type = { const = "vc" } } } }
+
+[[needs.schema_definitions.schemas]]
+id = "verifies_to_req"
+message = "verifies must reach a req"
+select = { properties = { type = { const = "vc" } } }
+validate = { network = { verifies = { items = { local = { properties = { type = { const = "req" } } } } } } }

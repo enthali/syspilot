@@ -1,24 +1,26 @@
 ---
 name: syspilot.ontology
-description: "Technical guidance for reading and editing the current Syspilot v2 ontology. USE FOR: Need types, statuses, options, named links, and strict ontology validation."
+description: "Technical guidance for reading and editing the active project ontology. USE FOR: Need types, statuses, options, named links, and strict ontology validation."
 requirements: [SYSP_REQ_ONTOLOGY_SCHEMA, SYSP_REQ_ONTOLOGY_EDITING]
 ---
 
 # Ontology Management
 
-Use this skill when an applicable Contract includes reading or changing `.syspilot/ontology.toml`. The Contract owns the decision, responsibility, affected artifacts, and evidence; this skill provides the technical schema and validation procedure.
+Use this skill when an applicable Contract includes reading or changing the active ontology, the TOML file that `needs_from_toml` in the project's `docs/conf.py` binds. Syspilot's own is `docs/Syspilot Ontology/ontology.toml`; a project that adopted the Example Ontology has `docs/<Project name> Ontology/ontology.toml`. The Contract owns the decision, responsibility, affected artifacts, and evidence; this skill provides the technical schema and validation procedure.
 
-## Current V2 Schema
+## Current Schema
 
 Sphinx-Needs reads `[needs]` directly through `needs_from_toml` in `docs/conf.py`. The sibling `[syspilot]` schema version is a descriptive baseline label, not a required graph input.
 
 ### `[needs]`
 
 - Configuration requires explicit IDs, exports combined and per-ID JSON, and uses Graphviz flows.
-- `extra_options` contains `priority`, `rationale`, and `realized_by`.
-- `[[needs.types]]` defines `root`, `story`, `req`, `ac`, `vc`, and `doc`.
-- `[[needs.statuses]]` defines `draft`, `open`, `approved`, `implemented`, `verified`, and `deprecated`.
-- `[[needs.extra_links]]` defines `tracked_by`, `implements`, `specializes`, `validates`, `verifies`, and `includes`, including their incoming and outgoing labels.
+- `extra_options` lists the project's additional Need options.
+- `[[needs.types]]` defines the Need types.
+- `[[needs.statuses]]` defines the allowed statuses.
+- `[[needs.extra_links]]` defines the named links, including their incoming and outgoing labels.
+
+Read the type, status, option, and link names from the active file; they differ between ontologies. Syspilot's own has `root`, `story`, `req`, `ac`, `vc`, and `doc`; the Example Ontology adds `design`, which links to a `req` through `details`.
 
 Each type entry has `directive`, `title`, `prefix`, `color`, and `style`. Each status has `name` and `description`. Each extra link has `option`, `incoming`, and `outgoing`.
 
@@ -33,7 +35,7 @@ The ontology has no centralized artifact-owner or actor-name mapping. Applicable
 ## Contract-Owned Editing
 
 1. Confirm that the applicable Contract includes the ontology change and records its owner, intended outcome, affected artifacts, and required evidence.
-2. Read the complete current `.syspilot/ontology.toml`; preserve unrelated project-specific content.
+2. Locate the active ontology through `needs_from_toml` and read the complete file; preserve unrelated project-specific content.
 3. Edit only the included current-schema surfaces: Need types, statuses, and extra options under `[needs]`, or named directed links under `[[needs.extra_links]]`. Preserve the descriptive `[syspilot]` schema version unless the Contract includes changing it.
 4. Keep link option names and incoming/outgoing labels coherent with the Needs that use them. Changing a link kind can affect existing Needs and their backlinks.
 5. Run the project's strict documentation and schema validation. For Syspilot itself:
@@ -48,4 +50,4 @@ The ontology has no centralized artifact-owner or actor-name mapping. Applicable
 
 ## Setup Boundary
 
-Pristine Setup preserves an existing configured ontology. It copies the release baseline `.syspilot/ontology.toml` only when the target has no ontology. Ontology evaluation or project-specific redesign is separate Contract work; do not overwrite an existing ontology during Setup.
+Pristine Setup preserves an existing configured ontology. It copies the Example Ontology folder to `docs/<Project name> Ontology/` only when the target has no ontology. Ontology evaluation or project-specific redesign is separate Contract work; do not overwrite an existing ontology during Setup.

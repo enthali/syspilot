@@ -25,6 +25,13 @@ Research
    :status: approved
    :verifies: SYSP_REQ_RESEARCH
 
-   Inspect the Research role card and completed research evidence and confirm
-   that the question, sources, verified findings, uncertainty, relevant dead
-   ends, and receiving decision owner are explicit.
+   Research evidence identifies the question and sources, separates verified
+   facts from uncertainty, and retains decision-relevant negative results.
+
+.. vc:: Research findings leave the product decision with its owner
+   :id: SYSP_VC_RESEARCH_2
+   :status: approved
+   :verifies: SYSP_REQ_RESEARCH
+
+   The role card and completed findings identify the receiving decision owner
+   without assigning that product decision to Research.

@@ -1,16 +1,16 @@
-# Upgrading to Syspilot 0.10
+# Upgrading an Existing Project
 
 This checklist is for a project that already works with actors, Contracts, and
-skills from an earlier Syspilot version, or from a comparable earlier setup, and
-wants to move to 0.10. The [Setup Contract](Syspilot%20Contracts/setup.md)
-installs into pristine projects only, so there is no automated upgrade path.
+skills from an earlier Syspilot setup, or from a comparable earlier setup, and
+wants to adopt the Contract-driven actor model described here. The
+[Setup Contract](Syspilot%20Contracts/setup.md) installs into pristine projects
+only, so there is no automated upgrade path.
 Check the [release notes](releasenotes.md) before starting your upgrade.
 
 The checklist is distilled from one completed migration. The adopter who made
-that migration reviewed it for accuracy. That review did not include running the
-0.10 skills, and nobody who has not migrated has read it cold, so treat it as a
-guide, not as a proven procedure. It
-feeds the project-specific update Change described in
+that migration reviewed it for accuracy. That review did not include running
+the migrated skills, and nobody who has not migrated has read it cold, so treat
+it as a guide, not as a proven procedure. It feeds the project-specific update Change described in
 [Operations](operations.md) under "Updates Are Separate Changes"; it does not
 replace that Change. The Change still owns the old and proposed baselines, the impact
 analysis, the revalidation scope, the User's authorization, and the named
@@ -19,7 +19,8 @@ technical executor.
 ## Before You Start
 
 1. Open the update as a normal Change on its own feature branch.
-2. Record the old baseline and the proposed 0.10 baseline in the Contract.
+2. Record the old baseline and the proposed baseline from the selected release
+   in the Contract.
 3. Make a list of everything the old setup placed in the repository: agent
    files, role and process definitions, skills, instructions, actor memory, and
    ontology configuration. Steps 2, 3, and 10 use this list.
@@ -35,8 +36,8 @@ leave before new actors arrive, for the reason given under Pitfalls.
    item that belongs to neither, such as a backlog entry, a watch item, or a
    deferred finding, goes into the Project Manager's memory.
 2. **Take an inventory.** Map, merge, or drop each old role against the nine
-   0.10 roles in the [actor registry](Syspilot%20Actors/index.md). In the field
-   migration, a change-manager role was carried by the Contract, a
+   Syspilot roles in the [actor registry](Syspilot%20Actors/index.md). In the
+   field migration, a change-manager role was carried by the Contract, a
    setup-engineer role was dropped, and a quality-manager and a
    verification-engineer role were merged into Quality. For every item in the
    list from *Before You Start*, decide whether to drop it, move it into a
@@ -45,8 +46,8 @@ leave before new actors arrive, for the reason given under Pitfalls.
    of knowledge belongs.
 3. **Remove old agent files and tailoring files.** Tailoring files are the
    files in which the old setup kept a project's role-specific adaptations; in
-   Syspilot v1 they were the `syspilot.<name>.tailoring.md` files. Do this
-   before creating any 0.10 actor.
+   the earlier agent-based setup they were the `syspilot.<name>.tailoring.md`
+   files. Do this before creating any of the new actors.
 4. **Decide where actor memory lives.** Versioned with the project or private is
    a project decision. Keep all actor folders in one place, under one
    decision, and apply it to each generated actor directory as one unit.
@@ -54,8 +55,8 @@ leave before new actors arrive, for the reason given under Pitfalls.
    instructions: read the actor's role card, and read the Contract registry at
    session start. The [Setup Contract](Syspilot%20Contracts/setup.md) lists the
    roles and the files each actor folder holds.
-6. **Derive your Contracts and role cards** from the 0.10 generic examples in
-   `docs/Example Contracts/` and `docs/Example Actors/`. Syspilot's own
+6. **Derive your Contracts and role cards** from the selected release's generic
+   examples in `docs/Example Contracts/` and `docs/Example Actors/`. Syspilot's own
    `docs/Syspilot Contracts/` and `docs/Syspilot Actors/` stay its working
    artifacts. Copy the Contracts you use, each under its own file name, and
    start with the Change Process and the Contract Documents method it links to;
@@ -73,16 +74,24 @@ leave before new actors arrive, for the reason given under Pitfalls.
    `syspilot.contract-handling.instructions.md`, and keep project-specific
    knowledge in actor memory or in the project-owned levels that
    [Customization](customization.md) describes.
-7. **Replace old skills** with the 0.10 skills for impact, MECE, trace, and the
-   ontology. Copy each skill's `SKILL.md` and runtime scripts only. You can copy
-   them before step 8, but they run only once the binding from step 8 exists,
-   or when you pass `--ontology` with a path to an existing TOML file.
+7. **Replace old skills** with the selected release's skills for impact, MECE,
+   trace, the ontology, and Contract statistics. Copy each skill's `SKILL.md` and
+   runtime scripts only. You can copy them before step 8; Impact, MECE and Trace
+   run only once that step's binding exists, or when you pass `--ontology` with
+   a path to an existing TOML file. The
+   [statistics skill](contract-statistics.md) instead reads the local Copilot
+   session store and Git history; its record goes in the ignored
+   `.syspilot/stats/` folder. This upgrade runs no Setup, so include preparation
+   of that folder and its additive Git ignore entry in the update Change.
 8. **Move the ontology** out of `conf.py` into its own TOML file that
    `conf.py` reads through a top-level literal string `needs_from_toml` binding.
    Each `needs_<name>` setting in `conf.py`, such as `needs_types`,
    `needs_statuses`, `needs_extra_links`, and `needs_extra_options`, becomes the
    matching entry without the prefix under the `[needs]` table, for example
-   `[[needs.types]]`. The ontology skill describes the format. The Impact, MECE,
+   `[[needs.types]]`. Keeping it in `docs/<Project name> Ontology/` beside your
+   specifications matches what Setup does; the selected release's
+   `docs/Example Ontology/` is a ready starting point if you want a `design` level.
+   The ontology skill describes the format. The Impact, MECE,
    and Trace scripts read `docs/conf.py`, take the ontology path from that
    literal, and resolve a relative path against the directory of `conf.py`. If
    your binding is computed, pass `--ontology` explicitly; `--ontology` always

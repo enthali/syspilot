@@ -11,18 +11,13 @@ Syspilot Actor Model
 
    - have a public role card that defines its domain, responsibilities,
      character, and perspective;
-   - maintain a ``context.md`` that names its public role card and the
-     process registry it follows by paths that resolve to the files, written
-     as project-root-relative paths in code spans, because an actor reads the
-     context as text and the depth of an actor folder below the project root
-     varies with the Jarvis ``jarvis.actors.folder`` setting, so that a
-     relative link written for one depth fails at another;
+   - name its role card and process registry in ``context.md`` as
+     project-root-relative paths in code spans that resolve to existing files;
    - obtain artifact ownership and current responsibility from the applicable
      process and Contract Document rather than from a prescribed actor
      sequence;
-   - state its role card and instructions in project-neutral wording, naming
-     no specific project, so the same card and instruction apply unchanged to
-     the project syspilot ships into;
+   - use project-neutral role cards and instructions that name no specific
+     project;
    - state required behavior in positive wording in its role card and
      instructions, rather than relying on a negation to imply the bounded
      alternative; and
@@ -34,10 +29,22 @@ Syspilot Actor Model
    :status: approved
    :verifies: SYSP_REQ_ACTOR_MODEL
 
-   Inspect each Syspilot actor's public role card and ``context.md`` and confirm
-   that its role, process registry, process-derived authority, and Jarvis
-   kernel boundary follow the common Actor Model, and that the ``context.md``
-   names its role card and the process registry as project-root-relative paths
-   that resolve to existing files. Confirm that the role card
-   and instructions name no specific project and state required behavior
-   positively rather than through a negation alone.
+   Each public role card identifies domain, responsibilities, character and
+   perspective. Its instructions are project-neutral and express required
+   behavior positively.
+
+.. vc:: Actor context resolves its authority sources
+   :id: SYSP_VC_ACTOR_MODEL_2
+   :status: approved
+   :verifies: SYSP_REQ_ACTOR_MODEL
+
+   Every actor's ``context.md`` contains code-span, project-root-relative paths
+   to an existing role card and process registry.
+
+.. vc:: Actor authority preserves the kernel boundary
+   :id: SYSP_VC_ACTOR_MODEL_3
+   :status: approved
+   :verifies: SYSP_REQ_ACTOR_MODEL
+
+   Role cards derive artifact authority from Contracts, not an actor sequence,
+   and leave memory, messaging, escalation and culture to the Jarvis Kernel.

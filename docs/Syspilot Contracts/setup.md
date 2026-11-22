@@ -39,7 +39,7 @@ Do not modify the target project in this phase.
    - When it lacks `jarvis_createActor`, stop with a recorded blocker before any write to the target other than this record, because Setup creates Actors only through Jarvis. Give the User two ways forward: enable `jarvis_core_createActor` in the Chat tool picker and tell the session to continue, or, when the tool is not offered at all, the manual creation path of Syspilot Actor Setup.
    - When it offers `jarvis_createActor` but lacks a messaging tool, the record transfers to the Admin as Phase 4 describes.
    - When step 5 installed Jarvis Core in this run and the session lacks `jarvis_createActor`, report an installed extension whose tools the session does not offer as a distinct condition and not as success, and ask the User to reload the window only then, in place of the blocker above. Record that the reload was requested and that the resume prompt was given. The resume prompt is composed under the language rule of the Transfer To The Admin section (the User's language, English when that language is ambiguous, with paths and tool names unchanged) and tells a new chat in the reloaded window to continue the Pristine Syspilot Setup recorded in `.syspilot/setup-contract.md` and to read that record first, because a reload ends the chat session and nothing else tells a new session how to continue. The resumed session reads the Jarvis version and its tools again, resumes from the recorded state, and keeps the recorded before scan. When the tools are offered after the installation, continue without a reload; one reported run in which Actor creation became available without a reload is not a guarantee.
-9. Run `git check-ignore` on `.github/instructions/` and `.github/skills/`. An existing ignore rule that would silently exclude a generated destination is a blocker; an occupied destination with unrelated existing files is not — those files are preserved during the additive copy.
+9. Run `git check-ignore` on `.github/instructions/` and `.github/skills/`. An existing ignore rule that would silently exclude a generated destination is a blocker, with one exception: `.syspilot/stats/` is meant to be ignored and is not a generated destination; an occupied destination with unrelated existing files is not — those files are preserved during the additive copy.
 
 Existing committed project content is allowed and remains untouched unless the User approves an additive integration edit.
 
@@ -64,6 +64,10 @@ Before generating the script, ask the User which example Contracts to install, r
 
 The nine role cards are installed whichever Contracts are selected, because a role card names no Contract process. An actor whose process is not installed, such as Release without the Release Process, has no assignment from that process until the project adopts it.
 
+### Model Considerations Adoption
+
+In the same step, ask the User whether to adopt `docs/model-considerations.md`, the dated guide that explains which Copilot model fits which Syspilot actor and how the Technical Writer refreshes that choice monthly. Say that a yes places only the guide in the project's documentation and asks the Technical Writer to run steps 1 to 3 of the guide and to set a monthly heartbeat, and that Setup changes no `model:` line of any agent file and pre-approves no later model switch. Install the guide only on a yes, and record the answer in the Evidence Summary row `Model Considerations`. A no, or no answer, installs nothing and sends nothing; the project can adopt the guide later by copying it from `docs/` of its pinned release.
+
 ### Installation Jobs
 
 The following list is the Contract-owned installation inventory. The `Class` column is the only statement of who owns an installed artifact, and section headings name no artifact owner; the executor named in the header holds the Setup record until handoff. A `seeded copy` is copied from the example folders of the verified commit, is identical to its source when Setup verifies it, and belongs to the project from the handoff on; later adaptation is not a deviation, and Setup does not check it again. Directory jobs recurse over all release-owned or seeded files below the source path while excluding generated build output, virtual environments, caches, and Change instances.
@@ -74,14 +78,16 @@ The following list is the Contract-owned installation inventory. The `Class` col
 | Actor registry | generate | Nine-actor list below | `docs/<Project name> Actors/index.md`, titled `<Project name> Actors` | generated instance | Registry links exactly the nine installed role cards and carries a hidden table of contents naming exactly those cards |
 | Contract processes | copy selected files | The files named by the Contract selection, directly below `docs/Example Contracts/`; `index.md` and `setup.md` of `docs/Syspilot Contracts/` are not among them | `docs/<Project name> Contracts/`, each under its own file name | seeded copy | `contract-documents.md` and every selected Contract exist, each identical to its source; no unselected Contract file exists |
 | Contract registry | generate | Preamble of `docs/Example Contracts/index.md` above its `Processes` heading, and the Contract selection | `docs/<Project name> Contracts/index.md`, titled `<Project name> Contracts` | generated instance | Registry links exactly the installed Contracts and carries a hidden table of contents naming exactly those Contracts |
+| Model Considerations guide | copy one file, only when the User adopted it | `docs/model-considerations.md` | `docs/model-considerations.md` | seeded copy | On a yes the file exists and is identical to its source and the table of contents of the target `docs/index.rst` lists `model-considerations`; on a no the file does not exist; no agent file changed |
 | Syspilot skills | copy directory, additive | `.github/skills/` | `.github/skills/` | release-owned | Every release skill contains `SKILL.md` and declared supporting files; existing unrelated files in an occupied directory are preserved |
+| Statistics folder | create folder, add ignore entry | Target root | `.syspilot/stats/` and one `.syspilot/stats/` line in the target `.gitignore`, added only when no existing rule already ignores that folder | generated instance | The folder exists; `git check-ignore .syspilot/stats/x` reports it ignored; existing `.gitignore` lines are unchanged and the entry is not duplicated on a second run |
 | Syspilot instructions | copy directory, additive | `.github/instructions/` | `.github/instructions/` | release-owned | Every release instruction matches its verified-commit source identity and `syspilot.contract-handling.instructions.md` exists; existing unrelated files in an occupied directory are preserved |
 | Setup record | retain materialized file | This runbook | `.syspilot/setup-contract.md` | generated instance | Status, responsibility, blockers, and evidence remain available with the installed project |
 | Documentation build | inspect, then preserve or generate | Existing project build, or verified-commit `docs/docs-build.py` and the scaffold definitions below | Existing build paths, or `docs/docs-build.py`, `docs/conf.py`, and `docs/index.rst` | user-owned or generated instance | The recorded target build command succeeds with the configured ontology and zero warnings; a generated `docs/conf.py` and `docs/index.rst` match the scaffold definitions |
 | Sphinx-Needs environment | preserve or install | Existing project environment, or verified-commit `docs/requirements.txt` | Existing environment, or project-local `.venv/` | user-owned or generated instance | Existing Sphinx-Needs remains unchanged, or `uv venv .venv` and `uv pip install --python .venv -r {verified commit tree}/docs/requirements.txt` succeed; the Sphinx-Needs version of the environment in use is recorded |
 | Project baseline | generate | Provided release tag, verified commit, and Contract state | `.syspilot/project.toml` | generated instance | Required baseline fields parse and match the provided release |
 | Syspilot actor persistence | inspect then ask | Git ignore result and User decision | Project Git policy | user-owned | User explicitly decides whether the nine generated Syspilot actor directories are versioned; resulting rules match that decision |
-| Project ontology | detect, then preserve or copy | Existing configured ontology, or verified-commit `.syspilot/ontology.toml` | Existing configured path, or `.syspilot/ontology.toml` | user-owned or generated instance | Existing ontology remains unchanged, or baseline TOML is copied only when no ontology exists; the target documentation build succeeds |
+| Project ontology | detect, then preserve or copy folder | Existing configured ontology, or `docs/Example Ontology/` | Existing configured path, or `docs/<Project name> Ontology/` | user-owned or seeded copy | Existing ontology remains unchanged, or the folder with `ontology.toml` and `ontology.md` is copied only when no ontology exists, identical to its source; the target documentation build succeeds |
 | Setup script | generate temporarily | This inventory and Contract rules | Executor-selected system temporary path | transient | Platform-appropriate script supports `--dry-run`; dry-run and execution share one planning path; file remains available for inspection |
 | Syspilot actors | create nine Actors through Jarvis | Actor definitions below | The Actors folder, at the path `jarvis_createActor` returns for each Actor it creates or finds, or the path the second folder scan finds for an Actor the User created | generated instance | Nine Actors exist, each recorded as created or pre-existing with its recorded path; each created `context.md` names both project-root-relative paths and they resolve to installed files; Jarvis lists all nine |
 
@@ -97,7 +103,7 @@ baseline_status = "preparing"
 
 Inspect the target independently for its configured ontology, Sphinx-Needs availability, dependency files, documentation structure, and build command.
 
-1. Detect an ontology in `conf.py`, `ubproject.toml`, or another TOML source. Preserve it unchanged when present. Copy the verified commit's `.syspilot/ontology.toml` only when no ontology exists.
+1. Detect an ontology in `conf.py`, `ubproject.toml`, or another TOML source. Preserve it unchanged when present. Only when no ontology exists, copy `docs/Example Ontology/` of the verified commit to `docs/<Project name> Ontology/` and bind its `ontology.toml`; copy no Syspilot-owned ontology.
 2. Detect Sphinx-Needs independently. Preserve its environment when available. When unavailable, run `uv venv .venv` and `uv pip install --python .venv -r {verified commit tree}/docs/requirements.txt`. Record the Sphinx-Needs version of the environment in use. When Setup itself has to bind an ontology through `needs_from_toml`, namely in a generated `docs/conf.py` or an approved additive edit, and that version is older than 4.1.0, the first release with that configuration, stop with a recorded blocker and User guidance, and bind nothing against that environment. An existing configured ontology and its environment stay untouched whatever the version.
 3. Preserve existing dependency and documentation files. Ask the User to approve the exact additive dependency, configuration, and navigation edits required to use the selected environment and ontology and expose installed Syspilot documentation; in the same step show the confirmed project name from the header of this record, which the scaffold uses, and let the User change it only as Phase 1 step 6 allows. Copy `docs/docs-build.py` and generate `docs/conf.py` or `docs/index.rst` from the scaffold definitions below only where those build or documentation files are absent. Never overwrite an existing file.
 4. Run the target documentation build with the selected ontology and require zero warnings.
@@ -106,12 +112,12 @@ Ontology evaluation or modification is not part of Setup.
 
 ### Documentation Scaffold
 
-The generated `docs/conf.py` carries no Syspilot project name, author, release, copyright, logo, or other Syspilot metadata, and refers only to files and settings that the target has after installation: no template folder, static folder, logo, stylesheet, source-project path, or intersphinx inventory fetched from the network. It loads only `myst_parser` and `sphinx_needs`, which the installed `docs/requirements.txt` provides, and has no hook that writes `docs/ontology-reference.md`; that page is Syspilot's own internal reference, and the closed Change `sphinx-needs-graph-alignment` decided not to deliver it to installed projects. `needs_from_toml` is a literal string assignment, because the shipped Impact, MECE, and Trace skills read that literal without executing `conf.py` and fail on a computed binding. `changes/*` is excluded, because Change Contracts are process records and not pages. `needs.deprecated` is suppressed, because the shipped `.syspilot/ontology.toml` uses Needs options that Sphinx-Needs reports as deprecated and the strict build would fail on them, as Syspilot's own `docs/conf.py` also suppresses.
+The generated `docs/conf.py` carries no Syspilot project name, author, release, copyright, logo, or other Syspilot metadata, and refers only to files and settings that the target has after installation: no template folder, static folder, logo, stylesheet, source-project path, or intersphinx inventory fetched from the network. It loads only `myst_parser`, `sphinx_needs` and `sphinxcontrib.mermaid`, which the installed `docs/requirements.txt` provides. Mermaid is loaded because it renders the link diagram of the installed ontology page, which a plain code block would not. The file has no hook that writes `docs/Syspilot Ontology/ontology.md`; that page is Syspilot's own hand-maintained reference, and the closed Change `sphinx-needs-graph-alignment` decided not to deliver it to installed projects. `needs_from_toml` is a literal string assignment, because the shipped Impact, MECE, and Trace skills read that literal without executing `conf.py` and fail on a computed binding. `changes/*` is excluded, because Change Contracts are process records and not pages. `needs.deprecated` is suppressed, because the Example Ontology uses Needs options that Sphinx-Needs reports as deprecated and the strict build would fail on them, as Syspilot's own `docs/conf.py` also suppresses.
 
 ```python
 project = "{confirmed project name}"
 
-extensions = ["myst_parser", "sphinx_needs"]
+extensions = ["myst_parser", "sphinx_needs", "sphinxcontrib.mermaid"]
 
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", ".venv", "venv", "changes/*"]
 
@@ -120,7 +126,7 @@ needs_from_toml = "{ontology path relative to conf.py}"
 suppress_warnings = ["needs.deprecated"]
 ```
 
-The generated `docs/index.rst` has the project name as title and one table of contents that lists only `<Project name> Actors/index` and `<Project name> Contracts/index`, with the recorded name and its space in each entry. Each generated registry has the title `<Project name> Actors` or `<Project name> Contracts` and also carries a hidden table of contents, so the build with `-W` has no orphaned page:
+The generated `docs/index.rst` has the project name as title and one table of contents that lists exactly `<Project name> Actors/index`, `<Project name> Contracts/index` and, when Setup installed the ontology, `<Project name> Ontology/ontology`, plus `model-considerations` when the User adopted the guide, with the recorded name and its space in each entry. Each generated registry has the title `<Project name> Actors` or `<Project name> Contracts` and also carries a hidden table of contents, so the build with `-W` has no orphaned page:
 
 ````markdown
 ```{toctree}
@@ -130,7 +136,7 @@ The generated `docs/index.rst` has the project name as title and one table of co
 ```
 ````
 
-Install no `docs/ontology-reference.md`. For a target that already has a documentation build, offer the registries and the changed navigation entries only as additive edits that the User approves.
+Install no `docs/Syspilot Ontology/ontology.md`. For a target that already has a documentation build, offer the registries, the changed navigation entries, the entry for an adopted `model-considerations` guide and, for the installed ontology page, the `sphinxcontrib.mermaid` extension only as additive edits that the User approves.
 
 ### Syspilot Actor Setup
 
@@ -222,11 +228,12 @@ Each gate has exactly one status: `pending`, `passed`, or `failed`, recorded in 
 	- the installed Contracts and the actors that have no installed process yet;
 	- the project-root-relative paths of the two installed folders, `docs/<Project name> Actors/` and `docs/<Project name> Contracts/`, with the recorded name; and
 	- instructions to explain the selected ontology's artifact types, statuses, and relationships to the User and ask whether it fits the project.
-3. The Project Manager re-reads its `context.md`, its role card, and this Setup record, and verifies that the committed header names it, before it acts on the message. After it has acknowledged the message, the Project Manager's own first commit on the record sets Contract status `handed off` and the row `PM handoff` to `passed`.
-4. The executor reports completion to the User only after that acknowledgement. Before it, the executor says that the message was sent and that the acknowledgement is awaited.
-5. If the User accepts the selected ontology, continue normal project intake without creating an ontology Change.
-6. If the User requests an adjustment, start a normal Change before modifying the ontology. Use the existing `syspilot.ontology` skill only as technical guidance inside that Change.
-7. If sending the message fails, leave the record unchanged, because the executor makes no change to a record it no longer holds: status `verified` with the Project Manager named and `PM handoff` `pending` is the visible state of an unacknowledged handoff. Report the failure to the User with the manual path: tell the chat of the Project Manager the path of this Setup record and ask it to perform the refresh and header check. Keep the verified integrated installation.
+3. When the User adopted the Model Considerations guide, send the Technical Writer a message with the task to run steps 1 to 3 of `docs/model-considerations.md` and to set a monthly heartbeat, and the statement that every changed model choice is agreed with the User before the Admin changes a `model:` line. Record the message in the Evidence Summary row `Model Considerations`; the Technical Writer's acknowledgement is not a gate of this record. A failed send is recorded there and does not block the handoff to the Project Manager; tell the User to give the Technical Writer's chat that task manually.
+4. The Project Manager re-reads its `context.md`, its role card, and this Setup record, and verifies that the committed header names it, before it acts on the message. After it has acknowledged the message, the Project Manager's own first commit on the record sets Contract status `handed off` and the row `PM handoff` to `passed`.
+5. The executor reports completion to the User only after that acknowledgement. Before it, the executor says that the message was sent and that the acknowledgement is awaited.
+6. If the User accepts the selected ontology, continue normal project intake without creating an ontology Change.
+7. If the User requests an adjustment, start a normal Change before modifying the ontology. Use the existing `syspilot.ontology` skill only as technical guidance inside that Change.
+8. If sending the message fails, leave the record unchanged, because the executor makes no change to a record it no longer holds: status `verified` with the Project Manager named and `PM handoff` `pending` is the visible state of an unacknowledged handoff. Report the failure to the User with the manual path: tell the chat of the Project Manager the path of this Setup record and ask it to perform the refresh and header check. Keep the verified integrated installation.
 
 ## Failure And Resume Rules
 
@@ -249,6 +256,7 @@ The mandatory gates are the Phase 5 rows. The row `PM handoff` is a delivery row
 | Actors folder scan before | pending | pending |
 | Contract inventory | pending | pending |
 | Contract selection | pending | pending |
+| Model Considerations | pending | pending |
 | Script dry-run and audit | pending | pending |
 | Script execution | pending | pending |
 | Actor creation | pending | pending |

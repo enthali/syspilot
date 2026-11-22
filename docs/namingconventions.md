@@ -30,7 +30,7 @@ them:
   rather than letting two elements quietly share a name.
 - **Each type declares a `prefix`** — `ROOT_`, `US_`, `REQ_`, `AC_`, `VC_`,
   `DOC_` in the baseline ontology. Read the current values in the
-  [Ontology Reference](ontology-reference.md).
+  [Ontology Reference](<Syspilot Ontology/ontology.md>).
 
 That last point is easy to misread. Sphinx-Needs uses a type `prefix` when it
 *generates* an ID. Because Syspilot requires explicit IDs, the prefix is not a
@@ -49,8 +49,7 @@ for example `SYSP_US_SETUP`, `SYSP_REQ_CONTRACT_HANDLING`, `SYSP_AC_SETUP_1`,
 `SYSP_VC_RELEASE_1`, and `SYSP_DOC_README`. All 67 of them, without exception.
 
 The graph root is the one different-looking ID: `ROOT_SYSPILOT` puts the type
-first. That is deliberate rather than accidental — v2 introduced exactly one
-deterministic root anchor, and this ID names it.
+first. It names the graph's single deterministic root anchor.
 
 This shape is the current convention of the Syspilot product repository. It is
 not a requirement, and no validator checks it.
@@ -89,5 +88,4 @@ A rename is mechanical, and the build is the safety net:
    scripts, and release notes.
 5. Run the strict build. It fails on anything you missed, which is exactly what
    you want it to do.
-
 

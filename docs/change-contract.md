@@ -56,6 +56,15 @@ The first handoff goes to the Architect. The Architect decides which product
 model, specifications, authority boundaries, and realized artifacts are
 affected.
 
+The Architect builds the `Affected Artifacts` table with the project's impact
+skill and records an `Impact query` line: start IDs, direction, and depth.
+Every reported ID gets its own row with one disposition: `no change`, `modified`,
+`added`, or `removed`, and a rationale. The Architect adds by hand the artifacts
+the query cannot report, such as new ones. This is how the existing table is
+filled, not a separate artifact or gate, and it forms part of the Architect's
+completion evidence. The Contract names the skill by purpose, so a project can
+replace its implementation without rewriting the Contract.
+
 This is the point where a request becomes a checkable change rather than a
 plausible collection of edits.
 
@@ -104,7 +113,7 @@ User documentation is included when users need a new or changed explanation.
 Incoming `included_in` links on changed requirements tell the Technical Writer
 which documentation surfaces deserve an impact review.
 
-Impact Python answers the same question for the rest of the graph. It queries a
+The project's impact skill answers the same question for the rest of the graph. It queries a
 built Need by ID and follows standard links plus every link option the active
 ontology declares, incoming or outgoing, to a chosen depth — so project-defined
 relationships work without hard-coded names. What comes back is a list of
@@ -231,13 +240,22 @@ either — the decision stays pending until the user returns.
 
 After validation has an explicit disposition, responsibility returns to the
 Project Manager for Closure. The Contract closes only when included artifacts
-have terminal evidence, Quality can proceed, blockers are gone, and integration
-or publication is complete or its next authorized owner is explicit.
+have terminal evidence, Quality can proceed, blockers are gone, and the feature
+branch is squash-integrated into the integration branch, unless the Version
+control row is `not applicable` with its reason recorded.
+
+At checkout, after validation, the Project Manager runs the
+`syspilot.contract-statistics` skill. It writes the usage record to
+`.syspilot/stats/<contract-name>-stat.md`, outside the Contract and ignored by
+Git. This is a closure-checklist step, not a separate artifact or gate.
+[Contract Statistics](contract-statistics.md) explains the window, commands,
+figures and attribution limits.
 
 A closed Contract is worth more than a finished one. It is the record a future
 reader consults when they need to know why the system looks the way it does.
 
-The Contracts in `docs/changes/` are real instances rather than tidy examples,
+The Contracts in `docs/changes/` (with shipped Changes archived under
+`docs/changes/v<version>/`) are real instances rather than tidy examples,
 which is why they stay in the repository instead of the rendered documentation.
 Open one there to see the shape of actual work, then start the next change from
 the canonical template in the Change process.

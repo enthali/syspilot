@@ -232,12 +232,12 @@ class DocumentationScaffoldTests(unittest.TestCase):
             self.assertNotIn(forbidden, self.conf)
         self.assertIn('"changes/*"', self.conf)
         self.assertIn('suppress_warnings = ["needs.deprecated"]', self.conf)
-        self.assertIn('extensions = ["myst_parser", "sphinx_needs"]', self.conf)
+        self.assertIn('extensions = ["myst_parser", "sphinx_needs", "sphinxcontrib.mermaid"]', self.conf)
 
     def test_index_lists_only_the_registries_and_registries_hide_a_toctree(self):
-        self.assertIn("`<Project name> Actors/index` and `<Project name> Contracts/index`", self.text)
+        self.assertIn("`<Project name> Actors/index`, `<Project name> Contracts/index` and, when Setup installed the ontology, `<Project name> Ontology/ontology`", self.text)
         self.assertIn(":hidden:", self.text)
-        self.assertIn("Install no `docs/ontology-reference.md`", self.text)
+        self.assertIn("Install no `docs/Syspilot Ontology/ontology.md`", self.text)
 
 
 class SphinxNeedsVersionTests(unittest.TestCase):

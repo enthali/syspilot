@@ -25,23 +25,38 @@ Impact Analysis
     - fail explicitly for an unknown Need, missing or invalid ontology, missing
        built Needs data, or an unusable build prerequisite.
 
-    The Skill guidance shall describe the tested behavior and treat impact
-    output as input to Contract-owned scope decisions and evidence. It shall not
-    declare the query result to be authoritative scope or establish a parallel
-    governance source.
+    Skill guidance shall match tested behavior and treat query results as
+    candidates for Contract-owned scope and evidence, not as scope authority.
 
 .. vc:: Impact Python traverses active ontology links
    :id: SYSP_VC_IMPACT_QUERY_1
    :status: approved
    :verifies: SYSP_REQ_IMPACT_QUERY
 
-    Run focused automated tests that confirm standard links and active-ontology
-    extra links are traversed in both directions; current v2 typed links and a
-    synthetic customer-defined link type are discovered; direction, depth,
-    output modes, de-duplication, and cycle protection behave consistently; and
-    unknown Needs, missing or invalid ontology, missing built data, and failed
-    build prerequisites return explicit non-success results. Confirm that the
-    requested per-pair output names the link option and direction connecting
-    each traversed pair, and that the default output remains unchanged. Inspect
-    ``SKILL.md`` and confirm its discovery and authority claims match the tested
-    behavior and Contract-owned scope boundary.
+    Automated fixtures discover the expected standard, configured Syspilot and
+    synthetic customer-defined links for each direction and depth, without
+    duplicates or unbounded cycles.
+
+.. vc:: Impact query outputs preserve the selected relationship information
+   :id: SYSP_VC_IMPACT_QUERY_2
+   :status: approved
+   :verifies: SYSP_REQ_IMPACT_QUERY
+
+   Tree, flat and direct outputs match their expected shapes. Requested
+   per-pair output names link option and direction; default output is unchanged.
+
+.. vc:: Impact query failures are explicit
+   :id: SYSP_VC_IMPACT_QUERY_3
+   :status: approved
+   :verifies: SYSP_REQ_IMPACT_QUERY
+
+   Unknown Needs, missing or invalid ontology, missing built data and failed
+   build prerequisites each produce a non-success result with a diagnostic.
+
+.. vc:: Impact guidance preserves Contract authority
+   :id: SYSP_VC_IMPACT_QUERY_4
+   :status: approved
+   :verifies: SYSP_REQ_IMPACT_QUERY
+
+   Skill guidance matches tested discovery behavior and assigns scope decisions
+   and evidence disposition to the applicable Contract.

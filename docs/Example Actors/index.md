@@ -8,7 +8,7 @@ Each card here is identical to its counterpart in `docs/Syspilot Actors/` after 
 
 | Card | Reason |
 |---|---|
-| Technical Writer | The example-maintenance duty exists only where the example folders exist; an adopting project has neither folder nor an `Example sync` row |
+| Technical Writer | The example-maintenance duty exists only where the example folders exist; an adopting project has neither folder nor an `Example sync` row. Model-recommendation maintenance applies when the adopting project accepts that optional document. |
 
 ## Roster
 

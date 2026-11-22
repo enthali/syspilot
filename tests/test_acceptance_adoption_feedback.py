@@ -293,9 +293,9 @@ class SkillBindingFailureTests(unittest.TestCase):
             (self.root / relative).parent.mkdir(parents=True)
             shutil.copyfile(ROOT / relative, self.root / relative)
         (self.root / "docs").mkdir()
-        # A fixed default location must not rescue a failed binding.
-        (self.root / ".syspilot").mkdir()
-        shutil.copyfile(ROOT / ".syspilot" / "ontology.toml", self.root / ".syspilot" / "ontology.toml")
+        # A default location must not rescue a failed binding.
+        (self.root / "docs" / "Syspilot Ontology").mkdir()
+        shutil.copyfile(ROOT / "docs" / "Syspilot Ontology" / "ontology.toml", self.root / "docs" / "Syspilot Ontology" / "ontology.toml")
 
     def run_cli(self, skill, script, args):
         path = self.root / ".github" / "skills" / skill / "scripts" / script
@@ -414,7 +414,7 @@ class ReleaseProcessTests(unittest.TestCase):
         for fragment in ("commit it on `development` as a commit that changes only this record",
                          "after P and before the merge", "so that R contains it"):
             self.assertIn(fragment, auth)
-        for fragment in ("P is an ancestor of R", "exactly `docs/changes/release-v{version}.md`",
+        for fragment in ("P is an ancestor of R", "exactly `docs/releases/v{version}.md`",
                          "no change in the protected content", "stops the release",
                          "every second-level heading of the Release Contract template is present at R",
                          "Quality and Release therefore review the complete difference from P to R before publication",

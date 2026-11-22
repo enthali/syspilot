@@ -23,8 +23,13 @@ Developer
    :status: approved
    :verifies: SYSP_REQ_DEVELOPER
 
-   Inspect the Developer role card and a completed implementation artifact and
-   confirm that changed files, realization decisions, unit verification, and
-   surfaced specification conflicts are recorded where applicable, and that the
-   Developer wrote and ran the unit tests and recorded their commands and
-   results.
+   Completed implementation evidence identifies changed files and realization
+   decisions, and records the Developer's unit-test commands and results.
+
+.. vc:: Developer surfaces decisions outside implementation authority
+   :id: SYSP_VC_DEVELOPER_2
+   :status: approved
+   :verifies: SYSP_REQ_DEVELOPER
+
+   The role card and implementation evidence leave specification conflicts,
+   simpler alternatives and material improvements with the responsible owner.

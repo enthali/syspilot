@@ -6,50 +6,8 @@
 import os
 import runpy
 import sys
-import tomllib
 from pathlib import Path
 
-
-# -- Ontology reference page generator ----------------------------------------
-# Generates docs/ontology-reference.md from .syspilot/ontology.toml on each build.
-
-def _generate_ontology_reference(app):
-    """builder-inited hook: generate ontology-reference.md from ontology.toml."""
-    ontology_path = Path(app.srcdir).parent / ".syspilot" / "ontology.toml"
-    output_path = Path(app.srcdir) / "ontology-reference.md"
-
-    if not ontology_path.exists():
-        return
-
-    with ontology_path.open("rb") as f:
-        data = tomllib.load(f)
-
-    needs = data.get("needs", {})
-    lines = [
-        "<!-- AUTO-GENERATED — do not edit manually. Regenerated on every sphinx-build. -->",
-        "",
-        "# Ontology Reference",
-        "",
-    ]
-
-    # --- Type Catalogue ---
-    types = needs.get("types", [])
-    if types:
-        lines.append("## Type Catalogue")
-        lines.append("")
-        lines.append("| Directive | Title | Prefix | Color |")
-        lines.append("|-----------|-------|--------|-------|")
-        for t in types:
-            lines.append(
-                f"| `{t['directive']}` | {t['title']} | {t['prefix']} | {t['color']} |"
-            )
-        lines.append("")
-
-    output_path.write_text("\n".join(lines), encoding="utf-8")
-
-
-def setup(app):
-    app.connect("builder-inited", _generate_ontology_reference)
 
 # -- Project information -----------------------------------------------------
 
@@ -119,9 +77,9 @@ html_sidebars = {
 # https://sphinx-needs.readthedocs.io/
 #
 # The syspilot ontology (types, statuses, extra links, etc.) lives in
-# .syspilot/ontology.toml — the single source of truth for both Sphinx and ubCode.
+# docs/Syspilot Ontology/ontology.toml — the single source of truth for both Sphinx and ubCode.
 
-needs_from_toml = "../.syspilot/ontology.toml"
+needs_from_toml = "Syspilot Ontology/ontology.toml"
 
 # ac/vc needs are fine-grained (one per Given/When/Then) — start them
 # collapsed by default (clean layout) so only title/ID show until clicked;

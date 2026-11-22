@@ -24,27 +24,20 @@ the process in motion, :doc:`customization` for project tailoring, or
 :doc:`operations` for builds and maintenance.
 
 
-syspilot Actors & Processes (v2)
----------------------------------
+Syspilot Actors & Processes
+---------------------------
 
 .. toctree::
    :maxdepth: 2
-   :caption: syspilot v2
+   :caption: SYSPILOT
 
-   syspilot/index
+   Syspilot Specification <syspilot/index>
    Syspilot Actors/index
-   Syspilot Actors/Project Manager
-   Syspilot Actors/Architect
-   Syspilot Actors/Developer
-   Syspilot Actors/Tester
-   Syspilot Actors/Quality
-   Syspilot Actors/Release
-   Syspilot Actors/Research
-   Syspilot Actors/Technical Writer
-   Syspilot Actors/Admin
    Syspilot Contracts/index
+   Syspilot Ontology <Syspilot Ontology/ontology>
    Example Actors/index
-   Example Contracts/index
+   Example Contracts <Example Contracts/index>
+   Example Ontology <Example Ontology/ontology>
 
 
 Traceability
@@ -67,6 +60,8 @@ User Guides
    getting-started
    product-model
    change-contract
+   contract-statistics
+   model-considerations
    customization
    operations
    upgrade
@@ -82,7 +77,6 @@ Reference
    :caption: Reference
 
    releasenotes
-   ontology-reference
    namingconventions
 
 

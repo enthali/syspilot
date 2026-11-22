@@ -6,6 +6,31 @@
 > consistent; CalVer was a brief interlude, reverted per the Release Agent
 > Tailoring Workflow (see `release-agent-tailoring-semver`).
 
+## v0.11.0 - Contract and ontology improvements
+
+### Summary
+
+This minor release improves Contract closure and release preparation, ontology examples and validation, and guidance for selecting actor models.
+
+### Changes, in integration order
+
+- **Release Contract archive** — Release Contracts live in `docs/releases/` and shipped Change Contracts are archived by version before preflight, keeping the active Change directory clear.
+- **Version-free product text** — Current product documentation and specifications describe Syspilot without aging product-version labels; release artifacts retain version identifiers.
+- **Closure integration check** — Change closure now checks that the feature branch was squash-integrated, preventing a closed Contract from leaving its work unintegrated.
+- **Requirement cleanup** — Requirements and verification criteria are separated into concise, independently reviewable obligations.
+- **Ontology example** — A project-owned example ontology provides a fuller starting point for adopters, alongside Syspilot's own ontology in the documentation.
+- **Ontology link obligations** — Strict documentation builds enforce agreed minimum typed relationships, exposing missing or invalid links; semantic review remains necessary.
+- **Impact-sourced artifact lists** — Architects use impact results to enumerate and disposition affected artifacts in Change Contracts, giving review a traceable starting point.
+- **Contract statistics** — A skill records actor usage and active time from the local Copilot session store at Change and Release closure; Setup installs it for adopting projects.
+- **Ontology reference cleanup** — Syspilot's ontology reference is maintained in version control instead of generated at build time, matching the example and adopter model.
+- **Revalidation baseline** — Release revalidation compares workflow inputs and environment with the last successful tag run and treats a missing baseline as a fired trigger.
+- **Model considerations** — A dated guide explains model recommendations and their refresh; Setup offers optional adoption and a Technical Writer follow-up.
+
+### Known limitations
+
+- Publication is not atomic: documentation can be deployed before GitHub Release creation fails.
+- Local preflight alone does not prove execution on the hosted workflow platform or publication.
+
 ## v0.10.0 - Contract-driven source release
 
 ### Summary
