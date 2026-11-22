@@ -1,6 +1,6 @@
 # Change Contract: setup-lookup-by-tags
 
-**Status:** accepted<br>
+**Status:** closed<br>
 **Process owner:** Project Manager<br>
 **Current responsibility:** Project Manager<br>
 **Current blocker:** none<br>
@@ -61,7 +61,7 @@ Crew by User decision of 2026-11-22: Architect, Technical Writer, Quality; the D
 |---|---|---|---|---|
 | Intent and outcome | yes | Project Manager | Goal, value, scope, and observable outcome are explicit and approved | approved |
 | Contract release | yes | User | User released the Contract on 2026-11-22 | approved |
-| Version control | yes | Project Manager | Feature branch `feature/setup-lookup-by-tags`; squash-integrated into `development` at closure | active |
+| Version control | yes | Project Manager | Feature branch `feature/setup-lookup-by-tags`; squash-integrated into `development` at closure | merged |
 | Infrastructure impact | not applicable: no workflow, CI or packaging artifact changes | Admin | Affected workflow, CI, and packaging artifacts are updated, confirmed by their current owner rather than inferred from a Needs-only impact query | not applicable |
 | Product specification and architecture decisions | yes | Architect | `bf28eff` adds the tag-lookup Requirement and two VCs; both prompt documents link to it. Strict build, four build-runner tests, ten focused Setup checks and five Impact starts pass; prompt realization remains open | complete |
 | User-facing documentation | yes | Technical Writer | Identical version-tag prompts and adjacent prose updated; Architect factual review clear, strict build, prompt assertions and 14 focused tests pass | complete |
@@ -70,7 +70,7 @@ Crew by User decision of 2026-11-22: Architect, Technical Writer, Quality; the D
 | Acceptance test design and results | not applicable: Quality reviews the artifacts directly | Tester | Requirement tests written and run by the Tester, with their commands and results, and the means for User validation trace to the intended outcome | not applicable |
 | Quality review | yes | Quality | Proceed at `14508a8`; complete scoped diff, prompt invariants, test pin, peer/relationship content and recorded green verification reviewed | complete |
 | User validation and approval | yes | User | The User accepted the outcome on 2026-11-22 | accepted |
-| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | pending |
+| Closure decision | yes | Project Manager | Final outcome, validation disposition, and integration state are recorded | complete |
 
 ## Architecture And Specification
 
@@ -200,7 +200,7 @@ Quality's `proceed` judgment verifies that the change is ready for validation; i
 
 ## Closure
 
-**Status:** accepted
+**Status:** closed
 
 - [x] Every included artifact or gate has terminal status and completion evidence.
 - [x] Intent and outcome are `approved`.
@@ -209,6 +209,6 @@ Quality's `proceed` judgment verifies that the change is ready for validation; i
 - [x] User validation is `accepted`.
 - [x] Current blocker is `none`.
 - [x] The observable outcome is demonstrated.
-- [ ] The feature branch is squash-integrated into `development`.
+- [x] The feature branch is squash-integrated into `development`.
 
-**Final outcome:** The Setup prompt in `README.md` and `docs/getting-started.md` asks the session to look up the version tags of the Syspilot repository, with identical wording; the specification and its documentation map agree and a test pins the two prompts. The User accepted on 2026-11-22.
+**Final outcome:** The Setup prompt in `README.md` and `docs/getting-started.md` asks the session to look up the version tags of the Syspilot repository, with identical wording; the specification and its documentation map agree and a test pins the two prompts. The User accepted on 2026-11-22. Integrated by squash into `development` from `feature/setup-lookup-by-tags` as `aef34b0`, not pushed.
