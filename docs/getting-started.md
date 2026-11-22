@@ -46,8 +46,8 @@ chat session in your own project and send this prompt:
 ```text
 Install Syspilot into this project.
 
-1. Look up the releases of https://github.com/enthali/syspilot, tell me the
-   latest one, and ask me which version to install.
+1. Look up the version tags of https://github.com/enthali/syspilot, tell me
+   the latest one, and ask me which version to install.
 2. Fetch `docs/Syspilot Contracts/setup.md` from that exact tag.
 3. Save it unchanged as `.syspilot/setup-contract.md` in this repository, and
    make sure it is the only change in the working tree.
@@ -59,8 +59,8 @@ proceed.
 ```
 
 That is the whole entry point, and it is deliberately this small. The prompt
-settles exactly one question — which release — and then hands over. Everything
-version-specific lives in the Contract that ships with that release, so the
+settles exactly one question — which tag — and then hands over. Everything
+version-specific lives in the Contract at that tag, so the
 prompt itself never goes out of date. A bootstrap that knew how to install
 Syspilot would have to be updated in lockstep with it forever.
 

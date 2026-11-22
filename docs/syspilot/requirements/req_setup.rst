@@ -79,6 +79,35 @@ Pristine Syspilot Setup
    A confirmed baseline stops pristine Setup; other possible Syspilot artifacts
    receive User disposition without unrelated deletion.
 
+.. req:: Setup Bootstrap Version Selection
+   :id: SYSP_REQ_SETUP_BOOTSTRAP
+   :status: approved
+   :implements: SYSP_US_SETUP
+   :specializes: SYSP_REQ_SETUP_SOURCE
+   :realized_by: README.md
+
+   The README and Getting Started Setup prompts shall ask the session to look up
+   the repository's version tags, tell the User the latest and ask which
+   version to install, without requiring a Release page.
+   Both prompts shall have identical wording and fetch the Setup Contract from
+   the User-selected exact tag.
+
+.. vc:: Setup bootstrap looks up version tags
+   :id: SYSP_VC_SETUP_BOOTSTRAP_1
+   :status: approved
+   :verifies: SYSP_REQ_SETUP_BOOTSTRAP
+
+   Each prompt asks for the repository's version tags, the latest and the
+   User's choice, without requiring a Release page.
+
+.. vc:: Setup bootstrap prompts use the same selected tag
+   :id: SYSP_VC_SETUP_BOOTSTRAP_2
+   :status: approved
+   :verifies: SYSP_REQ_SETUP_BOOTSTRAP
+
+   The two prompts are identical and fetch the Setup Contract from the
+   User-selected exact tag.
+
 .. req:: Setup Installation Inventory
    :id: SYSP_REQ_SETUP_INSTALLATION
    :status: approved

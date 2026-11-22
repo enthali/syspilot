@@ -26,8 +26,8 @@ in your own project and send this:
 ```text
 Install Syspilot into this project.
 
-1. Look up the releases of https://github.com/enthali/syspilot, tell me the
-   latest one, and ask me which version to install.
+1. Look up the version tags of https://github.com/enthali/syspilot, tell me
+   the latest one, and ask me which version to install.
 2. Fetch `docs/Syspilot Contracts/setup.md` from that exact tag.
 3. Save it unchanged as `.syspilot/setup-contract.md` in this repository, and
    make sure it is the only change in the working tree.
@@ -38,8 +38,8 @@ If the Contract does not describe a step you need, consult me on how to
 proceed.
 ```
 
-That is the entire entry point. It names a release and gets out of the way —
-everything version-specific lives in the Contract that ships with that release.
+That is the entire entry point. It selects a tag and gets out of the way —
+everything version-specific lives in the Contract at that tag.
 See [Getting started](docs/getting-started.md) for what happens next, and for
 an overview of the supported setup.
 
